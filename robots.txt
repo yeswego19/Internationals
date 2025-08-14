@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://yeswego19.github.io/Internationals/sitemap.xml
+
+# Disallow temporary files
+Disallow: /temp/
+Disallow: /cache/
+Disallow: /admin/
