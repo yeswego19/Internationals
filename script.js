@@ -788,7 +788,7 @@ class MusicPlayer {
         this.audio = new Audio();
         this.isPlaying = false;
         this.currentTrack = 0;
-        this.volume = 0.5;
+        this.volume = 0.3; // Уменьшили громкость по умолчанию
         
         // Music generators for different types of music
         this.musicGenerators = {
@@ -813,6 +813,16 @@ class MusicPlayer {
                 title: 'Концентрация',
                 artist: 'Спокойная музыка',
                 type: 'focus'
+            },
+            {
+                title: 'Вечерняя медитация',
+                artist: 'Успокаивающие звуки',
+                type: 'relaxing'
+            },
+            {
+                title: 'Утренняя энергия',
+                artist: 'Бодрящая музыка',
+                type: 'motivational'
             }
         ];
         
@@ -993,6 +1003,22 @@ class MusicPlayer {
     
     // For generated music, we don't need progress tracking
     // as it's continuous background music
+    
+    // Auto-advance to next track every 5 minutes
+    startAutoAdvance() {
+        this.autoAdvanceInterval = setInterval(() => {
+            if (this.isPlaying) {
+                this.nextTrack();
+            }
+        }, 5 * 60 * 1000); // 5 minutes
+    }
+    
+    stopAutoAdvance() {
+        if (this.autoAdvanceInterval) {
+            clearInterval(this.autoAdvanceInterval);
+            this.autoAdvanceInterval = null;
+        }
+    }
 }
 
 // Initialize music player when DOM is loaded
