@@ -821,17 +821,10 @@ class MusicPlayer {
     }
     
     async initializePlayer() {
-        // Initialize music generators
+        // Prepare music generators but defer AudioContext creation until user gesture
         this.musicGenerators.relaxing = new RelaxingMusicGenerator();
         this.musicGenerators.motivational = new MotivationalMusicGenerator();
         this.musicGenerators.focus = new FocusMusicGenerator();
-        
-        // Initialize all generators
-        await Promise.all([
-            this.musicGenerators.relaxing.initialize(),
-            this.musicGenerators.motivational.initialize(),
-            this.musicGenerators.focus.initialize()
-        ]);
         
         this.loadTrack(this.currentTrack);
     }
@@ -916,11 +909,23 @@ class MusicPlayer {
         }
     }
     
-    play() {
+    async play() {
         const currentTrack = this.playlist[this.currentTrack];
         const generator = this.musicGenerators[currentTrack.type];
         
         if (generator) {
+            try {
+                if (!generator.audioContext) {
+                    await generator.initialize();
+                }
+                if (generator.audioContext && generator.audioContext.state === 'suspended') {
+                    await generator.audioContext.resume();
+                }
+            } catch (e) { /* ignore resume errors */ }
+            
+            if (typeof generator.setVolume === 'function') {
+                generator.setVolume(this.volume);
+            }
             generator.play();
             this.isPlaying = true;
             this.updatePlayButton();
@@ -998,5 +1003,4 @@ class MusicPlayer {
 // Initialize music player when DOM is loaded
 document.addEventListener('DOMContentLoaded', async () => {
     const musicPlayer = new MusicPlayer();
-    await musicPlayer.initializePlayer();
 });
