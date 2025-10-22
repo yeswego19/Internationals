@@ -650,7 +650,9 @@ class MusicPlayer {
         const musicClose = document.getElementById('musicClose');
         
         musicToggle.addEventListener('click', () => {
+            // Переключаем панель и играем музыку
             musicPanel.classList.toggle('show');
+            this.togglePlay();
         });
         
         musicClose.addEventListener('click', () => {
