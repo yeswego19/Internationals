@@ -790,39 +790,13 @@ class MusicPlayer {
         this.currentTrack = 0;
         this.volume = 0.3; // Уменьшили громкость по умолчанию
         
-        // Music generators for different types of music
-        this.musicGenerators = {
-            relaxing: null,
-            motivational: null,
-            focus: null
-        };
-        
-        // Playlist with generated music
+        // Playlist with MP3 file
         this.playlist = [
             {
-                title: 'Расслабляющая музыка',
-                artist: 'Фоновая музыка',
-                type: 'relaxing'
-            },
-            {
-                title: 'Мотивационная музыка',
-                artist: 'Энергичная музыка',
-                type: 'motivational'
-            },
-            {
-                title: 'Концентрация',
-                artist: 'Спокойная музыка',
-                type: 'focus'
-            },
-            {
-                title: 'Вечерняя медитация',
-                artist: 'Успокаивающие звуки',
-                type: 'relaxing'
-            },
-            {
-                title: 'Утренняя энергия',
-                artist: 'Бодрящая музыка',
-                type: 'motivational'
+                title: 'Seven Nation Army',
+                artist: 'Calli Malpas',
+                type: 'mp3',
+                src: 'audio/Calli Malpas - Seven Nation Army.mp3'
             }
         ];
         
@@ -831,17 +805,10 @@ class MusicPlayer {
     }
     
     async initializePlayer() {
-        // Initialize music generators
-        this.musicGenerators.relaxing = new RelaxingMusicGenerator();
-        this.musicGenerators.motivational = new MotivationalMusicGenerator();
-        this.musicGenerators.focus = new FocusMusicGenerator();
-        
-        // Initialize all generators
-        await Promise.all([
-            this.musicGenerators.relaxing.initialize(),
-            this.musicGenerators.motivational.initialize(),
-            this.musicGenerators.focus.initialize()
-        ]);
+        // Load the MP3 file
+        this.audio.src = this.playlist[0].src;
+        this.audio.volume = this.volume;
+        this.audio.loop = true; // Зацикливаем трек
         
         this.loadTrack(this.currentTrack);
     }
@@ -875,12 +842,7 @@ class MusicPlayer {
         const volumeSlider = document.getElementById('volumeSlider');
         volumeSlider.addEventListener('input', (e) => {
             this.volume = e.target.value / 100;
-            // Update volume for all generators
-            Object.values(this.musicGenerators).forEach(generator => {
-                if (generator) {
-                    generator.setVolume(this.volume);
-                }
-            });
+            this.audio.volume = this.volume;
         });
         
         // Playlist items
@@ -892,12 +854,8 @@ class MusicPlayer {
             });
         });
         
-        // Set initial volume for all generators
-        Object.values(this.musicGenerators).forEach(generator => {
-            if (generator) {
-                generator.setVolume(this.volume);
-            }
-        });
+        // Set initial volume
+        this.audio.volume = this.volume;
     }
     
     loadTrack(index) {
@@ -924,74 +882,56 @@ class MusicPlayer {
     }
     
     play() {
-        const currentTrack = this.playlist[this.currentTrack];
-        const generator = this.musicGenerators[currentTrack.type];
-        
-        if (generator) {
+        try {
             // Останавливаем предыдущую музыку если играет
             if (this.isPlaying) {
-                this.stop();
+                this.audio.pause();
+                this.audio.currentTime = 0;
             }
             
-            generator.play();
-            this.isPlaying = true;
-            this.updatePlayButton();
-            this.updateToggleButton();
-        } else {
+            // Загружаем и играем MP3 файл
+            this.audio.load();
+            this.audio.play().then(() => {
+                this.isPlaying = true;
+                this.updatePlayButton();
+                this.updateToggleButton();
+            }).catch(error => {
+                console.error('Error playing audio:', error);
+                showNotification('Failed to play audio. Please try again.', 'error');
+            });
+        } catch (error) {
+            console.error('Error playing audio:', error);
             showNotification('Failed to play audio. Please try again.', 'error');
         }
     }
     
     pause() {
-        const currentTrack = this.playlist[this.currentTrack];
-        const generator = this.musicGenerators[currentTrack.type];
-        
-        if (generator) {
-            generator.stop();
-        }
-        
+        this.audio.pause();
         this.isPlaying = false;
         this.updatePlayButton();
         this.updateToggleButton();
     }
     
     stop() {
-        const currentTrack = this.playlist[this.currentTrack];
-        const generator = this.musicGenerators[currentTrack.type];
-        
-        if (generator) {
-            generator.stop();
-        }
-        
+        this.audio.pause();
+        this.audio.currentTime = 0;
         this.isPlaying = false;
         this.updatePlayButton();
         this.updateToggleButton();
     }
     
     previousTrack() {
-        // Stop current track
+        // Restart current track
         if (this.isPlaying) {
-            const currentTrack = this.playlist[this.currentTrack];
-            const generator = this.musicGenerators[currentTrack.type];
-            if (generator) generator.stop();
+            this.audio.currentTime = 0;
         }
-        
-        this.currentTrack = (this.currentTrack - 1 + this.playlist.length) % this.playlist.length;
-        this.loadTrack(this.currentTrack);
-        if (this.isPlaying) this.play();
     }
     
     nextTrack() {
-        // Stop current track
+        // Restart current track
         if (this.isPlaying) {
-            const currentTrack = this.playlist[this.currentTrack];
-            const generator = this.musicGenerators[currentTrack.type];
-            if (generator) generator.stop();
+            this.audio.currentTime = 0;
         }
-        
-        this.currentTrack = (this.currentTrack + 1) % this.playlist.length;
-        this.loadTrack(this.currentTrack);
-        if (this.isPlaying) this.play();
     }
     
     updatePlayButton() {
@@ -1016,24 +956,7 @@ class MusicPlayer {
         }
     }
     
-    // For generated music, we don't need progress tracking
-    // as it's continuous background music
-    
-    // Auto-advance to next track every 5 minutes
-    startAutoAdvance() {
-        this.autoAdvanceInterval = setInterval(() => {
-            if (this.isPlaying) {
-                this.nextTrack();
-            }
-        }, 5 * 60 * 1000); // 5 minutes
-    }
-    
-    stopAutoAdvance() {
-        if (this.autoAdvanceInterval) {
-            clearInterval(this.autoAdvanceInterval);
-            this.autoAdvanceInterval = null;
-        }
-    }
+    // MP3 file will loop automatically
 }
 
 // Initialize music player when DOM is loaded
@@ -1041,26 +964,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     const musicPlayer = new MusicPlayer();
     await musicPlayer.initializePlayer();
     window.MusicPlayerRef = musicPlayer;
-
-    // Autoplay calm (relaxing) music from repository after first user gesture
-    const calmKey = 'calm_music_started';
-    const forceCalm = new URLSearchParams(window.location.search).get('calm') === '1';
-    if (!localStorage.getItem(calmKey) || forceCalm) {
-        const startCalm = () => {
-            try {
-                musicPlayer.currentTrack = 0; // relaxing
-                musicPlayer.play();
-                localStorage.setItem(calmKey, '1');
-            } catch (_) { /* ignore */ }
-            removeCalmListeners();
-        };
-        const calmEvents = ['click', 'touchstart', 'keydown'];
-        function removeCalmListeners() {
-            calmEvents.forEach(evt => document.removeEventListener(evt, startCalm));
-        }
-        calmEvents.forEach(evt => document.addEventListener(evt, startCalm, { once: true }));
-        if (forceCalm) {
-            setTimeout(startCalm, 200);
-        }
-    }
 });
