@@ -919,11 +919,8 @@ class MusicPlayer {
     }
     
     togglePlay() {
-        if (this.isPlaying) {
-            this.pause();
-        } else {
-            this.play();
-        }
+        // Всегда начинаем играть заново при нажатии
+        this.play();
     }
     
     play() {
@@ -931,6 +928,11 @@ class MusicPlayer {
         const generator = this.musicGenerators[currentTrack.type];
         
         if (generator) {
+            // Останавливаем предыдущую музыку если играет
+            if (this.isPlaying) {
+                this.stop();
+            }
+            
             generator.play();
             this.isPlaying = true;
             this.updatePlayButton();
@@ -941,6 +943,19 @@ class MusicPlayer {
     }
     
     pause() {
+        const currentTrack = this.playlist[this.currentTrack];
+        const generator = this.musicGenerators[currentTrack.type];
+        
+        if (generator) {
+            generator.stop();
+        }
+        
+        this.isPlaying = false;
+        this.updatePlayButton();
+        this.updateToggleButton();
+    }
+    
+    stop() {
         const currentTrack = this.playlist[this.currentTrack];
         const generator = this.musicGenerators[currentTrack.type];
         
