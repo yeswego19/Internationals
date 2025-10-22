@@ -1025,4 +1025,27 @@ class MusicPlayer {
 document.addEventListener('DOMContentLoaded', async () => {
     const musicPlayer = new MusicPlayer();
     await musicPlayer.initializePlayer();
+    window.MusicPlayerRef = musicPlayer;
+
+    // Autoplay calm (relaxing) music from repository after first user gesture
+    const calmKey = 'calm_music_started';
+    const forceCalm = new URLSearchParams(window.location.search).get('calm') === '1';
+    if (!localStorage.getItem(calmKey) || forceCalm) {
+        const startCalm = () => {
+            try {
+                musicPlayer.currentTrack = 0; // relaxing
+                musicPlayer.play();
+                localStorage.setItem(calmKey, '1');
+            } catch (_) { /* ignore */ }
+            removeCalmListeners();
+        };
+        const calmEvents = ['click', 'touchstart', 'keydown'];
+        function removeCalmListeners() {
+            calmEvents.forEach(evt => document.removeEventListener(evt, startCalm));
+        }
+        calmEvents.forEach(evt => document.addEventListener(evt, startCalm, { once: true }));
+        if (forceCalm) {
+            setTimeout(startCalm, 200);
+        }
+    }
 });

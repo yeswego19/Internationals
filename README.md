@@ -79,7 +79,7 @@ npx serve .
 
 - **Адрес**: Шереметьевское шоссе
 - **WeChat**: Сканируйте QR-код на сайте
-- **Email**: info@internationals-translation.com
+- **Email**: mailtomorrow@yandex.com
 
 ## 📄 Лицензия
 
@@ -87,4 +87,4 @@ npx serve .
 
 ---
 
-© 2024 Internationals Translation Service. Все права защищены.
+© 2025 Internationals Translation Service. Все права защищены.
