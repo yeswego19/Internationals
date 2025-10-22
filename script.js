@@ -650,6 +650,7 @@ class MusicPlayer {
         const musicClose = document.getElementById('musicClose');
         
         musicToggle.addEventListener('click', () => {
+            console.log('Music toggle clicked!'); // Отладка
             // Переключаем панель и играем музыку
             musicPanel.classList.toggle('show');
             this.togglePlay();
@@ -714,6 +715,7 @@ class MusicPlayer {
     }
     
     play() {
+        console.log('Play method called'); // Отладка
         try {
             // Останавливаем предыдущую музыку если играет
             if (this.isPlaying) {
@@ -721,9 +723,11 @@ class MusicPlayer {
                 this.audio.currentTime = 0;
             }
             
+            console.log('Loading audio:', this.audio.src); // Отладка
             // Загружаем и играем MP3 файл
             this.audio.load();
             this.audio.play().then(() => {
+                console.log('Audio started playing'); // Отладка
                 this.isPlaying = true;
                 this.updatePlayButton();
                 this.updateToggleButton();
