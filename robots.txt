@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://yeswego19.github.io/Internationals/sitemap.xml
+Sitemap: https://www.internationals.pro/sitemap.xml
 
 # Disallow temporary files
 Disallow: /temp/
