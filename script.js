@@ -13,43 +13,56 @@ const contactForm = document.getElementById('contactForm');
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
+// Audio
+const audio = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
 const volumeSlider = document.getElementById('volumeSlider');
 
-let audio; // создаём при первом клике
+if (audio) audio.volume = 0.4;
 
+let audioInitialized = false;
+
+// Music toggle
+if (musicToggle && audio) {
+  musicToggle.addEventListener('click', async () => {
+    try {
+      if (!audioInitialized) {
+        await audio.play();
+        audioInitialized = true;
+        musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+      } else if (audio.paused) {
+        await audio.play();
+        musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
+      } else {
+        audio.pause();
+        musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+      }
+    } catch (err) {
+      alert('Нажмите еще раз, чтобы разрешить воспроизведение музыки.');
+    }
+  });
+}
+
+// Volume control
+if (volumeSlider && audio) {
+  volumeSlider.addEventListener('input', e => {
+    audio.volume = e.target.value / 100;
+  });
+}
+
+// Scroll to translator
+function scrollToTranslator() {
+  const translatorSection = document.querySelector('.translation-tool');
+  if (translatorSection) translatorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize app
 document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
   updateCharCount();
   setupSmoothScrolling();
   setupScrollHeader();
-  setupMusicToggle();
 });
-
-function setupMusicToggle() {
-  if (!musicToggle) return console.log('Нота не найдена');
-  musicToggle.addEventListener('click', () => {
-    if (!audio) {
-      audio = new Audio('audio/Calli Malpas - Seven Nation Army.mp3');
-      audio.loop = true;
-      audio.volume = 0.4;
-    }
-
-    if (audio.paused) {
-      audio.play().catch(err => console.log('Ошибка воспроизведения:', err));
-      musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-    } else {
-      audio.pause();
-      musicToggle.innerHTML = '<i class="fas fa-music"></i>';
-    }
-  });
-
-  if (volumeSlider) {
-    volumeSlider.addEventListener('input', e => {
-      if (audio) audio.volume = e.target.value / 100;
-    });
-  }
-}
 
 // Event listeners
 function setupEventListeners() {
@@ -64,20 +77,39 @@ function setupEventListeners() {
   hamburger.addEventListener('click', toggleMobileMenu);
 }
 
+// Character counter
+function updateCharCount() {
+  const count = inputText.value.length;
+  charCount.textContent = `${count}/5000`;
+  charCount.style.color = count > 4500 ? '#ef4444' : count > 4000 ? '#f59e0b' : '#9ca3af';
+}
+
+// Input handler
+function handleInputChange() {
+  const text = inputText.value.trim();
+  if (text.length > 0) {
+    translateBtn.classList.add('btn-primary');
+    translateBtn.classList.remove('btn-outline');
+  } else {
+    translateBtn.classList.remove('btn-primary');
+    translateBtn.classList.add('btn-outline');
+  }
+}
+
 // Translation
 function performTranslation() {
   const text = inputText.value.trim();
-  if (!text) return alert('Enter text');
+  if (!text) return alert('Введите текст для перевода');
 
   translateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Translating...';
   translateBtn.disabled = true;
 
   setTimeout(() => {
-    const translated = simulateTranslation(text);
+    const translated = simulateTranslation(text, fromLang.value, toLang.value);
     outputText.innerHTML = `<p>${translated}</p>`;
     translateBtn.innerHTML = '<i class="fas fa-language"></i> Translate';
     translateBtn.disabled = false;
-  }, 500);
+  }, 1500);
 }
 
 function simulateTranslation(text) {
@@ -117,24 +149,6 @@ function toggleMobileMenu() {
   hamburger.classList.toggle('active');
 }
 
-// Helpers
-function updateCharCount() {
-  const count = inputText.value.length;
-  charCount.textContent = `${count}/5000`;
-  charCount.style.color = count > 4500 ? '#ef4444' : count > 4000 ? '#f59e0b' : '#9ca3af';
-}
-
-function handleInputChange() {
-  const text = inputText.value.trim();
-  if (text.length > 0) {
-    translateBtn.classList.add('btn-primary');
-    translateBtn.classList.remove('btn-outline');
-  } else {
-    translateBtn.classList.remove('btn-primary');
-    translateBtn.classList.add('btn-outline');
-  }
-}
-
 function setupSmoothScrolling() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', e => {
@@ -159,7 +173,7 @@ function setupScrollHeader() {
   });
 }
 
-// Simple debounce
+// Debounce
 function debounce(fn, delay) {
   let timeout;
   return (...args) => {
