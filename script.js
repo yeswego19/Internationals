@@ -13,34 +13,43 @@ const contactForm = document.getElementById('contactForm');
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
-// Audio
+// Audio elements
 const audio = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
 const volumeSlider = document.getElementById('volumeSlider');
 
-if (audio) audio.volume = 0.4;
+if (audio) {
+  audio.volume = 0.4;
+  audio.loop = true;
+}
 
-// Music toggle
+// Безопасное воспроизведение
+function playAudio() {
+  audio.load();
+  audio.play().catch(err => console.log('Воспроизведение заблокировано браузером:', err));
+}
+
+// Toggle music
 if (musicToggle && audio) {
   musicToggle.addEventListener('click', () => {
     if (audio.paused) {
-      audio.play();
-      musicToggle.innerHTML = '<i class="fas fa-pause"></i>'; // меняем иконку на паузу
+      playAudio();
+      musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
     } else {
       audio.pause();
-      musicToggle.innerHTML = '<i class="fas fa-music"></i>'; // меняем иконку обратно
+      musicToggle.innerHTML = '<i class="fas fa-music"></i>';
     }
   });
 }
 
-// Volume control
+// Volume slider
 if (volumeSlider && audio) {
   volumeSlider.addEventListener('input', e => {
     audio.volume = e.target.value / 100;
   });
 }
 
-// Scroll to translator
+// Scroll to translator section
 function scrollToTranslator() {
   const translatorSection = document.querySelector('.translation-tool');
   if (translatorSection) translatorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -72,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupScrollHeader();
 });
 
+// Event listeners
 function setupEventListeners() {
   inputText.addEventListener('input', updateCharCount);
   inputText.addEventListener('input', debounce(handleInputChange, 500));
@@ -84,12 +94,14 @@ function setupEventListeners() {
   hamburger.addEventListener('click', toggleMobileMenu);
 }
 
+// Character count
 function updateCharCount() {
   const count = inputText.value.length;
   charCount.textContent = `${count}/5000`;
   charCount.style.color = count > 4500 ? '#ef4444' : count > 4000 ? '#f59e0b' : '#9ca3af';
 }
 
+// Input change
 function handleInputChange() {
   const text = inputText.value.trim();
   if (text.length > 0) {
@@ -101,6 +113,7 @@ function handleInputChange() {
   }
 }
 
+// Translation
 function performTranslation() {
   const text = inputText.value.trim();
   if (!text) return alert('Enter text');
@@ -120,39 +133,46 @@ function simulateTranslation(text) {
   return text.toUpperCase(); // простая заглушка
 }
 
+// Swap languages
 function swapLanguages() {
   const temp = fromLang.value;
   fromLang.value = toLang.value;
   toLang.value = temp;
 }
 
+// Clear text
 function clearText() {
   inputText.value = '';
   outputText.innerHTML = '<p class="placeholder">The translation will appear here</p>';
   updateCharCount();
 }
 
+// Copy translation
 function copyTranslation() {
   navigator.clipboard.writeText(outputText.textContent);
 }
 
+// Speak translation
 function speakTranslation() {
   const utterance = new SpeechSynthesisUtterance(outputText.textContent);
   utterance.lang = toLang.value;
   speechSynthesis.speak(utterance);
 }
 
+// Contact form
 function handleContactForm(e) {
   e.preventDefault();
   alert('Message sent!');
   contactForm.reset();
 }
 
+// Toggle mobile menu
 function toggleMobileMenu() {
   navMenu.classList.toggle('active');
   hamburger.classList.toggle('active');
 }
 
+// Smooth scroll
 function setupSmoothScrolling() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', e => {
@@ -162,6 +182,7 @@ function setupSmoothScrolling() {
   });
 }
 
+// Header scroll effect
 function setupScrollHeader() {
   window.addEventListener('scroll', () => {
     const header = document.querySelector('.header');
@@ -177,7 +198,7 @@ function setupScrollHeader() {
   });
 }
 
-// Простая debounce функция
+// Debounce
 function debounce(fn, delay) {
   let timeout;
   return (...args) => {
