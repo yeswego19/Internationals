@@ -72,11 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setupSmoothScrolling();
   setupScrollHeader();
 
-  // Input events
   inputText.addEventListener('input', updateCharCount);
   inputText.addEventListener('input', debounce(handleInputChange, 500));
 
-  // Buttons
   translateBtn.addEventListener('click', performTranslation);
   swapBtn.addEventListener('click', swapLanguages);
   clearBtn.addEventListener('click', clearText);
