@@ -22,31 +22,39 @@ const audio = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
 const volumeSlider = document.getElementById('volumeSlider');
 
-if (audio) audio.volume = 0.4;
+// ===================
+// Audio setup
+// ===================
+if (audio) audio.volume = 0.4; // стартовая громкость 40%
 
-// ===================
-// Music toggle
-// ===================
-if (musicToggle && audio) {
+function updateMusicIcon() {
+  if (!audio) return;
+  musicToggle.innerHTML = audio.paused ? '<i class="fas fa-music"></i>' : '<i class="fas fa-pause"></i>';
+}
+
+if (musicToggle) {
   musicToggle.addEventListener('click', () => {
+    if (!audio) return;
     if (audio.paused) {
-      audio.play().then(() => {
-        musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
-      }).catch(err => console.log('Playback error:', err));
+      audio.play().then(updateMusicIcon).catch(err => {
+        console.error('Audio play blocked:', err);
+        alert('Для воспроизведения музыки кликните по кнопке ещё раз.');
+      });
     } else {
       audio.pause();
-      musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+      updateMusicIcon();
     }
   });
 }
 
-// ===================
-// Volume control
-// ===================
 if (volumeSlider && audio) {
   volumeSlider.addEventListener('input', e => {
     audio.volume = e.target.value / 100;
   });
+}
+
+if (audio) {
+  audio.addEventListener('ended', updateMusicIcon);
 }
 
 // ===================
@@ -71,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCharCount();
   setupSmoothScrolling();
   setupScrollHeader();
+  updateMusicIcon();
 
   inputText.addEventListener('input', updateCharCount);
   inputText.addEventListener('input', debounce(handleInputChange, 500));
