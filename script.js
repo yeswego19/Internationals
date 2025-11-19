@@ -14,23 +14,31 @@ const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 
 // Audio
-const audio = document.querySelector('audio');
-if (audio) audio.volume = 0.4;
-
-// Music controls
+const audio = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
-const musicPanel = document.getElementById('musicPanel');
-const playBtn = document.getElementById('playBtn');
 const volumeSlider = document.getElementById('volumeSlider');
 
+if (audio) audio.volume = 0.4;
+
+// Music toggle
 if (musicToggle && audio) {
-  musicToggle.onclick = () => {
-    musicPanel.classList.toggle('show');
-    audio.paused ? audio.play() : audio.pause();
-  };
+  musicToggle.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      musicToggle.innerHTML = '<i class="fas fa-pause"></i>'; // меняем иконку на паузу
+    } else {
+      audio.pause();
+      musicToggle.innerHTML = '<i class="fas fa-music"></i>'; // меняем иконку обратно
+    }
+  });
 }
-if (playBtn && audio) playBtn.onclick = () => audio.paused ? audio.play() : audio.pause();
-if (volumeSlider && audio) volumeSlider.oninput = e => audio.volume = e.target.value / 100;
+
+// Volume control
+if (volumeSlider && audio) {
+  volumeSlider.addEventListener('input', e => {
+    audio.volume = e.target.value / 100;
+  });
+}
 
 // Scroll to translator
 function scrollToTranslator() {
@@ -56,31 +64,13 @@ const translations = {
   }
 };
 
-// Language mappings
-const languageMap = {
-  'ru': 'Русский',
-  'en': 'English',
-  'es': 'Español',
-  'fr': 'Français',
-  'de': 'Deutsch',
-  'it': 'Italiano',
-  'pt': 'Português',
-  'ja': '日本語',
-  'ko': '한국어',
-  'zh': '中文'
-};
-
 // Initialize app
-document.addEventListener('DOMContentLoaded', function() {
-  initializeApp();
-});
-
-function initializeApp() {
+document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
-  setupSmoothScrolling();
-  setupAnimations();
   updateCharCount();
-}
+  setupSmoothScrolling();
+  setupScrollHeader();
+});
 
 function setupEventListeners() {
   inputText.addEventListener('input', updateCharCount);
@@ -92,13 +82,6 @@ function setupEventListeners() {
   speakBtn.addEventListener('click', speakTranslation);
   contactForm.addEventListener('submit', handleContactForm);
   hamburger.addEventListener('click', toggleMobileMenu);
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', e => {
-      e.preventDefault();
-      document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-    });
-  });
-  window.addEventListener('scroll', handleScroll);
 }
 
 function updateCharCount() {
@@ -120,22 +103,21 @@ function handleInputChange() {
 
 function performTranslation() {
   const text = inputText.value.trim();
-  if (!text) return showNotification('Enter text', 'error');
+  if (!text) return alert('Enter text');
 
   translateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Translating...';
   translateBtn.disabled = true;
 
   setTimeout(() => {
-    let translated = simulateTranslation(text, fromLang.value, toLang.value);
+    const translated = simulateTranslation(text, fromLang.value, toLang.value);
     outputText.innerHTML = `<p>${translated}</p>`;
     translateBtn.innerHTML = '<i class="fas fa-language"></i> Translate';
     translateBtn.disabled = false;
-    showNotification('Done!', 'success');
   }, 1500);
 }
 
-function simulateTranslation(text, from, to) {
-  return text.toUpperCase(); // заглушка
+function simulateTranslation(text) {
+  return text.toUpperCase(); // простая заглушка
 }
 
 function swapLanguages() {
@@ -160,28 +142,15 @@ function speakTranslation() {
   speechSynthesis.speak(utterance);
 }
 
-async function handleContactForm(e) {
+function handleContactForm(e) {
   e.preventDefault();
-  showNotification('Sent!', 'success');
+  alert('Message sent!');
   contactForm.reset();
 }
 
 function toggleMobileMenu() {
   navMenu.classList.toggle('active');
   hamburger.classList.toggle('active');
-}
-
-function handleScroll() {
-  const header = document.querySelector('.header');
-  if (window.scrollY > 100) {
-    header.style.background = 'rgba(255, 255, 255, 0.9)';
-    header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.08)';
-    header.style.backdropFilter = 'blur(8px)';
-  } else {
-    header.style.background = 'transparent';
-    header.style.boxShadow = 'none';
-    header.style.backdropFilter = 'none';
-  }
 }
 
 function setupSmoothScrolling() {
@@ -193,5 +162,26 @@ function setupSmoothScrolling() {
   });
 }
 
-function setupAnimations() {
-  // оставь как было
+function setupScrollHeader() {
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 100) {
+      header.style.background = 'rgba(255, 255, 255, 0.9)';
+      header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.08)';
+      header.style.backdropFilter = 'blur(8px)';
+    } else {
+      header.style.background = 'transparent';
+      header.style.boxShadow = 'none';
+      header.style.backdropFilter = 'none';
+    }
+  });
+}
+
+// Простая debounce функция
+function debounce(fn, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
+}
