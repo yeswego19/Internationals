@@ -12,28 +12,29 @@ const charCount = document.querySelector('.char-count');
 const contactForm = document.getElementById('contactForm');
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
-
-// Audio elements
-const audio = document.getElementById('bgMusic');
-const musicToggle = document.getElementById('musicToggle');
 const volumeSlider = document.getElementById('volumeSlider');
 
-if (audio) {
-  audio.volume = 0.4;
-  audio.loop = true;
+// Audio
+const musicToggle = document.getElementById('musicToggle');
+let audio; // создаём аудио только при первом клике
+
+if (volumeSlider) {
+  volumeSlider.addEventListener('input', e => {
+    if (audio) audio.volume = e.target.value / 100;
+  });
 }
 
-// Безопасное воспроизведение
-function playAudio() {
-  audio.load();
-  audio.play().catch(err => console.log('Воспроизведение заблокировано браузером:', err));
-}
-
-// Toggle music
-if (musicToggle && audio) {
+// Music toggle
+if (musicToggle) {
   musicToggle.addEventListener('click', () => {
+    if (!audio) {
+      audio = new Audio('audio/Calli Malpas - Seven Nation Army.mp3'); // путь к твоему mp3
+      audio.volume = volumeSlider ? volumeSlider.value / 100 : 0.4;
+      audio.loop = true;
+    }
+
     if (audio.paused) {
-      playAudio();
+      audio.play().catch(err => console.log('Ошибка воспроизведения:', err));
       musicToggle.innerHTML = '<i class="fas fa-pause"></i>';
     } else {
       audio.pause();
@@ -42,14 +43,7 @@ if (musicToggle && audio) {
   });
 }
 
-// Volume slider
-if (volumeSlider && audio) {
-  volumeSlider.addEventListener('input', e => {
-    audio.volume = e.target.value / 100;
-  });
-}
-
-// Scroll to translator section
+// Scroll to translator
 function scrollToTranslator() {
   const translatorSection = document.querySelector('.translation-tool');
   if (translatorSection) translatorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -81,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupScrollHeader();
 });
 
-// Event listeners
 function setupEventListeners() {
   inputText.addEventListener('input', updateCharCount);
   inputText.addEventListener('input', debounce(handleInputChange, 500));
@@ -94,14 +87,12 @@ function setupEventListeners() {
   hamburger.addEventListener('click', toggleMobileMenu);
 }
 
-// Character count
 function updateCharCount() {
   const count = inputText.value.length;
   charCount.textContent = `${count}/5000`;
   charCount.style.color = count > 4500 ? '#ef4444' : count > 4000 ? '#f59e0b' : '#9ca3af';
 }
 
-// Input change
 function handleInputChange() {
   const text = inputText.value.trim();
   if (text.length > 0) {
@@ -113,7 +104,6 @@ function handleInputChange() {
   }
 }
 
-// Translation
 function performTranslation() {
   const text = inputText.value.trim();
   if (!text) return alert('Enter text');
@@ -133,46 +123,39 @@ function simulateTranslation(text) {
   return text.toUpperCase(); // простая заглушка
 }
 
-// Swap languages
 function swapLanguages() {
   const temp = fromLang.value;
   fromLang.value = toLang.value;
   toLang.value = temp;
 }
 
-// Clear text
 function clearText() {
   inputText.value = '';
   outputText.innerHTML = '<p class="placeholder">The translation will appear here</p>';
   updateCharCount();
 }
 
-// Copy translation
 function copyTranslation() {
   navigator.clipboard.writeText(outputText.textContent);
 }
 
-// Speak translation
 function speakTranslation() {
   const utterance = new SpeechSynthesisUtterance(outputText.textContent);
   utterance.lang = toLang.value;
   speechSynthesis.speak(utterance);
 }
 
-// Contact form
 function handleContactForm(e) {
   e.preventDefault();
   alert('Message sent!');
   contactForm.reset();
 }
 
-// Toggle mobile menu
 function toggleMobileMenu() {
   navMenu.classList.toggle('active');
   hamburger.classList.toggle('active');
 }
 
-// Smooth scroll
 function setupSmoothScrolling() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', e => {
@@ -182,7 +165,6 @@ function setupSmoothScrolling() {
   });
 }
 
-// Header scroll effect
 function setupScrollHeader() {
   window.addEventListener('scroll', () => {
     const header = document.querySelector('.header');
@@ -198,7 +180,7 @@ function setupScrollHeader() {
   });
 }
 
-// Debounce
+// Простая debounce функция
 function debounce(fn, delay) {
   let timeout;
   return (...args) => {
