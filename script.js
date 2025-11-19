@@ -12,25 +12,27 @@ const charCount = document.querySelector('.char-count');
 const contactForm = document.getElementById('contactForm');
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
+
+const musicToggle = document.getElementById('musicToggle');
 const volumeSlider = document.getElementById('volumeSlider');
 
-// Audio
-const musicToggle = document.getElementById('musicToggle');
-let audio; // создаём аудио только при первом клике
+let audio; // создаём при первом клике
 
-if (volumeSlider) {
-  volumeSlider.addEventListener('input', e => {
-    if (audio) audio.volume = e.target.value / 100;
-  });
-}
+document.addEventListener('DOMContentLoaded', () => {
+  setupEventListeners();
+  updateCharCount();
+  setupSmoothScrolling();
+  setupScrollHeader();
+  setupMusicToggle();
+});
 
-// Music toggle
-if (musicToggle) {
+function setupMusicToggle() {
+  if (!musicToggle) return console.log('Нота не найдена');
   musicToggle.addEventListener('click', () => {
     if (!audio) {
-      audio = new Audio('audio/Calli Malpas - Seven Nation Army.mp3'); // путь к твоему mp3
-      audio.volume = volumeSlider ? volumeSlider.value / 100 : 0.4;
+      audio = new Audio('audio/Calli Malpas - Seven Nation Army.mp3');
       audio.loop = true;
+      audio.volume = 0.4;
     }
 
     if (audio.paused) {
@@ -41,40 +43,15 @@ if (musicToggle) {
       musicToggle.innerHTML = '<i class="fas fa-music"></i>';
     }
   });
-}
 
-// Scroll to translator
-function scrollToTranslator() {
-  const translatorSection = document.querySelector('.translation-tool');
-  if (translatorSection) translatorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Simulated translations
-const translations = {
-  'ru-en': {
-    'Привет! Как дела?': 'Hello! How are you?',
-    'Спасибо': 'Thank you',
-    'Пожалуйста': 'Please',
-    'Добро пожаловать': 'Welcome',
-    'До свидания': 'Goodbye'
-  },
-  'en-ru': {
-    'Hello! How are you?': 'Привет! Как дела?',
-    'Thank you': 'Спасибо',
-    'Please': 'Пожалуйста',
-    'Welcome': 'Добро пожаловать',
-    'Goodbye': 'До свидания'
+  if (volumeSlider) {
+    volumeSlider.addEventListener('input', e => {
+      if (audio) audio.volume = e.target.value / 100;
+    });
   }
-};
+}
 
-// Initialize app
-document.addEventListener('DOMContentLoaded', () => {
-  setupEventListeners();
-  updateCharCount();
-  setupSmoothScrolling();
-  setupScrollHeader();
-});
-
+// Event listeners
 function setupEventListeners() {
   inputText.addEventListener('input', updateCharCount);
   inputText.addEventListener('input', debounce(handleInputChange, 500));
@@ -87,23 +64,7 @@ function setupEventListeners() {
   hamburger.addEventListener('click', toggleMobileMenu);
 }
 
-function updateCharCount() {
-  const count = inputText.value.length;
-  charCount.textContent = `${count}/5000`;
-  charCount.style.color = count > 4500 ? '#ef4444' : count > 4000 ? '#f59e0b' : '#9ca3af';
-}
-
-function handleInputChange() {
-  const text = inputText.value.trim();
-  if (text.length > 0) {
-    translateBtn.classList.add('btn-primary');
-    translateBtn.classList.remove('btn-outline');
-  } else {
-    translateBtn.classList.remove('btn-primary');
-    translateBtn.classList.add('btn-outline');
-  }
-}
-
+// Translation
 function performTranslation() {
   const text = inputText.value.trim();
   if (!text) return alert('Enter text');
@@ -112,15 +73,15 @@ function performTranslation() {
   translateBtn.disabled = true;
 
   setTimeout(() => {
-    const translated = simulateTranslation(text, fromLang.value, toLang.value);
+    const translated = simulateTranslation(text);
     outputText.innerHTML = `<p>${translated}</p>`;
     translateBtn.innerHTML = '<i class="fas fa-language"></i> Translate';
     translateBtn.disabled = false;
-  }, 1500);
+  }, 500);
 }
 
 function simulateTranslation(text) {
-  return text.toUpperCase(); // простая заглушка
+  return text.toUpperCase(); // заглушка
 }
 
 function swapLanguages() {
@@ -156,6 +117,24 @@ function toggleMobileMenu() {
   hamburger.classList.toggle('active');
 }
 
+// Helpers
+function updateCharCount() {
+  const count = inputText.value.length;
+  charCount.textContent = `${count}/5000`;
+  charCount.style.color = count > 4500 ? '#ef4444' : count > 4000 ? '#f59e0b' : '#9ca3af';
+}
+
+function handleInputChange() {
+  const text = inputText.value.trim();
+  if (text.length > 0) {
+    translateBtn.classList.add('btn-primary');
+    translateBtn.classList.remove('btn-outline');
+  } else {
+    translateBtn.classList.remove('btn-primary');
+    translateBtn.classList.add('btn-outline');
+  }
+}
+
 function setupSmoothScrolling() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', e => {
@@ -180,7 +159,7 @@ function setupScrollHeader() {
   });
 }
 
-// Простая debounce функция
+// Simple debounce
 function debounce(fn, delay) {
   let timeout;
   return (...args) => {
