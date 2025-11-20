@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -13,40 +12,13 @@
 </head>
 <body>
 
-  <!-- Фоновая музыка (Calli) -->
+  <!-- Фоновая музыка -->
   <audio id="bgMusic" src="audio/Calli.mp3" preload="auto" loop></audio>
 
-  <!-- Музыкальный плеер — глобус чистый, без ноты -->
-  <div class="music-player">
-    <div class="music-player-toggle globe" id="musicToggle"></div>
+  <!-- Только глобус — клик = play/pause -->
+  <div class="music-player-toggle globe" id="musicToggle"></div>
 
-    <div class="music-player-panel" id="musicPanel">
-      <div class="music-player-header">
-        <h4>Music</h4>
-        <button class="music-close" id="musicClose">×</button>
-      </div>
-      <div class="music-player-content">
-        <div class="music-info">
-          <div class="music-cover"><i class="fas fa-headphones"></i></div>
-          <div class="music-details">
-            <div class="music-title">Calli</div>
-            <div class="music-artist">Background Track</div>
-          </div>
-        </div>
-        <div class="music-controls">
-          <button class="music-btn music-play" id="playPauseBtn">
-            <i class="fas fa-play"></i>
-          </button>
-        </div>
-        <div class="music-volume">
-          <i class="fas fa-volume-up"></i>
-          <input type="range" id="volumeSlider" min="0" max="100" value="70">
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Header, Hero и всё остальное — без изменений -->
+  <!-- Весь остальной сайт — без изменений -->
   <header class="header" id="header">
     <nav class="nav">
       <div class="nav-container">
@@ -74,9 +46,6 @@
       </div>
     </div>
   </section>
-
-  <!-- Остальные секции (translator, features, contact, footer) — полностью как у тебя было -->
-  <!-- (вставляю без изменений, чтобы не сломать) -->
 
   <section class="translation-tool">
     <div class="container">
@@ -148,7 +117,7 @@
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3>Document translation</h3><p>We support PDF, DOC, TXT and other file formats</p></div>
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-language"></i></div><h3>Websites and video localization</h3><p>Localization for websites, subtitles and voice‑over for video</p></div>
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-concierge-bell"></i></div><h3>Concierge service</h3><p>Personal manager for urgent tasks and turnkey support</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3>Documents delivery from door to door</h3><p>Courier delivery of translated and notarized documents to your address</p></div>
+        <div class="feature-card"><div class="feature-icon  <i class="fas fa-truck"></i></div><h3>Documents delivery from door to door</h3><p>Courier delivery of translated and notarized documents to your address</p></div>
       </div>
     </div>
   </section>
@@ -219,46 +188,17 @@
     </div>
   </footer>
 
-  <!-- Рабочий скрипт для музыки -->
+  <!-- Простейший скрипт: клик по глобусу = play/pause -->
   <script>
     const audio = document.getElementById('bgMusic');
-    const toggle = document.getElementById('musicToggle');
-    const panel = document.getElementById('musicPanel');
-    const playBtn = document.getElementById('playPauseBtn');
-    const closeBtn = document.getElementById('musicClose');
-    const volumeSlider = document.getElementById('volumeSlider');
-    let userInteracted = false;
+    const globe = document.getElementById('musicToggle');
 
-    // Разрешаем воспроизведение после первого клика где угодно
-    document.body.addEventListener('click', () => { userInteracted = true; }, { once: true });
-
-    toggle.addEventListener('click', () => {
-      panel.classList.toggle('show');
-      if (!userInteracted) userInteracted = true;
-      if (audio.paused) audio.play();
-    });
-
-    playBtn.addEventListener('click', () => {
+    globe.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
-        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
       } else {
         audio.pause();
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
       }
-    });
-
-    closeBtn.addEventListener('click', () => {
-      panel.classList.remove('show');
-    });
-
-    volumeSlider.addEventListener('input', (e) => {
-      audio.volume = e.target.value / 100;
-    });
-
-    // Иконка меняется при окончании трека (на паузу)
-    audio.addEventListener('ended', () => {
-      playBtn.innerHTML = '<i class="fas fa-play"></i>';
     });
   </script>
 
