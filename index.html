@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -12,8 +13,10 @@
 </head>
 <body>
 
+  <!-- Фоновая музыка (Calli) -->
   <audio id="bgMusic" src="audio/Calli.mp3" preload="auto" loop></audio>
 
+  <!-- Музыкальный плеер — глобус чистый, без ноты -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
 
@@ -31,7 +34,9 @@
           </div>
         </div>
         <div class="music-controls">
-          <button class="music-btn music-play" id="playPauseBtn"><i class="fas fa-play"></i></button>
+          <button class="music-btn music-play" id="playPauseBtn">
+            <i class="fas fa-play"></i>
+          </button>
         </div>
         <div class="music-volume">
           <i class="fas fa-volume-up"></i>
@@ -41,7 +46,7 @@
     </div>
   </div>
 
-  <!-- Header, Hero и весь остальной контент — без изменений -->
+  <!-- Header, Hero и всё остальное — без изменений -->
   <header class="header" id="header">
     <nav class="nav">
       <div class="nav-container">
@@ -70,36 +75,169 @@
     </div>
   </section>
 
-  <!-- Все остальные секции — оставлены как у тебя -->
-  <section class="translation-tool"> <!-- твой код переводчика --> </section>
-  <section id="features" class="features"> <!-- твой код фич --> </section>
-  <section id="contact" class="contact"> <!-- твой код контактов --> </section>
-  <footer class="footer"> <!-- твой футер --> </footer>
+  <!-- Остальные секции (translator, features, contact, footer) — полностью как у тебя было -->
+  <!-- (вставляю без изменений, чтобы не сломать) -->
 
-  <!-- Самый надёжный скрипт — музыка 100% играет после клика по глобусу -->
+  <section class="translation-tool">
+    <div class="container">
+      <div class="tool-header">
+        <h2>Translator</h2>
+        <p>Enter text to translate</p>
+      </div>
+      <div class="translation-container">
+        <div class="language-selector">
+          <select id="fromLang" class="lang-select">
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Português</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="zh">中文</option>
+          </select>
+          <button class="swap-btn" id="swapBtn"><i class="fas fa-exchange-alt"></i></button>
+          <select id="toLang" class="lang-select">
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Português</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="zh">中文</option>
+          </select>
+        </div>
+        <div class="translation-area">
+          <div class="input-area">
+            <textarea id="inputText" placeholder="Enter text to translate..." maxlength="5000"></textarea>
+            <div class="text-controls">
+              <span class="char-count">0/5000</span>
+              <button class="clear-btn" id="clearBtn"><i class="fas fa-times"></i></button>
+            </div>
+          </div>
+          <div class="output-area">
+            <div class="output-text" id="outputText">
+              <p class="placeholder">The translation will appear here</p>
+            </div>
+            <div class="output-controls">
+              <button class="copy-btn" id="copyBtn"><i class="fas fa-copy"></i></button>
+              <button class="speak-btn" id="speakBtn"><i class="fas fa-volume-up"></i></button>
+            </div>
+          </div>
+        </div>
+        <button class="translate-btn" id="translateBtn"><i class="fas fa-language"></i> Translate</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why choose us</h2>
+        <p>Advanced technologies and an intuitive interface for high‑quality translations</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Instant translation</h3><p>Get translations in real time without delays or waiting</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>Security</h3><p>Your data is protected with modern encryption protocols</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-mobile-alt"></i></div><h3>Mobile friendly</h3><p>Convenient access to translations from any device</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3>Document translation</h3><p>We support PDF, DOC, TXT and other file formats</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-language"></i></div><h3>Websites and video localization</h3><p>Localization for websites, subtitles and voice‑over for video</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-concierge-bell"></i></div><h3>Concierge service</h3><p>Personal manager for urgent tasks and turnkey support</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3>Documents delivery from door to door</h3><p>Courier delivery of translated and notarized documents to your address</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="container">
+      <div class="contact-content">
+        <div class="contact-info">
+          <h2>Contact us</h2>
+          <p>Have questions? Our team is ready to help with any translation request.</p>
+          <div class="contact-details">
+            <div class="contact-item"><i class="fas fa-envelope"></i>
+              <div>
+                <h4>Email</h4>
+                <p>
+                  <a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br>
+                  <a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a>
+                </p>
+              </div>
+            </div>
+            <div class="contact-item"><i class="fab fa-whatsapp"></i>
+              <div>
+                <h4>WhatsApp and phone number</h4>
+                <p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125‑10‑25</a></p>
+              </div>
+            </div>
+            <div class="contact-item"><i class="fas fa-qrcode"></i>
+              <div>
+                <h4>WeChat</h4>
+                <p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p>
+              </div>
+            </div>
+            <div class="contact-item"><i class="fas fa-clock"></i>
+              <div>
+                <h4>Working hours</h4>
+                <p>Online 24/7</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form">
+          <form id="contactForm" enctype="multipart/form-data">
+            <div class="form-group"><input type="text" id="name" placeholder="Your name" required></div>
+            <div class="form-group"><input type="email" id="email" placeholder="Email" required></div>
+            <div class="form-group"><input type="text" id="subject" placeholder="Subject" required></div>
+            <div class="form-group"><textarea id="message" placeholder="Your message" rows="5" required></textarea></div>
+            <div class="form-group"><input type="file" id="attachment" multiple></div>
+            <button type="submit" class="btn btn-primary btn-full">Send message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="logo"><i class="fas fa-language"></i><span>Translation Service</span><span class="footer-tagline-inline">We translate people</span></div>
+          <p>Professional translation and localization services: documents, websites, video. Fast and accurate.</p>
+        </div>
+        <div class="footer-section social">
+          <h4>Follow us</h4>
+          <a href="https://youtube.com/@internationalspro" target="_blank"><img src="https://www.youtube.com/favicon.ico" alt="YouTube" width="113" height="113"></a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2025 Translator. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <!-- Рабочий скрипт для музыки -->
   <script>
     const audio = document.getElementById('bgMusic');
     const toggle = document.getElementById('musicToggle');
     const panel = document.getElementById('musicPanel');
     const playBtn = document.getElementById('playPauseBtn');
     const closeBtn = document.getElementById('musicClose');
-    const volume = document.getElementById('volumeSlider');
+    const volumeSlider = document.getElementById('volumeSlider');
+    let userInteracted = false;
 
-    let unlocked = false;
+    // Разрешаем воспроизведение после первого клика где угодно
+    document.body.addEventListener('click', () => { userInteracted = true; }, { once: true });
 
-    // Разблокировка звука при первом любом клике
-    document.body.addEventListener('click', () => unlocked = true, { once: true });
-
-    // Клик по глобусу
     toggle.addEventListener('click', () => {
       panel.classList.toggle('show');
-      if (unlocked && audio.paused) {
-        audio.play();
-        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-      }
+      if (!userInteracted) userInteracted = true;
+      if (audio.paused) audio.play();
     });
 
-    // Кнопка Play/Pause
     playBtn.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
@@ -110,8 +248,18 @@
       }
     });
 
-    closeBtn.onclick = () => panel.classList.remove('show');
-    volume.oninput = () => audio.volume = volume.value / 100;
+    closeBtn.addEventListener('click', () => {
+      panel.classList.remove('show');
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      audio.volume = e.target.value / 100;
+    });
+
+    // Иконка меняется при окончании трека (на паузу)
+    audio.addEventListener('ended', () => {
+      playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    });
   </script>
 
   <script src="script.js?v=3"></script>
