@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -168,20 +167,23 @@
     </div>
   </footer>
 
-  <!-- МУЗЫКА — ИДЕАЛЬНЫЙ ТОГГЛ: ВКЛЮЧАЕТСЯ, ВЫКЛЮЧАЕТСЯ, ВКЛЮЧАЕТСЯ СНОВА -->
+  <!-- МУЗЫКА — ГАРАНТИРОВАННО РАБОТАЕТ -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
+    let canPlay = false;
 
+    function unlockAndPlay() {
+      if (canPlay) return;
+      canPlay = true;
+      audio.src = 'Calli.mp3'; // файл в корне
+      audio.play().catch(() => {});
+    }
+
+    document.body.addEventListener('click', unlockAndPlay, { once: true });
     globe.addEventListener('click', () => {
-      if (!audio.src) {
-        audio.src = 'Calli.mp3';
-      }
-      if (audio.paused) {
-        audio.play().catch(() => {});
-      } else {
-        audio.pause();
-      }
+      unlockAndPlay();
+      audio.paused ? audio.play() : audio.pause();
     });
   </script>
 
