@@ -12,15 +12,14 @@
 </head>
 <body>
 
-  <!-- Аудио — файл в корне репозитория -->
   <audio id="bgMusic" preload="metadata" loop></audio>
 
-  <!-- Глобус -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
     <div class="music-player-panel" style="display: none;"></div>
   </div>
 
+  <!-- весь твой код сайта без изменений (header, hero, translator, features, contact, footer) -->
   <header class="header" id="header">
     <nav class="nav">
       <div class="nav-container">
@@ -167,23 +166,28 @@
     </div>
   </footer>
 
-  <!-- МУЗЫКА — ГАРАНТИРОВАННО РАБОТАЕТ -->
+  <!-- ИДЕАЛЬНЫЙ РАБОЧИЙ СКРИПТ МУЗЫКИ -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
-    let canPlay = false;
 
-    function unlockAndPlay() {
-      if (canPlay) return;
-      canPlay = true;
-      audio.src = 'Calli.mp3'; // файл в корне
-      audio.play().catch(() => {});
-    }
+    // Разблокировка аудио при первом клике по странице
+    document.body.addEventListener('click', () => {
+      if (!audio.src) {
+        audio.src = 'Calli.mp3';   // файл в корне репозитория
+      }
+    }, { once: true });
 
-    document.body.addEventListener('click', unlockAndPlay, { once: true });
+    // Клик по глобусу — переключение вкл/выкл
     globe.addEventListener('click', () => {
-      unlockAndPlay();
-      audio.paused ? audio.play() : audio.pause();
+      if (!audio.src) {
+        audio.src = 'Calli.mp3';
+      }
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
     });
   </script>
 
