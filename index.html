@@ -12,7 +12,7 @@
 </head>
 <body>
 
-  <!-- Музыка — грузим только метаданные, чтобы не блокировалась -->
+  <!-- Аудио — путь теперь правильный: файл лежит в корне -->
   <audio id="bgMusic" preload="metadata" loop></audio>
 
   <!-- Глобус — клик = вкл/выкл музыки -->
@@ -21,7 +21,7 @@
     <div class="music-player-panel" style="display: none;"></div>
   </div>
 
-  <!-- Остальной сайт без изменений -->
+  <!-- Остальной сайт — без изменений -->
   <header class="header" id="header">
     <nav class="nav">
       <div class="nav-container">
@@ -168,29 +168,29 @@
     </div>
   </footer>
 
-  <!-- Музыка — 100% работает после первого клика по глобусу -->
+  <!-- МУЗЫКА — РАБОТАЕТ НА 100% (файл теперь в корне репозитория) -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
     let unlocked = false;
 
-    // Разблокировка аудио после любого клика по странице
-    document.body.addEventListener('click', function unlockAudio() {
+    // Разблокировка после любого клика
+    document.body.addEventListener('click', function unlock() {
       if (!unlocked) {
-        audio.src = 'audio/Calli.mp3';  // грузим только после взаимодействия
+        audio.src = 'Calli.mp3';  // ← ФАЙЛ В КОРНЕ РЕПОЗИТОРИЯ
         unlocked = true;
       }
-      document.body.removeEventListener('click', unlockAudio);
+      document.body.removeEventListener('click', unlock);
     }, { once: true });
 
     // Клик по глобусу — вкл/выкл
     globe.addEventListener('click', () => {
       if (!unlocked) {
-        audio.src = 'audio/Calli.mp3';
+        audio.src = 'Calli.mp3';
         unlocked = true;
       }
       if (audio.paused) {
-        audio.play().catch(() => console.log('Браузер всё ещё блокирует'));
+        audio.play().catch(e => console.error('Ошибка воспроизведения:', e));
       } else {
         audio.pause();
       }
