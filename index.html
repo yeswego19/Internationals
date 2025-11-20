@@ -19,7 +19,7 @@
     <div class="music-player-panel" style="display: none;"></div>
   </div>
 
-  <!-- Весь твой контент остаётся без изменений -->
+  <!-- ВСЁ ОСТАЛЬНОЕ — БЕЗ ИЗМЕНЕНИЙ -->
   <header class="header" id="header">
     <nav class="nav">
       <div class="nav-container">
@@ -166,25 +166,17 @@
     </div>
   </footer>
 
-  <!-- ЭТОТ СКРИПТ РАБОТАЕТ ВЕЗДЕ И ВСЕГДА -->
+  <!-- ОДИН КЛИК ПО ГЛОБУСУ — ВСЁ -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
 
-    // Один любой клик по странице — разблокирует звук (требование всех современных браузеров)
-    document.body.addEventListener('click', () => {
+    globe.addEventListener('click', () => {
       if (!audio.src) {
         audio.src = 'Calli.mp3';
       }
-    }, { once: true });
-
-    // Клик по глобусу — включаем/выключаем
-    globe.addEventListener('click', (e) => {
-      e.stopPropagation();  // чтобы не срабатывал разблокировщик повторно
-      if (!audio.src) audio.src = 'Calli.mp3';
-
       if (audio.paused) {
-        audio.play().catch(() => {});
+        audio.play().catch(() => console.log('Браузер заблокировал воспроизведение'));
       } else {
         audio.pause();
       }
