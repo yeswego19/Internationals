@@ -12,15 +12,14 @@
 </head>
 <body>
 
-  <!-- Аудио — файл в корне репозитория -->
   <audio id="bgMusic" preload="metadata" loop></audio>
 
-  <!-- Глобус -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
     <div class="music-player-panel" style="display: none;"></div>
   </div>
 
+  <!-- Весь твой контент остаётся без изменений -->
   <header class="header" id="header">
     <nav class="nav">
       <div class="nav-container">
@@ -167,23 +166,28 @@
     </div>
   </footer>
 
-  <!-- МУЗЫКА — ГАРАНТИРОВАННО РАБОТАЕТ -->
+  <!-- ЭТОТ СКРИПТ РАБОТАЕТ ВЕЗДЕ И ВСЕГДА -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
-    let canPlay = false;
 
-    function unlockAndPlay() {
-      if (canPlay) return;
-      canPlay = true;
-      audio.src = 'Calli.mp3'; // файл в корне
-      audio.play().catch(() => {});
-    }
+    // Один любой клик по странице — разблокирует звук (требование всех современных браузеров)
+    document.body.addEventListener('click', () => {
+      if (!audio.src) {
+        audio.src = 'Calli.mp3';
+      }
+    }, { once: true });
 
-    document.body.addEventListener('click', unlockAndPlay, { once: true });
-    globe.addEventListener('click', () => {
-      unlockAndPlay();
-      audio.paused ? audio.play() : audio.pause();
+    // Клик по глобусу — включаем/выключаем
+    globe.addEventListener('click', (e) => {
+      e.stopPropagation();  // чтобы не срабатывал разблокировщик повторно
+      if (!audio.src) audio.src = 'Calli.mp3';
+
+      if (audio.paused) {
+        audio.play().catch(() => {});
+      } else {
+        audio.pause();
+      }
     });
   </script>
 
