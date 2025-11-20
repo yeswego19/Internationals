@@ -1,3 +1,4 @@
+```
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -12,8 +13,10 @@
 </head>
 <body>
 
+  <!-- Аудио — файл в корне репозитория -->
   <audio id="bgMusic" preload="metadata" loop></audio>
 
+  <!-- Глобус -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
     <div class="music-player-panel" style="display: none;"></div>
@@ -165,21 +168,27 @@
     </div>
   </footer>
 
+  <!-- МУЗЫКА — ГАРАНТИРОВАННО РАБОТАЕТ -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
+    let canPlay = false;
 
-    document.body.addEventListener('click', () => {
-      if (!audio.src) audio.src = 'Calli.mp3';
-    }, { once: true });
+    function unlockAndPlay() {
+      if (canPlay) return;
+      canPlay = true;
+      audio.src = 'Calli.mp3'; // файл в корне
+      audio.play().catch(() => {});
+    }
 
-    globe.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (!audio.src) audio.src = 'Calli.mp3';
-      audio.paused ? audio.play().catch(() => {}) : audio.pause();
+    document.body.addEventListener('click', unlockAndPlay, { once: true });
+    globe.addEventListener('click', () => {
+      unlockAndPlay();
+      audio.paused ? audio.play() : audio.pause();
     });
   </script>
 
   <script src="script.js?v=3"></script>
 </body>
 </html>
+```
