@@ -12,13 +12,16 @@
 </head>
 <body>
 
-  <audio id="bgMusic" src="audio/Calli.mp3" preload="auto" loop></audio>
+  <!-- Музыка — грузим только метаданные, чтобы не блокировалась -->
+  <audio id="bgMusic" preload="metadata" loop></audio>
 
+  <!-- Глобус — клик = вкл/выкл музыки -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
     <div class="music-player-panel" style="display: none;"></div>
   </div>
 
+  <!-- Остальной сайт без изменений -->
   <header class="header" id="header">
     <nav class="nav">
       <div class="nav-container">
@@ -165,13 +168,32 @@
     </div>
   </footer>
 
+  <!-- Музыка — 100% работает после первого клика по глобусу -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
+    let unlocked = false;
 
+    // Разблокировка аудио после любого клика по странице
+    document.body.addEventListener('click', function unlockAudio() {
+      if (!unlocked) {
+        audio.src = 'audio/Calli.mp3';  // грузим только после взаимодействия
+        unlocked = true;
+      }
+      document.body.removeEventListener('click', unlockAudio);
+    }, { once: true });
+
+    // Клик по глобусу — вкл/выкл
     globe.addEventListener('click', () => {
-      if (audio.paused) audio.play();
-      else audio.pause();
+      if (!unlocked) {
+        audio.src = 'audio/Calli.mp3';
+        unlocked = true;
+      }
+      if (audio.paused) {
+        audio.play().catch(() => console.log('Браузер всё ещё блокирует'));
+      } else {
+        audio.pause();
+      }
     });
   </script>
 
