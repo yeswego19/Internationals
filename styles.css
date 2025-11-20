@@ -198,7 +198,7 @@ p {
 /* Hero Section */
 .hero {
     padding: 80px 0 80px;
-    background: linear-gradient(135deg, rgba(47, 85, 151, 0.35) 0%, rgba(31, 63, 131, 0.35) 100%), url('assets/background.jpg');
+    background:לה linear-gradient(135deg, rgba(47, 85, 151, 0.35) 0%, rgba(31, 63, 131, 0.35) 100%), url('assets/background.jpg');
     background-position: center top;
     background-repeat: no-repeat;
     background-size: cover;
@@ -600,8 +600,8 @@ p {
 }
 
 .music-player-toggle {
-    width: 50px;
-    height: 50px;
+    width: 75px;
+    height: 75px;
     border-radius: 50%;
     cursor: pointer;
     box-shadow: var(--shadow-lg);
@@ -612,10 +612,10 @@ p {
     transform: scale(1.1);
 }
 
-/* ГЛОБУС — ВОТ ОН */
+/* ГЛОБУС — 75×75 px (в полтора раза больше) */
 .globe {
-    width: 50px;
-    height: 50px;
+    width: 75px;
+    height: 75px;
     background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/200px-The_Blue_Marble_%28remastered%29.jpg') center/cover no-repeat;
     border-radius: 50%;
     animation: spin 12s infinite linear;
@@ -627,10 +627,10 @@ p {
     to { transform: rotate(360deg); }
 }
 
-/* Остальные стили плеера (оставил без изменений) */
+/* Остальные стили плеера */
 .music-player-panel {
     position: absolute;
-    top: 60px;
+    top: 85px;
     right: 0;
     width: 300px;
     background: var(--bg-primary);
