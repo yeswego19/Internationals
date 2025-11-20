@@ -167,23 +167,21 @@
     </div>
   </footer>
 
-  <!-- МУЗЫКА — ГАРАНТИРОВАННО РАБОТАЕТ -->
+  <!-- ФИНАЛЬНЫЙ РАБОЧИЙ СКРИПТ МУЗЫКИ — ВКЛ/ВЫКЛ БЕЗ ГЛЮКОВ -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
-    let canPlay = false;
 
-    function unlockAndPlay() {
-      if (canPlay) return;
-      canPlay = true;
-      audio.src = 'Calli.mp3'; // файл в корне
-      audio.play().catch(() => {});
-    }
+    // Разблокировка при первом клике по странице
+    document.body.addEventListener('click', () => {
+      if (!audio.src) audio.src = 'Calli.mp3';
+    }, { once: true });
 
-    document.body.addEventListener('click', unlockAndPlay, { once: true });
-    globe.addEventListener('click', () => {
-      unlockAndPlay();
-      audio.paused ? audio.play() : audio.pause();
+    // Тоггл по глобусу
+    globe.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!audio.src) audio.src = 'Calli.mp3';
+      audio.paused ? audio.play().catch(() => {}) : audio.pause();
     });
   </script>
 
