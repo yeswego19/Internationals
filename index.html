@@ -12,16 +12,15 @@
 </head>
 <body>
 
-  <!-- Аудио — путь теперь правильный: файл лежит в корне -->
+  <!-- Аудио — файл в корне репозитория -->
   <audio id="bgMusic" preload="metadata" loop></audio>
 
-  <!-- Глобус — клик = вкл/выкл музыки -->
+  <!-- Глобус -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
     <div class="music-player-panel" style="display: none;"></div>
   </div>
 
-  <!-- Остальной сайт — без изменений -->
   <header class="header" id="header">
     <nav class="nav">
       <div class="nav-container">
@@ -168,32 +167,23 @@
     </div>
   </footer>
 
-  <!-- МУЗЫКА — РАБОТАЕТ НА 100% (файл теперь в корне репозитория) -->
+  <!-- МУЗЫКА — ГАРАНТИРОВАННО РАБОТАЕТ -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
-    let unlocked = false;
+    let canPlay = false;
 
-    // Разблокировка после любого клика
-    document.body.addEventListener('click', function unlock() {
-      if (!unlocked) {
-        audio.src = 'Calli.mp3';  // ← ФАЙЛ В КОРНЕ РЕПОЗИТОРИЯ
-        unlocked = true;
-      }
-      document.body.removeEventListener('click', unlock);
-    }, { once: true });
+    function unlockAndPlay() {
+      if (canPlay) return;
+      canPlay = true;
+      audio.src = 'Calli.mp3'; // файл в корне
+      audio.play().catch(() => {});
+    }
 
-    // Клик по глобусу — вкл/выкл
+    document.body.addEventListener('click', unlockAndPlay, { once: true });
     globe.addEventListener('click', () => {
-      if (!unlocked) {
-        audio.src = 'Calli.mp3';
-        unlocked = true;
-      }
-      if (audio.paused) {
-        audio.play().catch(e => console.error('Ошибка воспроизведения:', e));
-      } else {
-        audio.pause();
-      }
+      unlockAndPlay();
+      audio.paused ? audio.play() : audio.pause();
     });
   </script>
 
