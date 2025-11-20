@@ -13,13 +13,40 @@
 </head>
 <body>
 
+  <!-- Фоновая музыка (Calli) -->
   <audio id="bgMusic" src="audio/Calli.mp3" preload="auto" loop></audio>
 
+  <!-- Музыкальный плеер — глобус чистый, без ноты -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
-    <div class="music-player-panel" style="display: none;"></div>
+
+    <div class="music-player-panel" id="musicPanel">
+      <div class="music-player-header">
+        <h4>Music</h4>
+        <button class="music-close" id="musicClose">×</button>
+      </div>
+      <div class="music-player-content">
+        <div class="music-info">
+          <div class="music-cover"><i class="fas fa-headphones"></i></div>
+          <div class="music-details">
+            <div class="music-title">Calli</div>
+            <div class="music-artist">Background Track</div>
+          </div>
+        </div>
+        <div class="music-controls">
+          <button class="music-btn music-play" id="playPauseBtn">
+            <i class="fas fa-play"></i>
+          </button>
+        </div>
+        <div class="music-volume">
+          <i class="fas fa-volume-up"></i>
+          <input type="range" id="volumeSlider" min="0" max="100" value="70">
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- Header, Hero и всё остальное — без изменений -->
   <header class="header" id="header">
     <nav class="nav">
       <div class="nav-container">
@@ -47,6 +74,9 @@
       </div>
     </div>
   </section>
+
+  <!-- Остальные секции (translator, features, contact, footer) — полностью как у тебя было -->
+  <!-- (вставляю без изменений, чтобы не сломать) -->
 
   <section class="translation-tool">
     <div class="container">
@@ -130,10 +160,33 @@
           <h2>Contact us</h2>
           <p>Have questions? Our team is ready to help with any translation request.</p>
           <div class="contact-details">
-            <div class="contact-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
-            <div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4>WhatsApp and phone number</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125‑10‑25</a></p></div></div>
-            <div class="contact-item"><i class="fas fa-qrcode"></i><div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
-            <div class="contact-item"><i class="fas fa-clock"></i><div><h4>Working hours</h4><p>Online 24/7</p></div></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i>
+              <div>
+                <h4>Email</h4>
+                <p>
+                  <a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br>
+                  <a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a>
+                </p>
+              </div>
+            </div>
+            <div class="contact-item"><i class="fab fa-whatsapp"></i>
+              <div>
+                <h4>WhatsApp and phone number</h4>
+                <p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125‑10‑25</a></p>
+              </div>
+            </div>
+            <div class="contact-item"><i class="fas fa-qrcode"></i>
+              <div>
+                <h4>WeChat</h4>
+                <p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p>
+              </div>
+            </div>
+            <div class="contact-item"><i class="fas fa-clock"></i>
+              <div>
+                <h4>Working hours</h4>
+                <p>Online 24/7</p>
+              </div>
+            </div>
           </div>
         </div>
         <div class="contact-form">
@@ -162,17 +215,50 @@
           <a href="https://youtube.com/@internationalspro" target="_blank"><img src="https://www.youtube.com/favicon.ico" alt="YouTube" width="113" height="113"></a>
         </div>
       </div>
-      <div class="footer-bottom"><p>© 2025</p></div>
+      <div class="footer-bottom"><p>&copy; 2025 </p></div>
     </div>
   </footer>
 
+  <!-- Рабочий скрипт для музыки -->
   <script>
     const audio = document.getElementById('bgMusic');
-    const globe = document.getElementById('musicToggle');
+    const toggle = document.getElementById('musicToggle');
+    const panel = document.getElementById('musicPanel');
+    const playBtn = document.getElementById('playPauseBtn');
+    const closeBtn = document.getElementById('musicClose');
+    const volumeSlider = document.getElementById('volumeSlider');
+    let userInteracted = false;
 
-    globe.addEventListener('click', () => {
+    // Разрешаем воспроизведение после первого клика где угодно
+    document.body.addEventListener('click', () => { userInteracted = true; }, { once: true });
+
+    toggle.addEventListener('click', () => {
+      panel.classList.toggle('show');
+      if (!userInteracted) userInteracted = true;
       if (audio.paused) audio.play();
-      else audio.pause();
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      } else {
+        audio.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+      }
+    });
+
+    closeBtn.addEventListener('click', () => {
+      panel.classList.remove('show');
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      audio.volume = e.target.value / 100;
+    });
+
+    // Иконка меняется при окончании трека (на паузу)
+    audio.addEventListener('ended', () => {
+      playBtn.innerHTML = '<i class="fas fa-play"></i>';
     });
   </script>
 
