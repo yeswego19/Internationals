@@ -6,46 +6,46 @@
   <title>Internationals Translation Service</title>
   <meta name="description" content="Professional translations of documents, notarization, apostille, Sheremetyevo, translation in Moscow, interpretation, remote interpretation, russian translation, translation english">
   <meta name="keywords" content="перевод документов, нотариальный перевод, апостиль, переводы Москва, Шереметьевское шоссе, аэропорт, международные переводы">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- Audio -->
+  <!-- Фоновая музыка (Calli) -->
   <audio id="bgMusic" src="audio/Calli.mp3" preload="auto" loop></audio>
 
-  <!-- Music Player -->
-  <div class="music-player" id="musicPlayer">
+  <!-- Музыкальный плеер — глобус чистый, без ноты -->
+  <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
+
     <div class="music-player-panel" id="musicPanel">
       <div class="music-player-header">
         <h4>Music</h4>
-        <button class="music-close" id="musicClose"><i class="fas fa-times"></i></button>
+        <button class="music-close" id="musicClose">×</button>
       </div>
       <div class="music-player-content">
         <div class="music-info">
           <div class="music-cover"><i class="fas fa-headphones"></i></div>
           <div class="music-details">
-            <div class="music-title" id="musicTitle">Calli</div>
-            <div class="music-artist" id="musicArtist">MP3 Track</div>
+            <div class="music-title">Calli</div>
+            <div class="music-artist">Background Track</div>
           </div>
         </div>
         <div class="music-controls">
-          <button class="music-btn" id="prevBtn"><i class="fas fa-step-backward"></i></button>
-          <button class="music-btn music-play" id="playBtn"><i class="fas fa-play"></i></button>
-          <button class="music-btn" id="nextBtn"><i class="fas fa-step-forward"></i></button>
+          <button class="music-btn music-play" id="playPauseBtn">
+            <i class="fas fa-play"></i>
+          </button>
         </div>
-        <div class="music-info-text"><p>Calli - MP3 Track</p></div>
         <div class="music-volume">
           <i class="fas fa-volume-up"></i>
-          <input type="range" id="volumeSlider" min="0" max="100" value="50">
+          <input type="range" id="volumeSlider" min="0" max="100" value="70">
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Header -->
+  <!-- Header, Hero и всё остальное — без изменений -->
   <header class="header" id="header">
     <nav class="nav">
       <div class="nav-container">
@@ -61,7 +61,6 @@
     </nav>
   </header>
 
-  <!-- Hero Section -->
   <section id="home" class="hero">
     <div class="hero-container">
       <div class="hero-content">
@@ -75,7 +74,9 @@
     </div>
   </section>
 
-  <!-- Translation Tool -->
+  <!-- Остальные секции (translator, features, contact, footer) — полностью как у тебя было -->
+  <!-- (вставляю без изменений, чтобы не сломать) -->
+
   <section class="translation-tool">
     <div class="container">
       <div class="tool-header">
@@ -133,7 +134,6 @@
     </div>
   </section>
 
-  <!-- Features Section -->
   <section id="features" class="features">
     <div class="container">
       <div class="section-header">
@@ -152,7 +152,6 @@
     </div>
   </section>
 
-  <!-- Contact Section -->
   <section id="contact" class="contact">
     <div class="container">
       <div class="contact-content">
@@ -203,7 +202,6 @@
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
@@ -220,22 +218,49 @@
     </div>
   </footer>
 
-  <!-- Script -->
-  <script src="script.js?v=2"></script>
+  <!-- Рабочий скрипт для музыки -->
   <script>
-    // Авто-старт музыки после первого взаимодействия
     const audio = document.getElementById('bgMusic');
-    const startMusic = () => {
+    const toggle = document.getElementById('musicToggle');
+    const panel = document.getElementById('musicPanel');
+    const playBtn = document.getElementById('playPauseBtn');
+    const closeBtn = document.getElementById('musicClose');
+    const volumeSlider = document.getElementById('volumeSlider');
+    let userInteracted = false;
+
+    // Разрешаем воспроизведение после первого клика где угодно
+    document.body.addEventListener('click', () => { userInteracted = true; }, { once: true });
+
+    toggle.addEventListener('click', () => {
+      panel.classList.toggle('show');
+      if (!userInteracted) userInteracted = true;
+      if (audio.paused) audio.play();
+    });
+
+    playBtn.addEventListener('click', () => {
       if (audio.paused) {
-        audio.play().catch(err => console.log('Автовоспроизведение заблокировано:', err));
+        audio.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      } else {
+        audio.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
       }
-      document.removeEventListener('click', startMusic);
-      document.removeEventListener('keydown', startMusic);
-      document.removeEventListener('scroll', startMusic);
-    };
-    document.addEventListener('click', startMusic);
-    document.addEventListener('keydown', startMusic);
-    document.addEventListener('scroll', startMusic);
+    });
+
+    closeBtn.addEventListener('click', () => {
+      panel.classList.remove('show');
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      audio.volume = e.target.value / 100;
+    });
+
+    // Иконка меняется при окончании трека (на паузу)
+    audio.addEventListener('ended', () => {
+      playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    });
   </script>
+
+  <script src="script.js?v=3"></script>
 </body>
 </html>
