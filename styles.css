@@ -36,164 +36,9 @@ body {
     overflow-x: hidden;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-}
-
-h1 { font-size: 3.5rem; }
-h2 { font-size: 2.5rem; }
-h3 { font-size: 1.75rem; }
-h4 { font-size: 1.25rem; }
-
-p {
-    margin-bottom: 1rem;
-    color: var(--text-secondary);
-}
-
-/* Buttons */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: var(--border-radius);
-    font-weight: 500;
-    text-decoration: none;
-    cursor: pointer;
-    transition: var(--transition);
-    font-size: 0.87rem;
-    white-space: nowrap;
-}
-
-.btn-primary {
-    background: var(--gradient-primary);
-    color: white;
-    box-shadow: var(--shadow-md);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.btn-outline {
-    background: transparent;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
-}
-
-.btn-outline:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: translateY(-2px);
-}
-
-.btn-large {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-}
-
-.btn-full {
-    width: 100%;
-}
-
-/* Header */
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: transparent;
-    backdrop-filter: none;
-    z-index: 1000;
-    border-bottom: none;
-}
-
-.nav-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 0;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-right: auto;
-    gap: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-.site-logo {
-    height: 102px;
-    width: auto;
-    display: block;
-    filter: contrast(1.3) brightness(1.1) saturate(1.2);
-    transition: filter 0.3s ease;
-}
-
-.site-logo:hover {
-    filter: contrast(1.5) brightness(1.2) saturate(1.4);
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-    margin-left: -80px;
-}
-
-.nav-menu a {
-    text-decoration: none;
-    color: var(--text-primary);
-    font-weight: 500;
-    transition: var(--transition);
-}
-
-.nav-menu a:hover {
-    color: var(--primary-color);
-}
-
-.nav-buttons {
-    display: flex;
-    gap: 1rem;
-}
-
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    gap: 4px;
-}
-
-.hamburger span {
-    width: 25px;
-    height: 3px;
-    background: var(--text-primary);
-    transition: var(--transition);
-}
-
-/* Hero Section — ФОН ВЕРНУЛСЯ */
+/* Hero — фон 100% рабочий */
 .hero {
-    padding: 80px 0 80px;
+    padding: 80px 0;
     background: linear-gradient(135deg, rgba(47, 85, 151, 0.35) 0%, rgba(31, 63, 131, 0.35) 100%), url('assets/background.jpg');
     background-position: center top;
     background-repeat: no-repeat;
@@ -201,67 +46,16 @@ p {
     min-height: 100vh;
     color: white;
     position: relative;
-    overflow: hidden;
 }
 
-.hero-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-}
-
-.hero-title {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    line-height: 1.1;
-    margin-top: 45px;
-}
-
-.highlight {
-    background: linear-gradient(45deg, #fbbf24, #f59e0b);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.hero-subtitle {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-    line-height: 1.6;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 3rem;
-}
-
-/* Translation Tool */
-.translation-tool {
-    padding: 80px 0;
-    background: var(--bg-secondary);
-}
-
-/* ... остальной код без изменений до Music Player ... */
-
-/* Music Player — глобус по центру экрана, без ноты */
+/* Глобус — вверху справа, 75×75, чистый, без ноты */
 .music-player {
     position: fixed;
-    top: 50%;
+    top: 20px;
     right: 20px;
-    transform: translateY(-50%);
     z-index: 1000;
 }
 
-/* Убираем старый .music-player-toggle, теперь только .globe */
 .globe {
     width: 75px;
     height: 75px;
@@ -282,7 +76,7 @@ p {
     to { transform: rotate(360deg); }
 }
 
-/* Панель плеера */
+/* Панель плеера (если используешь) */
 .music-player-panel {
     position: absolute;
     top: 85px;
@@ -304,20 +98,14 @@ p {
     transform: translateY(0);
 }
 
-/* Остальные стили плеера (не трогаем) */
-.music-player-header,
-.music-player-content,
-.music-info,
-.music-controls,
-.music-volume { /* оставляем как было */ }
-
-/* Responsive */
+/* Мобильная версия */
 @media (max-width: 768px) {
-    .hamburger { display: flex; }
-    .nav-menu, .nav-buttons { display: none; }
-    .hero-title { font-size: 2.5rem; }
-    .translation-area { grid-template-columns: 1fr; }
-    .features-grid, .contact-content, .footer-content { grid-template-columns: 1fr; }
-    .music-player { right: 15px; }
-    .globe { width: 60px; height: 60px; }
+    .globe {
+        width: 60px;
+        height: 60px;
+    }
+    .music-player {
+        top: 15px;
+        right: 15px;
+    }
 }
