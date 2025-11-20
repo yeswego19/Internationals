@@ -12,10 +12,8 @@
 </head>
 <body>
 
-  <!-- Аудио — файл в корне репозитория -->
   <audio id="bgMusic" preload="metadata" loop></audio>
 
-  <!-- Глобус -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
     <div class="music-player-panel" style="display: none;"></div>
@@ -167,17 +165,14 @@
     </div>
   </footer>
 
-  <!-- ФИНАЛЬНЫЙ РАБОЧИЙ СКРИПТ МУЗЫКИ — ВКЛ/ВЫКЛ БЕЗ ГЛЮКОВ -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
 
-    // Разблокировка при первом клике по странице
     document.body.addEventListener('click', () => {
       if (!audio.src) audio.src = 'Calli.mp3';
     }, { once: true });
 
-    // Тоггл по глобусу
     globe.addEventListener('click', (e) => {
       e.stopPropagation();
       if (!audio.src) audio.src = 'Calli.mp3';
