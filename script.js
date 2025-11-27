@@ -1,172 +1,195 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Internationals Translation Service</title>
-  <meta name="description" content="Professional translations of documents, notarization, apostille, Sheremetyevo, translation in Moscow, interpretation, remote interpretation, russian translation, translation english">
-  <meta name="keywords" content="перевод документов, нотариальный перевод, апостиль, переводы Москва, Шереметьевское шоссе, аэропорт, международные переводы">
-  <link rel="stylesheet" href="styles.css?v=3">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
+// ===================
+// DOM Elements
+// ===================
+const inputText = document.getElementById('inputText');
+const outputText = document.getElementById('outputText');
+const fromLang = document.getElementById('fromLang');
+const toLang = document.getElementById('toLang');
+const translateBtn = document.getElementById('translateBtn');
+const swapBtn = document.getElementById('swapBtn');
+const clearBtn = document.getElementById('clearBtn');
+const copyBtn = document.getElementById('copyBtn');
+const speakBtn = document.getElementById('speakBtn');
+const charCount = document.querySelector('.char-count');
+const contactForm = document.getElementById('contactForm');
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
 
-  <!-- Аудио — файл в корне репозитория -->
-  <audio id="bgMusic" preload="metadata" loop></audio>
+// ===================
+// Audio Elements
+// ===================
+const audio = document.getElementById('bgMusic');
+const musicToggle = document.getElementById('musicToggle');
+const volumeSlider = document.getElementById('volumeSlider');
 
-  <!-- Глобус -->
-  <div class="music-player">
-    <div class="music-player-toggle globe" id="musicToggle"></div>
-    <div class="music-player-panel" style="display: none;"></div>
-  </div>
+// ===================
+// Audio setup
+// ===================
+if (audio) audio.volume = 0.4; // стартовая громкость 40%
 
-  <header class="header" id="header">
-    <nav class="nav">
-      <div class="nav-container">
-        <div class="logo"><img src="assets/logo.png" alt="Internationals" class="site-logo"></div>
-        <ul class="nav-menu">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="nav-buttons"><a class="btn btn-primary" href="#contact">Contact us</a></div>
-        <div class="hamburger"><span></span><span></span><span></span></div>
-      </div>
-    </nav>
-  </header>
+function updateMusicIcon() {
+  if (!audio) return;
+  musicToggle.innerHTML = audio.paused ? '<i class="fas fa-music"></i>' : '<i class="fas fa-pause"></i>';
+}
 
-  <section id="home" class="hero">
-    <div class="hero-container">
-      <div class="hero-content">
-        <h1 class="hero-title">Professional <span class="highlight">online translator</span></h1>
-        <p class="hero-subtitle">Fast and accurate translations in 100+ languages. Translate text, documents and web pages with advanced AI technologies.</p>
-        <div class="hero-buttons">
-          <button class="btn btn-primary btn-large" onclick="scrollToTranslator()">Start translating</button>
-          <button class="btn btn-outline btn-large" onclick="scrollToTranslator()">Try for free</button>
-        </div>
-      </div>
-    </div>
-  </section>
+if (musicToggle) {
+  musicToggle.addEventListener('click', () => {
+    if (!audio) return;
+    if (audio.paused) {
+      audio.play().then(updateMusicIcon).catch(err => {
+        console.error('Audio play blocked:', err);
+        alert('Для воспроизведения музыки кликните по кнопке ещё раз.');
+      });
+    } else {
+      audio.pause();
+      updateMusicIcon();
+    }
+  });
+}
 
-  <section class="translation-tool">
-    <div class="container">
-      <div class="tool-header">
-        <h2>Translator</h2>
-        <p>Enter text to translate</p>
-      </div>
-      <div class="translation-container">
-        <div class="language-selector">
-          <select id="fromLang" class="lang-select">
-            <option value="ru">Русский</option>
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="it">Italiano</option>
-            <option value="pt">Português</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-            <option value="zh">中文</option>
-          </select>
-          <button class="swap-btn" id="swapBtn"><i class="fas fa-exchange-alt"></i></button>
-          <select id="toLang" class="lang-select">
-            <option value="en">English</option>
-            <option value="ru">Русский</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="it">Italiano</option>
-            <option value="pt">Português</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-            <option value="zh">中文</option>
-          </select>
-        </div>
-        <div class="translation-area">
-          <div class="input-area">
-            <textarea id="inputText" placeholder="Enter text to translate..." maxlength="5000"></textarea>
-            <div class="text-controls">
-              <span class="char-count">0/5000</span>
-              <button class="clear-btn" id="clearBtn"><i class="fas fa-times"></i></button>
-            </div>
-          </div>
-          <div class="output-area">
-            <div class="output-text" id="outputText">
-              <p class="placeholder">The translation will appear here</p>
-            </div>
-            <div class="output-controls">
-              <button class="copy-btn" id="copyBtn"><i class="fas fa-copy"></i></button>
-              <button class="speak-btn" id="speakBtn"><i class="fas fa-volume-up"></i></button>
-            </div>
-          </div>
-        </div>
-        <button class="translate-btn" id="translateBtn"><i class="fas fa-language"></i> Translate</button>
-      </div>
-    </div>
-  </section>
+if (volumeSlider && audio) {
+  volumeSlider.addEventListener('input', e => {
+    audio.volume = e.target.value / 100;
+  });
+}
 
-  <section id="features" class="features">
-    <div class="container">
-      <div class="section-header">
-        <h2>Why choose us</h2>
-        <p>Advanced technologies and an intuitive interface for high‑quality translations</p>
-      </div>
-      <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Instant translation</h3><p>Get translations in real time without delays or waiting</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>Security</h3><p>Your data is protected with modern encryption protocols</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-mobile-alt"></i></div><h3>Mobile friendly</h3><p>Convenient access to translations from any device</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3>Document translation</h3><p>We support PDF, DOC, TXT and other file formats</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-language"></i></div><h3>Websites and video localization</h3><p>Localization for websites, subtitles and voice‑over for video</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-concierge-bell"></i></div><h3>Concierge service</h3><p>Personal manager for urgent tasks and turnkey support</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3>Documents delivery from door to door</h3><p>Courier delivery of translated and notarized documents to your address</p></div>
-      </div>
-    </div>
-  </section>
+if (audio) {
+  audio.addEventListener('ended', updateMusicIcon);
+}
 
-  <section id="contact" class="contact">
-    <div class="container">
-      <div class="contact-content">
-        <div class="contact-info">
-          <h2>Contact us</h2>
-          <p>Have questions? Our team is ready to help with any translation request.</p>
-          <div class="contact-details">
-            <div class="contact-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
-            <div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4>WhatsApp and phone number</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125‑10‑25</a></p></div></div>
-            <div class="contact-item"><i class="fas fa-qrcode"></i><div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
-            <div class="contact-item"><i class="fas fa-clock"></i><div><h4>Working hours</h4><p>Online 24/7</p></div></div>
-          </div>
-        </div>
-        <div class="contact-form">
-          <form id="contactForm" enctype="multipart/form-data">
-            <div class="form-group"><input type="text" id="name" placeholder="Your name" required></div>
-            <div class="form-group"><input type="email" id="email" placeholder="Email" required></div>
-            <div class="form-group"><input type="text" id="subject" placeholder="Subject" required></div>
-            <div class="form-group"><textarea id="message" placeholder="Your message" rows="5" required></textarea></div>
-            <div class="form-group"><input type="file" id="attachment" multiple></div>
-            <button type="submit" class="btn btn-primary btn-full">Send message</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
+// ===================
+// Scroll to translator
+// ===================
+function scrollToTranslator() {
+  const translatorSection = document.querySelector('.translation-tool');
+  if (translatorSection) translatorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <div class="logo"><i class="fas fa-language"></i><span>Translation Service</span><span class="footer-tagline-inline">We translate people</span></div>
-          <p>Professional translation and localization services: documents, websites, video. Fast and accurate.</p>
-        </div>
-        <div class="footer-section social">
-          <h4>Follow us</h4>
-          <a href="https://youtube.com/@internationalspro" target="_blank"><img src="https://www.youtube.com/favicon.ico" alt="YouTube" width="113" height="113"></a>
-        </div>
-      </div>
-      <div class="footer-bottom"><p>© 2025</p></div>
-    </div>
-  </footer>
+// ===================
+// Translation simulation
+// ===================
+function simulateTranslation(text) {
+  return text.toUpperCase(); // заглушка
+}
 
-  <script src="script.js?v=3"></script>
-</body>
-</html>
+// ===================
+// Event listeners
+// ===================
+document.addEventListener('DOMContentLoaded', () => {
+  updateCharCount();
+  setupSmoothScrolling();
+  setupScrollHeader();
+  updateMusicIcon();
+
+  inputText.addEventListener('input', updateCharCount);
+  inputText.addEventListener('input', debounce(handleInputChange, 500));
+
+  translateBtn.addEventListener('click', performTranslation);
+  swapBtn.addEventListener('click', swapLanguages);
+  clearBtn.addEventListener('click', clearText);
+  copyBtn.addEventListener('click', copyTranslation);
+  speakBtn.addEventListener('click', speakTranslation);
+  contactForm.addEventListener('submit', handleContactForm);
+  hamburger.addEventListener('click', toggleMobileMenu);
+});
+
+// ===================
+// Functions
+// ===================
+function updateCharCount() {
+  const count = inputText.value.length;
+  charCount.textContent = `${count}/5000`;
+  charCount.style.color = count > 4500 ? '#ef4444' : count > 4000 ? '#f59e0b' : '#9ca3af';
+}
+
+function handleInputChange() {
+  if (inputText.value.trim().length > 0) {
+    translateBtn.classList.add('btn-primary');
+    translateBtn.classList.remove('btn-outline');
+  } else {
+    translateBtn.classList.remove('btn-primary');
+    translateBtn.classList.add('btn-outline');
+  }
+}
+
+function performTranslation() {
+  const text = inputText.value.trim();
+  if (!text) return alert('Enter text');
+
+  translateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Translating...';
+  translateBtn.disabled = true;
+
+  setTimeout(() => {
+    outputText.innerHTML = `<p>${simulateTranslation(text)}</p>`;
+    translateBtn.innerHTML = '<i class="fas fa-language"></i> Translate';
+    translateBtn.disabled = false;
+  }, 1000);
+}
+
+function swapLanguages() {
+  const temp = fromLang.value;
+  fromLang.value = toLang.value;
+  toLang.value = temp;
+}
+
+function clearText() {
+  inputText.value = '';
+  outputText.innerHTML = '<p class="placeholder">The translation will appear here</p>';
+  updateCharCount();
+}
+
+function copyTranslation() {
+  navigator.clipboard.writeText(outputText.textContent);
+}
+
+function speakTranslation() {
+  const utterance = new SpeechSynthesisUtterance(outputText.textContent);
+  utterance.lang = toLang.value;
+  speechSynthesis.speak(utterance);
+}
+
+function handleContactForm(e) {
+  e.preventDefault();
+  alert('Message sent!');
+  contactForm.reset();
+}
+
+function toggleMobileMenu() {
+  navMenu.classList.toggle('active');
+  hamburger.classList.toggle('active');
+}
+
+function setupSmoothScrolling() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+}
+
+function setupScrollHeader() {
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('.header');
+    if (window.scrollY > 100) {
+      header.style.background = 'rgba(255, 255, 255, 0.9)';
+      header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)';
+      header.style.backdropFilter = 'blur(8px)';
+    } else {
+      header.style.background = 'transparent';
+      header.style.boxShadow = 'none';
+      header.style.backdropFilter = 'none';
+    }
+  });
+}
+
+// ===================
+// Debounce helper
+// ===================
+function debounce(fn, delay) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delay);
+  };
+}
