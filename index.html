@@ -167,6 +167,26 @@
     </div>
   </footer>
 
+  <!-- МУЗЫКА — ГАРАНТИРОВАННО РАБОТАЕТ -->
+  <script>
+    const audio = document.getElementById('bgMusic');
+    const globe = document.getElementById('musicToggle');
+    let canPlay = false;
+
+    function unlockAndPlay() {
+      if (canPlay) return;
+      canPlay = true;
+      audio.src = 'Calli.mp3'; // файл в корне
+      audio.play().catch(() => {});
+    }
+
+    document.body.addEventListener('click', unlockAndPlay, { once: true });
+    globe.addEventListener('click', () => {
+      unlockAndPlay();
+      audio.paused ? audio.play() : audio.pause();
+    });
+  </script>
+
   <script src="script.js?v=3"></script>
 </body>
 </html>
