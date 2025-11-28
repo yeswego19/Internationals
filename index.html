@@ -4,21 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Internationals Translation Service</title>
-  <meta name="description" content="Professional translations of documents, notarization, apostille, Sheremetyevo, translation in Moscow, interpretation, remote interpretation, russian translation, translation english">
-  <meta name="keywords" content="перевод документов, нотариальный перевод, апостиль, переводы Москва, Шереметьевское шоссе, аэропорт, международные переводы">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <meta name="description" content="Professional translations of documents, notarization, apostille, Sheremetyevo, translation in Moscow, interpretation, remote interpretation">
+  <meta name="keywords" content="перевод документов, нотариальный перевод, апостиль, переводы Москва, Шереметьевское шоссе">
+  <link rel="stylesheet" href="styles.css?v=5">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-  <!-- Аудио — файл в корне репозитория -->
   <audio id="bgMusic" preload="metadata" loop></audio>
 
-  <!-- Глобус -->
-  <div class="music-player">
-    <div class="music-player-toggle globe" id="musicToggle"></div>
-    <div class="music-player-panel" style="display: none;"></div>
+  <!-- Глобус-переключатель языков -->
+  <div class="language-switcher">
+    <div class="globe-switcher" id="globeSwitcher">
+      <span class="current-lang" id="currentLang">RU</span>
+    </div>
   </div>
 
   <header class="header" id="header">
@@ -26,11 +26,10 @@
       <div class="nav-container">
         <div class="logo"><img src="assets/logo.png" alt="Internationals" class="site-logo"></div>
         <ul class="nav-menu">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#home" data-translate="nav_home">Главная</a></li>
+          <li><a href="#services" data-translate="nav_services">Услуги</a></li>
         </ul>
-        <div class="nav-buttons"><a class="btn btn-primary" href="#contact">Contact us</a></div>
+        <div class="nav-buttons"><a class="btn btn-primary" href="#contact" data-translate="nav_contact">Contact us</a></div>
         <div class="hamburger"><span></span><span></span><span></span></div>
       </div>
     </nav>
@@ -39,88 +38,38 @@
   <section id="home" class="hero">
     <div class="hero-container">
       <div class="hero-content">
-        <h1 class="hero-title">Professional <span class="highlight">online translator</span></h1>
-        <p class="hero-subtitle">Fast and accurate translations in 100+ languages. Translate text, documents and web pages with advanced AI technologies.</p>
-        <div class="hero-buttons">
-          <button class="btn btn-primary btn-large" onclick="scrollToTranslator()">Start translating</button>
-          <button class="btn btn-outline btn-large" onclick="scrollToTranslator()">Try for free</button>
-        </div>
+        <h1 class="hero-title" data-translate="hero_title">Профессиональные <span class="highlight">услуги перевода</span></h1>
+        <p class="hero-subtitle" data-translate="hero_subtitle">Быстрый и точный перевод документов с нотариальным заверением и апостилем. Работаем с более чем 100 языками.</p>
       </div>
     </div>
   </section>
 
-  <section class="translation-tool">
-    <div class="container">
-      <div class="tool-header">
-        <h2>Translator</h2>
-        <p>Enter text to translate</p>
-      </div>
-      <div class="translation-container">
-        <div class="language-selector">
-          <select id="fromLang" class="lang-select">
-            <option value="ru">Русский</option>
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="it">Italiano</option>
-            <option value="pt">Português</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-            <option value="zh">中文</option>
-          </select>
-          <button class="swap-btn" id="swapBtn"><i class="fas fa-exchange-alt"></i></button>
-          <select id="toLang" class="lang-select">
-            <option value="en">English</option>
-            <option value="ru">Русский</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="it">Italiano</option>
-            <option value="pt">Português</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-            <option value="zh">中文</option>
-          </select>
-        </div>
-        <div class="translation-area">
-          <div class="input-area">
-            <textarea id="inputText" placeholder="Enter text to translate..." maxlength="5000"></textarea>
-            <div class="text-controls">
-              <span class="char-count">0/5000</span>
-              <button class="clear-btn" id="clearBtn"><i class="fas fa-times"></i></button>
-            </div>
-          </div>
-          <div class="output-area">
-            <div class="output-text" id="outputText">
-              <p class="placeholder">The translation will appear here</p>
-            </div>
-            <div class="output-controls">
-              <button class="copy-btn" id="copyBtn"><i class="fas fa-copy"></i></button>
-              <button class="speak-btn" id="speakBtn"><i class="fas fa-volume-up"></i></button>
-            </div>
-          </div>
-        </div>
-        <button class="translate-btn" id="translateBtn"><i class="fas fa-language"></i> Translate</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="features" class="features">
+  <section id="services" class="features">
     <div class="container">
       <div class="section-header">
-        <h2>Why choose us</h2>
-        <p>Advanced technologies and an intuitive interface for high‑quality translations</p>
+        <h2 data-translate="services_title">Почему выбирают нас</h2>
+        <p data-translate="services_subtitle">Профессиональные услуги для всех ваших потребностей в переводе</p>
       </div>
       <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Instant translation</h3><p>Get translations in real time without delays or waiting</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>Security</h3><p>Your data is protected with modern encryption protocols</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-mobile-alt"></i></div><h3>Mobile friendly</h3><p>Convenient access to translations from any device</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3>Document translation</h3><p>We support PDF, DOC, TXT and other file formats</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-language"></i></div><h3>Websites and video localization</h3><p>Localization for websites, subtitles and voice‑over for video</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-concierge-bell"></i></div><h3>Concierge service</h3><p>Personal manager for urgent tasks and turnkey support</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3>Documents delivery from door to door</h3><p>Courier delivery of translated and notarized documents to your address</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3 data-translate="service_1_title">Быстрый перевод</h3><p data-translate="service_1_desc">Экспресс-перевод документов за 24 часа</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3 data-translate="service_2_title">Нотариальное заверение</h3><p data-translate="service_2_desc">Официальное заверение переводов</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-mobile-alt"></i></div><h3 data-translate="service_3_title">Апостиль</h3><p data-translate="service_3_desc">Международное признание документов</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3 data-translate="service_4_title">Все типы документов</h3><p data-translate="service_4_desc">Паспорта, сертификаты, контракты и многое другое</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-language"></i></div><h3 data-translate="service_5_title">Локализация сайтов</h3><p data-translate="service_5_desc">Перевод и адаптация веб-сайтов и контента</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-concierge-bell"></i></div><h3 data-translate="service_6_title">Услуга консьержа</h3><p data-translate="service_6_desc">Персональный менеджер для срочных задач</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3 data-translate="service_7_title">Доставка от двери до двери</h3><p data-translate="service_7_desc">Курьерская доставка переведённых документов</p></div>
       </div>
+    </div>
+  </section>
+
+  <!-- Жёлтая полоска с отзывами -->
+  <section class="reviews-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-translate="reviews_title">Отзывы клиентов</h2>
+        <p data-translate="reviews_subtitle">Что говорят о нас наши клиенты</p>
+      </div>
+      <div class="reviews-container" id="reviewsContainer"></div>
     </div>
   </section>
 
@@ -128,23 +77,23 @@
     <div class="container">
       <div class="contact-content">
         <div class="contact-info">
-          <h2>Contact us</h2>
-          <p>Have questions? Our team is ready to help with any translation request.</p>
+          <h2 data-translate="contact_title">Связаться с нами</h2>
+          <p data-translate="contact_subtitle">Есть вопросы? Наша команда готова помочь с любым запросом на перевод.</p>
           <div class="contact-details">
-            <div class="contact-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
-            <div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4>WhatsApp and phone number</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125‑10‑25</a></p></div></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><div><h4 data-translate="contact_email">Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
+            <div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4 data-translate="contact_whatsapp">WhatsApp и телефон</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125-10-25</a></p></div></div>
             <div class="contact-item"><i class="fas fa-qrcode"></i><div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
-            <div class="contact-item"><i class="fas fa-clock"></i><div><h4>Working hours</h4><p>Online 24/7</p></div></div>
+            <div class="contact-item"><i class="fas fa-clock"></i><div><h4 data-translate="contact_hours">Часы работы</h4><p data-translate="contact_hours_text">Онлайн 24/7</p></div></div>
           </div>
         </div>
         <div class="contact-form">
           <form id="contactForm" enctype="multipart/form-data">
-            <div class="form-group"><input type="text" id="name" placeholder="Your name" required></div>
-            <div class="form-group"><input type="email" id="email" placeholder="Email" required></div>
-            <div class="form-group"><input type="text" id="subject" placeholder="Subject" required></div>
-            <div class="form-group"><textarea id="message" placeholder="Your message" rows="5" required></textarea></div>
+            <div class="form-group"><input type="text" id="name" placeholder="Ваше имя" data-translate-placeholder="form_name" required></div>
+            <div class="form-group"><input type="email" id="email" placeholder="Email" data-translate-placeholder="form_email" required></div>
+            <div class="form-group"><input type="text" id="subject" placeholder="Тема" data-translate-placeholder="form_subject" required></div>
+            <div class="form-group"><textarea id="message" rows="5" placeholder="Ваше сообщение" data-translate-placeholder="form_message" required></textarea></div>
             <div class="form-group"><input type="file" id="attachment" multiple></div>
-            <button type="submit" class="btn btn-primary btn-full">Send message</button>
+            <button type="submit" class="btn btn-primary btn-full" data-translate="form_submit">Отправить сообщение</button>
           </form>
         </div>
       </div>
@@ -155,38 +104,24 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <div class="logo"><i class="fas fa-language"></i><span>Translation Service</span><span class="footer-tagline-inline">We translate people</span></div>
-          <p>Professional translation and localization services: documents, websites, video. Fast and accurate.</p>
+          <div class="logo"><i class="fas fa-language"></i><span>Translation Service</span><span class="footer-tagline-inline" data-translate="footer_tagline">Мы переводим людей</span></div>
+          <p data-translate="footer_desc">Профессиональные услуги перевода и локализации: документы, сайты, видео. Быстро и точно.</p>
         </div>
         <div class="footer-section social">
-          <h4>Follow us</h4>
-          <a href="https://youtube.com/@internationalspro" target="_blank"><img src="https://www.youtube.com/favicon.ico" alt="YouTube" width="113" height="113"></a>
+          <h4 data-translate="footer_follow">Следите за нами</h4>
+          <a href="https://youtube.com/@internationalspro" target="_blank"><img src="https://www.youtube.com/favicon.ico" alt="YouTube"></a>
         </div>
       </div>
       <div class="footer-bottom"><p>© 2025</p></div>
     </div>
   </footer>
 
-  <!-- МУЗЫКА — ГАРАНТИРОВАННО РАБОТАЕТ -->
   <script>
     const audio = document.getElementById('bgMusic');
-    const globe = document.getElementById('musicToggle');
     let canPlay = false;
-
-    function unlockAndPlay() {
-      if (canPlay) return;
-      canPlay = true;
-      audio.src = 'Calli.mp3'; // файл в корне
-      audio.play().catch(() => {});
-    }
-
+    function unlockAndPlay() { if (canPlay) return; canPlay = true; audio.src = 'Calli.mp3'; audio.volume = 0.3; audio.play().catch(() => {}); }
     document.body.addEventListener('click', unlockAndPlay, { once: true });
-    globe.addEventListener('click', () => {
-      unlockAndPlay();
-      audio.paused ? audio.play() : audio.pause();
-    });
   </script>
-
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>
