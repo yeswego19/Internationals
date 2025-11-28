@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -7,7 +6,7 @@
   <title>Internationals Translation Service</title>
   <meta name="description" content="Professional translations of documents, notarization, apostille, Sheremetyevo, translation in Moscow, interpretation, remote interpretation, russian translation, translation english">
   <meta name="keywords" content="перевод документов, нотариальный перевод, апостиль, переводы Москва, Шереметьевское шоссе, аэропорт, международные переводы">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=4">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -16,7 +15,7 @@
   <!-- Аудио — файл в корне репозитория -->
   <audio id="bgMusic" preload="metadata" loop></audio>
 
-  <!-- Глобус -->
+  <!-- Глобус-музыка -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
     <div class="music-player-panel" style="display: none;"></div>
@@ -28,8 +27,8 @@
         <div class="logo"><img src="assets/logo.png" alt="Internationals" class="site-logo"></div>
         <ul class="nav-menu">
           <li><a href="#home">Home</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#services">Services</a></li>
+          <!-- Убрал Contact из меню -->
         </ul>
         <div class="nav-buttons"><a class="btn btn-primary" href="#contact">Contact us</a></div>
         <div class="hamburger"><span></span><span></span><span></span></div>
@@ -41,7 +40,7 @@
     <div class="hero-container">
       <div class="hero-content">
         <h1 class="hero-title">Professional <span class="highlight">online translator</span></h1>
-        <p class="hero-subtitle">Fast and accurate translations in 100+ languages. Translate text, documents and web pages with advanced AI technologies.</p>
+        <p class="hero-subtitle">Fast and accurate translations of, documents, video and web pages.</p>
         <div class="hero-buttons">
           <button class="btn btn-primary btn-large" onclick="scrollToTranslator()">Start translating</button>
           <button class="btn btn-outline btn-large" onclick="scrollToTranslator()">Try for free</button>
@@ -107,7 +106,8 @@
     </div>
   </section>
 
-  <section id="features" class="features">
+  <!-- Секция Services вместо Features -->
+  <section id="services" class="features">
     <div class="container">
       <div class="section-header">
         <h2>Why choose us</h2>
@@ -168,7 +168,7 @@
     </div>
   </footer>
 
-  <!-- МУЗЫКА — ГАРАНТИРОВАННО РАБОТАЕТ -->
+  <!-- МУЗЫКА -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
@@ -177,7 +177,7 @@
     function unlockAndPlay() {
       if (canPlay) return;
       canPlay = true;
-      audio.src = 'Calli.mp3'; // файл в корне
+      audio.src = 'Calli.mp3';
       audio.play().catch(() => {});
     }
 
@@ -188,6 +188,6 @@
     });
   </script>
 
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>
