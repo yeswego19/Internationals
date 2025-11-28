@@ -28,7 +28,6 @@
         <ul class="nav-menu">
           <li><a href="#home">Home</a></li>
           <li><a href="#services">Services</a></li>
-          <!-- Убрал Contact из меню -->
         </ul>
         <div class="nav-buttons"><a class="btn btn-primary" href="#contact">Contact us</a></div>
         <div class="hamburger"><span></span><span></span><span></span></div>
@@ -41,67 +40,6 @@
       <div class="hero-content">
         <h1 class="hero-title">Professional <span class="highlight">online translator</span></h1>
         <p class="hero-subtitle">Fast and accurate translations of, documents, video and web pages.</p>
-        <div class="hero-buttons">
-          <button class="btn btn-primary btn-large" onclick="scrollToTranslator()">Start translating</button>
-          <button class="btn btn-outline btn-large" onclick="scrollToTranslator()">Try for free</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="translation-tool">
-    <div class="container">
-      <div class="tool-header">
-        <h2>Translator</h2>
-        <p>Enter text to translate</p>
-      </div>
-      <div class="translation-container">
-        <div class="language-selector">
-          <select id="fromLang" class="lang-select">
-            <option value="ru">Русский</option>
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="it">Italiano</option>
-            <option value="pt">Português</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-            <option value="zh">中文</option>
-          </select>
-          <button class="swap-btn" id="swapBtn"><i class="fas fa-exchange-alt"></i></button>
-          <select id="toLang" class="lang-select">
-            <option value="en">English</option>
-            <option value="ru">Русский</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="it">Italiano</option>
-            <option value="pt">Português</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-            <option value="zh">中文</option>
-          </select>
-        </div>
-        <div class="translation-area">
-          <div class="input-area">
-            <textarea id="inputText" placeholder="Enter text to translate..." maxlength="5000"></textarea>
-            <div class="text-controls">
-              <span class="char-count">0/5000</span>
-              <button class="clear-btn" id="clearBtn"><i class="fas fa-times"></i></button>
-            </div>
-          </div>
-          <div class="output-area">
-            <div class="output-text" id="outputText">
-              <p class="placeholder">The translation will appear here</p>
-            </div>
-            <div class="output-controls">
-              <button class="copy-btn" id="copyBtn"><i class="fas fa-copy"></i></button>
-              <button class="speak-btn" id="speakBtn"><i class="fas fa-volume-up"></i></button>
-            </div>
-          </div>
-        </div>
-        <button class="translate-btn" id="translateBtn"><i class="fas fa-language"></i> Translate</button>
       </div>
     </div>
   </section>
