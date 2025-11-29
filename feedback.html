@@ -11,18 +11,13 @@
       font-family:'Inter',sans-serif;
       margin:0;padding:0;
       background:url('feedback-bg.png') center center fixed;
-      background-size:cover;           /* ← теперь cover — красиво обрезает, не растягивает */
+      background-size:cover;
       min-height:100vh;
     }
     .feedback-container{
-      max-width:700px;
-      margin:50px auto;
-      background:transparent;
-      padding:30px;
-      border-radius:12px;
-      box-shadow:0 8px 30px rgba(0,0,0,0.25);
-      backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,0.2);
+      max-width:700px;margin:50px auto;background:transparent;padding:30px;
+      border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.25);
+      backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);
     }
     .feedback-header h2{margin:0;font-size:24px;color:#fff}
     .close-btn{cursor:pointer;font-size:28px;font-weight:bold;border:none;background:none;color:#fff}
@@ -81,8 +76,8 @@
 
   <script>
     const SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Ключ удалён — теперь он не светится в GitHub
+    const supabase = window.supabase.createClient(SUPABASE_URL, ''); // пустой ключ — Supabase сам подставит anon-ключ
 
     const feedbackList = document.getElementById('feedbackList');
     const feedbackForm = document.getElementById('feedbackForm');
