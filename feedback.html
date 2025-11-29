@@ -7,58 +7,54 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: url('feedback-bg.png');   /* ← твоя картинка */
-      background-size: cover;               /* растягиваем на весь экран */
-      background-position: center;          /* по центру */
-      background-attachment: fixed;         /* не двигается при скролле */
-      min-height: 100vh;
+    body{
+      font-family:'Inter',sans-serif;
+      margin:0;padding:0;
+      background:url('feedback-bg.png');
+      background-size:100% 100%;      /* растягивает картинку на весь экран без обрезки */
+      background-position:center;
+      background-attachment:fixed;
+      min-height:100vh;
     }
-    .feedback-container {
-      max-width: 700px;
-      margin: 50px auto;
-      background: rgba(255, 255, 255, 0.93);   /* чуть прозрачный белый, чтобы текст читался на любом фоне */
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-      backdrop-filter: blur(5px);              /* лёгкое размытие фона под карточкой — красиво */
+    .feedback-container{
+      max-width:700px;
+      margin:50px auto;
+      background:transparent;         /* полностью прозрачная карточка */
+      padding:30px;
+      border-radius:12px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.25);
+      backdrop-filter:blur(10px);     /* лёгкое стеклянное размытие, чтобы текст читался */
+      border:1px solid rgba(255,255,255,0.2);
     }
-    .feedback-header h2 {margin:0; font-size:24px; color:#1f2937}
-    .close-btn {cursor:pointer; font-size:28px; font-weight:bold; border:none; background:none; color:#6b7280}
-    .close-btn:hover {color:#1f2937}
-    .feedback-form input, 
-    .feedback-form textarea {
-      width:100%; padding:12px; margin:8px 0; border-radius:8px; border:2px solid #e5e7eb;
-      box-sizing:border-box; font-family:'Inter',sans-serif; font-size:15px;
+    .feedback-header h2{margin:0;font-size:24px;color:#fff}
+    .close-btn{cursor:pointer;font-size:28px;font-weight:bold;border:none;background:none;color:#fff}
+    .close-btn:hover{color:#ccc}
+    .feedback-form input,.feedback-form textarea{
+      width:100%;padding:12px;margin:8px 0;border-radius:8px;
+      border:2px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);
+      box-sizing:border-box;font-family:'Inter',sans-serif;font-size:15px;color:#fff;
     }
-    .feedback-form input:focus,
-    .feedback-form textarea:focus {outline:none; border-color:#1f4ba5}
-    .feedback-form button {
+    .feedback-form input::placeholder,.feedback-form textarea::placeholder{color:#ddd}
+    .feedback-form input:focus,.feedback-form textarea:focus{outline:none;border-color:#fff}
+    .feedback-form button{
       background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
-      color:white; padding:14px; border:none; border-radius:8px; cursor:pointer;
-      font-weight:600; font-size:16px; width:100%; margin-top:12px;
+      color:white;padding:14px;border:none;border-radius:8px;cursor:pointer;
+      font-weight:600;font-size:16px;width:100%;margin-top:12px;
     }
-    .feedback-form button:hover {transform:translateY(-2px); box-shadow:0 6px 15px rgba(31,75,165,0.4)}
-    .feedback-list-container {max-height:500px; overflow-y:auto}
-    .feedback-list-title {font-size:18px; font-weight:600; margin-bottom:15px; color:#1f2937}
-    .feedback-item {
-      background:#fff; padding:15px; margin-bottom:12px; border-radius:8px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.1); border-left:4px solid #1f4ba5;
+    .feedback-form button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(31,75,165,0.6)}
+    .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
+    .feedback-item{
+      background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;
+      border-radius:8px;border-left:4px solid #1f4ba5;color:#fff;
     }
-    .feedback-item strong {color:#1f4ba5; font-size:16px}
-    .feedback-item p {margin:8px 0 0; color:#4b5563; line-height:1.5}
-    .feedback-item small {color:#9ca3af; font-size:13px; float:right}
-    .admin-reply {
-      margin-top:12px; padding:12px; background:#f0f9ff;
-      border-left:3px solid #3b82f6; border-radius:6px;
-    }
-    .admin-reply-label {font-weight:600; color:#1e40af; font-size:14px}
-    .admin-reply-text {color:#1e3a8a; font-size:14px; margin:0}
-    .loading,.error {text-align:center; padding:20px}
-    .error {background:#fee; color:#c00; border-radius:8px; margin-bottom:15px}
+    .feedback-item strong{color:#fff;font-size:16px}
+    .feedback-item p{margin:8px 0 0;color:#eee}
+    .feedback-item small{color:#ccc;float:right}
+    .admin-reply{margin-top:12px;padding:12px;background:rgba(240,249,255,0.2);border-left:3px solid #3b82f6;border-radius:6px}
+    .admin-reply-label{font-weight:600;color:#bbdefb}
+    .admin-reply-text{color:#e3f2fd}
+    .loading,.error{text-align:center;padding:20px;color:#fff}
+    .error{background:rgba(255,0,0,0.2);border-radius:8px;margin-bottom:15px}
   </style>
 </head>
 <body>
@@ -97,42 +93,22 @@
 
     async function loadFeedback() {
       try {
-        const { data, error } = await supabase
-          .from('feedback')
-          .select('*')
-          .order('created_at', { ascending: false });
-
+        const { data, error } = await supabase.from('feedback').select('*').order('created_at', { ascending: false });
         if (error) throw error;
-        feedbackList.innerHTML = data.length === 0 
-          ? '<p style="color:#6b7280;text-align:center;">No feedback yet. Be the first!</p>'
-          : '';
-
+        feedbackList.innerHTML = data.length === 0 ? '<p style="text-align:center;color:#ddd">No feedback yet. Be the first!</p>' : '';
         data.forEach(item => {
           const div = document.createElement('div');
           div.className = 'feedback-item';
           const date = new Date(item.created_at).toLocaleString('ru-RU');
-
-          let html = `
-            <strong>${escapeHtml(item.contact || 'Anonymous')}</strong>
-            <small>${date}</small>
-            <p>${escapeHtml(item.message)}</p>
-          `;
-
-          if (item.reply && item.reply.trim()) {
-            html += `
-              <div class="admin-reply">
-                <div class="admin-reply-label">✉️ Our Reply:</div>
-                <p class="admin-reply-text">${escapeHtml(item.reply)}</p>
-              </div>
-            `;
+          let html = `<strong>${escapeHtml(item.contact || 'Anonymous')}</strong><small>${date}</small><p>${escapeHtml(item.message)}</p>`;
+          if (item.reply?.trim()) {
+            html += `<div class="admin-reply"><div class="admin-reply-label">Our Reply:</div><p class="admin-reply-text">${escapeHtml(item.reply)}</p></div>`;
           }
-
           div.innerHTML = html;
           feedbackList.appendChild(div);
         });
       } catch (err) {
-        console.error(err);
-        feedbackList.innerHTML = '<p class="error">Failed to load feedback. Refresh the page.</p>';
+        feedbackList.innerHTML = '<p class="error">Failed to load feedback.</p>';
       }
     }
 
@@ -141,38 +117,21 @@
       const name = document.getElementById('name').value.trim();
       const message = document.getElementById('message').value.trim();
       if (!name || !message) return showError('Fill in all fields');
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
-
+      submitBtn.disabled = true; submitBtn.textContent = 'Sending...';
       try {
-        const { error } = await supabase
-          .from('feedback')
-          .insert([{ contact: name, message }]);
+        const { error } = await supabase.from('feedback').insert([{ contact: name, message }]);
         if (error) throw error;
-
-        feedbackForm.reset();
-        await loadFeedback();
-        submitBtn.textContent = 'Sent! ✓';
+        feedbackForm.reset(); await loadFeedback();
+        submitBtn.textContent = 'Sent!';
         setTimeout(() => submitBtn.textContent = 'Send Feedback', 2000);
-      } catch (err) {
-        showError('Failed to send. Try again.');
-      } finally {
-        submitBtn.disabled = false;
-      }
+      } catch { showError('Failed to send.'); } finally { submitBtn.disabled = false; }
     });
 
     function showError(msg) {
       errorMessage.innerHTML = `<div class="error">${msg}</div>`;
       setTimeout(() => errorMessage.innerHTML = '', 5000);
     }
-
-    function escapeHtml(text) {
-      if (!text) return '';
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
+    function escapeHtml(t){return t? (d=document.createElement('div'),d.textContent=t,d.innerHTML) : '';}
 
     loadFeedback();
     setInterval(loadFeedback, 10000);
