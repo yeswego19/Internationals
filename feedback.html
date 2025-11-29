@@ -113,6 +113,26 @@
       color: #9ca3af;
       font-size: 13px;
     }
+    /* Стиль для ответа администратора */
+    .admin-reply {
+      margin-top: 12px;
+      padding: 12px;
+      background: #f0f9ff;
+      border-left: 3px solid #3b82f6;
+      border-radius: 6px;
+    }
+    .admin-reply-label {
+      font-weight: 600;
+      color: #1e40af;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    .admin-reply-text {
+      color: #1e3a8a;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+    }
     .loading {
       text-align: center;
       color: #6b7280;
@@ -186,11 +206,25 @@
           const div = document.createElement('div');
           div.className = 'feedback-item';
           const date = new Date(item.created_at).toLocaleString();
-          div.innerHTML = `
-            <strong>${escapeHtml(item.name)}</strong>
+          
+          // Основной отзыв
+          let html = `
+            <strong>${escapeHtml(item.contact || 'Anonymous')}</strong>
             <small style="float:right;">${date}</small>
             <p>${escapeHtml(item.message)}</p>
           `;
+          
+          // Если есть ответ администратора - показываем его
+          if (item.reply && item.reply.trim() !== '') {
+            html += `
+              <div class="admin-reply">
+                <div class="admin-reply-label">✉️ Our Reply:</div>
+                <p class="admin-reply-text">${escapeHtml(item.reply)}</p>
+              </div>
+            `;
+          }
+          
+          div.innerHTML = html;
           feedbackList.appendChild(div);
         });
       } catch (err) {
@@ -218,7 +252,7 @@
       try {
         const { error } = await supabase
           .from('feedback')
-          .insert([{ name, message }]);
+          .insert([{ contact: name, message: message }]);
 
         if (error) throw error;
 
@@ -250,6 +284,7 @@
     }
 
     function escapeHtml(text) {
+      if (!text) return '';
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
