@@ -10,9 +10,8 @@
     body{
       font-family:'Inter',sans-serif;
       margin:0;padding:0;
-      background:url('feedback-bg.jpg') top center fixed;
-      background-size:100% auto;     /* ← ВСЁ, ЧТО НАДО. Ширина 100%, высота подстраивается */
-      background-repeat:no-repeat;
+      background:url('feedback-bg.jpg') top center no-repeat;
+      background-size:100% auto;        /* ширина 100%, высота подстраивается */
       min-height:100vh;
     }
     .feedback-container{
@@ -52,15 +51,12 @@
   </style>
 </head>
 <body>
-
   <div class="feedback-container">
     <div class="feedback-header">
       <h2>Feedback</h2>
       <button class="close-btn" onclick="window.history.back();">×</button>
     </div>
-
     <div id="errorMessage"></div>
-
     <div class="feedback-form">
       <form id="feedbackForm">
         <input type="text" id="name" placeholder="Your name" required>
@@ -68,7 +64,6 @@
         <button type="submit" id="submitBtn">Send Feedback</button>
       </form>
     </div>
-
     <div class="feedback-list-container">
       <div class="feedback-list-title">Recent Feedback</div>
       <div id="feedbackList"><div class="loading">Loading feedback...</div></div>
