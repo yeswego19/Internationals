@@ -10,20 +10,18 @@
     body{
       font-family:'Inter',sans-serif;
       margin:0;padding:0;
-      background:url('feedback-bg.png');
-      background-size:100% 100%;      /* растягивает картинку на весь экран без обрезки */
-      background-position:center;
-      background-attachment:fixed;
+      background:url('feedback-bg.png') center center fixed;
+      background-size:cover;           /* ← теперь cover — красиво обрезает, не растягивает */
       min-height:100vh;
     }
     .feedback-container{
       max-width:700px;
       margin:50px auto;
-      background:transparent;         /* полностью прозрачная карточка */
+      background:transparent;
       padding:30px;
       border-radius:12px;
       box-shadow:0 8px 30px rgba(0,0,0,0.25);
-      backdrop-filter:blur(10px);     /* лёгкое стеклянное размытие, чтобы текст читался */
+      backdrop-filter:blur(10px);
       border:1px solid rgba(255,255,255,0.2);
     }
     .feedback-header h2{margin:0;font-size:24px;color:#fff}
