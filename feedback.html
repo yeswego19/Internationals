@@ -10,11 +10,10 @@
     body{
       font-family:'Inter',sans-serif;
       margin:0;padding:0;
-      background:url('feedback-bg.jpg') center top fixed;   /* фон твой */
-      background-size:contain;          /* ← ВСЯ КАРТИНКА ВЛЕЗАЕТ ЦЕЛИКОМ */
-      background-repeat:no-repeat;      /* не повторяется */
+      background:url('feedback-bg.jpg') top center fixed;
+      background-size:100% auto;     /* ← ВСЁ, ЧТО НАДО. Ширина 100%, высота подстраивается */
+      background-repeat:no-repeat;
       min-height:100vh;
-      background-color:#000;            /* если по бокам пусто — будет чёрный, а не белый */
     }
     .feedback-container{
       max-width:700px;margin:50px auto;background:transparent;padding:30px;
@@ -95,7 +94,7 @@
           const div = document.createElement('div');
           div.className = 'feedback-item';
           const date = new Date(item.created_at).toLocaleString('ru-RU');
-          let html = `<strong>${escapeHtml(item.contact || 'Anonymous')}<small>${date}</small><p>${escapeHtml(item.message)}</p>`;
+          let html = `<strong>${escapeHtml(item.contact || 'Anonymous')}</strong><small>${date}</small><p>${escapeHtml(item.message)}</p>`;
           if (item.reply?.trim()) html += `<div class="admin-reply"><div class="admin-reply-label">Our Reply:</div><p class="admin-reply-text">${escapeHtml(item.reply)}</p></div>`;
           div.innerHTML = html;
           feedbackList.appendChild(div);
