@@ -7,18 +7,40 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body{font-family:'Inter',sans-serif;margin:0;padding:0;background:url('feedback-bg.png') center center fixed;background-size:cover;min-height:100vh;}
-    .feedback-container{max-width:700px;margin:50px auto;background:transparent;padding:30px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.25);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);}
+    body{
+      font-family:'Inter',sans-serif;
+      margin:0;padding:0;
+      background:url('feedback-bg.jpg') center center fixed;   /* ← можно .jpg или .png */
+      background-size:cover;          /* ← вот это главное */
+      background-repeat:no-repeat;
+      min-height:100vh;
+    }
+    .feedback-container{
+      max-width:700px;margin:50px auto;background:transparent;padding:30px;
+      border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.25);
+      backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);
+    }
     .feedback-header h2{margin:0;font-size:24px;color:#fff}
     .close-btn{cursor:pointer;font-size:28px;font-weight:bold;border:none;background:none;color:#fff}
     .close-btn:hover{color:#ccc}
-    .feedback-form input,.feedback-form textarea{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:2px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);box-sizing:border-box;font-family:'Inter',sans-serif;font-size:15px;color:#fff;}
+    .feedback-form input,.feedback-form textarea{
+      width:100%;padding:12px;margin:8px 0;border-radius:8px;
+      border:2px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);
+      box-sizing:border-box;font-family:'Inter',sans-serif;font-size:15px;color:#fff;
+    }
     .feedback-form input::placeholder,.feedback-form textarea::placeholder{color:#ddd}
     .feedback-form input:focus,.feedback-form textarea:focus{outline:none;border-color:#fff}
-    .feedback-form button{background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);color:white;padding:14px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:16px;width:100%;margin-top:12px;}
+    .feedback-form button{
+      background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
+      color:white;padding:14px;border:none;border-radius:8px;cursor:pointer;
+      font-weight:600;font-size:16px;width:100%;margin-top:12px;
+    }
     .feedback-form button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(31,75,165,0.6)}
     .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
-    .feedback-item{background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;border-radius:8px;border-left:4px solid #1f4ba5;color:#fff;}
+    .feedback-item{
+      background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;
+      border-radius:8px;border-left:4px solid #1f4ba5;color:#fff;
+    }
     .feedback-item strong{color:#fff;font-size:16px}
     .feedback-item p{margin:8px 0 0;color:#eee}
     .feedback-item small{color:#ccc;float:right}
@@ -30,12 +52,15 @@
   </style>
 </head>
 <body>
+
   <div class="feedback-container">
     <div class="feedback-header">
       <h2>Feedback</h2>
       <button class="close-btn" onclick="window.history.back();">×</button>
     </div>
+
     <div id="errorMessage"></div>
+
     <div class="feedback-form">
       <form id="feedbackForm">
         <input type="text" id="name" placeholder="Your name" required>
@@ -43,6 +68,7 @@
         <button type="submit" id="submitBtn">Send Feedback</button>
       </form>
     </div>
+
     <div class="feedback-list-container">
       <div class="feedback-list-title">Recent Feedback</div>
       <div id="feedbackList"><div class="loading">Loading feedback...</div></div>
@@ -91,7 +117,7 @@
     });
 
     function showError(msg) { errorMessage.innerHTML = `<div class="error">${msg}</div>`; setTimeout(() => errorMessage.innerHTML = '', 5000); }
-    function escapeHtml(t){return t ? (d=document.createElement('div'),d.textContent=t,d.innerHTML) : '';}
+    function escapeHtml(t){ return t ? (d=document.createElement('div'), d.textContent=t, d.innerHTML) : ''; }
 
     loadFeedback();
     setInterval(loadFeedback, 10000);
