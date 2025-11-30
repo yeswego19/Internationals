@@ -19,85 +19,99 @@
       border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.25);
       backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);
     }
+    .feedback-header{display:flex;justify-content:space-between;align-items:center}
     .feedback-header h2{margin:0;font-size:24px;color:#fff}
-    .close-btn{cursor:pointer;font-size:28px;font-weight:bold;border:none;background:none;color:#fff}
-    .close-btn:hover{color:#ccc}
-    .feedback-form input,.feedback-form textarea{
-      width:100%;padding:12px;margin:8px 0;border-radius:8px;
-      border:2px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);
-      box-sizing:border-box;font-family:'Inter',sans-serif;font-size:15px;color:#fff;
+    .close-btn{cursor:pointer;font-size:32px;font-weight:bold;background:none;border:none;color:#fff}
+    .close-btn:hover{color:#fff}
+    .close-btn:hover{color:#ff6b6b}
+
+    /* ← ФОРМА: теперь чёрный текст при вводе → */
+    .feedback-form input,
+    .feedback-form textarea{
+      width:100%;padding:14px;margin:10px 0;border-radius:10px;
+      border:2px solid rgba(255,255,255,.4);
+      background:rgba(255,255,255,.9);
+      color:#000 !important;
+      font-size:16px;font-family:'Inter',sans-serif;
+      box-sizing:border-box;
     }
-    .feedback-form input::placeholder,.feedback-form textarea::placeholder{color:#ddd}
-    .feedback-form input:focus,.feedback-form textarea:focus{outline:none;border-color:#fff}
+    .feedback-form input::placeholder,
+    .feedback-form textarea::placeholder{
+      color:#555;
+    }
+    .feedback-form input:focus,
+    .feedback-form textarea:focus{
+      outline:none;border-color:#2f5597;background:#fff;
+    }
+
     .feedback-form button{
       background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
-      color:white;padding:14px;border:none;border-radius:8px;cursor:pointer;
-      font-weight:600;font-size:16px;width:100%;margin-top:12px;
+      color:white;padding:16px;border:none;border-radius:10px;cursor:pointer;
+      font-weight:600;font-size:17px;width:100%;margin-top:15px;
+      transition:.3s;
     }
-    .feedback-form button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(31,75,165,0.6)}
-    .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
-    
-    /* ←←← ВСЁ, ЧТО НИЖЕ — ЧЁРНЫЙ ТЕКСТ НА ЖЁЛТОМ ФОНЕ →→→ */
+    .feedback-form button:hover{
+      transform:translateY(-3px);box-shadow:0 8px 20px rgba(31,75,165,.5);
+    }
+
+    .feedback-list-title{font-size:19px;font-weight:600;margin:25px 0 15px;color:#fff}
+
+    /* ← ОТЗЫВЫ: чёрный текст → */
     .feedback-item{
-      background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;
-      border-radius:8px;border-left:4px solid #1f4ba5;
-      color:#000 !important;           /* основной текст отзыва */
+      background:rgba(255,255,255,.15);padding:18px;margin-bottom:14px;
+      border-radius:10px;border-left:5px solid #1f4ba5;
+      color:#000 !important;
     }
     .feedback-item strong{
-      color:#000 !important;           /* имя пользователя */
-      font-size:16px;font-weight:700;
+      color:#000 !important;font-weight:700;font-size:16px;
     }
     .feedback-item p{
-      margin:8px 0 0;
-      color:#000 !important;           /* сам отзыв */
+      margin:10px 0 0;color:#000 !important;line-height:1.5;
     }
     .feedback-item small{
-      color:#333 !important;           /* дата */
-      float:right;
+      color:#222 !important;float:right;font-size:13px;
     }
     .admin-reply{
-      margin-top:12px;padding:12px;
-      background:rgba(240,249,255,0.2);
-      border-left:3px solid #3b82f6;
-      border-radius:6px;
-      color:#000 !important;           /* ответ админа */
-    }
-    .admin-reply-label{
-      font-weight:600;
+      margin-top:14px;padding:14px;
+      background:rgba(255,255,255,.25);
+      border-left:4px solid #3b82f6;
+      border-radius:8px;
       color:#000 !important;
     }
-    .admin-reply-text{
-      color:#000 !important;
-      font-weight:500;
-    }
+    .admin-reply-label{font-weight:700;color:#000 !important;}
+    .admin-reply-text{color:#000 !important;font-weight:500;}
+
     .loading,.error{text-align:center;padding:20px;color:#fff}
-    .error{background:rgba(255,0,0,0.2);border-radius:8px;margin-bottom:15px}
+    .error{background:rgba(255,0,0,.3);border-radius:8px;margin-bottom:15px}
   </style>
 </head>
 <body>
+
   <div class="feedback-container">
     <div class="feedback-header">
       <h2>Feedback</h2>
       <button class="close-btn" onclick="window.history.back();">×</button>
     </div>
+
     <div id="errorMessage"></div>
+
     <div class="feedback-form">
       <form id="feedbackForm">
-        <input type="text" id="name" placeholder="Your name" required>
-        <textarea id="message" rows="4" placeholder="Your impressions, tips, contacts (optional)" required></textarea>
-        <button type="submit" id="submitBtn">Send Feedback</button>
+        <input type="text" id="name" placeholder="Ваше имя" required>
+        <textarea id="message" rows="5" placeholder="Ваши впечатления, пожелания, контакты (по желанию)" required></textarea>
+        <button type="submit" id="submitBtn">Отправить отзыв</button>
       </form>
     </div>
-    <div class="feedback-list-container">
-      <div class="feedback-list-title">Recent Feedback</div>
-      <div id="feedbackList"><div class="loading">Loading feedback...</div></div>
-    </div>
+
+    <div class="feedback-list-title">Последние отзывы</div>
+    <div id="feedbackList"><div class="loading">Загрузка отзывов...</div></div>
   </div>
 
   <script>
     const SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3dDQ0';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     const feedbackList = document.getElementById('feedbackList');
     const feedbackForm = document.getElementById('feedbackForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -107,17 +121,25 @@
       try {
         const { data, error } = await supabase.from('feedback').select('*').order('created_at', { ascending: false });
         if (error) throw error;
-        feedbackList.innerHTML = data.length === 0 ? '<p style="text-align:center;color:#ddd">No feedback yet. Be the first!</p>' : '';
+
+        feedbackList.innerHTML = data.length === 0 
+          ? '<p style="text-align:center;color:#fff">Отзывов пока нет. Будьте первым!</p>' 
+          : '';
+
         data.forEach(item => {
           const div = document.createElement('div');
           div.className = 'feedback-item';
           const date = new Date(item.created_at).toLocaleString('ru-RU');
-          let html = `<strong>${escapeHtml(item.contact || 'Anonymous')}</strong><small>${date}</small><p>${escapeHtml(item.message)}</p>`;
-          if (item.reply?.trim()) html += `<div class="admin-reply"><div class="admin-reply-label">Наш ответ:</div><p class="admin-reply-text">${escapeHtml(item.reply)}</p></div>`;
+          let html = `<strong>${escapeHtml(item.contact || 'Аноним')}</strong><small>${date}</small><p>${escapeHtml(item.message)}</p>`;
+          if (item.reply?.trim()) {
+            html += `<div class="admin-reply"><div class="admin-reply-label">Наш ответ:</div><p class="admin-reply-text">${escapeHtml(item.reply)}</p></div>`;
+          }
           div.innerHTML = html;
           feedbackList.appendChild(div);
         });
-      } catch { feedbackList.innerHTML = '<p class="error">Не удалось загрузить отзывы.</p>'; }
+      } catch {
+        feedbackList.innerHTML = '<p class="error">Не удалось загрузить отзывы.</p>';
+      }
     }
 
     feedbackForm.addEventListener('submit', async e => {
@@ -125,25 +147,34 @@
       const name = document.getElementById('name').value.trim();
       const message = document.getElementById('message').value.trim();
       if (!name || !message) return showError('Заполните все поля');
-      submitBtn.disabled = true; submitBtn.textContent = 'Отправляем...';
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Отправляем...';
+
       try {
         const { error } = await supabase.from('feedback').insert([{ contact: name, message }]);
         if (error) throw error;
-        feedbackForm.reset(); await loadFeedback();
-        submitBtn.textContent = 'Отправлено!'; 
-        setTimeout(() => submitBtn.textContent = 'Send Feedback', 2000);
-      } catch { showError('Не удалось отправить.'); } 
-      finally { submitBtn.disabled = false; }
+
+        feedbackForm.reset();
+        await loadFeedback();
+        submitBtn.textContent = 'Отправлено!';
+        setTimeout(() => submitBtn.textContent = 'Отправить отзыв', 2000);
+      } catch {
+        showError('Не удалось отправить отзыв.');
+      } finally {
+        submitBtn.disabled = false;
+      }
     });
 
-    function showError(msg) { 
-      errorMessage.innerHTML = `<div class="error">${msg}</div>`; 
-      setTimeout(() => errorMessage.innerHTML = '', 5000); 
+    function showError(msg) {
+      errorMessage.innerHTML = `<div class="error">${msg}</div>`;
+      setTimeout(() => errorMessage.innerHTML = '', 5000);
     }
-    function escapeHtml(t){ 
-      const div = document.createElement('div'); 
-      div.textContent = t; 
-      return div.innerHTML; 
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
 
     loadFeedback();
