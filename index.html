@@ -10,14 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    .footer-flex{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+    .footer-flex{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:0 15px}
     .footer-left{max-width:60%}
     .footer-right{display:flex;align-items:center;gap:20px}
-    .btn-feedback{padding:10px 20px;background:#000;color:#fff;text-decoration:none;border-radius:5px}
+    .btn-feedback{padding:10px 20px;background:#0066ff;color:#fff;text-decoration:none;border-radius:5px}
+    .footer-bottom{text-align:center;margin-top:15px;font-size:15px;color:#888}
+    .social h4{display:none}
   </style>
 </head>
 <body>
-
   <audio id="bgMusic" preload="metadata" loop></audio>
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
@@ -78,12 +79,8 @@
             <div class="contact-item"><i class="fas fa-clock"></i><div><h4>Working hours</h4><p>Online 24/7</p></div></div>
           </div>
         </div>
-
         <div class="contact-form">
           <form id="contactForm" enctype="multipart/form-data">
-            <!-- УДАЛЕНА ТОЛЬКО ЭТА СТРОЧКА -->
-            <!-- <div class="form-group"><input type="text" id="name" placeholder="Your Feedback and Contacts" required></div> -->
-
             <div class="form-group"><input type="email" id="email" placeholder="Email" required></div>
             <div class="form-group"><input type="text" id="subject" placeholder="Subject" required></div>
             <div class="form-group"><textarea id="message" placeholder="Your message" rows="5" required></textarea></div>
@@ -104,12 +101,11 @@
       <div class="footer-right">
         <a href="feedback.html" class="btn btn-primary btn-feedback">Feedback</a>
         <div class="footer-section social">
-          <h4>Follow us</h4>
           <a href="https://youtube.com/@internationalspro" target="_blank"><img src="https://www.youtube.com/favicon.ico" alt="YouTube" width="113" height="113"></a>
         </div>
       </div>
     </div>
-    <div class="footer-bottom"><p> 2025</p></div>
+    <div class="footer-bottom"><p>© 2025</p></div>
   </footer>
 
   <script>
