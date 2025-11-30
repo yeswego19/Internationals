@@ -11,7 +11,7 @@
       font-family:'Inter',sans-serif;
       margin:0;padding:0;
       background:url('feedback-bg.jpg') top center no-repeat;
-      background-size:100% auto;        /* ширина 100%, высота подстраивается */
+      background-size:100% auto;
       min-height:100vh;
     }
     .feedback-container{
@@ -36,16 +36,40 @@
     }
     .feedback-form button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(31,75,165,0.6)}
     .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
+    
+    /* ←←← ВСЁ, ЧТО НИЖЕ — ЧЁРНЫЙ ТЕКСТ НА ЖЁЛТОМ ФОНЕ →→→ */
     .feedback-item{
       background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;
-      border-radius:8px;border-left:4px solid #1f4ba5;color:#fff;
+      border-radius:8px;border-left:4px solid #1f4ba5;
+      color:#000 !important;           /* основной текст отзыва */
     }
-    .feedback-item strong{color:#fff;font-size:16px}
-    .feedback-item p{margin:8px 0 0;color:#eee}
-    .feedback-item small{color:#ccc;float:right}
-    .admin-reply{margin-top:12px;padding:12px;background:rgba(240,249,255,0.2);border-left:3px solid #3b82f6;border-radius:6px}
-    .admin-reply-label{font-weight:600;color:#bbdefb}
-    .admin-reply-text{color:#e3f2fd}
+    .feedback-item strong{
+      color:#000 !important;           /* имя пользователя */
+      font-size:16px;font-weight:700;
+    }
+    .feedback-item p{
+      margin:8px 0 0;
+      color:#000 !important;           /* сам отзыв */
+    }
+    .feedback-item small{
+      color:#333 !important;           /* дата */
+      float:right;
+    }
+    .admin-reply{
+      margin-top:12px;padding:12px;
+      background:rgba(240,249,255,0.2);
+      border-left:3px solid #3b82f6;
+      border-radius:6px;
+      color:#000 !important;           /* ответ админа */
+    }
+    .admin-reply-label{
+      font-weight:600;
+      color:#000 !important;
+    }
+    .admin-reply-text{
+      color:#000 !important;
+      font-weight:500;
+    }
     .loading,.error{text-align:center;padding:20px;color:#fff}
     .error{background:rgba(255,0,0,0.2);border-radius:8px;margin-bottom:15px}
   </style>
@@ -74,7 +98,6 @@
     const SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
     const feedbackList = document.getElementById('feedbackList');
     const feedbackForm = document.getElementById('feedbackForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -90,29 +113,38 @@
           div.className = 'feedback-item';
           const date = new Date(item.created_at).toLocaleString('ru-RU');
           let html = `<strong>${escapeHtml(item.contact || 'Anonymous')}</strong><small>${date}</small><p>${escapeHtml(item.message)}</p>`;
-          if (item.reply?.trim()) html += `<div class="admin-reply"><div class="admin-reply-label">Our Reply:</div><p class="admin-reply-text">${escapeHtml(item.reply)}</p></div>`;
+          if (item.reply?.trim()) html += `<div class="admin-reply"><div class="admin-reply-label">Наш ответ:</div><p class="admin-reply-text">${escapeHtml(item.reply)}</p></div>`;
           div.innerHTML = html;
           feedbackList.appendChild(div);
         });
-      } catch { feedbackList.innerHTML = '<p class="error">Failed to load feedback.</p>'; }
+      } catch { feedbackList.innerHTML = '<p class="error">Не удалось загрузить отзывы.</p>'; }
     }
 
     feedbackForm.addEventListener('submit', async e => {
       e.preventDefault();
       const name = document.getElementById('name').value.trim();
       const message = document.getElementById('message').value.trim();
-      if (!name || !message) return showError('Fill in all fields');
-      submitBtn.disabled = true; submitBtn.textContent = 'Sending...';
+      if (!name || !message) return showError('Заполните все поля');
+      submitBtn.disabled = true; submitBtn.textContent = 'Отправляем...';
       try {
         const { error } = await supabase.from('feedback').insert([{ contact: name, message }]);
         if (error) throw error;
         feedbackForm.reset(); await loadFeedback();
-        submitBtn.textContent = 'Sent!'; setTimeout(() => submitBtn.textContent = 'Send Feedback', 2000);
-      } catch { showError('Failed to send.'); } finally { submitBtn.disabled = false; }
+        submitBtn.textContent = 'Отправлено!'; 
+        setTimeout(() => submitBtn.textContent = 'Send Feedback', 2000);
+      } catch { showError('Не удалось отправить.'); } 
+      finally { submitBtn.disabled = false; }
     });
 
-    function showError(msg) { errorMessage.innerHTML = `<div class="error">${msg}</div>`; setTimeout(() => errorMessage.innerHTML = '', 5000); }
-    function escapeHtml(t){ return t ? (d=document.createElement('div'), d.textContent=t, d.innerHTML) : ''; }
+    function showError(msg) { 
+      errorMessage.innerHTML = `<div class="error">${msg}</div>`; 
+      setTimeout(() => errorMessage.innerHTML = '', 5000); 
+    }
+    function escapeHtml(t){ 
+      const div = document.createElement('div'); 
+      div.textContent = t; 
+      return div.innerHTML; 
+    }
 
     loadFeedback();
     setInterval(loadFeedback, 10000);
