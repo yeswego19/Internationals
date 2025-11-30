@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -10,18 +11,42 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    .footer-flex{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
-    .footer-left{max-width:60%}
-    .footer-right{display:flex;align-items:center;gap:20px}
-    .btn-feedback{padding:10px 20px;background:#000;color:#fff;text-decoration:none;border-radius:5px}
+    /* Футер с кнопкой справа */
+    .footer-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-left {
+      max-width: 60%;
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 20px; /* расстояние между кнопкой и соц. иконкой */
+    }
+
+    .btn-feedback {
+      padding: 10px 20px;
+      background-color: #000; /* или подходящий цвет */
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
 
+  <!-- Аудио — файл в корне репозитория -->
   <audio id="bgMusic" preload="metadata" loop></audio>
+
+  <!-- Глобус-музыка -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
-    <div class="music-player-panel" style="display:none;"></div>
+    <div class="music-player-panel" style="display: none;"></div>
   </div>
 
   <header class="header" id="header">
@@ -47,25 +72,25 @@
     </div>
   </section>
 
+  <!-- Секция Services вместо Features -->
   <section id="services" class="features">
     <div class="container">
       <div class="section-header">
         <h2>Why choose us</h2>
-        <p>Advanced technologies and net of native spetialists for high‑quality translations</p>
+        <p>Advanced technologies and an intuitive interface for high‑quality translations</p>
       </div>
       <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon">bolt</div><h3>Instant translation</h3><p>Get translations in real time without delays or waiting</p></div>
-        <div class="feature-card"><div class="feature-icon">shield</div><h3>Security</h3><p>Your data is protected with modern encryption protocols</p></div>
-        <div class="feature-card"><div class="feature-icon">phone</div><h3>Mobile friendly</h3><p>Convenient access to translations from any device</p></div>
-        <div class="feature-card"><div class="feature-icon">file</div><h3>Document translation</h3><p>We support PDF, DOC, TXT and other file formats</p></div>
-        <div class="feature-card"><div class="feature-icon">language</div><h3>Websites and video localization</h3><p>Localization for websites, subtitles and voice‑over for video</p></div>
-        <div class="feature-card"><div class="feature-icon">bell</div><h3>Concierge service</h3><p>Personal manager for urgent tasks and turnkey support</p></div>
-        <div class="feature-card"><div class="feature-icon">truck</div><h3>Documents delivery from door to door</h3><p>Courier delivery of translated and notarized documents to your address</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Instant translation</h3><p>Get translations in real time without delays or waiting</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>Security</h3><p>Your data is protected with modern encryption protocols</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-mobile-alt"></i></div><h3>Mobile friendly</h3><p>Convenient access to translations from any device</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3>Document translation</h3><p>We support PDF, DOC, TXT and other file formats</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-language"></i></div><h3>Websites and video localization</h3><p>Localization for websites, subtitles and voice‑over for video</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-concierge-bell"></i></div><h3>Concierge service</h3><p>Personal manager for urgent tasks and turnkey support</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3>Documents delivery from door to door</h3><p>Courier delivery of translated and notarized documents to your address</p></div>
       </div>
     </div>
   </section>
 
-  <!-- КОНТАКТЫ — БЕЗ ФОРМЫ -->
   <section id="contact" class="contact">
     <div class="container">
       <div class="contact-content">
@@ -73,24 +98,35 @@
           <h2>Contact us</h2>
           <p>Have questions? Our team is ready to help with any translation request.</p>
           <div class="contact-details">
-            <div class="contact-item">envelope<div><h4>Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
-            <div class="contact-item">whatsapp<div><h4>WhatsApp и телефон</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125‑10‑25</a></p></div></div>
-            <div class="contact-item">qrcode<div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
-            <div class="contact-item">clock<div><h4>Working hours</h4><p>Online 24/7</p></div></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
+            <div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4>WhatsApp and phone number</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125‑10‑25</a></p></div></div>
+            <div class="contact-item"><i class="fas fa-qrcode"></i><div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
+            <div class="contact-item"><i class="fas fa-clock"></i><div><h4>Working hours</h4><p>Online 24/7</p></div></div>
           </div>
         </div>
-        <!-- ФОРМА УДАЛЕНА  -->
+        <div class="contact-form">
+          <form id="contactForm" enctype="multipart/form-data">
+            <div class="form-group"><input type="text" id="name" placeholder="Your Feedback and Contacts" required></div>
+            <div class="form-group"><input type="email" id="email" placeholder="Email" required></div>
+            <div class="form-group"><input type="text" id="subject" placeholder="Subject" required></div>
+            <div class="form-group"><textarea id="message" placeholder="Your message" rows="5" required></textarea></div>
+            <div class="form-group"><input type="file" id="attachment" multiple></div>
+            <button type="submit" class="btn btn-primary btn-full">Send message</button>
+          </form>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- Футер -->
   <footer class="footer">
     <div class="container footer-flex">
       <div class="footer-left">
-        <div class="logo">language<span>Translation Service</span><span class="footer-tagline-inline">We translate people</span></div>
+        <div class="logo"><i class="fas fa-language"></i><span>Translation Service</span><span class="footer-tagline-inline">We translate people</span></div>
         <p>Professional translation and localization services: documents, websites, video. Fast and accurate.</p>
       </div>
       <div class="footer-right">
+        <!-- Кнопка Feedback справа -->
         <a href="feedback.html" class="btn btn-primary btn-feedback">Feedback</a>
         <div class="footer-section social">
           <h4>Follow us</h4>
@@ -101,22 +137,26 @@
     <div class="footer-bottom"><p> 2025</p></div>
   </footer>
 
+  <!-- МУЗЫКА -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
     let canPlay = false;
+
     function unlockAndPlay() {
       if (canPlay) return;
       canPlay = true;
       audio.src = 'Calli.mp3';
       audio.play().catch(() => {});
     }
+
     document.body.addEventListener('click', unlockAndPlay, { once: true });
     globe.addEventListener('click', () => {
       unlockAndPlay();
       audio.paused ? audio.play() : audio.pause();
     });
   </script>
+
   <script src="script.js?v=4"></script>
 </body>
 </html>
