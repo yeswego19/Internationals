@@ -10,27 +10,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    /* Футер с кнопкой справа */
     .footer-flex {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
     }
-
-    .footer-left {
-      max-width: 60%;
-    }
-
+    .footer-left { max-width: 60%; }
     .footer-right {
       display: flex;
       align-items: center;
-      gap: 20px; /* расстояние между кнопкой и соц. иконкой */
+      gap: 20px;
     }
-
     .btn-feedback {
       padding: 10px 20px;
-      background-color: #000; /* или подходящий цвет */
+      background-color: #000;
       color: #fff;
       text-decoration: none;
       border-radius: 5px;
@@ -39,10 +33,8 @@
 </head>
 <body>
 
-  <!-- Аудио — файл в корне репозитория -->
   <audio id="bgMusic" preload="metadata" loop></audio>
 
-  <!-- Глобус-музыка -->
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
     <div class="music-player-panel" style="display: none;"></div>
@@ -71,7 +63,6 @@
     </div>
   </section>
 
-  <!-- Секция Services вместо Features -->
   <section id="services" class="features">
     <div class="container">
       <div class="section-header">
@@ -125,7 +116,6 @@
         <p>Professional translation and localization services: documents, websites, video. Fast and accurate.</p>
       </div>
       <div class="footer-right">
-        <!-- Кнопка Feedback справа -->
         <a href="feedback.html" class="btn btn-primary btn-feedback">Feedback</a>
         <div class="footer-section social">
           <h4>Follow us</h4>
@@ -133,10 +123,17 @@
         </div>
       </div>
     </div>
-    <div class="footer-bottom"><p> 2025</p></div>
+
+    <!-- ЭТОТ БЛОК Я ИЗМЕНИЛ -->
+    <div class="footer-bottom">
+      <p>
+        2025
+        <img src="signature.png" alt="Digital Signature" style="height:28px; vertical-align:middle; margin-left:12px;">
+      </p>
+    </div>
+    <!-- конец изменения -->
   </footer>
 
-  <!-- МУЗЫКА -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
@@ -150,7 +147,7 @@
     }
 
     document.body.addEventListener('click', unlockAndPlay, { once: true });
-    globe.addEventListener('click', () => {
+    globe.addEventListener('click, () => {
       unlockAndPlay();
       audio.paused ? audio.play() : audio.pause();
     });
