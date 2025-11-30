@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,23 +17,13 @@
     .btn-feedback{padding:10px 20px;background:#0066ff;color:#fff;text-decoration:none;border-radius:5px}
     .footer-bottom{text-align:center;margin-top:15px;font-size:15px;color:#888}
     .social h4{display:none}
-    #langMenu{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,0.9);color:#fff;padding:15px;text-align:center;z-index:9999;display:none;}
-    #langMenu button{margin:0 8px;padding:10px 16px;background:#0066ff;border:none;border-radius:5px;color:#fff;cursor:pointer;}
   </style>
 </head>
 <body>
-
   <audio id="bgMusic" preload="metadata" loop></audio>
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
     <div class="music-player-panel" style="display:none;"></div>
-  </div>
-
-  <!-- Меню языков (появляется снизу) -->
-  <div id="langMenu">
-    <button data-lang="en">EN</button>
-    <button data-lang="ru">РУ</button>
-    <!-- Добавляй сюда новые языки -->
   </div>
 
   <header class="header" id="header">
@@ -40,10 +31,10 @@
       <div class="nav-container">
         <div class="logo"><img src="assets/logo.png" alt="Internationals" class="site-logo"></div>
         <ul class="nav-menu">
-          <li><a href="#home" data-key="navHome">Home</a></li>
-          <li><a href="#services" data-key="navServices">Services</a></li>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
         </ul>
-        <div class="nav-buttons"><a class="btn btn-primary" href="#contact" data-key="navContact">Contact us</a></div>
+        <div class="nav-buttons"><a class="btn btn-primary" href="#contact">Contact us</a></div>
         <div class="hamburger"><span></span><span></span><span></span></div>
       </div>
     </nav>
@@ -52,8 +43,8 @@
   <section id="home" class="hero">
     <div class="hero-container">
       <div class="hero-content">
-        <h1 class="hero-title" data-key="heroTitle">Professional <span class="highlight">online translator</span></h1>
-        <p class="hero-subtitle" data-key="heroSub">Fast and accurate translations of documents, video and web pages.</p>
+        <h1 class="hero-title">Professional <span class="highlight">online translator</span></h1>
+        <p class="hero-subtitle">Fast and accurate translations of, documents, video and web pages.</p>
       </div>
     </div>
   </section>
@@ -61,17 +52,17 @@
   <section id="services" class="features">
     <div class="container">
       <div class="section-header">
-        <h2 data-key="whyUs">Why choose us</h2>
-        <p data-key="whySub">Advanced technologies and the net of native specialists</p>
+        <h2>Why choose us</h2>
+        <p>Advanced technologies and the net of native spetialists</p>
       </div>
       <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3 data-key="instant">Instant translation</h3><p data-key="instantSub">Get translations in real time without delays</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3 data-key="security">Security</h3><p data-key="securitySub">Your data is protected by modern encryption protocols</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-mobile-alt"></i></div><h3 data-key="mobile">Mobile friendly</h3><p data-key="mobileSub">Convenient access to translations from any device</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3 data-key="doc">Document translation</h3><p data-key="docSub">We support all file formats</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-language"></i></div><h3 data-key="site">Websites and video localization</h3><p data-key="siteSub">Localization for websites, subtitles and voice-over for video</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-concierge-bell"></i></div><h3 data-key="concierge">Concierge service</h3><p data-key="conciergeSub">Personal manager for urgent tasks and turnkey support</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3 data-key="delivery">Documents delivery from door to door</h3><p data-key="deliverySub">Courier delivery of translated and notarized documents to your address</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3>Instant translation</h3><p>Get translations in real time without delays</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>Security</h3><p>Your data is protected by modern encryption protocols</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-mobile-alt"></i></div><h3>Mobile friendly</h3><p>Convenient access to translations from any device</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3>Document translation</h3><p>We support all file formats</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-language"></i></div><h3>Websites and video localization</h3><p>Localization for websites, subtitles and voice‑over for video</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-concierge-bell"></i></div><h3>Concierge service</h3><p>Personal manager for urgent tasks and turnkey support</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3>Documents delivery from door to door</h3><p>Courier delivery of translated and notarized documents to your address</p></div>
       </div>
     </div>
   </section>
@@ -80,13 +71,13 @@
     <div class="container">
       <div class="contact-content">
         <div class="contact-info">
-          <h2 data-key="contactTitle">Contact us</h2>
-          <p data-key="contactSub">Have questions? Our team is ready to help with any translation request.</p>
+          <h2>Contact us</h2>
+          <p>Have questions? Our team is ready to help with any translation request.</p>
           <div class="contact-details">
-            <div class="contact-item"><i class="fas fa-envelope"></i><div><h4 data-key="emailLabel">Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
-            <div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4 data-key="whatsappLabel">WhatsApp and phone number</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125-10-25</a></p></div></div>
-            <div class="contact-item"><i class="fas fa-qrcode"></i><div><h4 data-key="wechatLabel">WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
-            <div class="contact-item"><i class="fas fa-clock"></i><div><h4 data-key="hoursLabel">Working hours</h4><p>Online 24/7</p></div></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><div><h4>Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
+            <div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4>WhatsApp and phone number</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125‑10‑25</a></p></div></div>
+            <div class="contact-item"><i class="fas fa-qrcode"></i><div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
+            <div class="contact-item"><i class="fas fa-clock"></i><div><h4>Working hours</h4><p>Online 24/7</p></div></div>
           </div>
         </div>
         <div class="contact-form">
@@ -95,7 +86,7 @@
             <div class="form-group"><input type="text" id="subject" placeholder="Subject" required></div>
             <div class="form-group"><textarea id="message" placeholder="Your message" rows="5" required></textarea></div>
             <div class="form-group"><input type="file" id="attachment" multiple></div>
-            <button type="submit" class="btn btn-primary btn-full" data-key="sendBtn">Send message</button>
+            <button type="submit" class="btn btn-primary btn-full">Send message</button>
           </form>
         </div>
       </div>
@@ -105,8 +96,8 @@
   <footer class="footer">
     <div class="container footer-flex">
       <div class="footer-left">
-        <div class="logo"><i class="fas fa-language"></i><span data-key="footerTitle">Translation Service</span><span class="footer-tagline-inline" data-key="footerTagline">We translate people</span></div>
-        <p data-key="footerDesc">Professional translation and localization services: documents, websites, video. Fast and accurate.</p>
+        <div class="logo"><i class="fas fa-language"></i><span>Translation Service</span><span class="footer-tagline-inline">We translate people</span></div>
+        <p>Professional translation and localization services: documents, websites, video. Fast and accurate.</p>
       </div>
       <div class="footer-right">
         <a href="feedback.html" class="btn btn-primary btn-feedback">Feedback</a>
@@ -118,14 +109,10 @@
     <div class="footer-bottom"><p>2025</p></div>
   </footer>
 
-  <!-- ЯЗЫКИ + МУЗЫКА -->
   <script>
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
-    const langMenu = document.getElementById('langMenu');
     let canPlay = false;
-
-    // Музыка
     function unlockAndPlay() {
       if (canPlay) return;
       canPlay = true;
@@ -133,85 +120,10 @@
       audio.play().catch(() => {});
     }
     document.body.addEventListener('click', unlockAndPlay, { once: true });
-
-    // Переводы
-    const translations = {
-      en: {
-        navHome: "Home", navServices: "Services", navContact: "Contact us",
-        heroTitle: "Professional <span class=\"highlight\">online translator</span>",
-        heroSub: "Fast and accurate translations of documents, video and web pages.",
-        whyUs: "Why choose us",
-        whySub: "Advanced technologies and the net of native specialists",
-        instant: "Instant translation", instantSub: "Get translations in real time without delays",
-        security: "Security", securitySub: "Your data is protected by modern encryption protocols",
-        mobile: "Mobile friendly", mobileSub: "Convenient access to translations from any device",
-        doc: "Document translation", docSub: "We support all file formats",
-        site: "Websites and video localization", siteSub: "Localization for websites, subtitles and voice-over for video",
-        concierge: "Concierge service", conciergeSub: "Personal manager for urgent tasks and turnkey support",
-        delivery: "Documents delivery from door to door", deliverySub: "Courier delivery of translated and notarized documents to your address",
-        contactTitle: "Contact us", contactSub: "Have questions? Our team is ready to help with any translation request.",
-        emailLabel: "Email", whatsappLabel: "WhatsApp and phone number", wechatLabel: "WeChat", hoursLabel: "Working hours",
-        sendBtn: "Send message",
-        footerTitle: "Translation Service", footerTagline: "We translate people",
-        footerDesc: "Professional translation and localization services: documents, websites, video. Fast and accurate."
-      },
-      ru: {
-        navHome: "Главная", navServices: "Услуги", navContact: "Связаться",
-        heroTitle: "Профессиональный <span class=\"highlight\">онлайн-переводчик</span>",
-        heroSub: "Быстрый и точный перевод документов, видео и веб-страниц.",
-        whyUs: "Почему выбирают нас",
-        whySub: "Передовые технологии и сеть носителей языка",
-        instant: "Мгновенный перевод", instantSub: "Получайте перевод сразу — без ожидания",
-        security: "Безопасность", securitySub: "Ваши данные защищены современным шифрованием",
-        mobile: "Адаптивность", mobileSub: "Удобный доступ с любого устройства",
-        doc: "Перевод документов", docSub: "Поддерживаем все форматы файлов",
-        site: "Локализация сайтов и видео", siteSub: "Субтитры, озвучка, перевод сайтов",
-        concierge: "Консьерж-сервис", conciergeSub: "Личный менеджер и поддержка под ключ",
-        delivery: "Доставка от двери до двери", deliverySub: "Курьер привезёт нотариальный перевод",
-        contactTitle: "Связаться с нами", contactSub: "Есть вопросы? Поможем с любым переводом.",
-        emailLabel: "Почта", whatsappLabel: "WhatsApp и телефон", wechatLabel: "WeChat", hoursLabel: "Режим работы",
-        sendBtn: "Отправить",
-        footerTitle: "Служба переводов", footerTagline: "Мы переводим людей",
-        footerDesc: "Профессиональный перевод и локализация: документы, сайты, видео. Быстро и точно."
-      }
-      // сюда просто добавляешь de, es, zh, ar — и кнопки в меню
-    };
-
-    let currentLang = 'en';
-
-    function applyLang(lang) {
-      currentLang = lang;
-      document.querySelectorAll('[data-key]').forEach(el => {
-        const key = el.getAttribute('data-key');
-        if (translations[lang][key]) {
-          el.innerHTML = translations[lang][key];
-        }
-      });
-      document.documentElement.lang = lang;
-    }
-
-    // Клик по глобусу — показать/скрыть меню языков
-    globe.addEventListener('click', (e) => {
-      e.stopPropagation();
+    globe.addEventListener('click', () => {
       unlockAndPlay();
-      langMenu.style.display = langMenu.style.display === 'block' ? 'none' : 'block';
+      audio.paused ? audio.play() : audio.pause();
     });
-
-    // Выбор языка
-    document.querySelectorAll('#langMenu button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        applyLang(btn.getAttribute('data-lang'));
-        langMenu.style.display = 'none';
-      });
-    });
-
-    // Клик вне меню — закрыть
-    document.addEventListener('click', () => {
-      langMenu.style.display = 'none';
-    });
-
-    // Инициализация
-    applyLang('en');
   </script>
   <script src="script.js?v=4"></script>
 </body>
