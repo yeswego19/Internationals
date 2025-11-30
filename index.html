@@ -16,85 +16,43 @@
     .btn-feedback{padding:10px 20px;background:#0066ff;color:#fff;text-decoration:none;border-radius:5px}
     .footer-bottom{text-align:center;margin-top:15px;font-size:15px;color:#888}
     .social h4{display:none}
-    
-    /* Выпадающий список языков */
-    .language-dropdown {
-      position: fixed;
-      top: 105px;
-      right: 20px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-      padding: 8px 0;
-      display: none;
-      z-index: 1099;
-      min-width: 180px;
+
+    /* Глобус всегда на виду */
+    .music-player{position:fixed;top:15px;right:15px;z-index:9999}
+    #musicToggle{width:56px;height:56px;cursor:pointer}
+
+    /* Выпадающее меню языков */
+    #languageDropdown{
+      position:fixed;top:80px;right:15px;background:#fff;
+      border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.18);
+      padding:12px 0;min-width:200px;display:none;z-index:9999;
     }
-    .language-dropdown.show {
-      display: block;
-      animation: slideDown 0.3s ease;
+    #languageDropdown.show{display:block;animation:slideDown .3s ease}
+    @keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+    .language-option{
+      padding:12px 24px;cursor:pointer;display:flex;align-items:center;gap:12px;
+      font-size:16px;transition:.2s;font-weight:500;
     }
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .language-option {
-      padding: 12px 20px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: background 0.2s;
-      font-size: 15px;
-      color: #1f2937;
-    }
-    .language-option:hover {
-      background: #f3f4f6;
-    }
-    .language-option.active {
-      background: #e0e7ff;
-      color: #1f4ba5;
-      font-weight: 600;
-    }
-    .language-flag {
-      font-size: 20px;
-    }
+    .language-option:hover{background:#f0f7ff}
+    .language-option.active{background:#e0e7ff;color:#0066ff;font-weight:600}
+    .language-flag{font-size:22px}
   </style>
 </head>
 <body>
+
   <audio id="bgMusic" preload="metadata" loop></audio>
-  
-  <!-- Глобус с выпадающим списком -->
+
   <div class="music-player">
     <div class="music-player-toggle globe" id="musicToggle"></div>
   </div>
-  
-  <!-- Выпадающий список языков -->
-  <div class="language-dropdown" id="languageDropdown">
-    <div class="language-option active" data-lang="ru">
-      <span class="language-flag">🇷🇺</span>
-      <span>Русский</span>
-    </div>
-    <div class="language-option" data-lang="en">
-      <span class="language-flag">🇬🇧</span>
-      <span>English</span>
-    </div>
-    <div class="language-option" data-lang="de">
-      <span class="language-flag">🇩🇪</span>
-      <span>Deutsch</span>
-    </div>
-    <div class="language-option" data-lang="es">
-      <span class="language-flag">🇪🇸</span>
-      <span>Español</span>
-    </div>
-    <div class="language-option" data-lang="pt">
-      <span class="language-flag">🇵🇹</span>
-      <span>Português</span>
-    </div>
-    <div class="language-option" data-lang="zh">
-      <span class="language-flag">🇨🇳</span>
-      <span>中文</span>
-    </div>
+
+  <div id="languageDropdown">
+    <div class="language-option active" data-lang="ru"><span class="language-flag">RU</span><span>Русский</span></div>
+    <div class="language-option" data-lang="en"><span class="language-flag">EN</span><span>English</span></div>
+    <div class="language-option" data-lang="de"><span class="language-flag">DE</span><span>Deutsch</span></div>
+    <div class="language-option" data-lang="es"><span class="language-flag">ES</span><span>Español</span></div>
+    <div class="language-option" data-lang="pt"><span class="language-flag">PT</span><span>Português</span></div>
+    <div class="language-option" data-lang="zh"><span class="language-flag">中文</span><span>中文</span></div>
   </div>
 
   <header class="header" id="header">
@@ -114,8 +72,8 @@
   <section id="home" class="hero">
     <div class="hero-container">
       <div class="hero-content">
-        <h1 class="hero-title"><span data-translate="hero_title_1">Professional</span> <span class="highlight" data-translate="hero_title_2">online translator</span></h1>
-        <p class="hero-subtitle" data-translate="hero_subtitle">Fast and accurate translations of, documents, video and web pages.</p>
+        <h1 class="hero-title"><span data-translate="hero_title_1">Профессиональный</span> <span class="highlight" data-translate="hero_title_2">онлайн-переводчик</span></h1>
+        <p class="hero-subtitle" data-translate="hero_subtitle">Быстрые и точные переводы документов, видео и веб-страниц.</p>
       </div>
     </div>
   </section>
@@ -123,17 +81,17 @@
   <section id="services" class="features">
     <div class="container">
       <div class="section-header">
-        <h2 data-translate="services_title">Why choose us</h2>
-        <p data-translate="services_subtitle">Advanced technologies and an intuitive interface for high‑quality translations</p>
+        <h2 data-translate="services_title">Почему выбирают нас</h2>
+        <p data-translate="services_subtitle">Передовые технологии и интуитивный интерфейс для качественных переводов</p>
       </div>
       <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h3 data-translate="service_1_title">Instant translation</h3><p data-translate="service_1_desc">Get translations in real time without delays or waiting</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3 data-translate="service_2_title">Security</h3><p data-translate="service_2_desc">Your data is protected with modern encryption protocols</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-mobile-alt"></i></div><h3 data-translate="service_3_title">Mobile friendly</h3><p data-translate="service_3_desc">Convenient access to translations from any device</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3 data-translate="service_4_title">Document translation</h3><p data-translate="service_4_desc">We support PDF, DOC, TXT and other file formats</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-language"></i></div><h3 data-translate="service_5_title">Websites and video localization</h3><p data-translate="service_5_desc">Localization for websites, subtitles and voice‑over for video</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-concierge-bell"></i></div><h3 data-translate="service_6_title">Concierge service</h3><p data-translate="service_6_desc">Personal manager for urgent tasks and turnkey support</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3 data-translate="service_7_title">Documents delivery from door to door</h3><p data-translate="service_7_desc">Courier delivery of translated and notarized documents to your address</p></div>
+        <div class="feature-card"><div class="feature-icon">Bolt</div><h3 data-translate="service_1_title">Мгновенный перевод</h3><p data-translate="service_1_desc">Получайте переводы в реальном времени без задержек</p></div>
+        <div class="feature-card"><div class="feature-icon">Shield</div><h3 data-translate="service_2_title">Безопасность</h3><p data-translate="service_2_desc">Ваши данные защищены современными протоколами шифрования</p></div>
+        <div class="feature-card"><div class="feature-icon">Mobile</div><h3 data-translate="service_3_title">Мобильная версия</h3><p data-translate="service_3_desc">Удобный доступ к переводам с любого устройства</p></div>
+        <div class="feature-card"><div class="feature-icon">File</div><h3 data-translate="service_4_title">Перевод документов</h3><p data-translate="service_4_desc">Поддерживаем PDF, DOC, TXT и другие форматы файлов</p></div>
+        <div class="feature-card"><div class="feature-icon">Language</div><h3 data-translate="service_5_title">Локализация сайтов и видео</h3><p data-translate="service_5_desc">Локализация сайтов, субтитры и озвучка видео</p></div>
+        <div class="feature-card"><div class="feature-icon">Bell</div><h3 data-translate="service_6_title">Услуга консьержа</h3><p data-translate="service_6_desc">Личный менеджер для срочных задач и комплексной поддержки</p></div>
+        <div class="feature-card"><div class="feature-icon">Truck</div><h3 data-translate="service_7_title">Доставка документов</h3><p data-translate="service_7_desc">Курьерская доставка переведенных документов по адресу</p></div>
       </div>
     </div>
   </section>
@@ -142,22 +100,22 @@
     <div class="container">
       <div class="contact-content">
         <div class="contact-info">
-          <h2 data-translate="contact_title">Contact us</h2>
-          <p data-translate="contact_subtitle">Have questions? Our team is ready to help with any translation request.</p>
+          <h2 data-translate="contact_title">Связаться с нами</h2>
+          <p data-translate="contact_subtitle">Есть вопросы? Наша команда готова помочь с любым запросом на перевод.</p>
           <div class="contact-details">
-            <div class="contact-item"><i class="fas fa-envelope"></i><div><h4 data-translate="contact_email">Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
-            <div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4 data-translate="contact_whatsapp">WhatsApp and phone number</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125‑10‑25</a></p></div></div>
-            <div class="contact-item"><i class="fas fa-qrcode"></i><div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
-            <div class="contact-item"><i class="fas fa-clock"></i><div><h4 data-translate="contact_hours">Working hours</h4><p data-translate="contact_hours_text">Online 24/7</p></div></div>
+            <div class="contact-item">Envelope<div><h4 data-translate="contact_email">Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
+            <div class="contact-item">WhatsApp<div><h4 data-translate="contact_whatsapp">WhatsApp и телефон</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125‑10‑25</a></p></div></div>
+            <div class="contact-item">QR<div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
+            <div class="contact-item">Clock<div><h4 data-translate="contact_hours">Часы работы</h4><p data-translate="contact_hours_text">Онлайн 24/7</p></div></div>
           </div>
         </div>
         <div class="contact-form">
           <form id="contactForm" enctype="multipart/form-data">
             <div class="form-group"><input type="email" id="email" data-translate-placeholder="form_email" placeholder="Email" required></div>
-            <div class="form-group"><input type="text" id="subject" data-translate-placeholder="form_subject" placeholder="Subject" required></div>
-            <div class="form-group"><textarea id="message" data-translate-placeholder="form_message" placeholder="Your message" rows="5" required></textarea></div>
+            <div class="form-group"><input type="text" id="subject" data-translate-placeholder="form_subject" placeholder="Тема" required></div>
+            <div class="form-group"><textarea id="message" data-translate-placeholder="form_message" placeholder="Ваше сообщение" rows="5" required></textarea></div>
             <div class="form-group"><input type="file" id="attachment" multiple></div>
-            <button type="submit" class="btn btn-primary btn-full" data-translate="form_submit">Send message</button>
+            <button type="submit" class="btn btn-primary btn-full" data-translate="form_submit">Отправить сообщение</button>
           </form>
         </div>
       </div>
@@ -167,11 +125,11 @@
   <footer class="footer">
     <div class="container footer-flex">
       <div class="footer-left">
-        <div class="logo"><i class="fas fa-language"></i><span data-translate="footer_service">Translation Service</span><span class="footer-tagline-inline" data-translate="footer_tagline">We translate people</span></div>
-        <p data-translate="footer_desc">Professional translation and localization services: documents, websites, video. Fast and accurate.</p>
+        <div class="logo">Language<span data-translate="footer_service">Служба переводов</span><span class="footer-tagline-inline" data-translate="footer_tagline">Мы переводим людей</span></div>
+        <p data-translate="footer_desc">Профессиональные услуги перевода и локализации: документы, сайты, видео. Быстро и точно.</p>
       </div>
       <div class="footer-right">
-        <a href="feedback.html" class="btn btn-primary btn-feedback" data-translate="feedback_btn">Feedback</a>
+        <a href="feedback.html" class="btn btn-primary btn-feedback" data-translate="feedback_btn">Отзывы</a>
         <div class="footer-section social">
           <a href="https://youtube.com/@internationalspro" target="_blank"><img src="https://www.youtube.com/favicon.ico" alt="YouTube" width="113" height="113"></a>
         </div>
@@ -181,308 +139,73 @@
   </footer>
 
   <script>
-    // Музыка
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
-    const languageDropdown = document.getElementById('languageDropdown');
+    const dropdown = document.getElementById('languageDropdown');
     let canPlay = false;
-    
-    function unlockAndPlay() {
+
+    // Музыка — первый клик по странице
+    document.body.addEventListener('click', () => {
       if (canPlay) return;
       canPlay = true;
       audio.src = 'Calli.mp3';
+      audio.volume = 0.3;
       audio.play().catch(() => {});
-    }
-    document.body.addEventListener('click', unlockAndPlay, { once: true });
-    
-    // Переключение языка при клике на глобус
-    globe.addEventListener('click', (e) => {
+    }, { once: true });
+
+    // Глобус открывает только языки
+    globe.addEventListener('click', e => {
       e.stopPropagation();
-      languageDropdown.classList.toggle('show');
+      dropdown.classList.toggle('show');
     });
-    
-    // Закрытие списка при клике вне его
-    document.addEventListener('click', (e) => {
-      if (!languageDropdown.contains(e.target) && e.target !== globe) {
-        languageDropdown.classList.remove('show');
+
+    document.addEventListener('click', e => {
+      if (!dropdown.contains(e.target) && e.target !== globe) {
+        dropdown.classList.remove('show');
       }
     });
-    
-    // Переводы
+
+    // Все переводы
     const translations = {
-      ru: {
-        nav_home: 'Главная',
-        nav_services: 'Услуги',
-        nav_contact: 'Связаться с нами',
-        hero_title_1: 'Профессиональный',
-        hero_title_2: 'онлайн-переводчик',
-        hero_subtitle: 'Быстрые и точные переводы документов, видео и веб-страниц.',
-        services_title: 'Почему выбирают нас',
-        services_subtitle: 'Передовые технологии и интуитивный интерфейс для качественных переводов',
-        service_1_title: 'Мгновенный перевод',
-        service_1_desc: 'Получайте переводы в реальном времени без задержек',
-        service_2_title: 'Безопасность',
-        service_2_desc: 'Ваши данные защищены современными протоколами шифрования',
-        service_3_title: 'Мобильная версия',
-        service_3_desc: 'Удобный доступ к переводам с любого устройства',
-        service_4_title: 'Перевод документов',
-        service_4_desc: 'Поддерживаем PDF, DOC, TXT и другие форматы файлов',
-        service_5_title: 'Локализация сайтов и видео',
-        service_5_desc: 'Локализация сайтов, субтитры и озвучка видео',
-        service_6_title: 'Услуга консьержа',
-        service_6_desc: 'Личный менеджер для срочных задач и комплексной поддержки',
-        service_7_title: 'Доставка документов',
-        service_7_desc: 'Курьерская доставка переведенных документов по адресу',
-        contact_title: 'Связаться с нами',
-        contact_subtitle: 'Есть вопросы? Наша команда готова помочь с любым запросом на перевод.',
-        contact_email: 'Email',
-        contact_whatsapp: 'WhatsApp и телефон',
-        contact_hours: 'Часы работы',
-        contact_hours_text: 'Онлайн 24/7',
-        form_email: 'Email',
-        form_subject: 'Тема',
-        form_message: 'Ваше сообщение',
-        form_submit: 'Отправить сообщение',
-        footer_service: 'Служба переводов',
-        footer_tagline: 'Мы переводим людей',
-        footer_desc: 'Профессиональные услуги перевода и локализации: документы, сайты, видео. Быстро и точно.',
-        feedback_btn: 'Отзывы'
-      },
-      en: {
-        nav_home: 'Home',
-        nav_services: 'Services',
-        nav_contact: 'Contact us',
-        hero_title_1: 'Professional',
-        hero_title_2: 'online translator',
-        hero_subtitle: 'Fast and accurate translations of documents, video and web pages.',
-        services_title: 'Why choose us',
-        services_subtitle: 'Advanced technologies and an intuitive interface for high‑quality translations',
-        service_1_title: 'Instant translation',
-        service_1_desc: 'Get translations in real time without delays or waiting',
-        service_2_title: 'Security',
-        service_2_desc: 'Your data is protected with modern encryption protocols',
-        service_3_title: 'Mobile friendly',
-        service_3_desc: 'Convenient access to translations from any device',
-        service_4_title: 'Document translation',
-        service_4_desc: 'We support PDF, DOC, TXT and other file formats',
-        service_5_title: 'Websites and video localization',
-        service_5_desc: 'Localization for websites, subtitles and voice‑over for video',
-        service_6_title: 'Concierge service',
-        service_6_desc: 'Personal manager for urgent tasks and turnkey support',
-        service_7_title: 'Documents delivery from door to door',
-        service_7_desc: 'Courier delivery of translated and notarized documents to your address',
-        contact_title: 'Contact us',
-        contact_subtitle: 'Have questions? Our team is ready to help with any translation request.',
-        contact_email: 'Email',
-        contact_whatsapp: 'WhatsApp and phone number',
-        contact_hours: 'Working hours',
-        contact_hours_text: 'Online 24/7',
-        form_email: 'Email',
-        form_subject: 'Subject',
-        form_message: 'Your message',
-        form_submit: 'Send message',
-        footer_service: 'Translation Service',
-        footer_tagline: 'We translate people',
-        footer_desc: 'Professional translation and localization services: documents, websites, video. Fast and accurate.',
-        feedback_btn: 'Feedback'
-      },
-      de: {
-        nav_home: 'Startseite',
-        nav_services: 'Dienstleistungen',
-        nav_contact: 'Kontakt',
-        hero_title_1: 'Professioneller',
-        hero_title_2: 'Online-Übersetzer',
-        hero_subtitle: 'Schnelle und genaue Übersetzungen von Dokumenten, Videos und Webseiten.',
-        services_title: 'Warum uns wählen',
-        services_subtitle: 'Fortschrittliche Technologien und intuitive Benutzeroberfläche für qualitativ hochwertige Übersetzungen',
-        service_1_title: 'Sofortübersetzung',
-        service_1_desc: 'Erhalten Sie Übersetzungen in Echtzeit ohne Verzögerungen',
-        service_2_title: 'Sicherheit',
-        service_2_desc: 'Ihre Daten sind durch moderne Verschlüsselungsprotokolle geschützt',
-        service_3_title: 'Mobilfreundlich',
-        service_3_desc: 'Bequemer Zugang zu Übersetzungen von jedem Gerät',
-        service_4_title: 'Dokumentenübersetzung',
-        service_4_desc: 'Wir unterstützen PDF, DOC, TXT und andere Dateiformate',
-        service_5_title: 'Website- und Video-Lokalisierung',
-        service_5_desc: 'Lokalisierung für Websites, Untertitel und Sprachaufnahmen für Videos',
-        service_6_title: 'Concierge-Service',
-        service_6_desc: 'Persönlicher Manager für dringende Aufgaben und umfassende Unterstützung',
-        service_7_title: 'Dokumentenlieferung von Tür zu Tür',
-        service_7_desc: 'Kurierlieferung von übersetzten und beglaubigten Dokumenten an Ihre Adresse',
-        contact_title: 'Kontaktieren Sie uns',
-        contact_subtitle: 'Haben Sie Fragen? Unser Team ist bereit, bei jeder Übersetzungsanfrage zu helfen.',
-        contact_email: 'E-Mail',
-        contact_whatsapp: 'WhatsApp und Telefonnummer',
-        contact_hours: 'Arbeitszeiten',
-        contact_hours_text: 'Online 24/7',
-        form_email: 'E-Mail',
-        form_subject: 'Betreff',
-        form_message: 'Ihre Nachricht',
-        form_submit: 'Nachricht senden',
-        footer_service: 'Übersetzungsdienst',
-        footer_tagline: 'Wir übersetzen Menschen',
-        footer_desc: 'Professionelle Übersetzungs- und Lokalisierungsdienste: Dokumente, Websites, Videos. Schnell und genau.',
-        feedback_btn: 'Rückmeldung'
-      },
-      es: {
-        nav_home: 'Inicio',
-        nav_services: 'Servicios',
-        nav_contact: 'Contacto',
-        hero_title_1: 'Traductor',
-        hero_title_2: 'en línea profesional',
-        hero_subtitle: 'Traducciones rápidas y precisas de documentos, videos y páginas web.',
-        services_title: 'Por qué elegirnos',
-        services_subtitle: 'Tecnologías avanzadas e interfaz intuitiva para traducciones de alta calidad',
-        service_1_title: 'Traducción instantánea',
-        service_1_desc: 'Obtenga traducciones en tiempo real sin demoras ni esperas',
-        service_2_title: 'Seguridad',
-        service_2_desc: 'Sus datos están protegidos con protocolos de cifrado modernos',
-        service_3_title: 'Compatible con dispositivos móviles',
-        service_3_desc: 'Acceso conveniente a traducciones desde cualquier dispositivo',
-        service_4_title: 'Traducción de documentos',
-        service_4_desc: 'Admitimos PDF, DOC, TXT y otros formatos de archivo',
-        service_5_title: 'Localización de sitios web y videos',
-        service_5_desc: 'Localización de sitios web, subtítulos y doblaje de videos',
-        service_6_title: 'Servicio de conserjería',
-        service_6_desc: 'Gerente personal para tareas urgentes y soporte integral',
-        service_7_title: 'Entrega de documentos de puerta a puerta',
-        service_7_desc: 'Entrega por mensajería de documentos traducidos y notarizados a su dirección',
-        contact_title: 'Contáctenos',
-        contact_subtitle: '¿Tiene preguntas? Nuestro equipo está listo para ayudar con cualquier solicitud de traducción.',
-        contact_email: 'Correo electrónico',
-        contact_whatsapp: 'WhatsApp y número de teléfono',
-        contact_hours: 'Horario de trabajo',
-        contact_hours_text: 'En línea 24/7',
-        form_email: 'Correo electrónico',
-        form_subject: 'Asunto',
-        form_message: 'Su mensaje',
-        form_submit: 'Enviar mensaje',
-        footer_service: 'Servicio de traducción',
-        footer_tagline: 'Traducimos personas',
-        footer_desc: 'Servicios profesionales de traducción y localización: documentos, sitios web, videos. Rápido y preciso.',
-        feedback_btn: 'Comentarios'
-      },
-      pt: {
-        nav_home: 'Início',
-        nav_services: 'Serviços',
-        nav_contact: 'Contato',
-        hero_title_1: 'Tradutor',
-        hero_title_2: 'online profissional',
-        hero_subtitle: 'Traduções rápidas e precisas de documentos, vídeos e páginas da web.',
-        services_title: 'Por que nos escolher',
-        services_subtitle: 'Tecnologias avançadas e interface intuitiva para traduções de alta qualidade',
-        service_1_title: 'Tradução instantânea',
-        service_1_desc: 'Obtenha traduções em tempo real sem atrasos ou esperas',
-        service_2_title: 'Segurança',
-        service_2_desc: 'Seus dados são protegidos com protocolos de criptografia modernos',
-        service_3_title: 'Compatível com dispositivos móveis',
-        service_3_desc: 'Acesso conveniente a traduções de qualquer dispositivo',
-        service_4_title: 'Tradução de documentos',
-        service_4_desc: 'Suportamos PDF, DOC, TXT e outros formatos de arquivo',
-        service_5_title: 'Localização de sites e vídeos',
-        service_5_desc: 'Localização de sites, legendas e dublagem de vídeos',
-        service_6_title: 'Serviço de concierge',
-        service_6_desc: 'Gerente pessoal para tarefas urgentes e suporte abrangente',
-        service_7_title: 'Entrega de documentos porta a porta',
-        service_7_desc: 'Entrega por correio de documentos traduzidos e notarizados em seu endereço',
-        contact_title: 'Entre em contato',
-        contact_subtitle: 'Tem perguntas? Nossa equipe está pronta para ajudar com qualquer solicitação de tradução.',
-        contact_email: 'E-mail',
-        contact_whatsapp: 'WhatsApp e número de telefone',
-        contact_hours: 'Horário de trabalho',
-        contact_hours_text: 'Online 24/7',
-        form_email: 'E-mail',
-        form_subject: 'Assunto',
-        form_message: 'Sua mensagem',
-        form_submit: 'Enviar mensagem',
-        footer_service: 'Serviço de tradução',
-        footer_tagline: 'Nós traduzimos pessoas',
-        footer_desc: 'Serviços profissionais de tradução e localização: documentos, sites, vídeos. Rápido e preciso.',
-        feedback_btn: 'Comentários'
-      },
-      zh: {
-        nav_home: '主页',
-        nav_services: '服务',
-        nav_contact: '联系我们',
-        hero_title_1: '专业',
-        hero_title_2: '在线翻译',
-        hero_subtitle: '快速准确翻译文档、视频和网页。',
-        services_title: '为什么选择我们',
-        services_subtitle: '先进技术和直观界面，提供高质量翻译',
-        service_1_title: '即时翻译',
-        service_1_desc: '实时获取翻译，无延迟无等待',
-        service_2_title: '安全',
-        service_2_desc: '您的数据受现代加密协议保护',
-        service_3_title: '移动友好',
-        service_3_desc: '从任何设备方便访问翻译',
-        service_4_title: '文档翻译',
-        service_4_desc: '我们支持PDF、DOC、TXT和其他文件格式',
-        service_5_title: '网站和视频本地化',
-        service_5_desc: '网站本地化、字幕和视频配音',
-        service_6_title: '礼宾服务',
-        service_6_desc: '专属经理处理紧急任务和全面支持',
-        service_7_title: '文档门到门配送',
-        service_7_desc: '翻译和公证文档快递到您的地址',
-        contact_title: '联系我们',
-        contact_subtitle: '有问题吗？我们的团队随时准备协助任何翻译请求。',
-        contact_email: '电子邮件',
-        contact_whatsapp: 'WhatsApp和电话号码',
-        contact_hours: '工作时间',
-        contact_hours_text: '24/7在线',
-        form_email: '电子邮件',
-        form_subject: '主题',
-        form_message: '您的留言',
-        form_submit: '发送消息',
-        footer_service: '翻译服务',
-        footer_tagline: '我们翻译人',
-        footer_desc: '专业翻译和本地化服务：文档、网站、视频。快速准确。',
-        feedback_btn: '反馈'
-      }
+      ru: {nav_home:"Главная",nav_services:"Услуги",nav_contact:"Связаться с нами",hero_title_1:"Профессиональный",hero_title_2:"онлайн-переводчик",hero_subtitle:"Быстрые и точные переводы документов, видео и веб-страниц.",services_title:"Почему выбирают нас",services_subtitle:"Передовые технологии и интуитивный интерфейс для качественных переводов",service_1_title:"Мгновенный перевод",service_1_desc:"Получайте переводы в реальном времени без задержек",service_2_title:"Безопасность",service_2_desc:"Ваши данные защищены современными протоколами шифрования",service_3_title:"Мобильная версия",service_3_desc:"Удобный доступ к переводам с любого устройства",service_4_title:"Перевод документов",service_4_desc:"Поддерживаем PDF, DOC, TXT и другие форматы файлов",service_5_title:"Локализация сайтов и видео",service_5_desc:"Локализация сайтов, субтитры и озвучка видео",service_6_title:"Услуга консьержа",service_6_desc:"Личный менеджер для срочных задач и комплексной поддержки",service_7_title:"Доставка документов",service_7_desc:"Курьерская доставка переведенных документов по адресу",contact_title:"Связаться с нами",contact_subtitle:"Есть вопросы? Наша команда готова помочь с любым запросом на перевод.",contact_email:"Email",contact_whatsapp:"WhatsApp и телефон",contact_hours:"Часы работы",contact_hours_text:"Онлайн 24/7",form_email:"Email",form_subject:"Тема",form_message:"Ваше сообщение",form_submit:"Отправить сообщение",footer_service:"Служба переводов",footer_tagline:"Мы переводим людей",footer_desc:"Профессиональные услуги перевода и локализации: документы, сайты, видео. Быстро и точно.",feedback_btn:"Отзывы"},
+      en: {nav_home:"Home",nav_services:"Services",nav_contact:"Contact us",hero_title_1:"Professional",hero_title_2:"online translator",hero_subtitle:"Fast and accurate translations of documents, video and web pages.",services_title:"Why choose us",services_subtitle:"Advanced technologies and an intuitive interface for high‑quality translations",service_1_title:"Instant translation",service_1_desc:"Get translations in real time without delays or waiting",service_2_title:"Security",service_2_desc:"Your data is protected with modern encryption protocols",service_3_title:"Mobile friendly",service_3_desc:"Convenient access to translations from any device",service_4_title:"Document translation",service_4_desc:"We support PDF, DOC, TXT and other file formats",service_5_title:"Websites and video localization",service_5_desc:"Localization for websites, subtitles and voice‑over for video",service_6_title:"Concierge service",service_6_desc:"Personal manager for urgent tasks and turnkey support",service_7_title:"Documents delivery from door to door",service_7_desc:"Courier delivery of translated and notarized documents to your address",contact_title:"Contact us",contact_subtitle:"Have questions? Our team is ready to help with any translation request.",contact_email:"Email",contact_whatsapp:"WhatsApp and phone number",contact_hours:"Working hours",contact_hours_text:"Online 24/7",form_email:"Email",form_subject:"Subject",form_message:"Your message",form_submit:"Send message",footer_service:"Translation Service",footer_tagline:"We translate people",footer_desc:"Professional translation and localization services: documents, websites, video. Fast and accurate.",feedback_btn:"Feedback"},
+      de: {nav_home:"Startseite",nav_services:"Dienstleistungen",nav_contact:"Kontakt",hero_title_1:"Professioneller",hero_title_2:"Online-Übersetzer",hero_subtitle:"Schnelle und genaue Übersetzungen von Dokumenten, Videos und Webseiten.",services_title:"Warum uns wählen",services_subtitle:"Fortschrittliche Technologien und intuitive Benutzeroberfläche für qualitativ hochwertige Übersetzungen",service_1_title:"Sofortübersetzung",service_1_desc:"Erhalten Sie Übersetzungen in Echtzeit ohne Verzögerungen",service_2_title:"Sicherheit",service_2_desc:"Ihre Daten sind durch moderne Verschlüsselungsprotokolle geschützt",service_3_title:"Mobilfreundlich",service_3_desc:"Bequemer Zugang zu Übersetzungen von jedem Gerät",service_4_title:"Dokumentenübersetzung",service_4_desc:"Wir unterstützen PDF, DOC, TXT und andere Dateiformate",service_5_title:"Website- und Video-Lokalisierung",service_5_desc:"Lokalisierung für Websites, Untertitel und Sprachaufnahmen für Videos",service_6_title:"Concierge-Service",service_6_desc:"Persönlicher Manager für dringende Aufgaben und umfassende Unterstützung",service_7_title:"Dokumentenlieferung von Tür zu Tür",service_7_desc:"Kurierlieferung von übersetzten und beglaubigten Dokumenten an Ihre Adresse",contact_title:"Kontaktieren Sie uns",contact_subtitle:"Haben Sie Fragen? Unser Team ist bereit, bei jeder Übersetzungsanfrage zu helfen.",contact_email:"E-Mail",contact_whatsapp:"WhatsApp und Telefonnummer",contact_hours:"Arbeitszeiten",contact_hours_text:"Online 24/7",form_email:"E-Mail",form_subject:"Betreff",form_message:"Ihre Nachricht",form_submit:"Nachricht senden",footer_service:"Übersetzungsdienst",footer_tagline:"Wir übersetzen Menschen",footer_desc:"Professionelle Übersetzungs- und Lokalisierungsdienste: Dokumente, Websites, Videos. Schnell und genau.",feedback_btn:"Rückmeldung"},
+      es: {nav_home:"Inicio",nav_services:"Servicios",nav_contact:"Contacto",hero_title_1:"Traductor",hero_title_2:"en línea profesional",hero_subtitle:"Traducciones rápidas y precisas de documentos, videos y páginas web.",services_title:"Por qué elegirnos",services_subtitle:"Tecnologías avanzadas e interfaz intuitiva para traducciones de alta calidad",service_1_title:"Traducción instantánea",service_1_desc:"Obtenga traducciones en tiempo real sin demoras ni esperas",service_2_title:"Seguridad",service_2_desc:"Sus datos están protegidos con protocolos de cifrado modernos",service_3_title:"Compatible con dispositivos móviles",service_3_desc:"Acceso conveniente a traducciones desde cualquier dispositivo",service_4_title:"Traducción de documentos",service_4_desc:"Admitimos PDF, DOC, TXT y otros formatos de archivo",service_5_title:"Localización de sitios web y videos",service_5_desc:"Localización de sitios web, subtítulos y doblaje de videos",service_6_title:"Servicio de conserjería",service_6_desc:"Gerente personal para tareas urgentes y soporte integral",service_7_title:"Entrega de documentos de puerta a puerta",service_7_desc:"Entrega por mensajería de documentos traducidos y notarizados a su dirección",contact_title:"Contáctenos",contact_subtitle:"¿Tiene preguntas? Nuestro equipo está listo para ayudar con cualquier solicitud de traducción.",contact_email:"Correo electrónico",contact_whatsapp:"WhatsApp y número de teléfono",contact_hours:"Horario de trabajo",contact_hours_text:"En línea 24/7",form_email:"Correo electrónico",form_subject:"Asunto",form_message:"Su mensaje",form_submit:"Enviar mensaje",footer_service:"Servicio de traducción",footer_tagline:"Traducimos personas",footer_desc:"Servicios profesionales de traducción y localización: documentos, sitios web, videos. Rápido y preciso.",feedback_btn:"Comentarios"},
+      pt: {nav_home:"Início",nav_services:"Serviços",nav_contact:"Contato",hero_title_1:"Tradutor",hero_title_2:"online profissional",hero_subtitle:"Traduções rápidas e precisas de documentos, vídeos e páginas da web.",services_title:"Por que nos escolher",services_subtitle:"Tecnologias avançadas e interface intuitiva para traduções de alta qualidade",service_1_title:"Tradução instantânea",service_1_desc:"Obtenha traduções em tempo real sem atrasos ou esperas",service_2_title:"Segurança",service_2_desc:"Seus dados são protegidos com protocolos de criptografia modernos",service_3_title:"Compatível com dispositivos móveis",service_3_desc:"Acesso conveniente a traduções de qualquer dispositivo",service_4_title:"Tradução de documentos",service_4_desc:"Suportamos PDF, DOC, TXT e outros formatos de arquivo",service_5_title:"Localização de sites e vídeos",service_5_desc:"Localização de sites, legendas e dublagem de vídeos",service_6_title:"Serviço de concierge",service_6_desc:"Gerente pessoal para tarefas urgentes e suporte abrangente",service_7_title:"Entrega de documentos porta a porta",service_7_desc:"Entrega por correio de documentos traduzidos e notarizados em seu endereço",contact_title:"Entre em contato",contact_subtitle:"Tem perguntas? Nossa equipe está pronta para ajudar com qualquer solicitação de tradução.",contact_email:"E-mail",contact_whatsapp:"WhatsApp e número de telefone",contact_hours:"Horário de trabalho",contact_hours_text:"Online 24/7",form_email:"E-mail",form_subject:"Assunto",form_message:"Sua mensagem",form_submit:"Enviar mensagem",footer_service:"Serviço de tradução",footer_tagline:"Nós traduzimos pessoas",footer_desc:"Serviços profissionais de tradução e localização: documentos, sites, vídeos. Rápido e preciso.",feedback_btn:"Comentários"},
+      zh: {nav_home:"主页",nav_services:"服务",nav_contact:"联系我们",hero_title_1:"专业",hero_title_2:"在线翻译",hero_subtitle:"快速准确翻译文档、视频和网页。",services_title:"为什么选择我们",services_subtitle:"先进技术和直观界面，提供高质量翻译",service_1_title:"即时翻译",service_1_desc:"实时获取翻译，无延迟无等待",service_2_title:"安全",service_2_desc:"您的数据受现代加密协议保护",service_3_title:"移动友好",service_3_desc:"从任何设备方便访问翻译",service_4_title:"文档翻译",service_4_desc:"我们支持PDF、DOC、TXT和其他文件格式",service_5_title:"网站和视频本地化",service_5_desc:"网站本地化、字幕和视频配音",service_6_title:"礼宾服务",service_6_desc:"专属经理处理紧急任务和全面支持",service_7_title:"文档门到门配送",service_7_desc:"翻译和公证文档快递到您的地址",contact_title:"联系我们",contact_subtitle:"有问题吗？我们的团队随时准备协助任何翻译请求。",contact_email:"电子邮件",contact_whatsapp:"WhatsApp和电话号码",contact_hours:"工作时间",contact_hours_text:"24/7在线",form_email:"电子邮件",form_subject:"主题",form_message:"您的留言",form_submit:"发送消息",footer_service:"翻译服务",footer_tagline:"我们翻译人",footer_desc:"专业翻译和本地化服务：文档、网站、视频。快速准确。",feedback_btn:"反馈"}
     };
-    
-    // Сохранение и загрузка языка
+
     let currentLang = localStorage.getItem('language') || 'ru';
-    
+
     function setLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('language', lang);
       document.documentElement.lang = lang;
-      
-      // Обновление активного языка в списке
+
+      document.querySelectorAll('[data-translate]').forEach(el => {
+        const key = el.dataset.translate;
+        if (translations[lang]?.[key]) el.textContent = translations[lang][key];
+      });
+      document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+        const key = el.dataset.translatePlaceholder;
+        if (translations[lang]?.[key]) el.placeholder = translations[lang][key];
+      });
       document.querySelectorAll('.language-option').forEach(opt => {
         opt.classList.toggle('active', opt.dataset.lang === lang);
       });
-      
-      // Перевод текстов
-      document.querySelectorAll('[data-translate]').forEach(el => {
-        const key = el.getAttribute('data-translate');
-        if (translations[lang] && translations[lang][key]) {
-          el.textContent = translations[lang][key];
-        }
-      });
-      
-      // Перевод placeholder'ов
-      document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-translate-placeholder');
-        if (translations[lang] && translations[lang][key]) {
-          el.placeholder = translations[lang][key];
-        }
-      });
-      
-      languageDropdown.classList.remove('show');
+      dropdown.classList.remove('show');
     }
-    
-    // Обработка кликов по языкам
-    document.querySelectorAll('.language-option').forEach(option => {
-      option.addEventListener('click', (e) => {
+
+    document.querySelectorAll('.language-option').forEach(opt => {
+      opt.addEventListener('click', e => {
         e.stopPropagation();
-        setLanguage(option.dataset.lang);
+        setLanguage(opt.dataset.lang);
       });
     });
-    
-    // Установка языка при загрузке
+
     setLanguage(currentLang);
   </script>
+
   <script src="script.js?v=5"></script>
 </body>
 </html>
