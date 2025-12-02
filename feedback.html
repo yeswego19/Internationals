@@ -4,16 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feedback - Internationals Translation Service</title>
+
+  <!-- ПРЕДЗАГРУЗКА ФОНА → УБИРАЕТ БЕЛЫЙ ЭКРАН -->
+  <link rel="preload" as="image" href="feedback-bg.jpg">
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <style>
-    body{
+    /* --- Плавное появление страницы, пока фон подгружается --- */
+    body {
+      opacity: 0;
+      transition: opacity 0.4s ease-in-out;
+
       font-family:'Inter',sans-serif;
       margin:0;padding:0;
-      background:url('feedback-bg.jpg') top center no-repeat;
+
+      background: #000 url('feedback-bg.jpg') top center no-repeat;
       background-size:100% auto;
       min-height:100vh;
     }
+    body.loaded {
+      opacity: 1;
+    }
+
     .feedback-container{
       max-width:700px;margin:50px auto;background:transparent;padding:30px;
       border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.25);
@@ -23,7 +37,6 @@
     .close-btn{cursor:pointer;font-size:28px;font-weight:bold;border:none;background:none;color:#fff}
     .close-btn:hover{color:#ccc}
 
-    /* ←←← ТОЛЬКО ЭТО ИЗМЕНИЛ →→→ */
     .feedback-form input,
     .feedback-form textarea{
       width:100%;padding:12px;margin:8px 0;border-radius:8px;
@@ -31,27 +44,27 @@
       background:rgba(255,255,255,0.15);
       box-sizing:border-box;font-family:'Inter',sans-serif;
       font-size:15px;
-      color:#000 !important;        /* ← теперь чёрный при вводе */
+      color:#000 !important;
     }
     .feedback-form input::placeholder,
-    .feedback-form textarea::placeholder{
-      color:#888;                   /* плейсхолдер тоже потемнее */
-    }
+    .feedback-form textarea::placeholder{ color:#888 }
     .feedback-form input:focus,
     .feedback-form textarea:focus{
       outline:none;border-color:#fff;
       background:rgba(255,255,255,0.25);
     }
-    /* ←←← конец изменений →→→ */
 
     .feedback-form button{
       background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
       color:white;padding:14px;border:none;border-radius:8px;cursor:pointer;
       font-weight:600;font-size:16px;width:100%;margin-top:12px;
     }
-    .feedback-form button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(31,75,165,0.6)}
-    .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
+    .feedback-form button:hover{
+      transform:translateY(-2px);
+      box-shadow:0 6px 15px rgba(31,75,165,0.6);
+    }
 
+    .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
     .feedback-item{
       background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;
       border-radius:8px;border-left:4px solid #1f4ba5;
@@ -60,24 +73,28 @@
     .feedback-item strong{color:#000 !important;font-size:16px;font-weight:700;}
     .feedback-item p{margin:8px 0 0;color:#000 !important;}
     .feedback-item small{color:#333 !important;float:right;}
+
     .admin-reply{
       margin-top:12px;padding:12px;background:rgba(240,249,255,0.2);
-      border-left:3px solid #3b82f6;border-radius:6px;
-      color:#000 !important;
+      border-left:3px solid #3b82f6;border-radius:6px;color:#000 !important;
     }
     .admin-reply-label{font-weight:600;color:#000 !important;}
     .admin-reply-text{color:#000 !important;font-weight:500;}
+
     .loading,.error{text-align:center;padding:20px;color:#fff}
     .error{background:rgba(255,0,0,0.2);border-radius:8px;margin-bottom:15px}
   </style>
 </head>
+
 <body>
   <div class="feedback-container">
     <div class="feedback-header">
       <h2>Feedback</h2>
       <button class="close-btn" onclick="window.history.back();">×</button>
     </div>
+
     <div id="errorMessage"></div>
+
     <div class="feedback-form">
       <form id="feedbackForm">
         <input type="text" id="name" placeholder="Your name" required>
@@ -85,6 +102,7 @@
         <button type="submit" id="submitBtn">Send Feedback</button>
       </form>
     </div>
+
     <div class="feedback-list-container">
       <div class="feedback-list-title">Recent Feedback</div>
       <div id="feedbackList"><div class="loading">Loading feedback...</div></div>
@@ -92,9 +110,15 @@
   </div>
 
   <script>
+    /* Плавное появление страницы, когда фон загрузился */
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+    });
+
     const SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     const feedbackList = document.getElementById('feedbackList');
     const feedbackForm = document.getElementById('feedbackForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -102,42 +126,76 @@
 
     async function loadFeedback() {
       try {
-        const { data, error } = await supabase.from('feedback').select('*').order('created_at', { ascending: false });
+        const { data, error } = await supabase
+          .from('feedback')
+          .select('*')
+          .order('created_at', { ascending: false });
+
         if (error) throw error;
-        feedbackList.innerHTML = data.length === 0 ? '<p style="text-align:center;color:#ddd">No feedback yet. Be the first!</p>' : '';
+
+        feedbackList.innerHTML = 
+          data.length === 0
+          ? '<p style="text-align:center;color:#ddd">No feedback yet. Be the first!</p>'
+          : '';
+
         data.forEach(item => {
           const div = document.createElement('div');
           div.className = 'feedback-item';
+
           const date = new Date(item.created_at).toLocaleString('ru-RU');
-          let html = `<strong>${escapeHtml(item.contact || 'Anonymous')}</strong><small>${date}</small><p>${escapeHtml(item.message)}</p>`;
-          if (item.reply?.trim()) html += `<div class="admin-reply"><div class="admin-reply-label">Наш ответ:</div><p class="admin-reply-text">${escapeHtml(item.reply)}</p></div>`;
+          let html = `<strong>${escapeHtml(item.contact || 'Anonymous')}</strong>
+                      <small>${date}</small>
+                      <p>${escapeHtml(item.message)}</p>`;
+
+          if (item.reply?.trim()) {
+            html += `<div class="admin-reply">
+                       <div class="admin-reply-label">Наш ответ:</div>
+                       <p class="admin-reply-text">${escapeHtml(item.reply)}</p>
+                     </div>`;
+          }
+
           div.innerHTML = html;
           feedbackList.appendChild(div);
         });
-      } catch { feedbackList.innerHTML = '<p class="error">Не удалось загрузить отзывы.</p>'; }
+
+      } catch {
+        feedbackList.innerHTML = '<p class="error">Не удалось загрузить отзывы.</p>';
+      }
     }
 
     feedbackForm.addEventListener('submit', async e => {
       e.preventDefault();
       const name = document.getElementById('name').value.trim();
       const message = document.getElementById('message').value.trim();
+
       if (!name || !message) return showError('Заполните все поля');
-      submitBtn.disabled = true; submitBtn.textContent = 'Отправляем...';
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Отправляем...';
+
       try {
         const { error } = await supabase.from('feedback').insert([{ contact: name, message }]);
         if (error) throw error;
-        feedbackForm.reset(); await loadFeedback();
-        submitBtn.textContent = 'Отправлено!'; 
+
+        feedbackForm.reset();
+        await loadFeedback();
+
+        submitBtn.textContent = 'Отправлено!';
         setTimeout(() => submitBtn.textContent = 'Send Feedback', 2000);
-      } catch { showError('Не удалось отправить.'); } 
-      finally { submitBtn.disabled = false; }
+
+      } catch {
+        showError('Не удалось отправить.');
+      } finally {
+        submitBtn.disabled = false;
+      }
     });
 
     function showError(msg) { 
       errorMessage.innerHTML = `<div class="error">${msg}</div>`; 
       setTimeout(() => errorMessage.innerHTML = '', 5000); 
     }
-    function escapeHtml(t){ 
+
+    function escapeHtml(t) { 
       const div = document.createElement('div'); 
       div.textContent = t; 
       return div.innerHTML; 
@@ -146,5 +204,6 @@
     loadFeedback();
     setInterval(loadFeedback, 10000);
   </script>
+
 </body>
 </html>
