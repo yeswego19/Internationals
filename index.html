@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,8 +41,8 @@
   </div>
 
   <div id="languageDropdown">
-    <div class="language-option active" data-lang="ru">RU<span>Русский</span></div>
     <div class="language-option" data-lang="en">EN<span>English</span></div>
+    <div class="language-option" data-lang="ru">RU<span>Русский</span></div>
     <div class="language-option" data-lang="de">DE<span>Deutsch</span></div>
     <div class="language-option" data-lang="es">ES<span>Español</span></div>
     <div class="language-option" data-lang="pt">PT<span>Português</span></div>
@@ -179,13 +179,10 @@
       ar: {nav_home:"الرئيسية",nav_services:"الخدمات",nav_contact:"اتصل بنا",hero_title_1:"مترجم",hero_title_2:"محترف عبر الإنترنت",hero_subtitle:"ترجمات سريعة ودقيقة للوثائق والفيديو وصفحات الويب",services_title:"لماذا تختارنا",services_subtitle:"تقنيات متقدمة وواجهة سهلة لترجمات عالية الجودة",service_1_title:"ترجمة فورية",service_1_desc:"احصل على الترجمة في الوقت الفعلي بدون تأخير",service_2_title:"الأمان",service_2_desc:"بياناتك محمية ببروتوكولات تشفير حديثة",service_3_title:"متوافق مع الجوال",service_3_desc:"وصول مريح من أي جهاز",service_4_title:"ترجمة الوثائق",service_4_desc:"ندعم PDF، DOC، TXT وغيرها",service_5_title:"توطين المواقع والفيديو",service_5_desc:"ترجمة المواقع، الترجمة الصوتية والدبلجة",service_6_title:"خدمة الكونسيرج",service_6_desc:"مدير شخصي للمهام العاجلة والدعم الشامل",service_7_title:"توصيل الوثائق من الباب إلى الباب",service_7_desc:"توصيل سريع للوثائق المترجمة والموثقة",contact_title:"اتصل بنا",contact_subtitle:"هل لديك أسئلة؟ فريقنا جاهز للمساعدة",contact_email:"البريد الإلكتروني",contact_whatsapp:"واتساب ورقم الهاتف",contact_hours:"ساعات العمل",contact_hours_text:"عبر الإنترنت 24/7",form_email:"البريد الإلكتروني",form_subject:"الموضوع",form_message:"رسالتك",form_submit:"إرسال الرسالة",footer_service:"خدمة الترجمة",footer_tagline:"نحن نترجم الناس",footer_desc:"خدمات ترجمة وتوطين احترافية: وثائق، مواقع، فيديو. بسرعة وبدقة.",feedback_btn:"التقييمات"}
     };
 
-    let currentLang = localStorage.getItem('language') || 'ru';
-
     function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('language', lang);
       document.documentElement.lang = lang;
       document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+      localStorage.setItem('language', lang);
 
       document.querySelectorAll('[data-translate]').forEach(el => {
         const key = el.dataset.translate;
@@ -208,7 +205,29 @@
       });
     });
 
-    setLanguage(currentLang);
+    // Определение начального языка при загрузке
+    function getInitialLanguage() {
+      // 1. Проверяем сохраненный язык пользователя
+      const savedLang = localStorage.getItem('language');
+      if (savedLang && translations[savedLang]) {
+        return savedLang;
+      }
+      
+      // 2. Определяем язык браузера/системы
+      const browserLang = navigator.language || navigator.userLanguage;
+      const langCode = browserLang.split('-')[0].toLowerCase();
+      
+      // 3. Если язык браузера поддерживается - используем его
+      if (translations[langCode]) {
+        return langCode;
+      }
+      
+      // 4. По умолчанию - английский
+      return 'en';
+    }
+
+    const initialLang = getInitialLanguage();
+    setLanguage(initialLang);
   </script>
 
   <script src="script.js?v=5"></script>
