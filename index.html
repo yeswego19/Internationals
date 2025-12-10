@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +9,7 @@
   <meta name="keywords" content="перевод документов, нотариальный перевод, апостиль, переводы Москва, Шереметьевское шоссе, аэропорт, международные переводы">
   <link rel="stylesheet" href="styles.css?v=5">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- локальный Font Awesome (больше никаких блокировок и VPN) -->
-  <link rel="stylesheet" href="assets/css/all.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     .footer-flex{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:0 15px}
     .footer-left{max-width:60%}
@@ -19,7 +18,7 @@
     .footer-bottom{text-align:center;margin-top:15px;font-size:15px;color:#888}
     .social h4{display:none}
     .music-player{position:fixed;top:15px;right:15px;z-index:9999}
-    #musicToggle{width:84px;height:84px;cursor:pointer}
+    #musicToggle{width:84px;height:84px;cursor:pointer} /* ← увеличил в 1.5 раза */
     #languageDropdown{
       position:fixed;top:80px;right:15px;background:#fff;
       border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.18);
@@ -39,9 +38,7 @@
 <body>
   <audio id="bgMusic" preload="metadata" loop></audio>
   <div class="music-player">
-    <div class="music-player-toggle" id="musicToggle">
-      <i class="fa-solid fa-globe fa-2x" style="color:#0066ff;"></i>
-    </div>
+    <div class="music-player-toggle globe" id="musicToggle"></div>
   </div>
 
   <div id="languageDropdown">
@@ -84,41 +81,13 @@
         <p data-translate="services_subtitle">Передовые технологии и международная команда специалистов</p>
       </div>
       <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-bolt fa-2x" style="color:#0066ff;"></i></div>
-          <h3 data-translate="service_1_title">Мгновенный перевод</h3>
-          <p data-translate="service_1_desc">Получайте переводы без задержек</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-shield-halved fa-2x" style="color:#0066ff;"></i></div>
-          <h3 data-translate="service_2_title">Безопасность</h3>
-          <p data-translate="service_2_desc">Ваши данные защищены современными протоколами шифрования</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-mobile-screen-button fa-2x" style="color:#0066ff;"></i></div>
-          <h3 data-translate="service_3_title">Мобильная версия</h3>
-          <p data-translate="service_3_desc">Удобный доступ к переводам с любого устройства</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-file-lines fa-2x" style="color:#0066ff;"></i></div>
-          <h3 data-translate="service_4_title">Перевод документов</h3>
-          <p data-translate="service_4_desc">Поддерживаем все форматы данных</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-earth-americas fa-2x" style="color:#0066ff;"></i></div>
-          <h3 data-translate="service_5_title">Локализация сайтов и видео</h3>
-          <p data-translate="service_5_desc">Локализация сайтов, субтитры и озвучка видео</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-bell-concierge fa-2x" style="color:#0066ff;"></i></div>
-          <h3 data-translate="service_6_title">Услуга консьержа</h3>
-          <p data-translate="service_6_desc">Личный менеджер для срочных задач и комплексной поддержки</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon"><i class="fa-solid fa-truck-fast fa-2x" style="color:#0066ff;"></i></div>
-          <h3 data-translate="service_7_title">Доставка документов</h3>
-          <p data-translate="service_7_desc">Курьерская доставка переведенных документов по адресу</p>
-        </div>
+        <div class="feature-card"><div class="feature-icon">bolt</div><h3 data-translate="service_1_title">Мгновенный перевод</h3><p data-translate="service_1_desc">Получайте переводы без задержек</p></div>
+        <div class="feature-card"><div class="feature-icon">shield</div><h3 data-translate="service_2_title">Безопасность</h3><p data-translate="service_2_desc">Ваши данные защищены современными протоколами шифрования</p></div>
+        <div class="feature-card"><div class="feature-icon">mobile</div><h3 data-translate="service_3_title">Мобильная версия</h3><p data-translate="service_3_desc">Удобный доступ к переводам с любого устройства</p></div>
+        <div class="feature-card"><div class="feature-icon">document</div><h3 data-translate="service_4_title">Перевод документов</h3><p data-translate="service_4_desc">Поддерживаем все форматы данных</p></div>
+        <div class="feature-card"><div class="feature-icon">language</div><h3 data-translate="service_5_title">Локализация сайтов и видео</h3><p data-translate="service_5_desc">Локализация сайтов, субтитры и озвучка видео</p></div>
+        <div class="feature-card"><div class="feature-icon">bell</div><h3 data-translate="service_6_title">Услуга консьержа</h3><p data-translate="service_6_desc">Личный менеджер для срочных задач и комплексной поддержки</p></div>
+        <div class="feature-card"><div class="feature-icon">truck</div><h3 data-translate="service_7_title">Доставка документов</h3><p data-translate="service_7_desc">Курьерская доставка переведенных документов по адресу</p></div>
       </div>
     </div>
   </section>
@@ -130,18 +99,9 @@
           <h2 data-translate="contact_title">Связаться с нами</h2>
           <p data-translate="contact_subtitle">Есть вопросы? Наша команда готова помочь с любым запросом на перевод.</p>
           <div class="contact-details">
-            <div class="contact-item">
-              <i class="fa-solid fa-envelope fa-2x" style="color:#0066ff;"></i>
-              <div><h4 data-translate="contact_email">Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div>
-            </div>
-            <div class="contact-item">
-              <i class="fa-brands fa-whatsapp fa-2x" style="color:#25D366;"></i>
-              <div><h4 data-translate="contact_whatsapp">WhatsApp и телефон</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125-10-25</a></p></div>
-            </div>
-            <div class="contact-item">
-              <i class="fa-solid fa-qrcode fa-2x" style="color:#000;"></i>
-              <div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div>
-            </div>
+            <div class="contact-item">envelope<div><h4 data-translate="contact_email">Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:mailtomorrow@yandex.com">mailtomorrow@yandex.com</a></p></div></div>
+            <div class="contact-item">whatsapp<div><h4 data-translate="contact_whatsapp">WhatsApp и телефон</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 999 125-10-25</a></p></div></div>
+            <div class="contact-item">qrcode<div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
             <div class="contact-item">
               <img src="assets/Clock.png" alt="Часы работы" style="width:100px;height:100px;margin-right:12px;vertical-align:middle;">
               <div>
@@ -174,8 +134,8 @@
       <div class="footer-right">
         <a href="feedback.html" class="btn btn-primary btn-feedback" data-translate="feedback_btn">Отзывы</a>
         <div class="footer-section social">
-          <a href="https://youtube.com/@internationalspro" target="_blank"><i class="fa-brands fa-youtube fa-2x" style="color:#ff0000;"></i></a>
-          <a href="https://www.linkedin.com/company/internationalspro" target="_blank"><i class="fa-brands fa-linkedin fa-2x" style="color:#0077b5;"></i></a>
+          <a href="https://youtube.com/@internationalspro" target="_blank"><img src="https://www.youtube.com/favicon.ico" alt="YouTube" width="113" height="113"></a>
+          <a href="https://www.linkedin.com/company/internationalspro" target="_blank"><img src="https://static.licdn.com/aero-v1/sc/h/al2o9zrvru7aqj8e1x2rzsrca" alt="LinkedIn" width="113" height="113"></a>
         </div>
       </div>
     </div>
