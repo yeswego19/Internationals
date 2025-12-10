@@ -20,31 +20,19 @@
       font-family:'Inter',sans-serif;
       margin:0;padding:0;
 
-      /* ИСПРАВЛЕНО: фон теперь покрывает всю страницу */
-      background: #ff8c42 url('feedback-bg.jpg') top center no-repeat;
+      /* ИСПРАВЛЕНО: оранжевый фон продолжается везде */
+      background-color: #ff8c42;
+      background-image: url('feedback-bg.jpg');
+      background-position: top center;
+      background-repeat: no-repeat;
       background-size: 100% auto;
-      background-attachment: scroll;
       min-height:100vh;
     }
     body.loaded {
       opacity: 1;
     }
 
-    /* ДОБАВЛЕНО: псевдоэлемент для продолжения оранжевого фона */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #ff8c42;
-      z-index: -1;
-    }
-
     .feedback-container{
-      position: relative;
-      z-index: 1;
       max-width:700px;margin:50px auto;background:transparent;padding:30px;
       border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.25);
       backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);
