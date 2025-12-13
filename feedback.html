@@ -1,157 +1,269 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Feedback - Internationals Translation Service</title>
+
+  <!-- preload bg -->
   <link rel="preload" as="image" href="feedback-bg.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    body {
-      opacity:0; transition:opacity 0.4s; font-family:'Inter',sans-serif;
-      margin:0;padding:0; background-color:#E89344;
-      background-image:url('feedback-bg.jpg'); background-position:top center;
-      background-repeat:no-repeat; background-size:100% auto; min-height:100vh;
-    }
-    body.loaded{opacity:1;}
-    .feedback-container{max-width:700px;margin:50px auto;background:transparent;padding:30px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.25);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);}
-    .feedback-header h2{margin:0;font-size:24px;color:#fff;}
-    .close-btn{cursor:pointer;font-size:28px;font-weight:bold;border:none;background:none;color:#fff;}
-    .close-btn:hover{color:#ccc;}
-    .feedback-form input,.feedback-form textarea{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:2px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);box-sizing:border-box;font-family:'Inter',sans-serif;font-size:15px;color:#000 !important;}
-    .feedback-form input::placeholder,.feedback-form textarea::placeholder{ color:#888 }
-    .feedback-form input:focus,.feedback-form textarea:focus{outline:none;border-color:#fff;background:rgba(255,255,255,0.25);}
-    .feedback-form button{background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);color:white;padding:14px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:16px;width:100%;margin-top:12px;}
-    .feedback-form button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(31,75,165,0.6);}
-    #stopBtn{background:red;color:white;margin-top:5px;}
+    /* --- ваш существующий стиль (минимально подправлен) --- */
+    body { opacity:0; transition:opacity .35s; font-family:'Inter',sans-serif; margin:0; padding:0;
+      background-color:#E89344; background-image:url('feedback-bg.jpg'); background-position:top center;
+      background-repeat:no-repeat; background-size:100% auto; min-height:100vh; }
+    body.loaded{opacity:1}
+    .feedback-container{max-width:700px;margin:50px auto;background:transparent;padding:30px;border-radius:12px;
+      box-shadow:0 8px 30px rgba(0,0,0,.25);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2)}
+    .feedback-header h2{margin:0;font-size:24px;color:#fff}
+    .close-btn{cursor:pointer;font-size:28px;font-weight:700;border:none;background:none;color:#fff}
+    .feedback-form input, .feedback-form textarea{width:100%;padding:12px;margin:8px 0;border-radius:8px;
+      border:2px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);box-sizing:border-box;
+      font-size:15px;color:#000 !important}
+    .feedback-form button.main{background:linear-gradient(135deg,#2f5597 0,#1f3f83 100%);color:#fff;
+      padding:14px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:16px;width:100%;margin-top:12px}
     .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
-    .feedback-item{background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;border-radius:8px;border-left:4px solid #1f4ba5;color:#000 !important;}
-    .feedback-item strong{color:#000 !important;font-size:16px;font-weight:700;}
-    .feedback-item p{margin:8px 0 0;color:#000 !important;}
-    .feedback-item small{color:#333 !important;float:right;}
-    .admin-reply{margin-top:12px;padding:12px;background:rgba(240,249,255,0.2);border-left:3px solid #3b82f6;border-radius:6px;color:#000 !important;}
-    .admin-reply-label{font-weight:600;color:#000 !important;}
-    .admin-reply-text{color:#000 !important;font-weight:500;}
-    .loading,.error{text-align:center;padding:20px;color:#fff;}
-    .error{background:rgba(255,0,0,0.2);border-radius:8px;margin-bottom:15px;}
+    .feedback-item{background:rgba(255,255,255,.12);padding:15px;margin-bottom:12px;border-radius:8px;border-left:4px solid #1f4ba5;color:#000}
+    .feedback-item strong{font-size:16px;font-weight:700}
+    .feedback-item p{margin:8px 0 0}
+    .error{background:rgba(255,0,0,.2);padding:12px;border-radius:8px;color:#fff;margin-bottom:12px;text-align:center}
+    /* record/stop */
+    .record-row{display:flex;gap:12px;margin-top:10px}
+    .btn-record{flex:1;padding:12px;border-radius:8px;border:none;font-weight:600;cursor:pointer;background:#2f5597;color:#fff}
+    .btn-stop{flex:1;padding:12px;border-radius:8px;border:none;font-weight:600;cursor:pointer;background:#d9534f;color:#fff}
+    audio{width:100%;margin-top:8px}
+    .small-muted{font-size:13px;color:#eee;margin-top:6px}
   </style>
 </head>
 <body>
   <div class="feedback-container">
-    <div class="feedback-header">
+    <div class="feedback-header" style="display:flex;justify-content:space-between;align-items:center">
       <h2>Feedback</h2>
       <button class="close-btn" onclick="window.history.back();">×</button>
     </div>
+
     <div id="errorMessage"></div>
+
     <div class="feedback-form">
       <form id="feedbackForm">
-        <input type="text" id="name" placeholder="Your name" required>
-        <textarea id="message" rows="4" placeholder="Your impressions, tips, contacts (optional)"></textarea>
-        <button type="submit" id="submitBtn">Send Feedback</button>
-        <button type="button" id="recordBtn">Record Audio</button>
-        <button type="button" id="stopBtn">Stop Recording</button>
+        <input id="name" type="text" placeholder="Your name (optional)">
+        <textarea id="message" rows="4" placeholder="Your impressions (optional)"></textarea>
+        <button type="submit" id="submitBtn" class="main">Send Feedback</button>
       </form>
+
+      <div class="record-row" style="align-items:center">
+        <button id="recordBtn" class="btn-record">Record</button>
+        <button id="stopBtn" class="btn-stop" disabled>Stop</button>
+      </div>
+
+      <audio id="audioPreview" controls style="display:none"></audio>
+      <div id="audioNotice" class="small-muted" style="display:none">Preview available — you can re-record before sending.</div>
     </div>
-    <div class="feedback-list-container">
+
+    <div class="feedback-list-container" style="margin-top:18px">
       <div class="feedback-list-title">Recent Feedback</div>
-      <div id="feedbackList"><div class="loading">Loading feedback...</div></div>
+      <div id="feedbackList"><div class="loading" style="color:#fff;padding:12px">Loading feedback...</div></div>
     </div>
   </div>
 
 <script>
-window.addEventListener('load',()=>{document.body.classList.add('loaded');});
-
+/* ========== Настройте эти две константы ========== */
 const SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
-const SUPABASE_KEY = 'YOUR_SUPABASE_KEY';
-const supabase = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const SUPABASE_KEY = 'PASTE_YOUR_ANON_KEY_HERE'; // <-- вставьте сюда ваш anon public key
+/* ================================================ */
+
+window.addEventListener('load', () => document.body.classList.add('loaded'));
+
+if (!SUPABASE_KEY || SUPABASE_KEY.includes('PASTE_YOUR_ANON_KEY_HERE')) {
+  console.warn('Supabase key not set — вставьте anon key в SUPABASE_KEY');
+}
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const feedbackList = document.getElementById('feedbackList');
 const feedbackForm = document.getElementById('feedbackForm');
 const submitBtn = document.getElementById('submitBtn');
 const errorMessage = document.getElementById('errorMessage');
+const recordBtn = document.getElementById('recordBtn');
+const stopBtn = document.getElementById('stopBtn');
+const audioPreview = document.getElementById('audioPreview');
+const audioNotice = document.getElementById('audioNotice');
 
+let mediaRecorder = null;
+let audioChunks = [];
+let audioBlob = null;
+let currentStream = null;
+
+/* -------- Вспомогательные функции -------- */
+function showError(text) {
+  errorMessage.innerHTML = `<div class="error">${text}</div>`;
+  setTimeout(()=> errorMessage.innerHTML = '', 5000);
+}
+function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+/* -------- Загрузка отзывов -------- */
 async function loadFeedback(){
   try{
-    const {data,error}=await supabase.from('feedback').select('*').order('created_at',{ascending:false});
-    if(error)throw error;
-    feedbackList.innerHTML=data.length===0?'<p style="text-align:center;color:#ddd">No feedback yet. Be the first!</p>':'';
-    data.forEach(item=>{
-      const div=document.createElement('div');
-      div.className='feedback-item';
-      const date=new Date(item.created_at).toLocaleString('ru-RU');
-      let html=`<strong>${escapeHtml(item.contact||'Anonymous')}</strong>
-                <small>${date}</small>
-                <p>${escapeHtml(item.message||'')}</p>`;
-      if(item.audio_url){
-        html+=`<audio controls src="${item.audio_url}" style="margin-top:5px;width:100%"></audio>`;
+    const { data, error, status } = await supabase
+      .from('feedback')
+      .select('id,contact,message,reply,created_at,audio_url')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Supabase select error', error);
+      if (status === 401) showError('Unauthorized — проверьте anon key и RLS политики');
+      feedbackList.innerHTML = '<p class="error">Не удалось загрузить отзывы.</p>';
+      return;
+    }
+
+    feedbackList.innerHTML = data.length ? '' : '<p style="text-align:center;color:#ddd">No feedback yet. Be the first!</p>';
+
+    data.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'feedback-item';
+      const date = item.created_at ? new Date(item.created_at).toLocaleString('ru-RU') : '';
+      let html = `<strong>${escapeHtml(item.contact || 'Anonymous')}</strong><small style="float:right">${escapeHtml(date)}</small>`;
+      if (item.message) html += `<p>${escapeHtml(item.message)}</p>`;
+      if (item.audio_url) {
+        // audio_url должен быть публичным URL (getPublicUrl)
+        html += `<audio controls preload="none" src="${escapeHtml(item.audio_url)}"></audio>`;
       }
-      if(item.reply?.trim()){
-        html+=`<div class="admin-reply"><div class="admin-reply-label">Наш ответ:</div>
-               <p class="admin-reply-text">${escapeHtml(item.reply)}</p></div>`;
-      }
-      div.innerHTML=html;
+      if (item.reply) html += `<div class="admin-reply"><div class="admin-reply-label">Наш ответ:</div><p class="admin-reply-text">${escapeHtml(item.reply)}</p></div>`;
+      div.innerHTML = html;
       feedbackList.appendChild(div);
     });
-  }catch{
-    feedbackList.innerHTML='<p class="error">Не удалось загрузить отзывы.</p>';
+
+  } catch (e) {
+    console.error(e);
+    feedbackList.innerHTML = '<p class="error">Не удалось загрузить отзывы.</p>';
   }
 }
 
-feedbackForm.addEventListener('submit',async e=>{
+/* -------- Запись аудио (локально, пока не отправлено) -------- */
+recordBtn.addEventListener('click', async () => {
+  try {
+    // Очистка предыдущей локальной записи (перед новой)
+    audioBlob = null;
+    audioPreview.src = '';
+    audioPreview.style.display = 'none';
+    audioNotice.style.display = 'none';
+
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    currentStream = stream;
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+
+    mediaRecorder.addEventListener('dataavailable', e => audioChunks.push(e.data));
+    mediaRecorder.addEventListener('stop', () => {
+      audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      audioPreview.src = URL.createObjectURL(audioBlob);
+      audioPreview.style.display = 'block';
+      audioNotice.style.display = 'block';
+      // освободить микрофон (stream) — мы можем остановить треки
+      if (currentStream) {
+        currentStream.getTracks().forEach(t => t.stop());
+        currentStream = null;
+      }
+    });
+
+    mediaRecorder.start();
+    recordBtn.disabled = true;
+    stopBtn.disabled = false;
+    showError('Запись началась — говорите. Нажмите Stop чтобы остановить.');
+  } catch (err) {
+    console.error(err);
+    showError('Ошибка доступа к микрофону. Проверьте разрешения в браузере.');
+  }
+});
+
+/* -------- Остановка записи -------- */
+stopBtn.addEventListener('click', () => {
+  if (!mediaRecorder) return;
+  try {
+    if (mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  } catch (e) { console.error(e); }
+  mediaRecorder = null;
+  recordBtn.disabled = false;
+  stopBtn.disabled = true;
+});
+
+/* -------- Отправка (текст или аудио или вместе) -------- */
+feedbackForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name=document.getElementById('name').value.trim();
-  const message=document.getElementById('message').value.trim();
-  if(!name)return showError('Введите имя');
-  submitBtn.disabled=true;
-  submitBtn.textContent='Отправляем...';
-  try{
-    const {error}=await supabase.from('feedback').insert([{contact:name,message}]);
-    if(error)throw error;
-    feedbackForm.reset();
-    await loadFeedback();
-    submitBtn.textContent='Отправлено!';
-    setTimeout(()=>submitBtn.textContent='Send Feedback',2000);
-  }catch{
-    showError('Не удалось отправить.');
-  }finally{submitBtn.disabled=false;}
+
+  const name = document.getElementById('name').value.trim() || null;
+  const message = document.getElementById('message').value.trim() || null;
+
+  if (!name && !message && !audioBlob) {
+    showError('Заполните хотя бы имя, сообщение или запишите аудио');
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Отправляем...';
+
+  try {
+    let audio_url = null;
+
+    if (audioBlob) {
+      const fileName = `voice-feedback/${Date.now()}_${Math.random().toString(36).slice(2,8)}.webm`;
+      const { data, error: uploadError } = await supabase.storage
+        .from('voice-feedback')
+        .upload(fileName, audioBlob, { contentType: 'audio/webm' });
+
+      if (uploadError) {
+        console.error('Upload error', uploadError);
+        showError('Ошибка загрузки аудио.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Feedback';
+        return;
+      }
+
+      // получить публичный URL
+      const { data: publicData } = supabase.storage.from('voice-feedback').getPublicUrl(fileName);
+      audio_url = publicData?.publicUrl || publicData?.public_url || null;
+      if (!audio_url) {
+        // fallback: попытаться получить прямой путь
+        audio_url = `${SUPABASE_URL}/storage/v1/object/public/voice-feedback/${encodeURIComponent(fileName.split('/').pop())}`;
+      }
+    }
+
+    const insertObj = { contact: name, message: message, audio_url: audio_url };
+    const { error: insertErr } = await supabase.from('feedback').insert([insertObj]);
+
+    if (insertErr) {
+      console.error('Insert error', insertErr);
+      showError('Ошибка сохранения отзыва.');
+    } else {
+      // очистка формы и локальных данных
+      feedbackForm.reset();
+      audioBlob = null;
+      audioPreview.src = '';
+      audioPreview.style.display = 'none';
+      audioNotice.style.display = 'none';
+      showError('Отзыв отправлен.');
+      await loadFeedback();
+    }
+
+  } catch (err) {
+    console.error(err);
+    showError('Ошибка при отправке.');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send Feedback';
+    recordBtn.disabled = false;
+    stopBtn.disabled = true;
+  }
 });
 
-function showError(msg){ errorMessage.innerHTML=`<div class="error">${msg}</div>`; setTimeout(()=>errorMessage.innerHTML='',5000);}
-function escapeHtml(t){const div=document.createElement('div');div.textContent=t;return div.innerHTML;}
+/* -------- Инициализация -------- */
 loadFeedback();
-setInterval(loadFeedback,10000);
-
-// --- Audio Recording ---
-const recordBtn=document.getElementById('recordBtn');
-const stopBtn=document.getElementById('stopBtn');
-let mediaRecorder,audioChunks=[];
-stopBtn.disabled=true;
-
-recordBtn.addEventListener('click',async ()=>{
-  audioChunks=[];
-  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-  mediaRecorder=new MediaRecorder(stream);
-  mediaRecorder.addEventListener('dataavailable',e=>{audioChunks.push(e.data);});
-  mediaRecorder.start();
-  recordBtn.disabled=true; stopBtn.disabled=false;
-});
-
-stopBtn.addEventListener('click',async ()=>{
-  mediaRecorder.stop();
-  mediaRecorder.addEventListener('stop',async ()=>{
-    const audioBlob=new Blob(audioChunks,{type:'audio/webm'});
-    const fileName=`audio-${Date.now()}.webm`;
-    const {data,error}=await supabase.storage.from('voice-feedback').upload(fileName,audioBlob);
-    if(error){alert('Ошибка при загрузке аудио');console.error(error);return;}
-    const {publicUrl}=supabase.storage.from('voice-feedback').getPublicUrl(fileName);
-    const name=document.getElementById('name').value.trim()||'Anonymous';
-    const message=document.getElementById('message').value.trim();
-    await supabase.from('feedback').insert([{contact:name,message,audio_url:publicUrl}]);
-    await loadFeedback();
-    recordBtn.disabled=false; stopBtn.disabled=true;
-  });
-});
+setInterval(loadFeedback, 10000);
 </script>
 </body>
 </html>
