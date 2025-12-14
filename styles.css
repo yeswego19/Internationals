@@ -147,7 +147,7 @@ p {
 }
 
 .site-logo {
-    height: 102px;
+    height: 180px;
     width: auto;
     display: block;
     filter: contrast(1.3) brightness(1.1) saturate(1.2);
