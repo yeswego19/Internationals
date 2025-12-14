@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feedback - Internationals Translation Service</title>
 
+  <!-- Favicon (убирает ошибку 404) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
+  
   <link rel="preload" as="image" href="feedback-bg.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -56,6 +59,7 @@
       background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
       color:white;padding:14px;border:none;border-radius:8px;cursor:pointer;
       font-weight:600;font-size:16px;width:100%;margin-top:12px;
+      transition: all 0.3s ease;
     }
     .feedback-form button:hover{
       transform:translateY(-2px);
@@ -71,6 +75,22 @@
     
     #recordBtn{
       background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Пульсация при записи */
+    #recordBtn.recording {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+      }
+      50% {
+        box-shadow: 0 0 0 15px rgba(220, 38, 38, 0);
+      }
     }
     
     #stopBtn{
@@ -86,16 +106,17 @@
     .visualizer-container{
       background:rgba(255,255,255,0.1);
       border-radius:8px;
-      padding:10px;
+      padding:15px;
       margin:10px 0;
       display:none;
     }
     
     #visualizer{
       width:100%;
-      height:60px;
-      background:rgba(0,0,0,0.2);
+      height:80px;
+      background:rgba(0,0,0,0.3);
       border-radius:6px;
+      display: block;
     }
     
     #recordStatus{
@@ -103,6 +124,25 @@
       font-size:14px;
       text-align:center;
       margin-top:8px;
+      font-weight: 500;
+    }
+
+    /* Уровень громкости */
+    .volume-meter {
+      width: 100%;
+      height: 8px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 4px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    
+    .volume-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #ef4444);
+      width: 0%;
+      transition: width 0.1s ease;
+      border-radius: 4px;
     }
 
     /* Превью записи */
@@ -170,6 +210,9 @@
 
         <div class="visualizer-container" id="visualizerContainer">
           <canvas id="visualizer"></canvas>
+          <div class="volume-meter">
+            <div class="volume-bar" id="volumeBar"></div>
+          </div>
           <div id="recordStatus"></div>
         </div>
 
@@ -211,6 +254,7 @@
     const canvas = document.getElementById('visualizer');
     const canvasCtx = canvas.getContext('2d');
     const recordStatus = document.getElementById('recordStatus');
+    const volumeBar = document.getElementById('volumeBar');
 
     let mediaRecorder = null;
     let audioChunks = [];
@@ -222,25 +266,34 @@
     let recordTimer = null;
     let stream = null;
 
-    // Визуализация волны
+    // УЛУЧШЕННАЯ визуализация с реакцией на голос
     function drawWaveform() {
       animationId = requestAnimationFrame(drawWaveform);
       
       analyser.getByteTimeDomainData(dataArray);
       
+      // Очищаем canvas
       canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
       canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
       
-      canvasCtx.lineWidth = 2;
-      canvasCtx.strokeStyle = '#2f5597';
+      // Рисуем волну
+      canvasCtx.lineWidth = 3;
+      canvasCtx.strokeStyle = '#10b981'; // зелёный
       canvasCtx.beginPath();
       
       const sliceWidth = canvas.width / dataArray.length;
       let x = 0;
+      let maxAmplitude = 0;
       
       for (let i = 0; i < dataArray.length; i++) {
         const v = dataArray[i] / 128.0;
         const y = v * canvas.height / 2;
+        
+        // Вычисляем амплитуду для индикатора громкости
+        const amplitude = Math.abs(v - 1.0);
+        if (amplitude > maxAmplitude) {
+          maxAmplitude = amplitude;
+        }
         
         if (i === 0) {
           canvasCtx.moveTo(x, y);
@@ -253,6 +306,19 @@
       
       canvasCtx.lineTo(canvas.width, canvas.height / 2);
       canvasCtx.stroke();
+      
+      // Обновляем индикатор громкости
+      const volumePercent = Math.min(maxAmplitude * 200, 100);
+      volumeBar.style.width = volumePercent + '%';
+      
+      // Меняем цвет в зависимости от громкости
+      if (volumePercent > 70) {
+        canvasCtx.strokeStyle = '#ef4444'; // красный - громко
+      } else if (volumePercent > 30) {
+        canvasCtx.strokeStyle = '#10b981'; // зелёный - нормально
+      } else {
+        canvasCtx.strokeStyle = '#6b7280'; // серый - тихо
+      }
     }
 
     // Запись аудио
@@ -272,6 +338,7 @@
         const source = audioContext.createMediaStreamSource(stream);
         source.connect(analyser);
         analyser.fftSize = 2048;
+        analyser.smoothingTimeConstant = 0.8;
         const bufferLength = analyser.frequencyBinCount;
         dataArray = new Uint8Array(bufferLength);
         
@@ -279,6 +346,7 @@
         canvas.height = canvas.offsetHeight;
         
         visualizerContainer.style.display = 'block';
+        recordBtn.classList.add('recording');
         drawWaveform();
         
         // Приоритет форматов: OGG -> WebM -> fallback
@@ -290,7 +358,7 @@
         } else if (MediaRecorder.isTypeSupported('audio/webm')) {
           mimeType = 'audio/webm';
         } else {
-          mimeType = ''; // браузер сам выберет
+          mimeType = '';
         }
         
         console.log('🎙 Формат записи:', mimeType || 'default');
@@ -308,7 +376,6 @@
         };
         
         mediaRecorder.onstop = () => {
-          // Определяем тип для Blob
           const blobType = mimeType || 'audio/webm';
           audioBlob = new Blob(audioChunks, { type: blobType });
           
@@ -320,6 +387,7 @@
           previewPlayer.src = audioURL;
           audioPreview.style.display = 'block';
           visualizerContainer.style.display = 'none';
+          recordBtn.classList.remove('recording');
           
           recordStatus.textContent = `✅ Готово (${(audioBlob.size / 1024).toFixed(1)} KB)`;
           
@@ -339,12 +407,12 @@
           }
         };
         
-        // Запись БЕЗ тайм-слайсов (один сплошной поток)
+        // Запись БЕЗ тайм-слайсов
         mediaRecorder.start();
         
         recordBtn.disabled = true;
         stopBtn.disabled = false;
-        recordStatus.textContent = '🔴 Идёт запись... (макс. 2 мин)';
+        recordStatus.textContent = '🔴 Говорите... (макс. 2 мин)';
         
         // Автостоп через 2 минуты
         recordTimer = setTimeout(() => {
@@ -368,6 +436,7 @@
         mediaRecorder.stop();
         recordBtn.disabled = false;
         stopBtn.disabled = true;
+        recordBtn.classList.remove('recording');
         if (recordTimer) clearTimeout(recordTimer);
       }
     });
@@ -433,7 +502,6 @@
 
       if (!name || !message) return showError('Заполните имя и текст');
 
-      // Проверка аудио перед отправкой
       if (audioBlob && audioBlob.size < 100) {
         showError('Аудио слишком короткое или повреждено');
         return;
@@ -448,7 +516,6 @@
         if (audioBlob) {
           console.log('📤 Загружаю аудио:', audioBlob.size, 'байт');
           
-          // Определяем расширение
           const extension = audioBlob.type.includes('ogg') ? 'ogg' : 'webm';
           const fileName = `voice-${Date.now()}.${extension}`;
 
