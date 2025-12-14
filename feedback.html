@@ -4,14 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feedback - Internationals Translation Service</title>
-
   <!-- Favicon (убирает ошибку 404) -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
-  
+ 
   <link rel="preload" as="image" href="feedback-bg.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     body {
       opacity: 0;
@@ -28,7 +26,6 @@
     body.loaded {
       opacity: 1;
     }
-
     .feedback-container{
       max-width:700px;margin:50px auto;background:transparent;padding:30px;
       border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.25);
@@ -37,7 +34,6 @@
     .feedback-header h2{margin:0;font-size:24px;color:#fff}
     .close-btn{cursor:pointer;font-size:28px;font-weight:bold;border:none;background:none;color:#fff}
     .close-btn:hover{color:#ccc}
-
     .feedback-form input,
     .feedback-form textarea{
       width:100%;padding:12px;margin:8px 0;border-radius:8px;
@@ -54,7 +50,6 @@
       outline:none;border-color:#fff;
       background:rgba(255,255,255,0.25);
     }
-
     .feedback-form button{
       background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
       color:white;padding:14px;border:none;border-radius:8px;cursor:pointer;
@@ -65,25 +60,24 @@
       transform:translateY(-2px);
       box-shadow:0 6px 15px rgba(31,75,165,0.6);
     }
-
     .audio-buttons{
       display:flex;
       flex-direction:column;
       gap:8px;
       margin-top:12px;
     }
-    
+   
     #recordBtn{
       background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
       position: relative;
       overflow: hidden;
     }
-    
+   
     /* Пульсация при записи */
     #recordBtn.recording {
       animation: pulse 1.5s ease-in-out infinite;
     }
-    
+   
     @keyframes pulse {
       0%, 100% {
         box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
@@ -92,17 +86,16 @@
         box-shadow: 0 0 0 15px rgba(220, 38, 38, 0);
       }
     }
-    
+   
     #stopBtn{
       background:#d9534f !important;
       color:white;
     }
-    
+   
     #stopBtn:disabled{
       opacity:0.5;
       cursor:not-allowed;
     }
-
     .visualizer-container{
       background:rgba(255,255,255,0.1);
       border-radius:8px;
@@ -110,7 +103,7 @@
       margin:10px 0;
       display:none;
     }
-    
+   
     #visualizer{
       width:100%;
       height:80px;
@@ -118,7 +111,7 @@
       border-radius:6px;
       display: block;
     }
-    
+   
     #recordStatus{
       color:#fff;
       font-size:14px;
@@ -126,7 +119,6 @@
       margin-top:8px;
       font-weight: 500;
     }
-
     /* Уровень громкости */
     .volume-meter {
       width: 100%;
@@ -136,7 +128,7 @@
       margin-top: 10px;
       overflow: hidden;
     }
-    
+   
     .volume-bar {
       height: 100%;
       background: linear-gradient(90deg, #10b981, #ef4444);
@@ -144,7 +136,6 @@
       transition: width 0.1s ease;
       border-radius: 4px;
     }
-
     /* Превью записи */
     .audio-preview{
       background:rgba(255,255,255,0.1);
@@ -153,19 +144,18 @@
       margin:10px 0;
       display:none;
     }
-    
+   
     .audio-preview audio{
       width:100%;
       margin-bottom:8px;
     }
-    
+   
     .audio-preview button{
       background:#d9534f;
       padding:8px 16px;
       font-size:14px;
       margin-top:0;
     }
-
     .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
     .feedback-item{
       background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;
@@ -176,38 +166,32 @@
     .feedback-item p{margin:8px 0 0;color:#000 !important;}
     .feedback-item small{color:#333 !important;float:right;}
     .feedback-item audio{width:100%;margin-top:10px;}
-
     .admin-reply{
       margin-top:12px;padding:12px;background:rgba(240,249,255,0.2);
       border-left:3px solid #3b82f6;border-radius:6px;color:#000 !important;
     }
     .admin-reply-label{font-weight:600;color:#000 !important;}
     .admin-reply-text{color:#000 !important;font-weight:500;}
-
     .loading,.error{text-align:center;padding:20px;color:#fff}
     .error{background:rgba(255,0,0,0.2);border-radius:8px;margin-bottom:15px}
   </style>
 </head>
-
 <body>
   <div class="feedback-container">
     <div class="feedback-header">
       <h2>Feedback</h2>
       <button class="close-btn" onclick="window.history.back();">×</button>
     </div>
-
     <div id="errorMessage"></div>
-
     <div class="feedback-form">
       <form id="feedbackForm">
         <input type="text" id="name" placeholder="Your name" required>
         <textarea id="message" rows="4" placeholder="Your impressions, tips, contacts (optional)" required></textarea>
-        
+       
         <div class="audio-buttons">
           <button type="button" id="recordBtn">🎙 Record Audio</button>
           <button type="button" id="stopBtn" disabled>⏹ Stop Recording</button>
         </div>
-
         <div class="visualizer-container" id="visualizerContainer">
           <canvas id="visualizer"></canvas>
           <div class="volume-meter">
@@ -215,32 +199,26 @@
           </div>
           <div id="recordStatus"></div>
         </div>
-
         <!-- Превью записи -->
         <div class="audio-preview" id="audioPreview">
           <audio id="previewPlayer" controls></audio>
           <button type="button" id="deleteBtn">🗑 Удалить и записать заново</button>
         </div>
-
         <button type="submit" id="submitBtn">Send Feedback</button>
       </form>
     </div>
-
     <div class="feedback-list-container">
       <div class="feedback-list-title">Recent Feedback</div>
       <div id="feedbackList"><div class="loading">Loading feedback...</div></div>
     </div>
   </div>
-
   <script>
     window.addEventListener('load', () => {
       document.body.classList.add('loaded');
     });
-
     const SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
     const feedbackList = document.getElementById('feedbackList');
     const feedbackForm = document.getElementById('feedbackForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -255,7 +233,6 @@
     const canvasCtx = canvas.getContext('2d');
     const recordStatus = document.getElementById('recordStatus');
     const volumeBar = document.getElementById('volumeBar');
-
     let mediaRecorder = null;
     let audioChunks = [];
     let audioBlob = null;
@@ -265,52 +242,50 @@
     let animationId = null;
     let recordTimer = null;
     let stream = null;
-
     // УЛУЧШЕННАЯ визуализация с реакцией на голос
     function drawWaveform() {
       animationId = requestAnimationFrame(drawWaveform);
-      
+     
       analyser.getByteTimeDomainData(dataArray);
-      
+     
       // Очищаем canvas
       canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
       canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-      
+     
       // Рисуем волну
       canvasCtx.lineWidth = 3;
-      canvasCtx.strokeStyle = '#10b981'; // зелёный
       canvasCtx.beginPath();
-      
+     
       const sliceWidth = canvas.width / dataArray.length;
       let x = 0;
       let maxAmplitude = 0;
-      
+     
       for (let i = 0; i < dataArray.length; i++) {
         const v = dataArray[i] / 128.0;
         const y = v * canvas.height / 2;
-        
+       
         // Вычисляем амплитуду для индикатора громкости
         const amplitude = Math.abs(v - 1.0);
         if (amplitude > maxAmplitude) {
           maxAmplitude = amplitude;
         }
-        
+       
         if (i === 0) {
           canvasCtx.moveTo(x, y);
         } else {
           canvasCtx.lineTo(x, y);
         }
-        
+       
         x += sliceWidth;
       }
-      
+     
       canvasCtx.lineTo(canvas.width, canvas.height / 2);
       canvasCtx.stroke();
-      
+     
       // Обновляем индикатор громкости
       const volumePercent = Math.min(maxAmplitude * 200, 100);
       volumeBar.style.width = volumePercent + '%';
-      
+     
       // Меняем цвет в зависимости от громкости
       if (volumePercent > 70) {
         canvasCtx.strokeStyle = '#ef4444'; // красный - громко
@@ -320,18 +295,17 @@
         canvasCtx.strokeStyle = '#6b7280'; // серый - тихо
       }
     }
-
     // Запись аудио
     recordBtn.addEventListener('click', async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ 
+        stream = await navigator.mediaDevices.getUserMedia({
           audio: {
             echoCancellation: true,
             noiseSuppression: true,
             autoGainControl: true
           }
         });
-        
+       
         // Настройка визуализации
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioContext.createAnalyser();
@@ -341,14 +315,14 @@
         analyser.smoothingTimeConstant = 0.8;
         const bufferLength = analyser.frequencyBinCount;
         dataArray = new Uint8Array(bufferLength);
-        
+       
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
-        
+       
         visualizerContainer.style.display = 'block';
         recordBtn.classList.add('recording');
         drawWaveform();
-        
+       
         // Приоритет форматов: OGG -> WebM -> fallback
         let mimeType;
         if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
@@ -360,60 +334,60 @@
         } else {
           mimeType = '';
         }
-        
+       
         console.log('🎙 Формат записи:', mimeType || 'default');
-        
+       
         // Запись
         const options = mimeType ? { mimeType } : {};
         mediaRecorder = new MediaRecorder(stream, options);
         audioChunks = [];
-        
+       
         mediaRecorder.ondataavailable = e => {
           if (e.data && e.data.size > 0) {
             audioChunks.push(e.data);
             console.log('📦 Chunk:', e.data.size, 'bytes');
           }
         };
-        
+       
         mediaRecorder.onstop = () => {
           const blobType = mimeType || 'audio/webm';
           audioBlob = new Blob(audioChunks, { type: blobType });
-          
+         
           console.log('✅ Записано:', audioBlob.size, 'байт');
           console.log('📄 Тип:', audioBlob.type);
-          
+         
           // Показываем превью
           const audioURL = URL.createObjectURL(audioBlob);
           previewPlayer.src = audioURL;
           audioPreview.style.display = 'block';
           visualizerContainer.style.display = 'none';
           recordBtn.classList.remove('recording');
-          
+         
           recordStatus.textContent = `✅ Готово (${(audioBlob.size / 1024).toFixed(1)} KB)`;
-          
+         
           if (animationId) cancelAnimationFrame(animationId);
           if (recordTimer) clearTimeout(recordTimer);
-          
+         
           // Останавливаем микрофон
           if (stream) {
             stream.getTracks().forEach(track => track.stop());
             stream = null;
           }
-          
+         
           // Закрываем аудиоконтекст
           if (audioContext) {
             audioContext.close();
             audioContext = null;
           }
         };
-        
+       
         // Запись БЕЗ тайм-слайсов
         mediaRecorder.start();
-        
+       
         recordBtn.disabled = true;
         stopBtn.disabled = false;
         recordStatus.textContent = '🔴 Говорите... (макс. 2 мин)';
-        
+       
         // Автостоп через 2 минуты
         recordTimer = setTimeout(() => {
           if (mediaRecorder && mediaRecorder.state === 'recording') {
@@ -423,13 +397,12 @@
             recordStatus.textContent = '⏱ Остановлено (лимит 2 мин)';
           }
         }, 120000);
-        
+       
       } catch (err) {
         showError('Не могу получить доступ к микрофону');
         console.error('❌ Ошибка микрофона:', err);
       }
     });
-
     // Остановка записи
     stopBtn.addEventListener('click', () => {
       if (mediaRecorder && mediaRecorder.state === 'recording') {
@@ -440,7 +413,6 @@
         if (recordTimer) clearTimeout(recordTimer);
       }
     });
-
     // Удалить запись и записать заново
     deleteBtn.addEventListener('click', () => {
       audioBlob = null;
@@ -451,86 +423,69 @@
       stopBtn.disabled = true;
       console.log('🗑 Запись удалена');
     });
-
     async function loadFeedback() {
       try {
         const { data, error } = await supabase
           .from('feedback')
           .select('*')
           .order('created_at', { ascending: false });
-
         if (error) throw error;
-
-        feedbackList.innerHTML = 
+        feedbackList.innerHTML =
           data.length === 0
           ? '<p style="text-align:center;color:#ddd">Пока отзывов нет</p>'
           : '';
-
         data.forEach(item => {
           const div = document.createElement('div');
           div.className = 'feedback-item';
-
-          const date = new Date(item.created_at).toLocaleString('ru-RU');
+          const date = new Date(item.created_at).toLocaleString('ru-RU', { hour: '2-digit', minute: '2-digit' });
           let html = `<strong>${escapeHtml(item.contact || 'Anonymous')}</strong>
                       <small>${date}</small>
                       <p>${escapeHtml(item.message)}</p>`;
-
           if (item.audio_url) {
             html += `<audio controls preload="metadata" src="${item.audio_url}"></audio>`;
           }
-
           if (item.reply?.trim()) {
             html += `<div class="admin-reply">
                        <div class="admin-reply-label">Наш ответ:</div>
                        <p class="admin-reply-text">${escapeHtml(item.reply)}</p>
                      </div>`;
           }
-
           div.innerHTML = html;
           feedbackList.appendChild(div);
         });
-
       } catch {
         feedbackList.innerHTML = '<p class="error">Отзывы не загрузились</p>';
       }
     }
-
     feedbackForm.addEventListener('submit', async e => {
       e.preventDefault();
       const name = document.getElementById('name').value.trim();
       const message = document.getElementById('message').value.trim();
-
       if (!name || !message) return showError('Заполните имя и текст');
-
       if (audioBlob && audioBlob.size < 100) {
         showError('Аудио слишком короткое или повреждено');
         return;
       }
-
       submitBtn.disabled = true;
       submitBtn.textContent = 'Отправляем...';
-
       try {
         let audioUrl = null;
-
         if (audioBlob) {
           console.log('📤 Загружаю аудио:', audioBlob.size, 'байт');
-          
+         
           const extension = audioBlob.type.includes('ogg') ? 'ogg' : 'webm';
           const fileName = `voice-${Date.now()}.${extension}`;
-
           const { data: uploadData, error } = await supabase.storage
             .from('voice-feedback')
             .upload(fileName, audioBlob, {
               contentType: audioBlob.type,
               upsert: false
             });
-
           if (error) {
             console.error('❌ Ошибка загрузки:', error);
             throw error;
           }
-          
+         
           if (uploadData) {
             const { data: publicData } = supabase.storage
               .from('voice-feedback')
@@ -539,15 +494,12 @@
             console.log('✅ Загружено:', audioUrl);
           }
         }
-
         const { error } = await supabase.from('feedback').insert([{
           contact: name,
           message,
           audio_url: audioUrl
         }]);
-
         if (error) throw error;
-
         // Очистка формы
         feedbackForm.reset();
         audioBlob = null;
@@ -557,12 +509,10 @@
         recordStatus.textContent = '';
         recordBtn.disabled = false;
         stopBtn.disabled = true;
-        
+       
         await loadFeedback();
-
         submitBtn.textContent = '✅ Отправлено!';
         setTimeout(() => submitBtn.textContent = 'Send Feedback', 2000);
-
       } catch (err) {
         showError('Не удалось отправить — проверьте консоль');
         console.error('❌ Ошибка отправки:', err);
@@ -570,21 +520,17 @@
         submitBtn.disabled = false;
       }
     });
-
-    function showError(msg) { 
-      errorMessage.innerHTML = `<div class="error">${msg}</div>`; 
-      setTimeout(() => errorMessage.innerHTML = '', 5000); 
+    function showError(msg) {
+      errorMessage.innerHTML = `<div class="error">${msg}</div>`;
+      setTimeout(() => errorMessage.innerHTML = '', 5000);
     }
-
-    function escapeHtml(t) { 
-      const div = document.createElement('div'); 
-      div.textContent = t; 
-      return div.innerHTML; 
+    function escapeHtml(t) {
+      const div = document.createElement('div');
+      div.textContent = t;
+      return div.innerHTML;
     }
-
     loadFeedback();
     setInterval(loadFeedback, 10000);
   </script>
-
 </body>
 </html>
