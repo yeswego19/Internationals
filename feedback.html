@@ -105,6 +105,27 @@
       margin-top:8px;
     }
 
+    /* Превью записи */
+    .audio-preview{
+      background:rgba(255,255,255,0.1);
+      border-radius:8px;
+      padding:10px;
+      margin:10px 0;
+      display:none;
+    }
+    
+    .audio-preview audio{
+      width:100%;
+      margin-bottom:8px;
+    }
+    
+    .audio-preview button{
+      background:#d9534f;
+      padding:8px 16px;
+      font-size:14px;
+      margin-top:0;
+    }
+
     .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
     .feedback-item{
       background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;
@@ -152,6 +173,12 @@
           <div id="recordStatus"></div>
         </div>
 
+        <!-- Превью записи -->
+        <div class="audio-preview" id="audioPreview">
+          <audio id="previewPlayer" controls></audio>
+          <button type="button" id="deleteBtn">🗑 Удалить и записать заново</button>
+        </div>
+
         <button type="submit" id="submitBtn">Send Feedback</button>
       </form>
     </div>
@@ -177,7 +204,10 @@
     const errorMessage = document.getElementById('errorMessage');
     const recordBtn = document.getElementById('recordBtn');
     const stopBtn = document.getElementById('stopBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
     const visualizerContainer = document.getElementById('visualizerContainer');
+    const audioPreview = document.getElementById('audioPreview');
+    const previewPlayer = document.getElementById('previewPlayer');
     const canvas = document.getElementById('visualizer');
     const canvasCtx = canvas.getContext('2d');
     const recordStatus = document.getElementById('recordStatus');
@@ -263,7 +293,7 @@
           mimeType = ''; // браузер сам выберет
         }
         
-        console.log('Используется формат:', mimeType || 'default');
+        console.log('🎙 Формат записи:', mimeType || 'default');
         
         // Запись
         const options = mimeType ? { mimeType } : {};
@@ -273,7 +303,7 @@
         mediaRecorder.ondataavailable = e => {
           if (e.data && e.data.size > 0) {
             audioChunks.push(e.data);
-            console.log('Chunk:', e.data.size, 'bytes');
+            console.log('📦 Chunk:', e.data.size, 'bytes');
           }
         };
         
@@ -283,7 +313,13 @@
           audioBlob = new Blob(audioChunks, { type: blobType });
           
           console.log('✅ Записано:', audioBlob.size, 'байт');
-          console.log('Тип:', audioBlob.type);
+          console.log('📄 Тип:', audioBlob.type);
+          
+          // Показываем превью
+          const audioURL = URL.createObjectURL(audioBlob);
+          previewPlayer.src = audioURL;
+          audioPreview.style.display = 'block';
+          visualizerContainer.style.display = 'none';
           
           recordStatus.textContent = `✅ Готово (${(audioBlob.size / 1024).toFixed(1)} KB)`;
           
@@ -303,7 +339,7 @@
           }
         };
         
-        // КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: запись БЕЗ тайм-слайсов
+        // Запись БЕЗ тайм-слайсов (один сплошной поток)
         mediaRecorder.start();
         
         recordBtn.disabled = true;
@@ -316,13 +352,13 @@
             mediaRecorder.stop();
             recordBtn.disabled = false;
             stopBtn.disabled = true;
-            recordStatus.textContent = '⏱ Остановлено (достигнут лимит 2 мин)';
+            recordStatus.textContent = '⏱ Остановлено (лимит 2 мин)';
           }
         }, 120000);
         
       } catch (err) {
         showError('Не могу получить доступ к микрофону');
-        console.error('Ошибка микрофона:', err);
+        console.error('❌ Ошибка микрофона:', err);
       }
     });
 
@@ -334,6 +370,17 @@
         stopBtn.disabled = true;
         if (recordTimer) clearTimeout(recordTimer);
       }
+    });
+
+    // Удалить запись и записать заново
+    deleteBtn.addEventListener('click', () => {
+      audioBlob = null;
+      audioPreview.style.display = 'none';
+      previewPlayer.src = '';
+      recordStatus.textContent = '';
+      recordBtn.disabled = false;
+      stopBtn.disabled = true;
+      console.log('🗑 Запись удалена');
     });
 
     async function loadFeedback() {
@@ -388,7 +435,7 @@
 
       // Проверка аудио перед отправкой
       if (audioBlob && audioBlob.size < 100) {
-        showError('Аудио слишком короткое или пустое');
+        showError('Аудио слишком короткое или повреждено');
         return;
       }
 
@@ -437,6 +484,8 @@
         // Очистка формы
         feedbackForm.reset();
         audioBlob = null;
+        audioPreview.style.display = 'none';
+        previewPlayer.src = '';
         visualizerContainer.style.display = 'none';
         recordStatus.textContent = '';
         recordBtn.disabled = false;
@@ -449,7 +498,7 @@
 
       } catch (err) {
         showError('Не удалось отправить — проверьте консоль');
-        console.error('Ошибка отправки:', err);
+        console.error('❌ Ошибка отправки:', err);
       } finally {
         submitBtn.disabled = false;
       }
