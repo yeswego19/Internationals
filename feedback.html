@@ -228,7 +228,13 @@
     // Запись аудио
     recordBtn.addEventListener('click', async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        });
         
         // Настройка визуализации
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -245,49 +251,64 @@
         visualizerContainer.style.display = 'block';
         drawWaveform();
         
-        // Определяем лучший доступный формат
-        let mimeType = 'audio/webm;codecs=opus';
-        if (!MediaRecorder.isTypeSupported(mimeType)) {
+        // Приоритет форматов: OGG -> WebM -> fallback
+        let mimeType;
+        if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
           mimeType = 'audio/ogg;codecs=opus';
-          if (!MediaRecorder.isTypeSupported(mimeType)) {
-            mimeType = 'audio/webm'; // fallback
-          }
+        } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+          mimeType = 'audio/webm;codecs=opus';
+        } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+          mimeType = 'audio/webm';
+        } else {
+          mimeType = ''; // браузер сам выберет
         }
         
+        console.log('Используется формат:', mimeType || 'default');
+        
         // Запись
-        mediaRecorder = new MediaRecorder(stream, { mimeType });
+        const options = mimeType ? { mimeType } : {};
+        mediaRecorder = new MediaRecorder(stream, options);
         audioChunks = [];
         
         mediaRecorder.ondataavailable = e => {
           if (e.data && e.data.size > 0) {
             audioChunks.push(e.data);
+            console.log('Chunk:', e.data.size, 'bytes');
           }
         };
         
         mediaRecorder.onstop = () => {
-          // Формат для Blob зависит от того, что записали
-          const blobType = mimeType.includes('ogg') ? 'audio/ogg;codecs=opus' : 'audio/webm';
+          // Определяем тип для Blob
+          const blobType = mimeType || 'audio/webm';
           audioBlob = new Blob(audioChunks, { type: blobType });
           
-          console.log('Записано:', audioBlob.size, 'байт, формат:', blobType);
+          console.log('✅ Записано:', audioBlob.size, 'байт');
+          console.log('Тип:', audioBlob.type);
           
-          recordStatus.textContent = '✅ Готово';
+          recordStatus.textContent = `✅ Готово (${(audioBlob.size / 1024).toFixed(1)} KB)`;
+          
           if (animationId) cancelAnimationFrame(animationId);
           if (recordTimer) clearTimeout(recordTimer);
           
-          // Останавливаем все треки стрима
+          // Останавливаем микрофон
           if (stream) {
             stream.getTracks().forEach(track => track.stop());
             stream = null;
           }
+          
+          // Закрываем аудиоконтекст
+          if (audioContext) {
+            audioContext.close();
+            audioContext = null;
+          }
         };
         
-        // КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: записываем порциями по 1000мс
-        mediaRecorder.start(1000);
+        // КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: запись БЕЗ тайм-слайсов
+        mediaRecorder.start();
         
         recordBtn.disabled = true;
         stopBtn.disabled = false;
-        recordStatus.textContent = '🔴 Говорите... (до 2 мин)';
+        recordStatus.textContent = '🔴 Идёт запись... (макс. 2 мин)';
         
         // Автостоп через 2 минуты
         recordTimer = setTimeout(() => {
@@ -295,13 +316,13 @@
             mediaRecorder.stop();
             recordBtn.disabled = false;
             stopBtn.disabled = true;
-            recordStatus.textContent = '⏱ Достигнуто 2 мин';
+            recordStatus.textContent = '⏱ Остановлено (достигнут лимит 2 мин)';
           }
         }, 120000);
         
       } catch (err) {
-        showError('Нет доступа к микрофону — проверьте права');
-        console.error(err);
+        showError('Не могу получить доступ к микрофону');
+        console.error('Ошибка микрофона:', err);
       }
     });
 
@@ -365,6 +386,12 @@
 
       if (!name || !message) return showError('Заполните имя и текст');
 
+      // Проверка аудио перед отправкой
+      if (audioBlob && audioBlob.size < 100) {
+        showError('Аудио слишком короткое или пустое');
+        return;
+      }
+
       submitBtn.disabled = true;
       submitBtn.textContent = 'Отправляем...';
 
@@ -372,26 +399,30 @@
         let audioUrl = null;
 
         if (audioBlob) {
-          console.log('Загружаем аудио, размер:', audioBlob.size);
+          console.log('📤 Загружаю аудио:', audioBlob.size, 'байт');
           
-          // Расширение файла зависит от типа
+          // Определяем расширение
           const extension = audioBlob.type.includes('ogg') ? 'ogg' : 'webm';
           const fileName = `voice-${Date.now()}.${extension}`;
 
           const { data: uploadData, error } = await supabase.storage
             .from('voice-feedback')
             .upload(fileName, audioBlob, {
-              contentType: audioBlob.type
+              contentType: audioBlob.type,
+              upsert: false
             });
 
           if (error) {
-            console.error('Ошибка загрузки:', error);
-          } else if (uploadData) {
+            console.error('❌ Ошибка загрузки:', error);
+            throw error;
+          }
+          
+          if (uploadData) {
             const { data: publicData } = supabase.storage
               .from('voice-feedback')
               .getPublicUrl(fileName);
             audioUrl = publicData.publicUrl;
-            console.log('Аудио загружено:', audioUrl);
+            console.log('✅ Загружено:', audioUrl);
           }
         }
 
@@ -403,6 +434,7 @@
 
         if (error) throw error;
 
+        // Очистка формы
         feedbackForm.reset();
         audioBlob = null;
         visualizerContainer.style.display = 'none';
@@ -412,12 +444,12 @@
         
         await loadFeedback();
 
-        submitBtn.textContent = 'Отправлено!';
+        submitBtn.textContent = '✅ Отправлено!';
         setTimeout(() => submitBtn.textContent = 'Send Feedback', 2000);
 
       } catch (err) {
-        showError('Не ушло — проверь консоль');
-        console.error(err);
+        showError('Не удалось отправить — проверьте консоль');
+        console.error('Ошибка отправки:', err);
       } finally {
         submitBtn.disabled = false;
       }
