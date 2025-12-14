@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -6,22 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feedback - Internationals Translation Service</title>
 
-  <!-- ПРЕДЗАГРУЗКА ФОНА → УБИРАЕТ БЕЛЫЙ ЭКРАН -->
   <link rel="preload" as="image" href="feedback-bg.jpg">
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
+
   <style>
-    /* --- Плавное появление страницы, пока фон подгружается --- */
     body {
       opacity: 0;
       transition: opacity 0.4s ease-in-out;
-
       font-family:'Inter',sans-serif;
       margin:0;padding:0;
-
-      /* ИСПРАВЛЕНО: правильные цвета градиента из Canva */
       background-color: #E89344;
       background-image: url('feedback-bg.jpg');
       background-position: top center;
@@ -69,6 +62,49 @@
       box-shadow:0 6px 15px rgba(31,75,165,0.6);
     }
 
+    .audio-buttons{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top:12px;
+    }
+    
+    #recordBtn{
+      background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
+    }
+    
+    #stopBtn{
+      background:#d9534f !important;
+      color:white;
+    }
+    
+    #stopBtn:disabled{
+      opacity:0.5;
+      cursor:not-allowed;
+    }
+
+    .visualizer-container{
+      background:rgba(255,255,255,0.1);
+      border-radius:8px;
+      padding:10px;
+      margin:10px 0;
+      display:none;
+    }
+    
+    #visualizer{
+      width:100%;
+      height:60px;
+      background:rgba(0,0,0,0.2);
+      border-radius:6px;
+    }
+    
+    #recordStatus{
+      color:#fff;
+      font-size:14px;
+      text-align:center;
+      margin-top:8px;
+    }
+
     .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
     .feedback-item{
       background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;
@@ -78,6 +114,7 @@
     .feedback-item strong{color:#000 !important;font-size:16px;font-weight:700;}
     .feedback-item p{margin:8px 0 0;color:#000 !important;}
     .feedback-item small{color:#333 !important;float:right;}
+    .feedback-item audio{width:100%;margin-top:10px;}
 
     .admin-reply{
       margin-top:12px;padding:12px;background:rgba(240,249,255,0.2);
@@ -104,6 +141,17 @@
       <form id="feedbackForm">
         <input type="text" id="name" placeholder="Your name" required>
         <textarea id="message" rows="4" placeholder="Your impressions, tips, contacts (optional)" required></textarea>
+        
+        <div class="audio-buttons">
+          <button type="button" id="recordBtn">🎙 Record Audio</button>
+          <button type="button" id="stopBtn" disabled>⏹ Stop Recording</button>
+        </div>
+
+        <div class="visualizer-container" id="visualizerContainer">
+          <canvas id="visualizer"></canvas>
+          <div id="recordStatus"></div>
+        </div>
+
         <button type="submit" id="submitBtn">Send Feedback</button>
       </form>
     </div>
@@ -115,7 +163,6 @@
   </div>
 
   <script>
-    /* Плавное появление страницы, когда фон загрузился */
     window.addEventListener('load', () => {
       document.body.classList.add('loaded');
     });
@@ -128,6 +175,118 @@
     const feedbackForm = document.getElementById('feedbackForm');
     const submitBtn = document.getElementById('submitBtn');
     const errorMessage = document.getElementById('errorMessage');
+    const recordBtn = document.getElementById('recordBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const visualizerContainer = document.getElementById('visualizerContainer');
+    const canvas = document.getElementById('visualizer');
+    const canvasCtx = canvas.getContext('2d');
+    const recordStatus = document.getElementById('recordStatus');
+
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let audioBlob = null;
+    let audioContext = null;
+    let analyser = null;
+    let dataArray = null;
+    let animationId = null;
+    let recordTimer = null;
+
+    // Визуализация волны
+    function drawWaveform() {
+      animationId = requestAnimationFrame(drawWaveform);
+      
+      analyser.getByteTimeDomainData(dataArray);
+      
+      canvasCtx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      canvasCtx.lineWidth = 2;
+      canvasCtx.strokeStyle = '#2f5597';
+      canvasCtx.beginPath();
+      
+      const sliceWidth = canvas.width / dataArray.length;
+      let x = 0;
+      
+      for (let i = 0; i < dataArray.length; i++) {
+        const v = dataArray[i] / 128.0;
+        const y = v * canvas.height / 2;
+        
+        if (i === 0) {
+          canvasCtx.moveTo(x, y);
+        } else {
+          canvasCtx.lineTo(x, y);
+        }
+        
+        x += sliceWidth;
+      }
+      
+      canvasCtx.lineTo(canvas.width, canvas.height / 2);
+      canvasCtx.stroke();
+    }
+
+    // Запись аудио
+    recordBtn.addEventListener('click', async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        
+        // Настройка визуализации
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
+        const source = audioContext.createMediaStreamSource(stream);
+        source.connect(analyser);
+        analyser.fftSize = 2048;
+        const bufferLength = analyser.frequencyBinCount;
+        dataArray = new Uint8Array(bufferLength);
+        
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        
+        visualizerContainer.style.display = 'block';
+        drawWaveform();
+        
+        // Запись
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+          audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          recordStatus.textContent = '✅ Recording saved';
+          if (animationId) cancelAnimationFrame(animationId);
+          if (recordTimer) clearTimeout(recordTimer);
+          stream.getTracks().forEach(track => track.stop());
+        };
+        
+        mediaRecorder.start();
+        recordBtn.disabled = true;
+        stopBtn.disabled = false;
+        recordStatus.textContent = '🔴 Recording... (max 2 min)';
+        
+        // Автостоп через 2 минуты
+        recordTimer = setTimeout(() => {
+          if (mediaRecorder && mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+            recordBtn.disabled = false;
+            stopBtn.disabled = true;
+            recordStatus.textContent = '⏱ Recording stopped (2 min limit)';
+          }
+        }, 120000); // 2 минуты
+        
+      } catch (err) {
+        showError('Cannot access microphone');
+        console.error(err);
+      }
+    });
+
+    // Остановка записи
+    stopBtn.addEventListener('click', () => {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        recordBtn.disabled = false;
+        stopBtn.disabled = true;
+        if (recordTimer) clearTimeout(recordTimer);
+      }
+    });
 
     async function loadFeedback() {
       try {
@@ -151,6 +310,10 @@
           let html = `<strong>${escapeHtml(item.contact || 'Anonymous')}</strong>
                       <small>${date}</small>
                       <p>${escapeHtml(item.message)}</p>`;
+
+          if (item.audio_url) {
+            html += `<audio controls src="${item.audio_url}"></audio>`;
+          }
 
           if (item.reply?.trim()) {
             html += `<div class="admin-reply">
@@ -179,17 +342,45 @@
       submitBtn.textContent = 'Отправляем...';
 
       try {
-        const { error } = await supabase.from('feedback').insert([{ contact: name, message }]);
+        let audioUrl = null;
+
+        if (audioBlob) {
+          const fileName = `voice-${Date.now()}.webm`;
+
+          const { data, error } = await supabase.storage
+            .from('voice-feedback')
+            .upload(fileName, audioBlob, {
+              contentType: 'audio/webm'
+            });
+
+          if (!error) {
+            const publicData = supabase.storage
+              .from('voice-feedback')
+              .getPublicUrl(fileName);
+            audioUrl = publicData.data.publicUrl;
+          }
+        }
+
+        const { error } = await supabase.from('feedback').insert([{
+          contact: name,
+          message,
+          audio_url: audioUrl
+        }]);
+
         if (error) throw error;
 
         feedbackForm.reset();
+        audioBlob = null;
+        visualizerContainer.style.display = 'none';
+        recordStatus.textContent = '';
         await loadFeedback();
 
         submitBtn.textContent = 'Отправлено!';
         setTimeout(() => submitBtn.textContent = 'Send Feedback', 2000);
 
-      } catch {
+      } catch (err) {
         showError('Не удалось отправить.');
+        console.error(err);
       } finally {
         submitBtn.disabled = false;
       }
