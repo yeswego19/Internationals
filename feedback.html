@@ -190,6 +190,7 @@
     let dataArray = null;
     let animationId = null;
     let recordTimer = null;
+    let stream = null;
 
     // Визуализация волны
     function drawWaveform() {
@@ -227,7 +228,7 @@
     // Запись аудио
     recordBtn.addEventListener('click', async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         
         // Настройка визуализации
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -244,23 +245,49 @@
         visualizerContainer.style.display = 'block';
         drawWaveform();
         
+        // Определяем лучший доступный формат
+        let mimeType = 'audio/webm;codecs=opus';
+        if (!MediaRecorder.isTypeSupported(mimeType)) {
+          mimeType = 'audio/ogg;codecs=opus';
+          if (!MediaRecorder.isTypeSupported(mimeType)) {
+            mimeType = 'audio/webm'; // fallback
+          }
+        }
+        
         // Запись
-        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder = new MediaRecorder(stream, { mimeType });
         audioChunks = [];
         
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
-          audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-          recordStatus.textContent = '✅ Recording saved';
-          if (animationId) cancelAnimationFrame(animationId);
-          if (recordTimer) clearTimeout(recordTimer);
-          stream.getTracks().forEach(track => track.stop());
+        mediaRecorder.ondataavailable = e => {
+          if (e.data && e.data.size > 0) {
+            audioChunks.push(e.data);
+          }
         };
         
-        mediaRecorder.start();
+        mediaRecorder.onstop = () => {
+          // Формат для Blob зависит от того, что записали
+          const blobType = mimeType.includes('ogg') ? 'audio/ogg;codecs=opus' : 'audio/webm';
+          audioBlob = new Blob(audioChunks, { type: blobType });
+          
+          console.log('Записано:', audioBlob.size, 'байт, формат:', blobType);
+          
+          recordStatus.textContent = '✅ Готово';
+          if (animationId) cancelAnimationFrame(animationId);
+          if (recordTimer) clearTimeout(recordTimer);
+          
+          // Останавливаем все треки стрима
+          if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+          }
+        };
+        
+        // КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: записываем порциями по 1000мс
+        mediaRecorder.start(1000);
+        
         recordBtn.disabled = true;
         stopBtn.disabled = false;
-        recordStatus.textContent = '🔴 Recording... (max 2 min)';
+        recordStatus.textContent = '🔴 Говорите... (до 2 мин)';
         
         // Автостоп через 2 минуты
         recordTimer = setTimeout(() => {
@@ -268,12 +295,12 @@
             mediaRecorder.stop();
             recordBtn.disabled = false;
             stopBtn.disabled = true;
-            recordStatus.textContent = '⏱ Recording stopped (2 min limit)';
+            recordStatus.textContent = '⏱ Достигнуто 2 мин';
           }
-        }, 120000); // 2 минуты
+        }, 120000);
         
       } catch (err) {
-        showError('Cannot access microphone');
+        showError('Нет доступа к микрофону — проверьте права');
         console.error(err);
       }
     });
@@ -299,7 +326,7 @@
 
         feedbackList.innerHTML = 
           data.length === 0
-          ? '<p style="text-align:center;color:#ddd">No feedback yet. Be the first!</p>'
+          ? '<p style="text-align:center;color:#ddd">Пока отзывов нет</p>'
           : '';
 
         data.forEach(item => {
@@ -312,7 +339,7 @@
                       <p>${escapeHtml(item.message)}</p>`;
 
           if (item.audio_url) {
-            html += `<audio controls src="${item.audio_url}"></audio>`;
+            html += `<audio controls preload="metadata" src="${item.audio_url}"></audio>`;
           }
 
           if (item.reply?.trim()) {
@@ -327,7 +354,7 @@
         });
 
       } catch {
-        feedbackList.innerHTML = '<p class="error">Не удалось загрузить отзывы.</p>';
+        feedbackList.innerHTML = '<p class="error">Отзывы не загрузились</p>';
       }
     }
 
@@ -336,7 +363,7 @@
       const name = document.getElementById('name').value.trim();
       const message = document.getElementById('message').value.trim();
 
-      if (!name || !message) return showError('Заполните все поля');
+      if (!name || !message) return showError('Заполните имя и текст');
 
       submitBtn.disabled = true;
       submitBtn.textContent = 'Отправляем...';
@@ -345,19 +372,26 @@
         let audioUrl = null;
 
         if (audioBlob) {
-          const fileName = `voice-${Date.now()}.webm`;
+          console.log('Загружаем аудио, размер:', audioBlob.size);
+          
+          // Расширение файла зависит от типа
+          const extension = audioBlob.type.includes('ogg') ? 'ogg' : 'webm';
+          const fileName = `voice-${Date.now()}.${extension}`;
 
-          const { data, error } = await supabase.storage
+          const { data: uploadData, error } = await supabase.storage
             .from('voice-feedback')
             .upload(fileName, audioBlob, {
-              contentType: 'audio/webm'
+              contentType: audioBlob.type
             });
 
-          if (!error) {
-            const publicData = supabase.storage
+          if (error) {
+            console.error('Ошибка загрузки:', error);
+          } else if (uploadData) {
+            const { data: publicData } = supabase.storage
               .from('voice-feedback')
               .getPublicUrl(fileName);
-            audioUrl = publicData.data.publicUrl;
+            audioUrl = publicData.publicUrl;
+            console.log('Аудио загружено:', audioUrl);
           }
         }
 
@@ -373,13 +407,16 @@
         audioBlob = null;
         visualizerContainer.style.display = 'none';
         recordStatus.textContent = '';
+        recordBtn.disabled = false;
+        stopBtn.disabled = true;
+        
         await loadFeedback();
 
         submitBtn.textContent = 'Отправлено!';
         setTimeout(() => submitBtn.textContent = 'Send Feedback', 2000);
 
       } catch (err) {
-        showError('Не удалось отправить.');
+        showError('Не ушло — проверь консоль');
         console.error(err);
       } finally {
         submitBtn.disabled = false;
