@@ -208,7 +208,7 @@ p {
 .hero {
     padding: 80px 0 80px;
     background: linear-gradient(135deg, rgba(47, 85, 151, 0.35) 0%, rgba(31, 63, 131, 0.35) 100%), url('assets/background.jpg');
-    background-position: center 35%;
+    background-position: center 10%;
     background-repeat: no-repeat;
     background-size: cover;
     min-height: 100vh;
