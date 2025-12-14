@@ -1,340 +1,232 @@
 <!DOCTYPE html>
 <html lang="en" translate="yes">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feedback - Internationals Translation Service</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
-  
-  <link rel="preload" as="image" href="feedback-bg.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    body {
-      opacity: 0;
-      transition: opacity 0.4s ease-in-out;
-      font-family:'Inter',sans-serif;
-      margin:0;padding:0;
-      background-color: #E89344;
-      background-image: url('feedback-bg.jpg');
-      background-position: top center;
-      background-repeat: no-repeat;
-      background-size: 100% auto;
-      min-height:100vh;
-    }
-    body.loaded { opacity: 1; }
-
-    .feedback-container{
-      max-width:700px;margin:50px auto;background:transparent;padding:30px;
-      border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.25);
-      backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);
-    }
-    .feedback-header h2{margin:0;font-size:24px;color:#fff}
-    .close-btn{cursor:pointer;font-size:28px;font-weight:bold;border:none;background:none;color:#fff}
-    .close-btn:hover{color:#ccc}
-
-    .feedback-form input,
-    .feedback-form textarea{
-      width:100%;padding:12px;margin:8px 0;border-radius:8px;
-      border:2px solid rgba(255,255,255,0.4);
-      background:rgba(255,255,255,0.15);
-      box-sizing:border-box;font-family:'Inter',sans-serif;
-      font-size:15px;
-      color:#000 !important;
-    }
-    .feedback-form input::placeholder,
-    .feedback-form textarea::placeholder{ color:#888 }
-    .feedback-form input:focus,
-    .feedback-form textarea:focus{
-      outline:none;border-color:#fff;
-      background:rgba(255,255,255,0.25);
-    }
-
-    .feedback-form button{
-      background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
-      color:white;padding:14px;border:none;border-radius:8px;cursor:pointer;
-      font-weight:600;font-size:16px;width:100%;margin-top:12px;
-      transition: all 0.3s ease;
-    }
-    .feedback-form button:hover{
-      transform:translateY(-2px);
-      box-shadow:0 6px 15px rgba(31,75,165,0.6);
-    }
-
-    .audio-buttons{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      margin-top:12px;
-    }
-    
-    #recordBtn{
-      background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    #recordBtn.recording {
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
-      50% { box-shadow: 0 0 0 15px rgba(220, 38, 38, 0); }
-    }
-    
-    #stopBtn{
-      background:#d9534f !important;
-      color:white;
-    }
-    
-    #stopBtn:disabled{
-      opacity:0.5;
-      cursor:not-allowed;
-    }
-
-    .visualizer-container{
-      background:rgba(255,255,255,0.1);
-      border-radius:8px;
-      padding:15px;
-      margin:10px 0;
-      display:none;
-    }
-    
-    #visualizer{
-      width:100%;
-      height:80px;
-      background:rgba(0,0,0,0.3);
-      border-radius:6px;
-      display: block;
-    }
-    
-    #recordStatus{
-      color:#fff;
-      font-size:14px;
-      text-align:center;
-      margin-top:8px;
-      font-weight: 500;
-    }
-
-    .volume-meter {
-      width: 100%;
-      height: 8px;
-      background: rgba(0,0,0,0.3);
-      border-radius: 4px;
-      margin-top: 10px;
-      overflow: hidden;
-    }
-    
-    .volume-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #10b981, #ef4444);
-      width: 0%;
-      transition: width 0.1s ease;
-      border-radius: 4px;
-    }
-
-    .audio-preview{
-      background:rgba(255,255,255,0.1);
-      border-radius:8px;
-      padding:10px;
-      margin:10px 0;
-      display:none;
-    }
-    
-    .audio-preview audio{
-      width:100%;
-      margin-bottom:8px;
-    }
-    
-    .audio-preview button{
-      background:#d9534f;
-      padding:8px 16px;
-      font-size:14px;
-      margin-top:0;
-    }
-
-    .feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}
-    .feedback-item{
-      background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;
-      border-radius:8px;border-left:4px solid #1f4ba5;
-      color:#000 !important;
-    }
-    .feedback-item strong{color:#000 !important;font-size:16px;font-weight:700;}
-    .feedback-item p{margin:8px 0 0;color:#000 !important;}
-    .feedback-item small{color:#333 !important;float:right;}
-    .feedback-item audio{width:100%;margin-top:10px;}
-
-    .admin-reply{
-      margin-top:12px;padding:12px;background:rgba(240,249,255,0.2);
-      border-left:3px solid #3b82f6;border-radius:6px;color:#000 !important;
-    }
-    .admin-reply-label{font-weight:600;color:#000 !important;}
-    .admin-reply-text{color:#000 !important;font-weight:500;}
-
-    .loading,.error{text-align:center;padding:20px;color:#fff}
-    .error{background:rgba(255,0,0,0.2);border-radius:8px;margin-bottom:15px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback - Internationals Translation Service</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
+<link rel="preload" as="image" href="feedback-bg.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{opacity:0;transition:opacity 0.4s ease-in-out;font-family:'Inter',sans-serif;margin:0;padding:0;background-color:#E89344;background-image:url('feedback-bg.jpg');background-position:top center;background-repeat:no-repeat;background-size:100% auto;min-height:100vh}body.loaded{opacity:1}.feedback-container{max-width:700px;margin:50px auto;background:transparent;padding:30px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.25);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2)}.feedback-header h2{margin:0;font-size:24px;color:#fff}.close-btn{cursor:pointer;font-size:28px;font-weight:bold;border:none;background:none;color:#fff}.close-btn:hover{color:#ccc}.feedback-form input,.feedback-form textarea{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:2px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.15);box-sizing:border-box;font-family:'Inter',sans-serif;font-size:15px;color:#000 !important}.feedback-form input::placeholder,.feedback-form textarea::placeholder{color:#888}.feedback-form input:focus,.feedback-form textarea:focus{outline:none;border-color:#fff;background:rgba(255,255,255,0.25)}.feedback-form button{background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);color:white;padding:14px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:16px;width:100%;margin-top:12px;transition: all 0.3s ease}.feedback-form button:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(31,75,165,0.6)}.audio-buttons{display:flex;flex-direction:column;gap:8px;margin-top:12px}#recordBtn{background:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);position:relative;overflow:hidden}#recordBtn.recording{animation:pulse 1.5s ease-in-out infinite}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.7)}50%{box-shadow:0 0 0 15px rgba(220,38,38,0)}}#stopBtn{background:#d9534f !important;color:white}#stopBtn:disabled{opacity:0.5;cursor:not-allowed}.visualizer-container{background:rgba(255,255,255,0.1);border-radius:8px;padding:15px;margin:10px 0;display:none}#visualizer{width:100%;height:80px;background:rgba(0,0,0,0.3);border-radius:6px;display:block}#recordStatus{color:#fff;font-size:14px;text-align:center;margin-top:8px;font-weight:500}.volume-meter{width:100%;height:8px;background:rgba(0,0,0,0.3);border-radius:4px;margin-top:10px;overflow:hidden}.volume-bar{height:100%;background:linear-gradient(90deg,#10b981,#ef4444);width:0%;transition:width 0.1s ease;border-radius:4px}.audio-preview{background:rgba(255,255,255,0.1);border-radius:8px;padding:10px;margin:10px 0;display:none}.audio-preview audio{width:100%;margin-bottom:8px}.audio-preview button{background:#d9534f;padding:8px 16px;font-size:14px;margin-top:0}.feedback-list-title{font-size:18px;font-weight:600;margin-bottom:15px;color:#fff}.feedback-item{background:rgba(255,255,255,0.12);padding:15px;margin-bottom:12px;border-radius:8px;border-left:4px solid #1f4ba5;color:#000 !important}.feedback-item strong{color:#000 !important;font-size:16px;font-weight:700}.feedback-item p{margin:8px 0 0;color:#000 !important}.feedback-item small{color:#333 !important;float:right}.feedback-item audio{width:100%;margin-top:10px}.admin-reply{margin-top:12px;padding:12px;background:rgba(240,249,255,0.2);border-left:3px solid #3b82f6;border-radius:6px;color:#000 !important}.admin-reply-label{font-weight:600;color:#000 !important}.admin-reply-text{color:#000 !important;font-weight:500}.loading,.error{text-align:center;padding:20px;color:#fff}.error{background:rgba(255,0,0,0.2);border-radius:8px;margin-bottom:15px}
+</style>
 </head>
-
 <body>
-  <div class="feedback-container">
-    <div class="feedback-header">
-      <h2 class="translate">Feedback</h2>
-      <button class="close-btn" onclick="window.history.back();">×</button>
-    </div>
-
-    <div id="errorMessage"></div>
-
-    <div class="feedback-form">
-      <form id="feedbackForm">
-        <input type="text" id="name" class="translate" placeholder="Your name" required>
-        <textarea id="message" rows="4" class="translate" placeholder="Your impressions, tips, contacts (optional)" required></textarea>
-        
-        <div class="audio-buttons">
-          <button type="button" id="recordBtn" class="translate">🎙 Record Audio</button>
-          <button type="button" id="stopBtn" class="translate" disabled>⏹ Stop Recording</button>
-        </div>
-
-        <div class="visualizer-container" id="visualizerContainer">
-          <canvas id="visualizer"></canvas>
-          <div class="volume-meter">
-            <div class="volume-bar" id="volumeBar"></div>
-          </div>
-          <div id="recordStatus"></div>
-        </div>
-
-        <div class="audio-preview" id="audioPreview">
-          <audio id="previewPlayer" controls></audio>
-          <button type="button" id="deleteBtn" class="translate">🗑 Delete and re-record</button>
-        </div>
-
-        <button type="submit" id="submitBtn" class="translate">Send Feedback</button>
-      </form>
-    </div>
-
-    <div class="feedback-list-container">
-      <div class="feedback-list-title translate">Recent Feedback</div>
-      <div id="feedbackList"><div class="loading translate">Loading feedback...</div></div>
-    </div>
+<div class="feedback-container">
+  <div class="feedback-header">
+    <h2 class="translate" data-key="feedback">Feedback</h2>
+    <button class="close-btn" onclick="window.history.back();">×</button>
   </div>
+  <div id="errorMessage"></div>
+  <div class="feedback-form">
+    <form id="feedbackForm">
+      <input type="text" id="name" class="translate" data-key="name" placeholder="Your name" required>
+      <textarea id="message" rows="4" class="translate" data-key="message" placeholder="Your impressions, tips, contacts (optional)" required></textarea>
+      <div class="audio-buttons">
+        <button type="button" id="recordBtn" class="translate" data-key="record">🎙 Record Audio</button>
+        <button type="button" id="stopBtn" class="translate" data-key="stop" disabled>⏹ Stop Recording</button>
+      </div>
+      <div class="visualizer-container" id="visualizerContainer">
+        <canvas id="visualizer"></canvas>
+        <div class="volume-meter"><div class="volume-bar" id="volumeBar"></div></div>
+        <div id="recordStatus"></div>
+      </div>
+      <div class="audio-preview" id="audioPreview">
+        <audio id="previewPlayer" controls></audio>
+        <button type="button" id="deleteBtn" class="translate" data-key="delete">🗑 Delete and re-record</button>
+      </div>
+      <button type="submit" id="submitBtn" class="translate" data-key="send">Send Feedback</button>
+    </form>
+  </div>
+  <div class="feedback-list-container">
+    <div class="feedback-list-title translate" data-key="recent">Recent Feedback</div>
+    <div id="feedbackList"><div class="loading translate">Loading feedback...</div></div>
+  </div>
+</div>
 
-  <script>
-    window.addEventListener('load', () => {
-      document.body.classList.add('loaded');
-    });
+<script>
+window.addEventListener('load', () => { document.body.classList.add('loaded'); loadTranslations(); });
 
-    const SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR5cGJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const translations = {
+  en:{feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading feedback..."},
+  ru:{feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов..."},
+  de:{feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Kontakte (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..."},
+  es:{feedback:"Comentarios", name:"Su nombre", message:"Sus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios..."},
+  pt:{feedback:"Feedback", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando feedback..."},
+  zh:{feedback:"反馈", name:"您的姓名", message:"您的印象，提示，联系方式（可选）", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..."},
+  ar:{feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جارٍ تحميل التعليقات..."}
+};
 
-    const feedbackList = document.getElementById('feedbackList');
-    const feedbackForm = document.getElementById('feedbackForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const errorMessage = document.getElementById('errorMessage');
-    const recordBtn = document.getElementById('recordBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const deleteBtn = document.getElementById('deleteBtn');
-    const visualizerContainer = document.getElementById('visualizerContainer');
-    const audioPreview = document.getElementById('audioPreview');
-    const previewPlayer = document.getElementById('previewPlayer');
+function loadTranslations(){
+  let lang = localStorage.getItem('language') || 'en';
+  document.querySelectorAll('.translate').forEach(el=>{
+    const key = el.dataset.key;
+    if(key && translations[lang] && translations[lang][key]) el.textContent=translations[lang][key];
+    if(el.placeholder && translations[lang] && translations[lang][key]) el.placeholder=translations[lang][key];
+  });
+}
 
-    // --- Переводы кнопок и плейсхолдеров ---
-    const translations = {
-      en: {
-        feedback: "Feedback",
-        name: "Your Name",
-        message: "Your Impressions, Tips, Contacts (Optional)",
-        record: "🎙 Record Audio",
-        stop: "⏹ Stop Recording",
-        delete: "🗑 Delete and re-record",
-        send: "Send Feedback",
-        loading: "Loading feedback..."
-      },
-      ru: {
-        feedback: "Отзывы",
-        name: "Ваше имя",
-        message: "Ваши впечатления, советы, контакты (по желанию)",
-        record: "🎙 Записать аудио",
-        stop: "⏹ Остановить запись",
-        delete: "🗑 Удалить и записать заново",
-        send: "Отправить отзыв",
-        loading: "Загрузка отзывов..."
-      },
-      de: {
-        feedback: "Feedback",
-        name: "Ihr Name",
-        message: "Ihre Eindrücke, Tipps, Kontakte (optional)",
-        record: "🎙 Audio aufnehmen",
-        stop: "⏹ Aufnahme stoppen",
-        delete: "🗑 Löschen und neu aufnehmen",
-        send: "Feedback senden",
-        loading: "Feedback wird geladen..."
-      },
-      es: {
-        feedback: "Comentarios",
-        name: "Tu nombre",
-        message: "Tus impresiones, consejos, contactos (opcional)",
-        record: "🎙 Grabar audio",
-        stop: "⏹ Detener grabación",
-        delete: "🗑 Borrar y volver a grabar",
-        send: "Enviar comentario",
-        loading: "Cargando comentarios..."
-      },
-      pt: {
-        feedback: "Comentários",
-        name: "Seu nome",
-        message: "Suas impressões, dicas, contatos (opcional)",
-        record: "🎙 Gravar áudio",
-        stop: "⏹ Parar gravação",
-        delete: "🗑 Excluir e gravar novamente",
-        send: "Enviar comentário",
-        loading: "Carregando comentários..."
-      },
-      zh: {
-        feedback: "反馈",
-        name: "您的姓名",
-        message: "您的感想、建议、联系方式（可选）",
-        record: "🎙 录制音频",
-        stop: "⏹ 停止录音",
-        delete: "🗑 删除并重新录制",
-        send: "发送反馈",
-        loading: "正在加载反馈..."
-      },
-      ar: {
-        feedback: "ردود الفعل",
-        name: "اسمك",
-        message: "انطباعاتك، نصائحك، جهات الاتصال (اختياري)",
-        record: "🎙 تسجيل الصوت",
-        stop: "⏹ إيقاف التسجيل",
-        delete: "🗑 حذف وإعادة التسجيل",
-        send: "إرسال التعليقات",
-        loading: "جارٍ تحميل التعليقات..."
-      }
+// --- Supabase setup ---
+const SUPABASE_URL='https://mcgcijdnzduzyqbbjtkm.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
+const supabase = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+// --- Elements ---
+const feedbackList=document.getElementById('feedbackList');
+const feedbackForm=document.getElementById('feedbackForm');
+const submitBtn=document.getElementById('submitBtn');
+const errorMessage=document.getElementById('errorMessage');
+const recordBtn=document.getElementById('recordBtn');
+const stopBtn=document.getElementById('stopBtn');
+const deleteBtn=document.getElementById('deleteBtn');
+const visualizerContainer=document.getElementById('visualizerContainer');
+const audioPreview=document.getElementById('audioPreview');
+const previewPlayer=document.getElementById('previewPlayer');
+const canvas=document.getElementById('visualizer');
+const canvasCtx=canvas.getContext('2d');
+const recordStatus=document.getElementById('recordStatus');
+const volumeBar=document.getElementById('volumeBar');
+
+let mediaRecorder=null,audioChunks=[],audioBlob=null,audioContext=null,analyser=null,dataArray=null,animationId=null,recordTimer=null,stream=null;
+
+function drawWaveform(){
+  animationId=requestAnimationFrame(drawWaveform);
+  analyser.getByteTimeDomainData(dataArray);
+  canvasCtx.fillStyle='rgba(0,0,0,0.2)';
+  canvasCtx.fillRect(0,0,canvas.width,canvas.height);
+  canvasCtx.lineWidth=3;
+  canvasCtx.beginPath();
+  const sliceWidth=canvas.width/dataArray.length;
+  let x=0,maxAmplitude=0;
+  for(let i=0;i<dataArray.length;i++){
+    const v=dataArray[i]/128.0;
+    const y=v*canvas.height/2;
+    const amplitude=Math.abs(v-1.0);
+    if(amplitude>maxAmplitude)maxAmplitude=amplitude;
+    if(i===0)canvasCtx.moveTo(x,y);
+    else canvasCtx.lineTo(x,y);
+    x+=sliceWidth;
+  }
+  canvasCtx.lineTo(canvas.width,canvas.height/2);
+  canvasCtx.stroke();
+  const volumePercent=Math.min(maxAmplitude*200,100);
+  volumeBar.style.width=volumePercent+'%';
+  if(volumePercent>70)canvasCtx.strokeStyle='#ef4444';
+  else if(volumePercent>30)canvasCtx.strokeStyle='#10b981';
+  else canvasCtx.strokeStyle='#6b7280';
+}
+
+// --- Recording events ---
+recordBtn.addEventListener('click',async()=>{
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+    audioContext=new (window.AudioContext||window.webkitAudioContext)();
+    analyser=audioContext.createAnalyser();
+    const source=audioContext.createMediaStreamSource(stream);
+    source.connect(analyser);
+    analyser.fftSize=2048;
+    analyser.smoothingTimeConstant=0.8;
+    const bufferLength=analyser.frequencyBinCount;
+    dataArray=new Uint8Array(bufferLength);
+    canvas.width=canvas.offsetWidth;
+    canvas.height=canvas.offsetHeight;
+    visualizerContainer.style.display='block';
+    recordBtn.classList.add('recording');
+    drawWaveform();
+    let mimeType;
+    if(MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) mimeType='audio/ogg;codecs=opus';
+    else if(MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) mimeType='audio/webm;codecs=opus';
+    else if(MediaRecorder.isTypeSupported('audio/webm')) mimeType='audio/webm';
+    else mimeType='';
+    const options=mimeType?{mimeType}:{};
+    mediaRecorder=new MediaRecorder(stream,options);
+    audioChunks=[];
+    mediaRecorder.ondataavailable=e=>{if(e.data&&e.data.size>0)audioChunks.push(e.data);}
+    mediaRecorder.onstop=()=>{
+      const blobType=mimeType||'audio/webm';
+      audioBlob=new Blob(audioChunks,{type:blobType});
+      const audioURL=URL.createObjectURL(audioBlob);
+      previewPlayer.src=audioURL;
+      audioPreview.style.display='block';
+      visualizerContainer.style.display='none';
+      recordBtn.classList.remove('recording');
+      recordStatus.textContent=`✅ Ready (${(audioBlob.size/1024).toFixed(1)} KB)`;
+      if(animationId) cancelAnimationFrame(animationId);
+      if(recordTimer) clearTimeout(recordTimer);
+      if(stream){stream.getTracks().forEach(track=>track.stop());stream=null;}
+      if(audioContext){audioContext.close();audioContext=null;}
     };
+    mediaRecorder.start();
+    recordBtn.disabled=true;
+    stopBtn.disabled=false;
+    recordStatus.textContent='🔴 Recording... (max 2 min)';
+    recordTimer=setTimeout(()=>{if(mediaRecorder&&mediaRecorder.state==='recording'){mediaRecorder.stop();recordBtn.disabled=false;stopBtn.disabled=true;recordStatus.textContent='⏱ Stopped (2 min limit)';}},120000);
+  }catch(err){showError('Cannot access microphone');console.error('❌ Mic error:',err);}
+});
 
-    function applyTranslation(lang) {
-      const t = translations[lang] || translations.en;
-      document.querySelector('.feedback-header h2').textContent = t.feedback;
-      document.getElementById('name').placeholder = t.name;
-      document.getElementById('message').placeholder = t.message;
-      document.getElementById('recordBtn').textContent = t.record;
-      document.getElementById('stopBtn').textContent = t.stop;
-      document.getElementById('deleteBtn').textContent = t.delete;
-      document.getElementById('submitBtn').textContent = t.send;
-      const loadingElem = document.querySelector('#feedbackList .loading');
-      if (loadingElem) loadingElem.textContent = t.loading;
-      const titleElem = document.querySelector('.feedback-list-title');
-      if (titleElem) titleElem.textContent = t.feedback;
+stopBtn.addEventListener('click',()=>{if(mediaRecorder&&mediaRecorder.state==='recording'){mediaRecorder.stop();recordBtn.disabled=false;stopBtn.disabled=true;recordBtn.classList.remove('recording');if(recordTimer) clearTimeout(recordTimer);}});
+deleteBtn.addEventListener('click'=>{audioBlob=null;audioPreview.style.display='none';previewPlayer.src='';recordStatus.textContent='';recordBtn.disabled=false;stopBtn.disabled=true;console.log('🗑 Deleted');});
+
+// --- Load feedback ---
+async function loadFeedback(){
+  try{
+    const {data,error}=await supabase.from('feedback').select('*').order('created_at',{ascending:false});
+    if(error)throw error;
+    feedbackList.innerHTML=data.length===0?`<p style="text-align:center;color:#ddd" class="translate">${translations[localStorage.getItem('language')||'en'].loading}</p>`:'';
+    data.forEach(item=>{
+      const div=document.createElement('div');
+      div.className='feedback-item';
+      const date=new Date(item.created_at).toLocaleString(undefined,{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',year:'numeric'});
+      let html=`<strong translate="no">${escapeHtml(item.contact||'Anonymous')}</strong><small>${date}</small><p translate="no">${escapeHtml(item.message)}</p>`;
+      if(item.audio_url) html+=`<audio controls preload="metadata" src="${item.audio_url}"></audio>`;
+      if(item.reply?.trim()) html+=`<div class="admin-reply"><div class="admin-reply-label translate">Our reply:</div><p class="admin-reply-text" translate="no">${escapeHtml(item.reply)}</p></div>`;
+      div.innerHTML=html;
+      feedbackList.appendChild(div);
+    });
+  }catch{feedbackList.innerHTML=`<p class="error translate">Failed to load feedback</p>`;}
+}
+feedbackForm.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const name=document.getElementById('name').value.trim();
+  const message=document.getElementById('message').value.trim();
+  if(!name||!message)return showError('Please fill in name and message');
+  if(audioBlob&&audioBlob.size<100){showError('Audio too short or corrupted');return;}
+  submitBtn.disabled=true;submitBtn.textContent='Sending...';
+  try{
+    let audioUrl=null;
+    if(audioBlob){
+      const extension=audioBlob.type.includes('ogg')?'ogg':'webm';
+      const fileName=`voice-${Date.now()}.${extension}`;
+      const {data:uploadData,error}=await supabase.storage.from('voice-feedback').upload(fileName,audioBlob,{contentType:audioBlob.type,upsert:false});
+      if(error)throw error;
+      if(uploadData){
+        const {data:publicData}=supabase.storage.from('voice-feedback').getPublicUrl(fileName);
+        audioUrl=publicData.publicUrl;
+      }
     }
+    const {error}=await supabase.from('feedback').insert([{contact:name,message,audio_url:audioUrl}]);
+    if(error)throw error;
+    feedbackForm.reset();
+    audioBlob=null;
+    audioPreview.style.display='none';
+    previewPlayer.src='';
+    visualizerContainer.style.display='none';
+    recordStatus.textContent='';
+    recordBtn.disabled=false;
+    stopBtn.disabled=true;
+    await loadFeedback();
+    submitBtn.textContent='✅ Sent!';
+    setTimeout(()=>submitBtn.textContent=translations[localStorage.getItem('language')||'en'].send,2000);
+  }catch(err){showError('Failed to send - check console');console.error(err);}
+  finally{submitBtn.disabled=false;}
+});
 
-    // Сразу применяем язык при загрузке
-    const userLang = localStorage.getItem('lang') || 'en';
-    applyTranslation(userLang);
+function showError(msg){errorMessage.innerHTML=`<div class="error">${msg}</div>`;setTimeout(()=>errorMessage.innerHTML='',5000);}
+function escapeHtml(t){const div=document.createElement('div');div.textContent=t;return div.innerHTML;}
 
-    // --- Здесь должен идти остальной ваш скрипт записи и отправки ---
-    // loadFeedback(), mediaRecorder и т.д.
-  </script>
+loadFeedback();
+setInterval(loadFeedback,10000);
+</script>
 </body>
 </html>
