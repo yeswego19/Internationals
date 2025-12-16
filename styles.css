@@ -168,10 +168,9 @@ p {
     margin-left: 0;
 }
 
-/* Подвинем сами ссылки немного влево, но с учетом flex */
 .nav-menu li {
     position: relative;
-    left: -20px; /* регулируем по вкусу, можно -25px/-30px для сильнее сдвига */
+    left: -20px;
 }
 
 .nav-menu a {
@@ -204,16 +203,17 @@ p {
     transition: var(--transition);
 }
 
-/* Hero Section */
+/* Hero Section — обновленный баннер car.jpg */
 .hero {
-    padding: 80px 0 80px;
-    background: linear-gradient(135deg, rgba(47, 85, 151, 0.35) 0%, rgba(31, 63, 131, 0.35) 100%), url('assets/background.jpg');
-    background-position: center top;
+    padding: 0;
+    background: linear-gradient(135deg, rgba(47, 85, 151, 0.35) 0%, rgba(31, 63, 131, 0.35) 100%), url('assets/car.jpg');
+    background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
     min-height: 100vh;
-    color: white;
+    width: 100%;
     position: relative;
+    color: white;
     overflow: hidden;
 }
 
@@ -226,11 +226,11 @@ p {
     align-items: center;
     text-align: center;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .hero-title {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
     line-height: 1.1;
@@ -245,7 +245,7 @@ p {
 }
 
 .hero-subtitle {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     margin-bottom: 2rem;
     opacity: 0.9;
     line-height: 1.6;
@@ -498,7 +498,7 @@ p {
     line-height: 1.6;
 }
 
-/* Contact Section */
+/* Contact Section — увеличена в 1.4 раза */
 .contact {
     padding: 80px 0;
     background: var(--bg-secondary);
@@ -509,6 +509,8 @@ p {
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
     align-items: start;
+    transform: scale(1.4);
+    transform-origin: top center;
 }
 
 .contact-info h2, .contact-info p, .contact-details {
@@ -557,68 +559,20 @@ p {
     border-color: var(--primary-color);
 }
 
-/* Cookie Banner - ОБНОВЛЕНО С ФОНОМ */
-.cookie-banner-contact {
-    text-align: center;
-    padding: 50px 30px;
-    max-width: 600px;
-    background: url('assets/car.jpg') center/cover no-repeat;
-    background-size: cover;
-    background-position: center;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    position: relative;
-}
-
-/* Добавим полупрозрачный оверлей поверх фона, чтобы текст был читаемым */
-.cookie-banner-contact::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 16px;
-    z-index: 1;
-}
-
-.cookie-banner-contact h3,
-.cookie-banner-contact p,
-.cookie-banner-contact button {
-    position: relative;
-    z-index: 2;
-}
-
-.cookie-banner-contact h3 {
-    font-size: 26px;
-    margin-bottom: 16px;
-    color: #1f2937;
-}
-
-.cookie-banner-contact p {
-    font-size: 17px;
-    color: #6b7280;
-    margin-bottom: 28px;
-    line-height: 1.6;
-}
-
-.cookie-accept {
-    padding: 14px 36px;
-    background: #0066ff;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
+/* Кнопка «Принять» */
+.accept-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: var(--border-radius);
+    padding: 1rem 2rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--transition);
 }
 
-.cookie-accept:hover {
-    background: #0052cc;
+.accept-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+    box-shadow: var(--shadow-lg);
 }
 
 /* Footer */
@@ -685,7 +639,6 @@ p {
     transform: scale(1.1);
 }
 
-/* ГЛОБУС — ВОТ ОН */
 .globe {
     width: 75px;
     height: 75px;
@@ -700,7 +653,6 @@ p {
     to { transform: rotate(360deg); }
 }
 
-/* Остальные стили плеера (оставил без изменений) */
 .music-player-panel {
     position: absolute;
     top: 85px;
@@ -752,16 +704,15 @@ p {
 }
 
 .music-btn {
+    cursor: pointer;
+    border: none;
     background: var(--primary-color);
     color: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
     transition: var(--transition);
 }
 
 .music-btn:hover {
     background: var(--primary-dark);
-    }
+}
