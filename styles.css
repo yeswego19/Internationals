@@ -562,7 +562,7 @@ p {
     text-align: center;
     padding: 50px 30px;
     max-width: 600px;
-    background: url('assets/car.jpg') center/cover no-repeat;
+    background: url('assets/car.jpg') center/contain no-repeat;
     background-size: cover;
     background-position: center;
     border-radius: 16px;
