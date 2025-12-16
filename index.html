@@ -87,13 +87,15 @@
 
   width:100%;
   max-width:none;
-  min-height:100vh;
 
-  background: url('assets/car.jpg') center center no-repeat;
-  background-size: 200% auto;
+  /* вместо 100vh */
+  min-height:65vh;
 
-  border-radius: 0;
-  box-shadow: none;
+  background: url('assets/car.jpg') center top no-repeat;
+  background-size: contain;
+
+  border-radius:0;
+  box-shadow:none;
 
   position:relative;
   pointer-events:auto;
@@ -101,7 +103,9 @@
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
+  justify-content:flex-start;
+
+  padding-top:60px;
 }
 .cookie-banner-contact p{
       font-size:22px;
