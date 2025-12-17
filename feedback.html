@@ -7,19 +7,17 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
   <link rel="preload" as="image" href="feedback-bg.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* === Layout & visuals (expanded & readable) === */
+    /* === Layout & visuals === */
     :root{
       --accent-1: #1f3f83;
       --accent-2: #2f5597;
       --danger: #d9534f;
     }
 
-    html,body{height:100%}
+    html,body{height:100%;margin:0}
     body{
-      margin:0;
       font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
       background: #E89344 url('feedback-bg.jpg') top center / 100% auto no-repeat;
       min-height:100vh;
@@ -88,6 +86,7 @@
       transition:transform .15s ease, box-shadow .15s ease;
     }
     .feedback-form button:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.15); }
+    .feedback-form button:disabled{ opacity:.6; cursor:not-allowed; }
 
     .audio-buttons{ display:flex; gap:10px; flex-direction:column; margin-top:8px; }
     #recordBtn{ background:linear-gradient(135deg,var(--accent-2),var(--accent-1)); border:0; padding:12px; border-radius:8px; cursor:pointer; color:#fff; }
@@ -112,7 +111,6 @@
     .admin-reply{ margin-top:10px; padding:10px; background:rgba(240,249,255,0.9); border-left:3px solid #3b82f6; border-radius:6px; }
     .loading, .error{ text-align:center; color:#fff; padding:14px; }
 
-    /* responsive */
     @media (max-width:640px){
       .feedback-container{ margin:18px; padding:18px; }
     }
@@ -158,7 +156,27 @@
     </div>
   </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+/* =========================
+   Wait for Supabase to load
+   ========================= */
+function waitForSupabase(callback, attempts = 0) {
+  if (window.supabase && window.supabase.createClient) {
+    callback();
+  } else if (attempts < 50) {
+    setTimeout(() => waitForSupabase(callback, attempts + 1), 100);
+  } else {
+    console.error('Supabase failed to load');
+    document.getElementById('feedbackList').innerHTML = '<p class="error">Failed to load Supabase library</p>';
+  }
+}
+
+waitForSupabase(() => {
+  initApp();
+});
+
+function initApp() {
 /* =========================
    Initialization & i18n
    ========================= */
@@ -167,18 +185,17 @@ window.addEventListener('load', () => {
   applyTranslations();
 });
 
-/* Translations for interface only (EN, RU, DE, ES, PT, ZH, AR) */
+/* Translations */
 const translations = {
   en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading feedback..." },
   ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов..." },
   de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Kontakte (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
   es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios..." },
   pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando feedback..." },
-  zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式（可选）", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..." },
-  ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جارٍ تحميل التعليقات..." }
+  zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..." },
+  ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات..." }
 };
 
-/* Determine language: localStorage.language -> localStorage.userLang -> navigator -> en */
 function getPreferredLang(){
   return localStorage.getItem('language') || localStorage.getItem('userLang') || (navigator.language || navigator.userLanguage || 'en').split('-')[0] || 'en';
 }
@@ -187,16 +204,13 @@ function applyTranslations(){
   const lang = getPreferredLang();
   const t = translations[lang] || translations.en;
 
-  // rtl for Arabic
   if(lang === 'ar'){ document.documentElement.dir = 'rtl'; }
   else { document.documentElement.dir = 'ltr'; }
 
-  // Elements with class "translate" + data-key attribute
   document.querySelectorAll('.translate').forEach(el=>{
     const key = el.dataset.key;
     if(!key) return;
     const value = t[key] || translations.en[key] || el.textContent;
-    // if input/textarea: set placeholder, else textContent
     const tag = el.tagName.toLowerCase();
     if(tag === 'input' || tag === 'textarea'){
       el.placeholder = value;
@@ -205,7 +219,6 @@ function applyTranslations(){
     }
   });
 
-  // Ensure any loading element gets the correct text (if present)
   const loadingEl = document.querySelector('#feedbackList .loading');
   if(loadingEl) loadingEl.textContent = t.loading || translations.en.loading;
 }
@@ -308,7 +321,6 @@ recordBtn.addEventListener('click', async () => {
     const bufferLength = analyser.frequencyBinCount;
     dataArray = new Uint8Array(bufferLength);
 
-    // size canvas to container
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
@@ -349,7 +361,6 @@ recordBtn.addEventListener('click', async () => {
     recordBtn.disabled = true;
     stopBtn.disabled = false;
 
-    // set status text (use translation)
     const lang = getPreferredLang();
     recordStatus.textContent = translations[lang] && translations[lang].recording ? translations[lang].recording : '🔴 Recording... (max 2 min)';
 
@@ -413,7 +424,6 @@ async function loadFeedback(){
       }
 
       if(item.reply && item.reply.trim()){
-        // admin reply stays as-is; label translated if possible
         const langObj = translations[getPreferredLang()] || translations.en;
         const replyLabel = langObj.replyLabel || 'Our reply:';
         html += `<div class="admin-reply"><div class="admin-reply-label">${escapeHtml(replyLabel)}</div><p class="admin-reply-text" translate="no">${escapeHtml(item.reply)}</p></div>`;
@@ -449,7 +459,6 @@ feedbackForm.addEventListener('submit', async (e) => {
   }
 
   submitBtn.disabled = true;
-  // show translated "sending" if available
   const lang = getPreferredLang();
   submitBtn.textContent = translations[lang]?.sending || 'Sending...';
 
@@ -469,7 +478,6 @@ feedbackForm.addEventListener('submit', async (e) => {
     const { error } = await supabase.from('feedback').insert([{ contact: name, message, audio_url: audioUrl }]);
     if(error) throw error;
 
-    // reset form & UI
     feedbackForm.reset();
     audioBlob = null;
     audioPreview.style.display = 'none';
@@ -482,7 +490,6 @@ feedbackForm.addEventListener('submit', async (e) => {
 
     await loadFeedback();
 
-    // show translated "sent" message if exists, else fallback
     submitBtn.textContent = translations[lang]?.sent || '✅ Sent!';
     setTimeout(() => { submitBtn.textContent = translations[lang]?.send || 'Send Feedback'; }, 1700);
 
@@ -514,10 +521,10 @@ function escapeHtml(s){
 loadFeedback();
 setInterval(loadFeedback, 10000);
 
-/* Expose function to re-apply translations (useful if language changed via console) */
 window.applyTranslations = applyTranslations;
 window.getPreferredLang = getPreferredLang;
 
+} // end initApp
 </script>
 </body>
 </html>
