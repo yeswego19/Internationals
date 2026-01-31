@@ -28,12 +28,19 @@
     --transition: all 0.3s ease;
 }
 
+html {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
     background-color: var(--bg-primary);
     overflow-x: hidden;
+    max-width: 100vw;
+    position: relative;
 }
 
 .container {
@@ -159,7 +166,6 @@ p {
     filter: contrast(1.5) brightness(1.2) saturate(1.4);
 }
 
-/* --- Изменения для верхнего меню --- */
 .nav-menu {
     display: flex;
     list-style: none;
@@ -168,10 +174,9 @@ p {
     margin-left: 0;
 }
 
-/* Подвинем сами ссылки немного влево, но с учетом flex */
 .nav-menu li {
     position: relative;
-    left: -20px; /* регулируем по вкусу, можно -25px/-30px для сильнее сдвига */
+    left: -20px;
 }
 
 .nav-menu a {
@@ -557,7 +562,7 @@ p {
     border-color: var(--primary-color);
 }
 
-/* Cookie Banner - ОБНОВЛЕНО С ФОНОМ */
+/* Cookie Banner */
 .cookie-banner-contact {
     text-align: center;
     padding: 50px 30px;
@@ -570,7 +575,6 @@ p {
     position: relative;
 }
 
-/* Добавим полупрозрачный оверлей поверх фона, чтобы текст был читаемым */
 .cookie-banner-contact h3,
 .cookie-banner-contact p,
 .cookie-banner-contact button {
@@ -634,24 +638,6 @@ p {
     color: #d4af37;
 }
 
-@media (max-width: 768px) {
-    .footer-tagline-inline {
-        position: static;
-        transform: none;
-        display: block;
-        margin-top: 0.5rem;
-    }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .hamburger { display: flex; }
-    .nav-menu, .nav-buttons { display: none; }
-    .hero-title { font-size: 2.5rem; }
-    .translation-area { grid-template-columns: 1fr; }
-    .features-grid, .contact-content, .footer-content { grid-template-columns: 1fr; }
-}
-
 /* Music Player */
 .music-player {
     position: fixed;
@@ -673,7 +659,6 @@ p {
     transform: scale(1.1);
 }
 
-/* ГЛОБУС — ВОТ ОН */
 .globe {
     width: 75px;
     height: 75px;
@@ -688,7 +673,6 @@ p {
     to { transform: rotate(360deg); }
 }
 
-/* Остальные стили плеера (оставил без изменений) */
 .music-player-panel {
     position: absolute;
     top: 85px;
@@ -725,12 +709,37 @@ p {
     cursor: pointer;
 }
 
-.music-player-content { padding: 1rem; }
+.music-player-content { 
+    padding: 1rem; 
+}
 
-.music-info { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
-.music-cover { width: 60px; height: 60px; background: var(--gradient-secondary); border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; }
-.music-title { font-weight: 600; }
-.music-artist { font-size: 0.875rem; color: var(--text-secondary); }
+.music-info { 
+    display: flex; 
+    align-items: center; 
+    gap: 1rem; 
+    margin-bottom: 1.5rem; 
+}
+
+.music-cover { 
+    width: 60px; 
+    height: 60px; 
+    background: var(--gradient-secondary); 
+    border-radius: var(--border-radius); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white; 
+    font-size: 1.5rem; 
+}
+
+.music-title { 
+    font-weight: 600; 
+}
+
+.music-artist { 
+    font-size: 0.875rem; 
+    color: var(--text-secondary); 
+}
 
 .music-controls {
     display: flex;
@@ -752,4 +761,155 @@ p {
 
 .music-btn:hover {
     background: var(--primary-dark);
+}
+
+/* Responsive - ПОЛНОСТЬЮ ОБНОВЛЁННАЯ СЕКЦИЯ */
+@media (max-width: 768px) {
+    /* Запрет горизонтального скролла */
+    html, body {
+        overflow-x: hidden;
+        max-width: 100vw;
     }
+    
+    /* Навигация */
+    .hamburger { 
+        display: flex; 
+        position: relative;
+        right: 0;
+    }
+    
+    .nav-menu, .nav-buttons { 
+        display: none; 
+    }
+    
+    /* КРИТИЧНО: Логотип - убрать отрицательный margin */
+    .site-logo {
+        height: 80px;
+        margin-left: 0;
+    }
+    
+    /* КРИТИЧНО: Убрать сдвиг пунктов меню */
+    .nav-menu li {
+        left: 0;
+    }
+    
+    /* Контейнеры */
+    .container, .nav-container {
+        padding-left: 15px;
+        padding-right: 15px;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    /* Герой */
+    .hero {
+        padding: 60px 0 40px;
+        min-height: 70vh;
+    }
+    
+    .hero-title { 
+        font-size: 2rem;
+        margin-top: 40px;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    /* Музыкальный плеер и языки - КРИТИЧНО */
+    .music-player {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .music-player-toggle,
+    .globe {
+        width: 50px;
+        height: 50px;
+    }
+    
+    /* Cookie баннер - КРИТИЧНО */
+    .cookie-banner-contact {
+        min-height: auto;
+        max-height: 90vh;
+        padding: 30px 20px;
+        background-size: cover;
+        overflow-y: auto;
+    }
+    
+    .cookie-banner-contact p {
+        font-size: 16px;
+        max-width: 90%;
+    }
+    
+    .cookie-accept {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+    
+    /* Сетки */
+    .translation-area { 
+        grid-template-columns: 1fr; 
+        gap: 1rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .feature-card {
+        min-height: auto;
+        padding: 1.5rem;
+    }
+    
+    .contact-content { 
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .footer-content { 
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    /* Форма контактов */
+    .contact-form {
+        padding: 1.5rem;
+    }
+    
+    /* Footer */
+    .footer-tagline-inline {
+        position: static;
+        transform: none;
+        display: block;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Дополнительно для очень маленьких экранов */
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.75rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+}
