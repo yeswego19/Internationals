@@ -9,7 +9,7 @@
   <meta name="description" content="Professional translations of documents, notarization, apostille, Sheremetievo, airport, translation in Moscow, interpretation, remote interpretation, russian translation, translation english">
   <meta name="keywords" content="перевод документов, нотариальный перевод, апостиль, переводы Москва, Шереметьевское шоссе, аэропорт, международные переводы">
 
-  <!-- Schema.org (полная версия с аэропортами/портами) -->
+  <!-- Полная Schema.org с аэропортами/портами -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -95,7 +95,7 @@
       word-break: break-word;
     }
 
-    /* Cookie баннер — теперь внизу, как раньше */
+    /* Cookie баннер — закреплён внизу, большой, на всю ширину */
     .contact-overlay {
       position: fixed;
       bottom: 0;
@@ -115,7 +115,7 @@
       width: 100%;
       background: url('assets/car.jpg') center top no-repeat;
       background-size: cover;
-      min-height: 300px; /* высота как раньше, регулируй под себя */
+      min-height: 300px;
       padding: 40px 15px 60px;
       color: #fff;
       position: relative;
@@ -125,7 +125,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.5); /* затемнение фона для читаемости текста */
     }
     .cookie-banner-contact p {
       font-size: 22px;
@@ -155,7 +155,7 @@
       transform: translateY(-3px);
     }
 
-    /* Остальные стили (footer, social и т.д.) */
+    /* Остальные стили */
     .footer-flex {display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:0 15px}
     .footer-left {max-width:60%}
     .footer-right {display:flex;align-items:center;gap:20px;flex-wrap:wrap}
@@ -348,7 +348,7 @@
       document.querySelectorAll('.language-option').forEach(opt=>{
         opt.classList.toggle('active', opt.dataset.lang===lang);
       });
-      dropdown.classList.remove('show');
+      document.getElementById('languageDropdown').classList.remove('show');
     }
 
     document.querySelectorAll('.language-option').forEach(opt=>{
@@ -360,7 +360,7 @@
 
     setLanguage(currentLang);
 
-    // Куки-баннер — теперь внизу
+    // Куки-баннер внизу
     const contactOverlay = document.getElementById('contactOverlay');
     const acceptBtn = document.getElementById('acceptCookies');
 
