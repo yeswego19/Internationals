@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing — internationals.pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e8eef7;
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Видео фон */
+        #bgVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Контейнер контента */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 8rem;
+        }
+
+        /* Заголовок */
+        h1 {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 700;
+            background: linear-gradient(120deg, #4a90e2, #67b8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Основной текст */
+        .pricing-content {
+            background: rgba(10, 14, 26, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(103, 184, 255, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .pricing-content h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: #67b8ff;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-content h3 {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            color: #a8b9d1;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .pricing-content p {
+            color: #d1dae8;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .pricing-content ul, .pricing-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #d1dae8;
+        }
+
+        .pricing-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-content strong {
+            color: #67b8ff;
+        }
+
+        /* Игровая секция */
+        .game-section {
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .game-section h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(120deg, #67b8ff, #4a90e2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        #gameCanvas {
+            background: transparent;
+            cursor: none;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .game-score {
+            font-size: 1.5rem;
+            color: #67b8ff;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        .score-good {
+            color: #4ade80;
+        }
+
+        .score-bad {
+            color: #ef4444;
+        }
+
+        /* Кнопка назад */
+        .back-button {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(239, 68, 68, 0.3);
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: rgba(239, 68, 68, 0.8);
+            border-color: #ef4444;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+            transform: translateX(-50%) translateY(-3px);
+        }
+
+        .back-button::before {
+            content: "←";
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .pricing-content {
+                padding: 2rem 1.5rem;
+            }
+            
+            .back-button {
+                bottom: 1rem;
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Видео фон -->
+    <video id="bgVideo" autoplay loop muted playsinline>
+        <source src="2.mp4" type="video/mp4">
+    </video>
+
+    <div class="content-wrapper">
+        <h1>Как мы считаем стоимость</h1>
+
+        <div class="pricing-content">
+            <p>В индустрии перевода и локализации стоимостью более 60 миллиардов долларов в 2026 году побеждают не просто самые быстрые и дешёвые компании, а те, кто заставляет клиента чувствовать себя умным, выбрав именно их. От заверенных переводов для USCIS до полной локализации сайтов, видео и устных переговоров по видеозвонку — лидеры рынка идеально отточили подачу услуг, ценообразование и весь путь клиента.</p>
+
+            <p>В <strong>Internationals.pro</strong> мы внимательно изучили их подход и создали свою модель, которая сочетает максимальную прозрачность с гибкостью. Мы не скрываем цены там, где их можно посчитать заранее, и не заставляем клиента гадать там, где без индивидуального расчёта не обойтись. Вот как это работает у нас.</p>
+
+            <h2>1. Документы: простые и понятные тарифы</h2>
+            <p>Для большинства текстовых документов мы используем два прозрачных варианта ценообразования.</p>
+            <ul>
+                <li><strong>Заверенный (certified) перевод</strong> — фиксированная цена за страницу. Это идеально для USCIS, судов, вузов, иммиграционных документов и любых бумаг, требующих официальной печати и подписи.</li>
+                <li><strong>Стандартный перевод</strong> (без нотариального заверения) — цена за слово. Это самый справедливый вариант для бизнес-текстов, контрактов, инструкций и любой информации, где важна точность, но не требуется официальная печать.</li>
+            </ul>
+            <p>Клиент сразу видит стоимость после загрузки файла — без сюрпризов и без необходимости ждать коммерческое предложение.</p>
+
+            <h2>2. Культурная адаптация и локализация сайтов: индивидуальный подход</h2>
+            <p>Здесь заранее посчитать «по слову» почти невозможно. Сайт — это не просто текст. Это структура, дизайн, SEO, технические нюансы и культурный контекст.</p>
+            <p>Поэтому мы работаем по-другому:</p>
+            <ol>
+                <li>Сначала клиент описывает задачу (или предоставляет доступ к CMS / коду сайта).</li>
+                <li>Наш менеджер проводит бесплатный аудит и выдаёт точное коммерческое предложение с разбивкой по этапам.</li>
+                <li>Цена формируется индивидуально и зависит от объёма, сложности платформы и количества языков.</li>
+            </ol>
+            <p>Такой подход используют ведущие игроки — и он полностью оправдан: клиент получает не «перевод страниц», а работающий, культурно адаптированный сайт, который реально продаёт и конвертирует.</p>
+
+            <h2>3. Локализация видео: тариф за минуту</h2>
+            <p>Видео — один из самых востребованных форматов 2026 года. Мы считаем его максимально просто и понятно:</p>
+            <ul>
+                <li><strong>Субтитры</strong> — цена за минуту видео.</li>
+                <li><strong>Voice-over / дубляж</strong> — цена за минуту (с учётом количества языков и качества записи).</li>
+                <li><strong>Полный пакет</strong> (субтитры + voice-over + адаптация) — тоже по минутам, как монтаж в видео-продакшене.</li>
+            </ul>
+            <p>Клиент загружает файл, указывает языки и желаемый формат — и получает точную стоимость за считанные секунды.</p>
+
+            <h2>4. Устные переводы и видеозвонки: почасовая или поминутная оплата</h2>
+            <p>Для онлайн-встреч, переговоров, вебинаров и конференций мы предлагаем два удобных варианта:</p>
+            <ul>
+                <li><strong>Поминутная тарификация</strong> (для коротких звонков).</li>
+                <li><strong>Почасовая ставка</strong> (для длительных переговоров и мероприятий).</li>
+            </ul>
+            <p>Минимальный заказ обычно 30–60 минут. Цена зависит от языка, срочности и формата (последовательный или синхронный перевод).</p>
+
+            <h2>5. Нестандартные и tailor-made заказы</h2>
+            <p>Иногда клиенту нужен не один из стандартных тарифов, а комплексное решение: перевод документов + локализация сайта + субтитры для промо-видео + устный перевод на презентацию. В таких случаях мы собираем индивидуальный пакет «под ключ».</p>
+            <p>Клиент описывает задачу, а мы предлагаем оптимальное решение с фиксированной стоимостью и чёткими сроками.</p>
+
+            <h2>Почему это работает именно для клиента</h2>
+            <p>Мы не заставляем вас платить «за слово» там, где это нечестно, и не скрываем цены там, где их можно посчитать заранее. Вместо этого мы даём понятные правила:</p>
+            <ul>
+                <li><strong>Простые документы</strong> → прозрачные тарифы за страницу или слово.</li>
+                <li><strong>Сложные проекты</strong> (сайты, видео, комплексные заказы) → индивидуальный расчёт и персональный менеджер.</li>
+                <li>Все цены зависят от языковой пары, объёма, сложности и сроков — и вы узнаёте их до оплаты.</li>
+            </ul>
+            <p>В результате клиент получает не просто перевод, а уверенность, что деньги потрачены разумно и результат будет именно таким, как нужно.</p>
+            <p>Если вы ищете переводчика, который говорит на языке бизнеса и понимает, что такое доверие в 2026 году — добро пожаловать в <strong>Internationals.pro</strong>.</p>
+        </div>
+
+        <div class="game-section">
+            <h2>Catch The Words</h2>
+            <div class="game-score">
+                <span class="score-good">Correct: <span id="scoreGood">0</span></span>
+                <span class="score-bad">Wrong: <span id="scoreBad">0</span></span>
+            </div>
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+        </div>
+    </div>
+
+    <!-- Кнопка назад -->
+    <a href="/" class="back-button">Back to Home</a>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreGoodElement = document.getElementById('scoreGood');
+        const scoreBadElement = document.getElementById('scoreBad');
+
+        let scoreGood = 0;
+        let scoreBad = 0;
+        let letters = [];
+        let constellations = [];
+        let pen = { x: canvas.width / 2, y: canvas.height / 2 };
+
+        const correctChars = 'INTEARLSPRO';
+        const wrongChars = [
+            'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
+            '你', '好', '世', '界', '中', '国', '日', '本', '语', '言', '文', '字',
+            'ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي',
+            'Ä', 'Ö', 'Ü', 'ß'
+        ];
+
+        const zodiacConstellations = [
+            {name: 'Aries', stars: [{x: 0, y: 0}, {x: 30, y: -20}, {x: 60, y: 0}, {x: 40, y: 20}]},
+            {name: 'Taurus', stars: [{x: 0, y: 0}, {x: 20, y: -30}, {x: 40, y: -20}, {x: 60, y: 0}, {x: 50, y: 20}, {x: 30, y: 15}]},
+            {name: 'Gemini', stars: [{x: 0, y: -20}, {x: 0, y: 20}, {x: 30, y: -20}, {x: 30, y: 20}, {x: 15, y: 0}]},
+            {name: 'Cancer', stars: [{x: 0, y: 0}, {x: 20, y: -15}, {x: 40, y: -10}, {x: 25, y: 10}]},
+            {name: 'Leo', stars: [{x: 0, y: 0}, {x: 20, y: -25}, {x: 40, y: -30}, {x: 60, y: -20}, {x: 50, y: 10}, {x: 30, y: 15}]},
+            {name: 'Virgo', stars: [{x: 0, y: 0}, {x: 15, y: -20}, {x: 30, y: -25}, {x: 45, y: -15}, {x: 60, y: 0}]},
+            {name: 'Libra', stars: [{x: 0, y: 0}, {x: 30, y: -20}, {x: 60, y: 0}, {x: 30, y: 20}]},
+            {name: 'Scorpio', stars: [{x: 0, y: 0}, {x: 20, y: -10}, {x: 40, y: -5}, {x: 60, y: 10}, {x: 50, y: 25}]},
+            {name: 'Sagittarius', stars: [{x: 0, y: 20}, {x: 20, y: 0}, {x: 40, y: -20}, {x: 30, y: 15}]},
+            {name: 'Capricorn', stars: [{x: 0, y: 0}, {x: 25, y: -15}, {x: 50, y: -10}, {x: 40, y: 15}]},
+            {name: 'Aquarius', stars: [{x: 0, y: 0}, {x: 20, y: -20}, {x: 40, y: 0}, {x: 60, y: -20}, {x: 50, y: 10}]},
+            {name: 'Pisces', stars: [{x: 0, y: -10}, {x: 20, y: 0}, {x: 40, y: -10}, {x: 30, y: 20}, {x: 10, y: 15}]}
+        ];
+
+        class Constellation {
+            constructor() {
+                this.constellation = zodiacConstellations[Math.floor(Math.random() * zodiacConstellations.length)];
+                this.x = Math.random() * canvas.width * 2 - canvas.width / 2;
+                this.y = Math.random() * canvas.height * 2 - canvas.height / 2;
+                this.z = Math.random() * 3000 + 1000;
+                this.vx = (Math.random() - 0.5) * 0.3;
+                this.vy = (Math.random() - 0.5) * 0.3;
+                this.vz = (Math.random() - 0.5) * 0.5;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.01;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.z += this.vz;
+                this.rotation += this.rotationSpeed;
+
+                if (this.z < 100 || this.z > 5000 || 
+                    this.x < -canvas.width || this.x > canvas.width * 2 ||
+                    this.y < -canvas.height || this.y > canvas.height * 2) {
+                    this.x = Math.random() * canvas.width * 2 - canvas.width / 2;
+                    this.y = Math.random() * canvas.height * 2 - canvas.height / 2;
+                    this.z = Math.random() * 2000 + 3000;
+                }
+            }
+
+            draw() {
+                const scale = 1000 / this.z;
+                const alpha = Math.max(0, Math.min(0.4, (4000 - this.z) / 4000));
+
+                ctx.save();
+                ctx.globalAlpha = alpha;
+
+                this.constellation.stars.forEach(star => {
+                    const screenX = canvas.width / 2 + (this.x + star.x * Math.cos(this.rotation) - star.y * Math.sin(this.rotation)) * scale;
+                    const screenY = canvas.height / 2 + (this.y + star.x * Math.sin(this.rotation) + star.y * Math.cos(this.rotation)) * scale;
+                    
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.arc(screenX, screenY, 2 * scale, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                this.constellation.stars.forEach((star, i) => {
+                    const screenX = canvas.width / 2 + (this.x + star.x * Math.cos(this.rotation) - star.y * Math.sin(this.rotation)) * scale;
+                    const screenY = canvas.height / 2 + (this.y + star.x * Math.sin(this.rotation) + star.y * Math.cos(this.rotation)) * scale;
+                    if (i === 0) ctx.moveTo(screenX, screenY);
+                    else ctx.lineTo(screenX, screenY);
+                });
+                ctx.stroke();
+
+                ctx.restore();
+            }
+        }
+
+        class Letter {
+            constructor() {
+                this.isCorrect = Math.random() > 0.5;
+                this.char = this.isCorrect 
+                    ? correctChars[Math.floor(Math.random() * correctChars.length)]
+                    : wrongChars[Math.floor(Math.random() * wrongChars.length)];
+                
+                this.z = Math.random() * 1000 + 2000;
+                this.x = (Math.random() - 0.5) * 600;
+                this.y = (Math.random() - 0.5) * 400;
+                this.speed = Math.random() * 2 + 1.5;
+                this.caught = false;
+            }
+
+            update() {
+                this.z -= this.speed;
+                
+                if (this.z < 10) {
+                    this.z = Math.random() * 1000 + 2000;
+                    this.x = (Math.random() - 0.5) * 600;
+                    this.y = (Math.random() - 0.5) * 400;
+                    this.isCorrect = Math.random() > 0.5;
+                    this.char = this.isCorrect 
+                        ? correctChars[Math.floor(Math.random() * correctChars.length)]
+                        : wrongChars[Math.floor(Math.random() * wrongChars.length)];
+                }
+            }
+
+            draw() {
+                const scale = 1000 / this.z;
+                const screenX = canvas.width / 2 + this.x * scale;
+                const screenY = canvas.height / 2 + this.y * scale;
+                const size = 50 * scale;
+                const alpha = Math.max(0, Math.min(1, (2000 - this.z) / 2000));
+
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.translate(screenX, screenY);
+                
+                if (!this.isCorrect) {
+                    ctx.rotate(Math.PI);
+                }
+                
+                ctx.font = `bold ${size}px Arial`;
+                ctx.fillStyle = this.isCorrect ? '#4ade80' : '#ef4444';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.char, 0, 0);
+                ctx.restore();
+
+                return { x: screenX, y: screenY, size, alpha };
+            }
+
+            checkCatch(penX, penY) {
+                const pos = this.draw();
+                if (!this.caught && 
+                    Math.abs(pos.x - penX) < 40 && 
+                    Math.abs(pos.y - penY) < 40 &&
+                    pos.alpha > 0.6) {
+                    this.caught = true;
+                    
+                    if (this.isCorrect) {
+                        scoreGood++;
+                        scoreGoodElement.textContent = scoreGood;
+                    } else {
+                        scoreBad++;
+                        scoreBadElement.textContent = scoreBad;
+                    }
+                    
+                    this.z = Math.random() * 1000 + 2000;
+                    this.x = (Math.random() - 0.5) * 600;
+                    this.y = (Math.random() - 0.5) * 400;
+                    this.caught = false;
+                    this.isCorrect = Math.random() > 0.5;
+                    this.char = this.isCorrect 
+                        ? correctChars[Math.floor(Math.random() * correctChars.length)]
+                        : wrongChars[Math.floor(Math.random() * wrongChars.length)];
+                }
+            }
+        }
+
+        // Рисуем ТОЛЬКО наконечник пера (в 2 раза больше, указывает прямо)
+        function drawPenTip(x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Увеличиваем в 2 раза
+            const scale = 2;
+
+            // Наконечник (перо) - указывает ВВЕРХ (на букву)
+            const gradient = ctx.createLinearGradient(-8 * scale, 0, 8 * scale, 0);
+            gradient.addColorStop(0, '#a0a0a0');
+            gradient.addColorStop(0.5, '#e0e0e0');
+            gradient.addColorStop(1, '#a0a0a0');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.moveTo(0, -35 * scale); // острый кончик вверх
+            ctx.lineTo(-8 * scale, -20 * scale);
+            ctx.lineTo(8 * scale, -20 * scale);
+            ctx.closePath();
+            ctx.fill();
+
+            // Прорезь в пере
+            ctx.strokeStyle = '#606060';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, -35 * scale);
+            ctx.lineTo(0, -22 * scale);
+            ctx.stroke();
+
+            // Отверстие для чернил (маленький кружок)
+            ctx.fillStyle = '#404040';
+            ctx.beginPath();
+            ctx.arc(0, -25 * scale, 2 * scale, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        for (let i = 0; i < 8; i++) {
+            constellations.push(new Constellation());
+        }
+
+        for (let i = 0; i < 40; i++) {
+            letters.push(new Letter());
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            pen.x = e.clientX - rect.left;
+            pen.y = e.clientY - rect.top;
+        });
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            constellations.forEach(c => {
+                c.update();
+                c.draw();
+            });
+
+            letters.forEach(letter => {
+                letter.update();
+                letter.draw();
+                letter.checkCatch(pen.x, pen.y);
+            });
+
+            drawPenTip(pen.x, pen.y);
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
