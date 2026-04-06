@@ -188,6 +188,38 @@
     .cookie-banner-contact p{font-size:22px;color:#1f2937;margin-bottom:40px;line-height:1.7;position:relative;z-index:2;max-width:700px;font-weight:500;}
     .cookie-accept{padding:18px 48px;background:#0066ff;color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;transition:.3s;position:relative;z-index:2;box-shadow:0 4px 16px rgba(0,102,255,0.3);}
     .cookie-accept:hover{background:#0052cc;transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,102,255,0.4);}
+    
+    /* Адаптация для мобильных */
+    @media (max-width: 768px) {
+      /* Глобус меньше и ниже, чтобы не закрывал гамбургер */
+      .music-player {
+        top: 85px !important;
+      }
+      
+      #musicToggle {
+        width: 56px !important;
+        height: 56px !important;
+      }
+      
+      /* Выпадающее меню языков тоже ниже */
+      #languageDropdown {
+        top: 150px !important;
+      }
+      
+      /* Ползунок громкости чуть меньше на мобильном */
+      .volume-slider-container {
+        height: 120px !important;
+      }
+      
+      .volume-slider {
+        width: 120px !important;
+        margin-left: -60px !important;
+      }
+      
+      .volume-icon {
+        font-size: 16px !important;
+      }
+    }
   </style>
 </head>
 <body>
