@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pricing — internationals.pro</title>
+    
+    <!-- YaMetrika counter -->
+    <script type="text/javascript">
+      (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105858281', 'ym');
+      ym(105858281, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/105858281" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0780Z702Y0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);} 
+      gtag('js', new Date());
+      gtag('config', 'G-0780Z702Y0');
+    </script>
+    
     <style>
         * {
             margin: 0;
@@ -20,7 +42,6 @@
             min-height: 100vh;
         }
 
-        /* Видео фон */
         #bgVideo {
             position: fixed;
             top: 0;
@@ -31,7 +52,6 @@
             z-index: -1;
         }
 
-        /* Контейнер контента */
         .content-wrapper {
             position: relative;
             z-index: 1;
@@ -40,7 +60,6 @@
             padding: 3rem 2rem 8rem;
         }
 
-        /* Заголовок */
         h1 {
             font-size: clamp(2rem, 6vw, 3.5rem);
             font-weight: 700;
@@ -53,7 +72,6 @@
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
-        /* Основной текст */
         .pricing-content {
             background: rgba(10, 14, 26, 0.85);
             backdrop-filter: blur(15px);
@@ -97,7 +115,6 @@
             color: #67b8ff;
         }
 
-        /* Игровая секция */
         .game-section {
             margin-top: 4rem;
             text-align: center;
@@ -119,6 +136,7 @@
             height: auto;
             display: block;
             margin: 0 auto;
+            touch-action: none;
         }
 
         .game-score {
@@ -144,7 +162,6 @@
             color: #ef4444;
         }
 
-        /* Кнопка назад */
         .back-button {
             position: fixed;
             bottom: 2rem;
@@ -189,11 +206,15 @@
                 padding: 0.8rem 1.5rem;
                 font-size: 1rem;
             }
+            
+            #gameCanvas {
+                width: 100%;
+                height: auto;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Видео фон -->
     <video id="bgVideo" autoplay loop muted playsinline>
         <source src="2.mp4" type="video/mp4">
     </video>
@@ -257,19 +278,44 @@
         </div>
 
         <div class="game-section">
-            <h2>Catch The Words</h2>
+            <h2 data-translate="game_title">Лови Слова</h2>
             <div class="game-score">
-                <span class="score-good">Correct: <span id="scoreGood">0</span></span>
-                <span class="score-bad">Wrong: <span id="scoreBad">0</span></span>
+                <span class="score-good"><span data-translate="score_correct">Правильно</span>: <span id="scoreGood">0</span></span>
+                <span class="score-bad"><span data-translate="score_wrong">Неправильно</span>: <span id="scoreBad">0</span></span>
             </div>
             <canvas id="gameCanvas" width="800" height="600"></canvas>
         </div>
     </div>
 
-    <!-- Кнопка назад -->
-    <a href="/" class="back-button">Back to Home</a>
+    <a href="/" class="back-button"><span data-translate="back_button">Назад</span></a>
 
     <script>
+        // Переводы
+        const translations = {
+            ru: {game_title:"Лови Слова",score_correct:"Правильно",score_wrong:"Неправильно",back_button:"Назад"},
+            en: {game_title:"Catch The Words",score_correct:"Correct",score_wrong:"Wrong",back_button:"Back to Home"},
+            de: {game_title:"Fang die Wörter",score_correct:"Richtig",score_wrong:"Falsch",back_button:"Zurück"},
+            es: {game_title:"Atrapa las Palabras",score_correct:"Correcto",score_wrong:"Incorrecto",back_button:"Volver"},
+            pt: {game_title:"Pegue as Palavras",score_correct:"Correto",score_wrong:"Errado",back_button:"Voltar"},
+            zh: {game_title:"抓住单词",score_correct:"正确",score_wrong:"错误",back_button:"返回"},
+            ar: {game_title:"امسك الكلمات",score_correct:"صحيح",score_wrong:"خطأ",back_button:"رجوع"}
+        };
+
+        const supportedLangs = ['ru','en','de','es','pt','zh','ar'];
+        let userLang = navigator.language || navigator.userLanguage;
+        userLang = userLang.split('-')[0];
+        let currentLang = localStorage.getItem('language') || (supportedLangs.includes(userLang) ? userLang : 'en');
+
+        function setLanguage(lang) {
+            document.querySelectorAll('[data-translate]').forEach(el => {
+                const key = el.dataset.translate;
+                if (translations[lang]?.[key]) el.textContent = translations[lang][key];
+            });
+        }
+
+        setLanguage(currentLang);
+
+        // Игра
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreGoodElement = document.getElementById('scoreGood');
@@ -280,13 +326,16 @@
         let letters = [];
         let constellations = [];
         let pen = { x: canvas.width / 2, y: canvas.height / 2 };
+        
+        const isMobile = window.innerWidth <= 768;
 
-        const correctChars = 'INTEARLSPRO';
+        const correctChars = 'INTERNATIONALS.PRO'.split('').filter((c, i, arr) => arr.indexOf(c) === i).join('');
+        
         const wrongChars = [
             'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
-            '你', '好', '世', '界', '中', '国', '日', '本', '语', '言', '文', '字',
+            '你', '好', '世', '界', '中', '国', '日', '本', '语', '言', '文', '字', '学', '生', '人', '大', '小', '天', '地', '水', '火',
             'ا', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي',
-            'Ä', 'Ö', 'Ü', 'ß'
+            'Ä', 'Ö', 'Ü', 'ß', 'Ñ', 'Á', 'É', 'Í', 'Ó', 'Ú', 'Ã', 'Õ', 'Ç'
         ];
 
         const zodiacConstellations = [
@@ -445,15 +494,12 @@
             }
         }
 
-        // Рисуем ТОЛЬКО наконечник пера (в 2 раза больше, указывает прямо)
         function drawPenTip(x, y) {
             ctx.save();
             ctx.translate(x, y);
 
-            // Увеличиваем в 2 раза
-            const scale = 2;
+            const scale = isMobile ? 6 : 2;
 
-            // Наконечник (перо) - указывает ВВЕРХ (на букву)
             const gradient = ctx.createLinearGradient(-8 * scale, 0, 8 * scale, 0);
             gradient.addColorStop(0, '#a0a0a0');
             gradient.addColorStop(0.5, '#e0e0e0');
@@ -461,13 +507,12 @@
             
             ctx.fillStyle = gradient;
             ctx.beginPath();
-            ctx.moveTo(0, -35 * scale); // острый кончик вверх
+            ctx.moveTo(0, -35 * scale);
             ctx.lineTo(-8 * scale, -20 * scale);
             ctx.lineTo(8 * scale, -20 * scale);
             ctx.closePath();
             ctx.fill();
 
-            // Прорезь в пере
             ctx.strokeStyle = '#606060';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
@@ -475,7 +520,6 @@
             ctx.lineTo(0, -22 * scale);
             ctx.stroke();
 
-            // Отверстие для чернил (маленький кружок)
             ctx.fillStyle = '#404040';
             ctx.beginPath();
             ctx.arc(0, -25 * scale, 2 * scale, 0, Math.PI * 2);
@@ -496,6 +540,21 @@
             const rect = canvas.getBoundingClientRect();
             pen.x = e.clientX - rect.left;
             pen.y = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            pen.x = touch.clientX - rect.left;
+            pen.y = touch.clientY - rect.top;
+        }, {passive: false});
+
+        canvas.addEventListener('touchstart', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            pen.x = touch.clientX - rect.left;
+            pen.y = touch.clientY - rect.top;
         });
 
         function gameLoop() {
