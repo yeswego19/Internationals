@@ -370,6 +370,31 @@
       volumeFill.style.height = '30%';
     }
 
+    // Клик/тап по шкале громкости
+    const volumeContainer = document.querySelector('.volume-slider-container');
+    volumeContainer.addEventListener('click', function(e) {
+      const rect = this.getBoundingClientRect();
+      const y = e.clientY - rect.top;
+      const percent = Math.max(0, Math.min(100, 100 - (y / rect.height * 100)));
+      volumeSlider.value = percent;
+      audio.volume = percent / 100;
+      volumeFill.style.height = percent + '%';
+      localStorage.setItem('musicVolume', percent / 100);
+    });
+
+    // Touch для мобильных
+    volumeContainer.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      const rect = this.getBoundingClientRect();
+      const touch = e.touches[0];
+      const y = touch.clientY - rect.top;
+      const percent = Math.max(0, Math.min(100, 100 - (y / rect.height * 100)));
+      volumeSlider.value = percent;
+      audio.volume = percent / 100;
+      volumeFill.style.height = percent + '%';
+      localStorage.setItem('musicVolume', percent / 100);
+    });
+
     document.body.addEventListener('click', () => {
       if (canPlay) return;
       canPlay = true;
