@@ -131,7 +131,6 @@
 
         #gameCanvas {
             background: transparent;
-            cursor: none;
             max-width: 100%;
             height: auto;
             display: block;
@@ -217,6 +216,8 @@
 <body>
     <video id="bgVideo" autoplay loop muted playsinline>
         <source src="2.mp4" type="video/mp4">
+        <source src="./2.mp4" type="video/mp4">
+        <source src="assets/2.mp4" type="video/mp4">
     </video>
 
     <div class="content-wrapper">
@@ -571,7 +572,10 @@
                 letter.checkCatch(pen.x, pen.y);
             });
 
-            drawPenTip(pen.x, pen.y);
+            // Перо только на десктопе
+            if (!isMobile) {
+                drawPenTip(pen.x, pen.y);
+            }
 
             requestAnimationFrame(gameLoop);
         }
