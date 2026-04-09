@@ -131,11 +131,18 @@
 
         #gameCanvas {
             background: transparent;
+            cursor: none;
             max-width: 100%;
             height: auto;
             display: block;
             margin: 0 auto;
             touch-action: none;
+        }
+        
+        @media (max-width: 768px) {
+            #gameCanvas {
+                cursor: auto !important;
+            }
         }
 
         .game-score {
@@ -469,10 +476,11 @@
 
             checkCatch(penX, penY) {
                 const pos = this.draw();
+                const catchRadius = isMobile ? 80 : 50;
                 if (!this.caught && 
-                    Math.abs(pos.x - penX) < 40 && 
-                    Math.abs(pos.y - penY) < 40 &&
-                    pos.alpha > 0.6) {
+                    Math.abs(pos.x - penX) < catchRadius && 
+                    Math.abs(pos.y - penY) < catchRadius &&
+                    pos.alpha > 0.5) {
                     this.caught = true;
                     
                     if (this.isCorrect) {
@@ -539,23 +547,23 @@
 
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
-            pen.x = e.clientX - rect.left;
-            pen.y = e.clientY - rect.top;
+            pen.x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            pen.y = (e.clientY - rect.top) * (canvas.height / rect.height);
         });
 
         canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
             const touch = e.touches[0];
-            pen.x = touch.clientX - rect.left;
-            pen.y = touch.clientY - rect.top;
+            pen.x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+            pen.y = (touch.clientY - rect.top) * (canvas.height / rect.height);
         }, {passive: false});
 
         canvas.addEventListener('touchstart', (e) => {
             const rect = canvas.getBoundingClientRect();
             const touch = e.touches[0];
-            pen.x = touch.clientX - rect.left;
-            pen.y = touch.clientY - rect.top;
+            pen.x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+            pen.y = (touch.clientY - rect.top) * (canvas.height / rect.height);
         });
 
         function gameLoop() {
