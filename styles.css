@@ -71,7 +71,7 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 .feature-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-xl)}
 .feature-icon{width:80px;height:80px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;color:#fff}
 
-/* --- ПЛЕЕР И ГРОМКОСТЬ (Перенесено из index) --- */
+/* ПЛЕЕР, ГРОМКОСТЬ, ЯЗЫКИ */
 .music-player{position:fixed;top:15px;right:15px;z-index:9999}
 .globe{width:84px;height:84px;background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/200px-The_Blue_Marble_%28remastered%29.jpg') center/cover no-repeat;border-radius:50%;animation:spin 12s infinite linear;box-shadow:var(--shadow-lg);cursor:pointer}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
@@ -86,7 +86,7 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 #languageDropdown.show{display:block;animation:slideDown .3s ease}
 .language-option{padding:12px 24px;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:16px;transition:.2s;font-weight:500;}
 
-/* Contact & Forms */
+/* --- КОНТАКТЫ И ОВЕРЛЕЙ КУКИ (С КРЕСТИКОМ) --- */
 .contact{padding:80px 0;background:var(--bg-sec);width:100%;position:relative;overflow:hidden}
 .contact-content{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;max-width:100%}
 .contact-details{display:flex;flex-direction:column;gap:1.5rem;width:100%}
@@ -99,10 +99,75 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 .form-group input,.form-group textarea{width:100%;padding:1rem;border:2px solid var(--border);border-radius:var(--radius);font-size:1rem;font-family:inherit;transition:all .3s}
 .form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--primary)}
 
-/* Cookie */
-.cookie-banner-contact{text-align:center;width:100%;max-width:none;min-height:165vh;background: url('assets/car.jpg') center top no-repeat;background-size: contain;padding-top:60px;pointer-events:auto;display:flex;flex-direction:column;align-items:center;}
-.cookie-banner-contact p{font-size:22px;color:#1f2937;margin-bottom:40px;max-width:700px;font-weight:500;}
-.cookie-accept{padding:18px 48px;background:#0066ff;color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;transition:.3s;box-shadow:0 4px 16px rgba(0,102,255,0.3);}
+/* Правильная шторка (Картинка над контактами) */
+.contact-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--bg-sec);
+  display: none;
+  z-index: 100;
+  pointer-events: auto;
+}
+.contact-overlay.show { display: flex; }
+
+.cookie-banner-contact {
+  position: relative; /* Чтобы крестик прилип к углу */
+  width: 100%;
+  height: 100%;
+  background: url('assets/car.jpg') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* КНОПКА-КРЕСТИК ДЛЯ ЗАКРЫТИЯ */
+.cookie-close {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  font-size: 2.5rem;
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1f2937;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: all 0.3s;
+}
+.cookie-close:hover { background: #fff; transform: scale(1.1); }
+
+.cookie-banner-contact p {
+  font-size: 1.2rem;
+  color: #1f2937;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.9); 
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.cookie-accept {
+  padding: 16px 40px;
+  background: #0066ff;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 102, 255, 0.4);
+}
+.cookie-accept:active { transform: scale(0.95); }
 
 /* Footer */
 .footer{background:var(--bg-dark);color:#fff;padding:60px 0 20px;width:100%;overflow:hidden}
@@ -112,34 +177,32 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 .social-links a img {height: 56px; width: auto; transition: transform .25s ease; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));}
 .footer-bottom{text-align:center;margin-top:15px;font-size:15px;color:#888}
 
-/* --- МОБИЛЬНЫЙ ДИЗАЙН (ИСПРАВЛЕНО!) --- */
+/* --- МОБИЛЬНЫЙ ДИЗАЙН --- */
 @media(max-width:768px){
 .header{position:fixed!important;background:transparent!important;height:120px!important;z-index:1000}
 .nav-container{display:flex!important;justify-content:space-between!important;padding:0 15px!important;height:100%!important;align-items:center!important}
 
-/* 1. СКРЫВАЕМ кнопку "Связаться с нами" и гамбургер (чтобы шапка не была как на компе) */
+/* Шапка без десктопных элементов */
 .nav-buttons, .hamburger { display:none!important; }
 
-/* Логотип слева */
+/* Логотип */
 .logo{flex:1;display:flex;justify-content:flex-start}
 .site-logo{height:80px!important;width:auto;margin:0!important;max-width:140px}
 
 /* Кнопка "Услуги" - по центру */
-.header .nav-container .nav-menu{display:flex!important;flex:2;justify-content:center!important;list-style:none}
-.nav-menu li { display:none!important; } /* Скрываем все лишние пункты */
-.nav-menu li:nth-child(2) { display:block!important; margin:0!important; } /* Показываем только второй - Услуги */
+.header .nav-container .nav-menu{display:flex!important;flex:2;justify-content:center!important;list-style:none;padding:0;margin:0}
+.nav-menu li { display:none!important; } 
+.nav-menu li:nth-child(2) { display:block!important; margin:0!important; }
 .nav-menu a{font-size:1.2rem!important;padding:12px 22px!important;background:var(--gradient)!important;color:#fff!important;border-radius:50px!important;font-weight:800!important;text-decoration:none}
 
-/* 2. ШАРИК В 2 РАЗА БОЛЬШЕ (вернул размер) */
+/* ШАРИК И ЗВУК */
 .music-player{position:fixed!important;top:20px!important;right:15px!important;z-index:1001;display:block!important}
 .globe{width:80px!important;height:80px!important} 
-
-/* 3. ВОЗВРАЩАЕМ ПОЛЗУНОК ГРОМКОСТИ! */
 .volume-control { display:flex !important; right: 4px; top: 60%; transform: translateY(-50%); }
 .volume-slider-container { height: 120px !important; }
 .volume-slider { width: 120px !important; margin-left: -60px !important; }
 
-/* Меню языков сдвигаем ниже, так как шарик большой */
+/* Сдвигаем языки под большой шарик */
 #languageDropdown { top: 110px !important; right: 10px !important; }
 
 /* Футер */
@@ -147,6 +210,11 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 .footer-tagline-inline{position:static!important; display:block!important; margin:15px 0 0!important; font-size:1.3rem!important; white-space:normal!important; line-height:1.4!important; text-align:center}
 
 .hero-title{font-size:2rem!important;margin-top:20px}
+
+/* Крестик и текст куки на мобилке */
+.cookie-close { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 2rem; }
+.cookie-banner-contact p { font-size:1rem; padding:15px; margin-bottom:20px;}
+.cookie-accept { padding: 12px 30px; font-size: 1.1rem; }
 }
 
 @media(max-width:480px){
