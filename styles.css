@@ -1,53 +1,77 @@
-/* --- ОСНОВНЫЕ СТИЛИ (Твой оригинал) --- */
+/* Reset */
 *{margin:0;padding:0;box-sizing:border-box}
+
 :root{
---primary:#1f4ba5; --primary-dark:#173b85; --secondary:#f59e0b; --accent:#10b981;
---text:#1f2937; --text-sec:#6b7280; --text-light:#9ca3af; --bg:#fff;
---bg-sec:#f9fafb; --bg-dark:#111827; --border:#e5e7eb;
---shadow-sm:0 1px 2px 0 rgba(0,0,0,.05); --shadow-md:0 4px 6px -1px rgba(0,0,0,.1);
---shadow-lg:0 10px 15px -3px rgba(0,0,0,.1); --shadow-xl:0 20px 25px -5px rgba(0,0,0,.1);
---gradient:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%); --radius:12px; --radius-lg:16px
+--primary:#1f4ba5;
+--primary-dark:#173b85;
+--secondary:#f59e0b;
+--accent:#10b981;
+--text:#1f2937;
+--text-sec:#6b7280;
+--text-light:#9ca3af;
+--bg:#fff;
+--bg-sec:#f9fafb;
+--bg-dark:#111827;
+--border:#e5e7eb;
+--shadow-sm:0 1px 2px 0 rgba(0,0,0,.05);
+--shadow-md:0 4px 6px -1px rgba(0,0,0,.1);
+--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);
+--shadow-xl:0 20px 25px -5px rgba(0,0,0,.1);
+--gradient:linear-gradient(135deg,#2f5597 0%,#1f3f83 100%);
+--radius:12px;
+--radius-lg:16px
 }
+
 html,body{overflow-x:hidden;max-width:100vw}
-body{font-family:'Inter',sans-serif;line-height:1.6;color:var(--text);background:var(--bg);position:relative}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:var(--text);background:var(--bg);position:relative}
 .container{max-width:1200px;margin:0 auto;padding:0 20px;width:100%}
 
 /* Typography */
-h1{font-size:3.5rem;font-weight:700;line-height:1.2;margin-bottom:1rem}
-h2{font-size:2.5rem;font-weight:600}
+h1,h2,h3,h4,h5,h6{font-weight:600;line-height:1.2;margin-bottom:1rem}
+h1{font-size:3.5rem}
+h2{font-size:2.5rem}
 h3{font-size:1.75rem}
+h4{font-size:1.25rem}
 p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.5rem;border:none;border-radius:var(--radius);font-weight:500;text-decoration:none;cursor:pointer;transition:all .3s ease;font-size:.95rem;white-space:nowrap}
 .btn-primary{background:var(--gradient);color:#fff;box-shadow:var(--shadow-md)}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.btn-outline{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+.btn-outline:hover{background:var(--primary);color:#fff;transform:translateY(-2px)}
+.btn-large{padding:1rem 2rem;font-size:1.1rem}
 .btn-full{width:100%}
 
 /* Header */
 .header{position:fixed;top:0;left:0;right:0;background:transparent;z-index:1000;width:100%}
 .nav-container{display:flex;align-items:center;justify-content:space-between;padding:1rem 20px;max-width:1200px;margin:0 auto;width:100%}
 .logo{display:flex;align-items:center;margin-right:auto;gap:.5rem;font-size:1.5rem;font-weight:700;color:var(--primary);position:relative}
-.site-logo{height:180px;width:auto;display:block;margin-left:-140px;filter:contrast(1.3) brightness(1.1) saturate(1.2);transition:.3s}
+.logo i{font-size:2rem}
+.site-logo{height:180px;width:auto;display:block;filter:contrast(1.3) brightness(1.1) saturate(1.2);transition:filter .3s;margin-left:-140px}
 .site-logo:hover{filter:contrast(1.5) brightness(1.2) saturate(1.4)}
-.nav-menu{display:flex;list-style:none;gap:2rem}
-.nav-menu a{text-decoration:none;color:var(--text);font-weight:500;transition:.3s}
+.nav-menu{display:flex;list-style:none;gap:2rem;padding:0;margin:0}
+.nav-menu li{position:relative;left:-20px}
+.nav-menu a{text-decoration:none;color:var(--text);font-weight:500;transition:all .3s}
 .nav-menu a:hover{color:var(--primary)}
 .nav-buttons{display:flex;gap:1rem}
+.hamburger{display:none;flex-direction:column;cursor:pointer;gap:4px}
+.hamburger span{width:25px;height:3px;background:var(--text);transition:all .3s}
 
 /* Hero & Features */
-.hero{padding:80px 0;background:linear-gradient(135deg,rgba(47,85,151,.35) 0%,rgba(31,63,131,.35) 100%),url('assets/background.jpg') center top/cover;min-height:100vh;color:#fff;position:relative;overflow:hidden;width:100%}
+.hero{padding:80px 0;background:linear-gradient(135deg,rgba(47,85,151,.35) 0%,rgba(31,63,131,.35) 100%),url('assets/background.jpg');background-position:center top;background-size:cover;min-height:100vh;color:#fff;position:relative;overflow:hidden;width:100%}
 .hero-container{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;z-index:1;width:100%}
 .hero-title{font-size:3.5rem;font-weight:700;margin-bottom:1.5rem;line-height:1.1;margin-top:120px}
 .highlight{background:linear-gradient(45deg,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
 .features{padding:80px 0;width:100%}
+.section-header{text-align:center;margin-bottom:4rem}
 .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;width:100%}
-.feature-card{background:#fff;padding:2rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);text-align:center;transition:.3s;border:1px solid var(--border);min-height:200px;display:flex;flex-direction:column;justify-content:center}
+.feature-card{background:#fff;padding:2rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);text-align:center;transition:all .3s;border:1px solid var(--border);min-height:200px;display:flex;flex-direction:column;justify-content:center}
 .feature-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-xl)}
 .feature-icon{width:80px;height:80px;background:var(--gradient);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;color:#fff}
 
-/* --- СТИЛИ ПЛЕЕРА И ЯЗЫКОВ (Из твоего index) --- */
+/* --- ПЛЕЕР И ГРОМКОСТЬ (Перенесено из index) --- */
 .music-player{position:fixed;top:15px;right:15px;z-index:9999}
 .globe{width:84px;height:84px;background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/The_Blue_Marble_%28remastered%29.jpg/200px-The_Blue_Marble_%28remastered%29.jpg') center/cover no-repeat;border-radius:50%;animation:spin 12s infinite linear;box-shadow:var(--shadow-lg);cursor:pointer}
 @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
@@ -60,50 +84,74 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 
 #languageDropdown{position:fixed;top:80px;right:15px;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:12px 0;min-width:210px;display:none;z-index:9999;}
 #languageDropdown.show{display:block;animation:slideDown .3s ease}
-@keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
 .language-option{padding:12px 24px;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:16px;transition:.2s;font-weight:500;}
-.language-option:hover{background:#f0f7ff}
 
-/* Contact & Footer */
+/* Contact & Forms */
 .contact{padding:80px 0;background:var(--bg-sec);width:100%;position:relative;overflow:hidden}
-.contact-overlay{position:absolute;inset:0;background:transparent;display:none;z-index:100;pointer-events:none;}
-.contact-overlay.show{display:flex}
+.contact-content{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;max-width:100%}
+.contact-details{display:flex;flex-direction:column;gap:1.5rem;width:100%}
+.contact-item{display:flex;align-items:flex-start;gap:1rem;max-width:100%;width:100%}
+.contact-item i{width:50px;height:50px;min-width:50px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.contact-item img{width:auto;max-height:100px;max-width:100%}
+.contact-item div{flex:1;min-width:0;width:100%}
+.contact-form{background:#fff;padding:2rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-md);max-width:100%;width:100%}
+.form-group{margin-bottom:1.5rem}
+.form-group input,.form-group textarea{width:100%;padding:1rem;border:2px solid var(--border);border-radius:var(--radius);font-size:1rem;font-family:inherit;transition:all .3s}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--primary)}
+
+/* Cookie */
 .cookie-banner-contact{text-align:center;width:100%;max-width:none;min-height:165vh;background: url('assets/car.jpg') center top no-repeat;background-size: contain;padding-top:60px;pointer-events:auto;display:flex;flex-direction:column;align-items:center;}
 .cookie-banner-contact p{font-size:22px;color:#1f2937;margin-bottom:40px;max-width:700px;font-weight:500;}
-.cookie-accept{padding:18px 48px;background:#0066ff;color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,102,255,0.3);}
+.cookie-accept{padding:18px 48px;background:#0066ff;color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;transition:.3s;box-shadow:0 4px 16px rgba(0,102,255,0.3);}
 
+/* Footer */
 .footer{background:var(--bg-dark);color:#fff;padding:60px 0 20px;width:100%;overflow:hidden}
 .footer-flex{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:0 20px}
-.footer-left{max-width:60%}
 .footer-tagline-inline{position:relative;white-space:nowrap;font-size:1.5rem;font-weight:700;color:#d4af37;margin-left:20px}
 .social-links {display: flex; gap: 22px; align-items: center;}
 .social-links a img {height: 56px; width: auto; transition: transform .25s ease; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));}
-.social-links a:hover img {transform: scale(1.2);}
 .footer-bottom{text-align:center;margin-top:15px;font-size:15px;color:#888}
 
-/* --- MOBILE STYLES (ФИНАЛЬНЫЕ ПРАВКИ) --- */
+/* --- МОБИЛЬНЫЙ ДИЗАЙН (ИСПРАВЛЕНО!) --- */
 @media(max-width:768px){
 .header{position:fixed!important;background:transparent!important;height:120px!important;z-index:1000}
-.nav-container{display:flex!important;justify-content:space-between!important;padding:0 15px!important;height:100%!important}
-.logo{flex:1;display:flex}
+.nav-container{display:flex!important;justify-content:space-between!important;padding:0 15px!important;height:100%!important;align-items:center!important}
+
+/* 1. СКРЫВАЕМ кнопку "Связаться с нами" и гамбургер (чтобы шапка не была как на компе) */
+.nav-buttons, .hamburger { display:none!important; }
+
+/* Логотип слева */
+.logo{flex:1;display:flex;justify-content:flex-start}
 .site-logo{height:80px!important;width:auto;margin:0!important;max-width:140px}
 
-.header .nav-container .nav-menu{display:flex!important;flex:2;justify-content:center!important;list-style:none;padding:0;margin:0}
-.nav-menu li:first-child, .nav-menu li:last-child { display:none!important; }
-.nav-menu li:nth-child(2) { display:block!important; margin:0!important; }
+/* Кнопка "Услуги" - по центру */
+.header .nav-container .nav-menu{display:flex!important;flex:2;justify-content:center!important;list-style:none}
+.nav-menu li { display:none!important; } /* Скрываем все лишние пункты */
+.nav-menu li:nth-child(2) { display:block!important; margin:0!important; } /* Показываем только второй - Услуги */
 .nav-menu a{font-size:1.2rem!important;padding:12px 22px!important;background:var(--gradient)!important;color:#fff!important;border-radius:50px!important;font-weight:800!important;text-decoration:none}
 
-.music-player{position:fixed!important;top:30px!important;right:15px!important;z-index:1001;display:block!important}
-.globe{width:55px!important;height:55px!important}
-.volume-control{display:none} /* Скрываем звук на мобиле, чтобы не мешать */
+/* 2. ШАРИК В 2 РАЗА БОЛЬШЕ (вернул размер) */
+.music-player{position:fixed!important;top:20px!important;right:15px!important;z-index:1001;display:block!important}
+.globe{width:80px!important;height:80px!important} 
 
+/* 3. ВОЗВРАЩАЕМ ПОЛЗУНОК ГРОМКОСТИ! */
+.volume-control { display:flex !important; right: 4px; top: 60%; transform: translateY(-50%); }
+.volume-slider-container { height: 120px !important; }
+.volume-slider { width: 120px !important; margin-left: -60px !important; }
+
+/* Меню языков сдвигаем ниже, так как шарик большой */
+#languageDropdown { top: 110px !important; right: 10px !important; }
+
+/* Футер */
 .footer .logo { flex-direction: column !important; align-items: center !important; text-align: center; }
-.footer-tagline-inline{position:static!important; display:block!important; margin-top:15px!important; font-size:1.3rem!important; white-space:normal!important; line-height:1.4!important; text-align:center}
+.footer-tagline-inline{position:static!important; display:block!important; margin:15px 0 0!important; font-size:1.3rem!important; white-space:normal!important; line-height:1.4!important; text-align:center}
+
+.hero-title{font-size:2rem!important;margin-top:20px}
 }
 
 @media(max-width:480px){
-.site-logo { height:65px!important; }
+.site-logo { height:70px!important; }
 .nav-menu a { font-size:1.1rem!important; padding:10px 18px!important; }
-.music-player{top:25px!important}
-.globe { width:45px!important; height:45px!important; }
+.music-player{top:15px!important; right: 10px!important;}
+.globe { width:75px!important; height:75px!important; }
 }
