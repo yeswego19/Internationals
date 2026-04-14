@@ -9,87 +9,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --accent-1: #1f3f83;
-      --accent-2: #2f5597;
-      --danger: #d9534f;
-    }
+    :root{ --accent-1:#1f3f83; --accent-2:#2f5597; --danger:#d9534f; }
 
     html,body{height:100%;margin:0}
     body{
       font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      background: #E89344 url('feedback-bg.jpg') top center / 100% auto no-repeat;
-      min-height:100vh;
-      opacity:0;
-      transition:opacity .35s ease;
+      background:#E89344 url('feedback-bg.jpg') top center / 100% auto no-repeat;
+      min-height:100vh; opacity:0; transition:opacity .35s ease;
     }
     body.loaded{opacity:1}
 
-    /* === Три колонки: баннер | контент | баннер === */
-    .page-layout{
-      display:flex;
-      align-items:flex-start;
-      justify-content:center;
-      gap:16px;
-      padding:48px 12px;
-      min-height:100vh;
-      box-sizing:border-box;
-    }
-
-    .side-banners{
-      width:260px;
-      min-width:260px;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-      position:sticky;
-      top:24px;
-    }
-
-    .banner-card{
-      background:rgba(255,255,255,0.08);
-      backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,0.15);
-      border-radius:12px;
-      padding:14px;
-      text-align:center;
-      transition:transform .2s ease, box-shadow .2s ease;
-    }
-    .banner-card:hover{
-      transform:translateY(-3px);
-      box-shadow:0 8px 24px rgba(0,0,0,0.25);
-    }
-    .banner-card img{
-      max-width:100%;
-      height:auto;
-      border-radius:8px;
-      display:block;
-      margin:0 auto;
-    }
-    .banner-label{
-      font-size:11px;
-      color:rgba(255,255,255,0.4);
-      margin-top:8px;
-      letter-spacing:.05em;
-      text-transform:uppercase;
-    }
-
     .feedback-container{
-      width:100%;
-      max-width:760px;
-      padding:30px;
-      border-radius:12px;
-      background: rgba(255,255,255,0.02);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      max-width:760px; margin:48px auto; padding:30px;
+      border-radius:12px; background:rgba(255,255,255,0.02);
+      backdrop-filter:blur(8px); box-shadow:0 8px 30px rgba(0,0,0,0.25);
       border:1px solid rgba(255,255,255,0.12);
     }
 
-    .feedback-header{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;
-    }
+    .feedback-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;}
     .feedback-header h2{margin:0;color:#fff;font-size:22px;line-height:1;}
-    .close-btn{background:transparent;border:0;color:#fff;font-size:46px;cursor:pointer;line-height:1;padding:0 4px;transition:color .2s ease,transform .2s ease;}
+    .close-btn{background:transparent;border:0;color:#fff;font-size:46px;cursor:pointer;line-height:1;padding:0 4px;transition:color .2s,transform .2s;}
     .close-btn:hover{color:#ff4444;transform:translateX(-4px);}
 
     .feedback-form{margin-top:8px}
@@ -103,7 +42,7 @@
       display:block;width:100%;padding:14px;margin-top:12px;border-radius:8px;border:0;
       cursor:pointer;color:#fff;font-weight:600;font-size:15px;
       background:linear-gradient(135deg,var(--accent-2),var(--accent-1));
-      transition:transform .15s ease,box-shadow .15s ease;
+      transition:transform .15s,box-shadow .15s;
     }
     .feedback-form button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
     .feedback-form button:disabled{opacity:.6;cursor:not-allowed;}
@@ -118,8 +57,7 @@
     .visualizer-container{display:none;margin-top:12px;padding:12px;border-radius:8px;background:rgba(255,255,255,0.04);}
     #visualizer{width:100%;height:80px;border-radius:6px;background:rgba(0,0,0,0.25);display:block;}
     .volume-meter{width:100%;height:8px;border-radius:4px;background:rgba(0,0,0,0.2);overflow:hidden;margin-top:8px;}
-    .volume-bar{height:100%;width:0%;transition:width .1s ease;background:linear-gradient(90deg,#10b981,#ef4444);}
-
+    .volume-bar{height:100%;width:0%;transition:width .1s;background:linear-gradient(90deg,#10b981,#ef4444);}
     .audio-preview{display:none;margin-top:10px;background:rgba(255,255,255,0.04);padding:10px;border-radius:8px;}
     .audio-preview audio{width:100%;display:block;margin-bottom:8px;}
 
@@ -130,104 +68,187 @@
     .admin-reply{margin-top:10px;padding:10px;background:rgba(240,249,255,0.9);border-left:3px solid #3b82f6;border-radius:6px;}
     .loading,.error{text-align:center;color:#fff;padding:14px;}
 
-    /* Баннеры под контентом — только мобил */
+    /* =============================================
+       БЛОК ОТЗЫВОВ + БОКОВЫЕ БАННЕРЫ
+       Баннеры стоят СТАТИЧНО рядом с отзывами,
+       не всплывают вверх, фото не перекрывают.
+       ============================================= */
+    .reviews-with-banners{
+      display:flex;
+      align-items:flex-start;
+      gap:16px;
+      margin-top:8px;
+    }
+    .reviews-with-banners .feedback-list-container{
+      flex:1;
+      min-width:0;
+    }
+
+    /* Колонка баннеров — НЕ sticky, просто рядом */
+    .side-banner{
+      width:160px;
+      min-width:160px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      /* НЕТ position:sticky — баннеры стоят только рядом с отзывами */
+    }
+
+    /* =============================================
+       КАРТОЧКА БАННЕРА
+       Чтобы добавить новый баннер — скопируй блок:
+       <div class="banner-card">
+         <!-- admitad.banner: ... -->
+         <a ...><img .../></a>
+         <!-- /admitad.banner -->
+         <div class="banner-label">Ad</div>
+       </div>
+       ============================================= */
+    .banner-card{
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:10px;
+      padding:10px;
+      text-align:center;
+      transition:transform .2s,box-shadow .2s;
+    }
+    .banner-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.25);}
+    .banner-card img{max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto;}
+    .banner-label{font-size:10px;color:rgba(255,255,255,0.35);margin-top:6px;letter-spacing:.05em;text-transform:uppercase;}
+
+    /* Мобил: все баннеры под отзывами горизонтально */
     .mobile-banners{
       display:none;
-      flex-direction:row;
       flex-wrap:wrap;
       gap:12px;
       justify-content:center;
-      margin-top:24px;
+      margin-top:16px;
     }
 
     @media(max-width:900px){
-      .page-layout{flex-direction:column;align-items:center;padding:18px 12px;}
-      .side-banners{display:none;}
+      .feedback-container{margin:18px;padding:18px;}
+      .side-banner{display:none;}
+      .reviews-with-banners{display:block;}
       .mobile-banners{display:flex;}
-      .feedback-container{padding:18px;}
     }
   </style>
 </head>
 <body>
-  <div class="page-layout">
-
-    <!-- Левый баннер -->
-    <div class="side-banners">
-      <div class="banner-card">
-        <!-- admitad.banner: rxy3nfk7gdf1d04a03ac1926b3984a Zippo -->
-        <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
-          <img width="240" height="240" border="0" src="https://aflink.ru/b/rxy3nfk7gdf1d04a03ac1926b3984a/" alt="Zippo"/>
-        </a>
-        <!-- /admitad.banner -->
-        <div class="banner-label">Ad</div>
-      </div>
+  <div class="feedback-container">
+    <div class="feedback-header">
+      <h2 class="translate" data-key="feedback">Feedback</h2>
+      <button class="close-btn" onclick="window.history.back();">&#8592;</button>
     </div>
 
-    <!-- Центр -->
-    <div class="feedback-container">
-      <div class="feedback-header">
-        <h2 class="translate" data-key="feedback">Feedback</h2>
-        <button class="close-btn" onclick="window.history.back();">&#8592;</button>
+    <div id="errorMessage"></div>
+
+    <!-- ФОРМА — без баннеров, фото не перекрывается -->
+    <div class="feedback-form">
+      <form id="feedbackForm" autocomplete="off">
+        <input type="text" id="name" class="translate" data-key="name" placeholder="Your name" required>
+        <textarea id="message" rows="4" class="translate" data-key="message" placeholder="Your impressions, tips, contacts (optional)" required></textarea>
+        <div class="audio-buttons">
+          <button type="button" id="recordBtn" class="translate" data-key="record">🎙 Record Audio</button>
+          <button type="button" id="stopBtn" class="translate" data-key="stop" disabled>⏹ Stop Recording</button>
+        </div>
+        <div class="visualizer-container" id="visualizerContainer">
+          <canvas id="visualizer"></canvas>
+          <div class="volume-meter"><div class="volume-bar" id="volumeBar"></div></div>
+          <div id="recordStatus"></div>
+        </div>
+        <div class="audio-preview" id="audioPreview">
+          <audio id="previewPlayer" controls></audio>
+          <button type="button" id="deleteBtn" class="translate" data-key="delete">🗑 Delete and re-record</button>
+        </div>
+        <button type="submit" id="submitBtn" class="translate" data-key="send">Send Feedback</button>
+      </form>
+    </div>
+
+    <!-- ОТЗЫВЫ + БАННЕРЫ ПО БОКАМ -->
+    <div class="reviews-with-banners">
+
+      <!-- ==========================================
+           ЛЕВАЯ КОЛОНКА БАННЕРОВ
+           Добавляй новые banner-card сюда ↓
+           ========================================== -->
+      <div class="side-banner">
+
+        <!-- БАННЕР 1: Zippo 120x120 -->
+        <div class="banner-card">
+          <!-- admitad.banner: rxy3nfk7gdf1d04a03ac1926b3984a Zippo -->
+          <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
+            <img width="120" height="120" border="0" src="https://aflink.ru/b/rxy3nfk7gdf1d04a03ac1926b3984a/" alt="Zippo"/>
+          </a>
+          <!-- /admitad.banner -->
+          <div class="banner-label">Ad</div>
+        </div>
+
+        <!-- БАННЕР 2: NH-Hotels 300x250 (обрезается до ширины колонки) -->
+        <div class="banner-card">
+          <!-- admitad.banner: fdazww1xzxf1d04a03ac8f408ce589 NH-Hotels -->
+          <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
+            <img width="300" height="250" border="0" src="https://ad.admitad.com/b/fdazww1xzxf1d04a03ac8f408ce589/" alt="NH-Hotels"/>
+          </a>
+          <!-- /admitad.banner -->
+          <div class="banner-label">Ad</div>
+        </div>
+
+        <!-- сюда добавляй следующие баннеры -->
+
       </div>
 
-      <div id="errorMessage"></div>
-
-      <div class="feedback-form">
-        <form id="feedbackForm" autocomplete="off">
-          <input type="text" id="name" class="translate" data-key="name" placeholder="Your name" required>
-          <textarea id="message" rows="4" class="translate" data-key="message" placeholder="Your impressions, tips, contacts (optional)" required></textarea>
-          <div class="audio-buttons">
-            <button type="button" id="recordBtn" class="translate" data-key="record">🎙 Record Audio</button>
-            <button type="button" id="stopBtn" class="translate" data-key="stop" disabled>⏹ Stop Recording</button>
-          </div>
-          <div class="visualizer-container" id="visualizerContainer">
-            <canvas id="visualizer"></canvas>
-            <div class="volume-meter"><div class="volume-bar" id="volumeBar"></div></div>
-            <div id="recordStatus"></div>
-          </div>
-          <div class="audio-preview" id="audioPreview">
-            <audio id="previewPlayer" controls></audio>
-            <button type="button" id="deleteBtn" class="translate" data-key="delete">🗑 Delete and re-record</button>
-          </div>
-          <button type="submit" id="submitBtn" class="translate" data-key="send">Send Feedback</button>
-        </form>
-      </div>
-
+      <!-- ОТЗЫВЫ ПО ЦЕНТРУ -->
       <div class="feedback-list-container">
         <div class="feedback-list-title translate" data-key="recent">Recent Feedback</div>
         <div id="feedbackList"><div class="loading translate" data-key="loading">Loading feedback...</div></div>
+
+        <!-- МОБИЛ: все баннеры под отзывами -->
+        <div class="mobile-banners">
+          <div class="banner-card">
+            <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
+              <img width="120" height="120" border="0" src="https://aflink.ru/b/rxy3nfk7gdf1d04a03ac1926b3984a/" alt="Zippo"/>
+            </a>
+            <div class="banner-label">Ad</div>
+          </div>
+          <div class="banner-card">
+            <!-- admitad.banner: k8t4czyxqhf1d04a03ac5ea594bb46 DiscoverCars WW 320x50 -->
+            <a target="_blank" rel="nofollow" href="https://naiawork.com/g/k8t4czyxqhf1d04a03ac5ea594bb46/?i=4&subid=feedback">
+              <img width="320" height="50" border="0" src="https://ad.admitad.com/b/k8t4czyxqhf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
+            </a>
+            <!-- /admitad.banner -->
+            <div class="banner-label">Ad</div>
+          </div>
+          <div class="banner-card">
+            <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
+              <img width="300" height="250" border="0" src="https://ad.admitad.com/b/fdazww1xzxf1d04a03ac8f408ce589/" alt="NH-Hotels"/>
+            </a>
+            <div class="banner-label">Ad</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Баннеры на мобиле — под отзывами -->
-      <div class="mobile-banners">
+      <!-- ==========================================
+           ПРАВАЯ КОЛОНКА БАННЕРОВ
+           Добавляй новые banner-card сюда ↓
+           ========================================== -->
+      <div class="side-banner">
+
+        <!-- БАННЕР 1: DiscoverCars 320x50 -->
         <div class="banner-card">
-          <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
-            <img width="240" height="240" border="0" src="https://aflink.ru/b/rxy3nfk7gdf1d04a03ac1926b3984a/" alt="Zippo"/>
+          <!-- admitad.banner: k8t4czyxqhf1d04a03ac5ea594bb46 DiscoverCars WW 320x50 -->
+          <a target="_blank" rel="nofollow" href="https://naiawork.com/g/k8t4czyxqhf1d04a03ac5ea594bb46/?i=4&subid=feedback">
+            <img width="320" height="50" border="0" src="https://ad.admitad.com/b/k8t4czyxqhf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
           </a>
+          <!-- /admitad.banner -->
           <div class="banner-label">Ad</div>
         </div>
-        <div class="banner-card">
-          <a target="_blank" rel="nofollow" href="https://naiawork.com/g/0idm3pjpbxf1d04a03ac5ea594bb46/?i=4&subid=feedback">
-            <img width="120" height="60" border="0" src="https://ad.admitad.com/b/0idm3pjpbxf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
+
+        <!-- сюда добавляй следующие баннеры -->
+
       </div>
 
     </div>
-
-    <!-- Правый баннер -->
-    <div class="side-banners">
-      <div class="banner-card">
-        <!-- admitad.banner: 0idm3pjpbxf1d04a03ac5ea594bb46 DiscoverCars WW -->
-        <a target="_blank" rel="nofollow" href="https://naiawork.com/g/0idm3pjpbxf1d04a03ac5ea594bb46/?i=4&subid=feedback">
-          <img width="120" height="60" border="0" src="https://ad.admitad.com/b/0idm3pjpbxf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
-        </a>
-        <!-- /admitad.banner -->
-        <div class="banner-label">Ad</div>
-      </div>
-    </div>
-
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -252,41 +273,40 @@ const translations = {
   ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات..." }
 };
 
-function getPreferredLang(){ return localStorage.getItem('language') || localStorage.getItem('userLang') || (navigator.language || navigator.userLanguage || 'en').split('-')[0] || 'en'; }
+function getPreferredLang(){ return localStorage.getItem('language')||localStorage.getItem('userLang')||(navigator.language||navigator.userLanguage||'en').split('-')[0]||'en'; }
 
 function applyTranslations(){
-  const lang = getPreferredLang();
-  const t = translations[lang] || translations.en;
-  document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+  const lang=getPreferredLang(), t=translations[lang]||translations.en;
+  document.documentElement.dir=(lang==='ar')?'rtl':'ltr';
   document.querySelectorAll('.translate').forEach(el=>{
-    const key = el.dataset.key; if(!key) return;
-    const value = t[key] || translations.en[key] || el.textContent;
-    const tag = el.tagName.toLowerCase();
-    if(tag === 'input' || tag === 'textarea') el.placeholder = value;
-    else el.textContent = value;
+    const key=el.dataset.key; if(!key) return;
+    const value=t[key]||translations.en[key]||el.textContent;
+    const tag=el.tagName.toLowerCase();
+    if(tag==='input'||tag==='textarea') el.placeholder=value;
+    else el.textContent=value;
   });
-  const loadingEl = document.querySelector('#feedbackList .loading');
-  if(loadingEl) loadingEl.textContent = t.loading || translations.en.loading;
+  const loadingEl=document.querySelector('#feedbackList .loading');
+  if(loadingEl) loadingEl.textContent=t.loading||translations.en.loading;
 }
 
-const SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL='https://mcgcijdnzduzyqbbjtkm.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const feedbackList = document.getElementById('feedbackList');
-const feedbackForm = document.getElementById('feedbackForm');
-const submitBtn = document.getElementById('submitBtn');
-const errorMessage = document.getElementById('errorMessage');
-const recordBtn = document.getElementById('recordBtn');
-const stopBtn = document.getElementById('stopBtn');
-const deleteBtn = document.getElementById('deleteBtn');
-const visualizerContainer = document.getElementById('visualizerContainer');
-const audioPreview = document.getElementById('audioPreview');
-const previewPlayer = document.getElementById('previewPlayer');
-const canvas = document.getElementById('visualizer');
-const canvasCtx = canvas.getContext('2d');
-const volumeBar = document.getElementById('volumeBar');
-const recordStatus = document.getElementById('recordStatus');
+const feedbackList=document.getElementById('feedbackList');
+const feedbackForm=document.getElementById('feedbackForm');
+const submitBtn=document.getElementById('submitBtn');
+const errorMessage=document.getElementById('errorMessage');
+const recordBtn=document.getElementById('recordBtn');
+const stopBtn=document.getElementById('stopBtn');
+const deleteBtn=document.getElementById('deleteBtn');
+const visualizerContainer=document.getElementById('visualizerContainer');
+const audioPreview=document.getElementById('audioPreview');
+const previewPlayer=document.getElementById('previewPlayer');
+const canvas=document.getElementById('visualizer');
+const canvasCtx=canvas.getContext('2d');
+const volumeBar=document.getElementById('volumeBar');
+const recordStatus=document.getElementById('recordStatus');
 
 let mediaRecorder=null,audioChunks=[],audioBlob=null,audioContext=null,analyser=null,dataArray=null,animationId=null,recordTimer=null,stream=null;
 
@@ -314,8 +334,8 @@ recordBtn.addEventListener('click',async()=>{
     stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
     audioContext=new(window.AudioContext||window.webkitAudioContext)();
     analyser=audioContext.createAnalyser();
-    const source=audioContext.createMediaStreamSource(stream);
-    source.connect(analyser);analyser.fftSize=2048;analyser.smoothingTimeConstant=0.8;
+    audioContext.createMediaStreamSource(stream).connect(analyser);
+    analyser.fftSize=2048;analyser.smoothingTimeConstant=0.8;
     dataArray=new Uint8Array(analyser.frequencyBinCount);
     canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;
     visualizerContainer.style.display='block';recordBtn.classList.add('recording');drawWaveform();
@@ -345,7 +365,7 @@ recordBtn.addEventListener('click',async()=>{
         recordStatus.textContent='⏱ Stopped (2 min limit)';
       }
     },120000);
-  }catch(err){showError('Cannot access microphone');console.error('Mic error',err);}
+  }catch(err){showError('Cannot access microphone');console.error(err);}
 });
 
 stopBtn.addEventListener('click',()=>{
@@ -377,7 +397,7 @@ async function loadFeedback(){
       }
       div.innerHTML=html;feedbackList.appendChild(div);
     });
-  }catch(err){console.error('Load feedback error',err);feedbackList.innerHTML=`<p class="error">Failed to load feedback</p>`;}
+  }catch(err){console.error(err);feedbackList.innerHTML=`<p class="error">Failed to load feedback</p>`;}
 }
 
 feedbackForm.addEventListener('submit',async(e)=>{
@@ -407,7 +427,7 @@ feedbackForm.addEventListener('submit',async(e)=>{
     await loadFeedback();
     submitBtn.textContent=translations[lang]?.sent||'✅ Sent!';
     setTimeout(()=>{submitBtn.textContent=translations[lang]?.send||'Send Feedback';},1700);
-  }catch(err){console.error('Send error',err);showError('Failed to send - check console');}
+  }catch(err){console.error(err);showError('Failed to send - check console');}
   finally{submitBtn.disabled=false;}
 });
 
