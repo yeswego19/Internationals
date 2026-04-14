@@ -1,3 +1,26 @@
+Listed directory .git
+
+Самый простой способ обновить код на GitHub — это скопировать финальный текст из этого сообщения и вставить его через сайт GitHub.
+
+### Вариант 1: Через сайт GitHub (если у вас нет Git на компьютере)
+1.  **Скопируйте весь код**, который я привел ниже.
+2.  Перейдите в ваш репозиторий на **GitHub.com**.
+3.  Найдите файл (вероятно, он называется `feedback.html`).
+4.  Нажмите на иконку **карандаша (Edit this file)** в правом верхнем углу.
+5.  Удалите старый код (`Ctrl+A` -> `Backspace`) и вставьте новый (`Ctrl+V`).
+6.  Нажмите кнопку **Commit changes...** (вверху справа или внизу страницы), напишите комментарий (например, "Added Oman banner") и подтвердите сохранение.
+
+### Вариант 2: Если вы работаете локально
+Я уже сохранил этот файл на вашем компьютере здесь:
+`C:\Users\yeswe\Downloads\feedback.html`
+
+Вы можете открыть его в Блокноте или VS Code, скопировать всё и вставить в ваш рабочий файл.
+
+---
+
+### Финальный код (скопируйте отсюда):
+
+```html
 <!DOCTYPE html>
 <html lang="en" translate="yes">
 <head>
@@ -138,19 +161,20 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-    <!-- сюда добавляй новые баннеры слева -->
   </div>
 
   <!-- ПРАВЫЕ БАННЕРЫ (fixed, появляются после скролла) -->
   <div class="fixed-banner-right" id="bannerRight">
     <div class="banner-card">
       <!-- admitad.banner: qrws63iscqf1d04a03ac5ea594bb46 DiscoverCars WW -->
-<a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback"><img width="300" height="250" border="0" src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/></a>
-<!-- /admitad.banner -->
-      <!-- /admitad.banner -->
+      <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback"><img width="300" height="250" border="0" src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/></a>
       <div class="banner-label">Ad</div>
     </div>
-    <!-- сюда добавляй новые баннеры справа -->
+    <div class="banner-card">
+      <!-- admitad.banner: e1vjup7uphf1d04a03acd820413c43 Oman Airway Global -->
+      <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback"><img width="300" height="250" border="0" src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/></a>
+      <div class="banner-label">Ad</div>
+    </div>
   </div>
 
   <!-- ЦЕНТРАЛЬНЫЙ КОНТЕНТ -->
@@ -187,7 +211,6 @@
       <div class="feedback-list-title translate" data-key="recent">Recent Feedback</div>
       <div id="feedbackList"><div class="loading translate" data-key="loading">Loading feedback...</div></div>
 
-      <!-- МОБИЛ: баннеры под отзывами -->
       <div class="mobile-banners">
         <div class="banner-card">
           <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
@@ -196,14 +219,21 @@
           <div class="banner-label">Ad</div>
         </div>
         <div class="banner-card">
-  <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
-    <img src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
-  </a>
-  <div class="banner-label">Ad</div>
-</div>
+          <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
+            <img src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
+          </a>
+          <div class="banner-label">Ad</div>
+        </div>
         <div class="banner-card">
           <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
             <img src="https://ad.admitad.com/b/fdazww1xzxf1d04a03ac8f408ce589/" alt="NH-Hotels"/>
+          </a>
+          <div class="banner-label">Ad</div>
+        </div>
+        <!-- Баннер Oman для мобильных -->
+        <div class="banner-card">
+          <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback">
+            <img src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/>
           </a>
           <div class="banner-label">Ad</div>
         </div>
@@ -212,9 +242,6 @@
   </div>
 
   <script>
-    /* Показываем боковые баннеры только после скролла за фото.
-       Фото занимает примерно 800px.
-       Меняй PHOTO_HEIGHT если нужно подстроить. */
     const PHOTO_HEIGHT = 800;
     const bannerLeft  = document.getElementById('bannerLeft');
     const bannerRight = document.getElementById('bannerRight');
@@ -228,9 +255,8 @@
         bannerRight.classList.remove('visible');
       }
     }
-
     window.addEventListener('scroll', checkScroll, { passive: true });
-    checkScroll(); // проверить сразу при загрузке
+    checkScroll();
   </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -248,11 +274,11 @@ window.addEventListener('load', () => { document.body.classList.add('loaded'); a
 const translations = {
   en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading feedback..." },
   ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов..." },
-  de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Kontakte (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
+  de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Контакте (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
   es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios..." },
   pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando feedback..." },
   zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..." },
-  ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات..." }
+  ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعлиقات..." }
 };
 
 function getPreferredLang(){ return localStorage.getItem('language')||localStorage.getItem('userLang')||(navigator.language||navigator.userLanguage||'en').split('-')[0]||'en'; }
@@ -424,3 +450,4 @@ window.getPreferredLang=getPreferredLang;
 </script>
 </body>
 </html>
+```
