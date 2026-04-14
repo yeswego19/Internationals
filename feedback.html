@@ -104,6 +104,80 @@
       .mobile-banners{display:flex;}
       .feedback-container{margin:18px;padding:18px;}
     }
+    /* ===== CVC CRUISE SLIDESHOW BANNER ===== */
+    .cvc-banner{
+      width:300px; height:250px;
+      border-radius:8px;
+      overflow:hidden;
+      position:relative;
+      cursor:pointer;
+      display:block;
+      text-decoration:none;
+      background:#0a1628;
+    }
+    .cvc-slides{
+      position:absolute;
+      top:0; left:0; right:0; bottom:0;
+    }
+    .cvc-slide{
+      position:absolute;
+      top:0; left:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      opacity:0;
+      transition:opacity 1s ease;
+    }
+    .cvc-slide.cvc-active{
+      opacity:1;
+    }
+    /* Dot indicators */
+    .cvc-dots{
+      position:absolute;
+      top:8px; left:50%;
+      transform:translateX(-50%);
+      display:flex; gap:5px;
+      z-index:3;
+    }
+    .cvc-dot{
+      width:6px; height:6px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.4);
+      transition:background .3s;
+    }
+    .cvc-dot.cvc-dot-active{
+      background:#fff;
+    }
+    /* Text overlay */
+    .cvc-text-overlay{
+      position:absolute;
+      bottom:0; left:0; right:0;
+      padding:10px 12px;
+      background:linear-gradient(transparent, rgba(0,20,60,.9));
+      color:#fff;
+      font-family:'Inter',sans-serif;
+      z-index:2;
+    }
+    .cvc-title{
+      font-size:13px; font-weight:700;
+      letter-spacing:.04em;
+      text-shadow:0 1px 4px rgba(0,0,0,.7);
+      color:#fff;
+    }
+    .cvc-sub{
+      font-size:10px; opacity:.85;
+      margin-top:2px;
+      color:#cce4ff;
+    }
+    .cvc-cta{
+      display:inline-block;
+      margin-top:5px;
+      padding:3px 10px;
+      background:linear-gradient(135deg,#1565c0,#0288d1);
+      border-radius:20px;
+      font-size:10px; font-weight:600;
+      color:#fff;
+      letter-spacing:.05em;
+    }
   </style>
 </head>
 <body>
@@ -142,6 +216,32 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
+    <!-- admitad.banner: xo8ehfl68mf1d04a03acafa41ba253 CVC Corp -->
+    <div class="banner-card" style="padding:0;overflow:hidden;">
+      <a class="cvc-banner" id="cvcBannerRight" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
+        <div class="cvc-slides">
+          <img class="cvc-slide cvc-active" src="cvc_slide1.png" alt="CVC Corp" loading="lazy"/>
+          <img class="cvc-slide" src="cvc_slide2.png" alt="CVC Corp" loading="lazy"/>
+          <img class="cvc-slide" src="cvc_slide3.png" alt="CVC Corp" loading="lazy"/>
+          <img class="cvc-slide" src="cvc_slide4.png" alt="CVC Corp" loading="lazy"/>
+          <img class="cvc-slide" src="cvc_slide5.png" alt="CVC Corp" loading="lazy"/>
+        </div>
+        <div class="cvc-dots" id="cvcDotsRight">
+          <div class="cvc-dot cvc-dot-active"></div>
+          <div class="cvc-dot"></div>
+          <div class="cvc-dot"></div>
+          <div class="cvc-dot"></div>
+          <div class="cvc-dot"></div>
+        </div>
+        <div class="cvc-text-overlay">
+          <div class="cvc-title">CVC Corp</div>
+          <div class="cvc-sub">Viagens e Turismo &bull; Descubra o mundo</div>
+          <div class="cvc-cta">Reservar agora →</div>
+        </div>
+      </a>
+      <div class="banner-label">Ad</div>
+    </div>
+    <!-- /admitad.banner -->
     <!-- сюда добавляй новые баннеры справа -->
   </div>
   <!-- ЦЕНТРАЛЬНЫЙ КОНТЕНТ -->
@@ -200,9 +300,60 @@
           <!-- /admitad.banner -->
           <div class="banner-label">Ad</div>
         </div>
+        <!-- admitad.banner: xo8ehfl68mf1d04a03acafa41ba253 CVC Corp mobile -->
+        <div class="banner-card" style="padding:0;overflow:hidden;">
+          <a class="cvc-banner" id="cvcBannerMobile" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
+            <div class="cvc-slides">
+              <img class="cvc-slide cvc-active" src="cvc_slide1.png" alt="CVC Corp" loading="lazy"/>
+              <img class="cvc-slide" src="cvc_slide2.png" alt="CVC Corp" loading="lazy"/>
+              <img class="cvc-slide" src="cvc_slide3.png" alt="CVC Corp" loading="lazy"/>
+              <img class="cvc-slide" src="cvc_slide4.png" alt="CVC Corp" loading="lazy"/>
+              <img class="cvc-slide" src="cvc_slide5.png" alt="CVC Corp" loading="lazy"/>
+            </div>
+            <div class="cvc-dots" id="cvcDotsMobile">
+              <div class="cvc-dot cvc-dot-active"></div>
+              <div class="cvc-dot"></div>
+              <div class="cvc-dot"></div>
+              <div class="cvc-dot"></div>
+              <div class="cvc-dot"></div>
+            </div>
+            <div class="cvc-text-overlay">
+              <div class="cvc-title">CVC Corp</div>
+              <div class="cvc-sub">Viagens e Turismo &bull; Descubra o mundo</div>
+              <div class="cvc-cta">Reservar agora →</div>
+            </div>
+          </a>
+          <div class="banner-label">Ad</div>
+        </div>
+        <!-- /admitad.banner -->
       </div>
     </div>
   </div>
+  <!-- CVC Slideshow Script -->
+  <script>
+    (function() {
+      function initCvcSlideshow(bannerId, dotsId) {
+        var banner = document.getElementById(bannerId);
+        if (!banner) return;
+        var slides = banner.querySelectorAll('.cvc-slide');
+        var dotsEl = document.getElementById(dotsId);
+        var dots = dotsEl ? dotsEl.querySelectorAll('.cvc-dot') : [];
+        if (slides.length < 2) return;
+        var current = 0;
+        setInterval(function() {
+          slides[current].classList.remove('cvc-active');
+          if (dots[current]) dots[current].classList.remove('cvc-dot-active');
+          current = (current + 1) % slides.length;
+          slides[current].classList.add('cvc-active');
+          if (dots[current]) dots[current].classList.add('cvc-dot-active');
+        }, 2500);
+      }
+      document.addEventListener('DOMContentLoaded', function() {
+        initCvcSlideshow('cvcBannerRight', 'cvcDotsRight');
+        initCvcSlideshow('cvcBannerMobile', 'cvcDotsMobile');
+      });
+    })();
+  </script>
   <script>
     /* Показываем боковые баннеры только после скролла за фото.
        Фото занимает примерно 800px.
@@ -235,11 +386,11 @@ window.addEventListener('load', () => { document.body.classList.add('loaded'); a
 const translations = {
   en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading feedback..." },
   ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов..." },
-  de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, контакты (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
+  de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Контакте (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu набрать", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
   es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios..." },
   pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando feedback..." },
   zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..." },
-  ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعлиقات..." }
+  ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات..." }
 };
 function getPreferredLang(){ return localStorage.getItem('language')||localStorage.getItem('userLang')||(navigator.language||navigator.userLanguage||'en').split('-')[0]||'en'; }
 function applyTranslations(){
