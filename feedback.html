@@ -19,7 +19,6 @@
     }
     body.loaded{opacity:1}
 
-    /* Центральный контейнер — без изменений */
     .feedback-container{
       max-width:760px; margin:48px auto; padding:30px;
       border-radius:12px; background:rgba(255,255,255,0.02);
@@ -68,26 +67,37 @@
     .admin-reply{margin-top:10px;padding:10px;background:rgba(240,249,255,0.9);border-left:3px solid #3b82f6;border-radius:6px;}
     .loading,.error{text-align:center;color:#fff;padding:14px;}
 
+    /* Мобил: баннеры под отзывами */
+    .mobile-banners{display:none;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:16px;}
+
     /* =============================================
        ФИКСИРОВАННЫЕ БОКОВЫЕ БАННЕРЫ
-       Прилипают к краям экрана.
-       top: 55% — начинаются примерно там где отзывы.
-       Чтобы сдвинуть выше/ниже — меняй top.
+       По умолчанию скрыты (opacity:0, pointer-events:none)
+       JavaScript показывает их после скролла за фото
        ============================================= */
     .fixed-banner-left,
     .fixed-banner-right {
       position: fixed;
-      top: 55%;
+      top: 50%;
       transform: translateY(-50%);
       display: flex;
       flex-direction: column;
       gap: 14px;
       z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
     }
     .fixed-banner-left  { left: 8px; }
     .fixed-banner-right { right: 8px; }
 
-    /* Карточка баннера */
+    /* Класс который JS добавляет после скролла */
+    .fixed-banner-left.visible,
+    .fixed-banner-right.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
     .banner-card{
       background:rgba(255,255,255,0.08);
       backdrop-filter:blur(8px);
@@ -101,11 +111,8 @@
     .banner-card img{max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto;}
     .banner-label{font-size:10px;color:rgba(255,255,255,0.35);margin-top:6px;letter-spacing:.05em;text-transform:uppercase;}
 
-    /* Мобил: скрываем fixed баннеры, показываем под отзывами */
-    .mobile-banners{display:none;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:16px;}
-
     @media(max-width:1100px){
-      .fixed-banner-left,.fixed-banner-right{display:none;}
+      .fixed-banner-left,.fixed-banner-right{display:none !important;}
       .mobile-banners{display:flex;}
       .feedback-container{margin:18px;padding:18px;}
     }
@@ -113,10 +120,8 @@
 </head>
 <body>
 
-  <!-- ЛЕВЫЕ ФИКСИРОВАННЫЕ БАННЕРЫ -->
-  <div class="fixed-banner-left">
-
-    <!-- БАННЕР: Zippo -->
+  <!-- ЛЕВЫЕ БАННЕРЫ (fixed, появляются после скролла) -->
+  <div class="fixed-banner-left" id="bannerLeft">
     <div class="banner-card">
       <!-- admitad.banner: rxy3nfk7gdf1d04a03ac1926b3984a Zippo -->
       <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
@@ -125,8 +130,6 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-
-    <!-- БАННЕР: NH-Hotels -->
     <div class="banner-card">
       <!-- admitad.banner: fdazww1xzxf1d04a03ac8f408ce589 NH-Hotels -->
       <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
@@ -135,14 +138,11 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-
     <!-- сюда добавляй новые баннеры слева -->
   </div>
 
-  <!-- ПРАВЫЕ ФИКСИРОВАННЫЕ БАННЕРЫ -->
-  <div class="fixed-banner-right">
-
-    <!-- БАННЕР: DiscoverCars -->
+  <!-- ПРАВЫЕ БАННЕРЫ (fixed, появляются после скролла) -->
+  <div class="fixed-banner-right" id="bannerRight">
     <div class="banner-card">
       <!-- admitad.banner: k8t4czyxqhf1d04a03ac5ea594bb46 DiscoverCars WW -->
       <a target="_blank" rel="nofollow" href="https://naiawork.com/g/k8t4czyxqhf1d04a03ac5ea594bb46/?i=4&subid=feedback">
@@ -151,7 +151,6 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-
     <!-- сюда добавляй новые баннеры справа -->
   </div>
 
@@ -212,6 +211,28 @@
       </div>
     </div>
   </div>
+
+  <script>
+    /* Показываем боковые баннеры только после скролла за фото.
+       Фото занимает примерно 800px.
+       Меняй PHOTO_HEIGHT если нужно подстроить. */
+    const PHOTO_HEIGHT = 800;
+    const bannerLeft  = document.getElementById('bannerLeft');
+    const bannerRight = document.getElementById('bannerRight');
+
+    function checkScroll() {
+      if (window.scrollY > PHOTO_HEIGHT) {
+        bannerLeft.classList.add('visible');
+        bannerRight.classList.add('visible');
+      } else {
+        bannerLeft.classList.remove('visible');
+        bannerRight.classList.remove('visible');
+      }
+    }
+
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    checkScroll(); // проверить сразу при загрузке
+  </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
