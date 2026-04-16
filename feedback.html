@@ -59,17 +59,13 @@
     .feedback-item small{float:right;color:#333;font-size:12px}
     .admin-reply{margin-top:10px;padding:10px;background:rgba(240,249,255,0.9);border-left:3px solid #3b82f6;border-radius:6px;}
     .loading,.error{text-align:center;color:#fff;padding:14px;}
-    
-    /* Мобильные баннеры (только под отзывами, видны только на мобилке) */
-    .mobile-banners{
-      display: none;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    
-    /* ФИКСИРОВАННЫЕ БОКОВЫЕ БАННЕРЫ (только десктоп) */
+    /* Мобил: баннеры под отзывами */
+    .mobile-banners{display:none;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:16px;}
+    /* =============================================
+       ФИКСИРОВАННЫЕ БОКОВЫЕ БАННЕРЫ
+       По умолчанию скрыты (opacity:0, pointer-events:none)
+       JavaScript показывает их после скролла за фото
+       ============================================= */
     .fixed-banner-left,
     .fixed-banner-right {
       position: fixed;
@@ -85,187 +81,152 @@
     }
     .fixed-banner-left  { left: 8px; }
     .fixed-banner-right { right: 8px; }
-    
+    /* Класс который JS добавляет после скролла */
     .fixed-banner-left.visible,
     .fixed-banner-right.visible {
       opacity: 1;
       pointer-events: auto;
     }
-    
     .banner-card{
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-      transition: transform .2s, box-shadow .2s;
-      width: 240px;
-      box-sizing: border-box;
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(8px);
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:10px;
+      padding:10px;
+      text-align:center;
+      transition:transform .2s,box-shadow .2s;
     }
     .banner-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.25);}
-    .banner-card img{
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-      display: block;
-      margin: 0 auto;
+    .banner-card img{max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto;}
+    .banner-label{font-size:10px;color:rgba(255,255,255,0.35);margin-top:6px;letter-spacing:.05em;text-transform:uppercase;}
+    @media(max-width:1100px){
+      .fixed-banner-left,.fixed-banner-right{display:none !important;}
+      .mobile-banners{display:flex;}
+      .feedback-container{margin:18px;padding:18px;}
     }
-    .banner-label{
-      font-size: 10px;
-      color: rgba(255,255,255,0.35);
-      margin-top: 6px;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-    }
-    
-    /* Специальный стиль для EKTA чтобы был как у всех */
-    .banner-card-ekta{
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-      transition: transform .2s, box-shadow .2s;
-      width: 240px;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-    .banner-card-ekta:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.25);}
-    
-    /* Стиль для Airalo чтобы нормально влезал */
-    .banner-card-airalo{
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-      width: 240px;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-    .banner-card-airalo img{
-      width: 100%;
-      height: auto;
-      border-radius: 6px;
-    }
-    
-    @media(max-width: 1100px){
-      .fixed-banner-left, .fixed-banner-right { display: none !important; }
-      .mobile-banners { display: flex; }
-      .feedback-container { margin: 18px; padding: 18px; }
-    }
-    
-    /* CVC CRUISE SLIDESHOW BANNER */
+    /* ===== CVC CRUISE SLIDESHOW BANNER ===== */
     .cvc-banner{
-      width: 240px;
-      height: 200px;
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
-      display: block;
-      text-decoration: none;
-      background: #0a1628;
+      width:300px; height:250px;
+      border-radius:8px;
+      overflow:hidden;
+      position:relative;
+      cursor:pointer;
+      display:block;
+      text-decoration:none;
+      background:#0a1628;
     }
     .cvc-slides{
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      position:absolute;
+      top:0; left:0; right:0; bottom:0;
     }
     .cvc-slide{
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1s ease;
+      position:absolute;
+      top:0; left:0;
+      width:100%; height:100%;
+      object-fit:cover;
+      opacity:0;
+      transition:opacity 1s ease;
     }
-    .cvc-slide.cvc-active{ opacity: 1; }
+    .cvc-slide.cvc-active{
+      opacity:1;
+    }
+    /* Dot indicators */
     .cvc-dots{
-      position: absolute;
-      top: 8px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; gap: 5px;
-      z-index: 3;
+      position:absolute;
+      top:8px; left:50%;
+      transform:translateX(-50%);
+      display:flex; gap:5px;
+      z-index:3;
     }
     .cvc-dot{
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.4);
-      transition: background .3s;
+      width:6px; height:6px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.4);
+      transition:background .3s;
     }
-    .cvc-dot.cvc-dot-active{ background: #fff; }
+    .cvc-dot.cvc-dot-active{
+      background:#fff;
+    }
+    /* Text overlay */
     .cvc-text-overlay{
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 8px 10px;
-      background: linear-gradient(transparent, rgba(0,20,60,.9));
-      color: #fff;
-      font-family: 'Inter', sans-serif;
-      z-index: 2;
+      position:absolute;
+      bottom:0; left:0; right:0;
+      padding:10px 12px;
+      background:linear-gradient(transparent, rgba(0,20,60,.9));
+      color:#fff;
+      font-family:'Inter',sans-serif;
+      z-index:2;
     }
-    .cvc-title{ font-size: 12px; font-weight: 700; }
-    .cvc-sub{ font-size: 9px; opacity: .85; }
+    .cvc-title{
+      font-size:13px; font-weight:700;
+      letter-spacing:.04em;
+      text-shadow:0 1px 4px rgba(0,0,0,.7);
+      color:#fff;
+    }
+    .cvc-sub{
+      font-size:10px; opacity:.85;
+      margin-top:2px;
+      color:#cce4ff;
+    }
     .cvc-cta{
-      display: inline-block;
-      margin-top: 4px;
-      padding: 2px 8px;
-      background: linear-gradient(135deg,#1565c0,#0288d1);
-      border-radius: 20px;
-      font-size: 9px;
-      font-weight: 600;
-      color: #fff;
+      display:inline-block;
+      margin-top:5px;
+      padding:3px 10px;
+      background:linear-gradient(135deg,#1565c0,#0288d1);
+      border-radius:20px;
+      font-size:10px; font-weight:600;
+      color:#fff;
+      letter-spacing:.05em;
     }
   </style>
 </head>
 <body>
   <!-- ЛЕВЫЕ БАННЕРЫ (fixed, появляются после скролла) -->
   <div class="fixed-banner-left" id="bannerLeft">
-    <!-- Zippo -->
     <div class="banner-card">
+      <!-- admitad.banner: rxy3nfk7gdf1d04a03ac1926b3984a Zippo -->
       <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
         <img width="240" height="240" border="0" src="https://aflink.ru/b/rxy3nfk7gdf1d04a03ac1926b3984a/" alt="Zippo"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-    <!-- NH-Hotels -->
     <div class="banner-card">
+      <!-- admitad.banner: fdazww1xzxf1d04a03ac8f408ce589 NH-Hotels -->
       <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
         <img width="240" height="200" border="0" src="https://ad.admitad.com/b/fdazww1xzxf1d04a03ac8f408ce589/" alt="NH-Hotels"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-    <!-- EKTA Traveling (добавлен, размер как у всех) -->
-    <div class="banner-card-ekta">
-      <a target="_blank" rel="nofollow" href="https://ogsib.com/g/92qb79zvwnf1d04a03ac239505df72/" style="display:block;text-decoration:none;background:linear-gradient(135deg,#3d1a8e,#5b2d9e);border-radius:8px;padding:14px;color:#fff;font-family:'Inter',sans-serif;">
-        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;opacity:.7;margin-bottom:4px;">EKTA TRAVELING</div>
-        <div style="font-size:12px;font-weight:700;line-height:1.3;margin-bottom:6px;">Travel Medical Insurance<br>Best Price</div>
-        <div style="font-size:10px;opacity:.8;margin-bottom:8px;">✓ COVID-19 · ✓ Visa</div>
-        <div style="background:#7c3aed;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;text-align:center;">BUY INSURANCE →</div>
+    <!-- БАННЕР: EKTA Traveling -->
+    <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
+      <a target="_blank" rel="nofollow" href="https://ogsib.com/g/92qb79zvwnf1d04a03ac239505df72/" style="display:block;text-decoration:none;background:linear-gradient(135deg,#3d1a8e,#5b2d9e);border-radius:10px;padding:16px;color:#fff;font-family:'Inter',sans-serif;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.08em;opacity:.7;margin-bottom:6px;">EKTA TRAVELING</div>
+        <div style="font-size:13px;font-weight:700;line-height:1.4;margin-bottom:8px;">Travel Medical Insurance<br>Best Price · All Countries</div>
+        <div style="font-size:11px;opacity:.8;margin-bottom:10px;">✓ COVID-19 · ✓ Visa · ✓ 0–200 yrs</div>
+        <div style="background:#7c3aed;border-radius:6px;padding:7px 12px;font-size:12px;font-weight:700;text-align:center;">BUY INSURANCE →</div>
       </a>
       <div class="banner-label">Ad</div>
     </div>
+    <!-- сюда добавляй новые баннеры слева -->
   </div>
-  
   <!-- ПРАВЫЕ БАННЕРЫ (fixed, появляются после скролла) -->
   <div class="fixed-banner-right" id="bannerRight">
-    <!-- DiscoverCars -->
     <div class="banner-card">
-      <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
-        <img width="240" height="200" border="0" src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
-      </a>
+      <!-- admitad.banner: qrws63iscqf1d04a03ac5ea594bb46 DiscoverCars WW -->
+<a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback"><img width="300" height="250" border="0" src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/></a>
+<!-- /admitad.banner -->
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-    <!-- Oman Airway -->
     <div class="banner-card">
-      <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback">
-        <img width="240" height="200" border="0" src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/>
-      </a>
+      <!-- admitad.banner: e1vjup7uphf1d04a03acd820413c43 Oman Airway Global -->
+      <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback"><img width="300" height="250" border="0" src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/></a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-    <!-- CVC Corp (слайдшоу) -->
+    <!-- admitad.banner: xo8ehfl68mf1d04a03acafa41ba253 CVC Corp -->
     <div class="banner-card" style="padding:0;overflow:hidden;">
       <a class="cvc-banner" id="cvcBannerRight" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
         <div class="cvc-slides">
@@ -284,21 +245,25 @@
         </div>
         <div class="cvc-text-overlay">
           <div class="cvc-title">CVC Corp</div>
-          <div class="cvc-sub">Viagens e Turismo</div>
-          <div class="cvc-cta">Reservar →</div>
+          <div class="cvc-sub">Viagens e Turismo &bull; Descubra o mundo</div>
+          <div class="cvc-cta">Reservar agora →</div>
         </div>
       </a>
       <div class="banner-label">Ad</div>
     </div>
-    <!-- Airalo (исправлен размер) -->
-    <div class="banner-card-airalo">
-      <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback">
-        <img src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW"/>
+    <!-- /admitad.banner -->
+    <!-- БАННЕР: Airalo WW (1456x180 → обрезан через CSS до ~300x250) -->
+    <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
+      <!-- admitad.banner: k5qe5k9nasf1d04a03ac0471e42028 Airalo WW -->
+      <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback" style="display:block;width:300px;height:185px;overflow:hidden;position:relative;">
+        <img width="1456" height="180" border="0" src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW"
+          style="width:100%;height:auto;display:block;border-radius:8px;"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
+    <!-- сюда добавляй новые баннеры справа -->
   </div>
-  
   <!-- ЦЕНТРАЛЬНЫЙ КОНТЕНТ -->
   <div class="feedback-container">
     <div class="feedback-header">
@@ -329,8 +294,7 @@
     <div class="feedback-list-container">
       <div class="feedback-list-title translate" data-key="recent">Recent Feedback</div>
       <div id="feedbackList"><div class="loading translate" data-key="loading">Loading feedback...</div></div>
-      
-      <!-- МОБИЛЬНЫЕ БАННЕРЫ (видны только на мобилке, под отзывами) -->
+      <!-- МОБИЛ: баннеры под отзывами -->
       <div class="mobile-banners">
         <div class="banner-card">
           <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
@@ -339,11 +303,11 @@
           <div class="banner-label">Ad</div>
         </div>
         <div class="banner-card">
-          <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
-            <img src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
+  <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
+    <img src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
+  </a>
+  <div class="banner-label">Ad</div>
+</div>
         <div class="banner-card">
           <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
             <img src="https://ad.admitad.com/b/fdazww1xzxf1d04a03ac8f408ce589/" alt="NH-Hotels"/>
@@ -351,12 +315,12 @@
           <div class="banner-label">Ad</div>
         </div>
         <div class="banner-card">
-          <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback">
-            <img src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/>
-          </a>
+          <!-- admitad.banner: e1vjup7uphf1d04a03acd820413c43 Oman Airway Global -->
+          <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback"><img src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/></a>
+          <!-- /admitad.banner -->
           <div class="banner-label">Ad</div>
         </div>
-        <!-- CVC Corp mobile -->
+        <!-- admitad.banner: xo8ehfl68mf1d04a03acafa41ba253 CVC Corp mobile -->
         <div class="banner-card" style="padding:0;overflow:hidden;">
           <a class="cvc-banner" id="cvcBannerMobile" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
             <div class="cvc-slides">
@@ -375,16 +339,34 @@
             </div>
             <div class="cvc-text-overlay">
               <div class="cvc-title">CVC Corp</div>
-              <div class="cvc-sub">Viagens e Turismo</div>
-              <div class="cvc-cta">Reservar →</div>
+              <div class="cvc-sub">Viagens e Turismo &bull; Descubra o mundo</div>
+              <div class="cvc-cta">Reservar agora →</div>
             </div>
+          </a>
+          <div class="banner-label">Ad</div>
+        </div>
+        <!-- /admitad.banner -->
+        </div>
+        <!-- EKTA мобил -->
+        <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
+          <a target="_blank" rel="nofollow" href="https://ogsib.com/g/92qb79zvwnf1d04a03ac239505df72/" style="display:block;text-decoration:none;background:linear-gradient(135deg,#3d1a8e,#5b2d9e);border-radius:10px;padding:14px;color:#fff;font-family:'Inter',sans-serif;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.08em;opacity:.7;margin-bottom:4px;">EKTA TRAVELING</div>
+            <div style="font-size:12px;font-weight:700;line-height:1.4;margin-bottom:6px;">Travel Medical Insurance</div>
+            <div style="font-size:10px;opacity:.8;margin-bottom:8px;">✓ COVID-19 · ✓ Visa · ✓ All countries</div>
+            <div style="background:#7c3aed;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;text-align:center;">BUY →</div>
+          </a>
+          <div class="banner-label">Ad</div>
+        </div>
+        <!-- Airalo мобил -->
+        <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
+          <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback" style="display:block;overflow:hidden;">
+            <img src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW" style="width:100%;height:auto;display:block;border-radius:8px;"/>
           </a>
           <div class="banner-label">Ad</div>
         </div>
       </div>
     </div>
   </div>
-  
   <!-- CVC Slideshow Script -->
   <script>
     (function() {
@@ -410,9 +392,10 @@
       });
     })();
   </script>
-  
-  <!-- Scroll logic for banners -->
   <script>
+    /* Показываем боковые баннеры только после скролла за фото.
+       Фото занимает примерно 800px.
+       Меняй PHOTO_HEIGHT если нужно подстроить. */
     const PHOTO_HEIGHT = 800;
     const bannerLeft  = document.getElementById('bannerLeft');
     const bannerRight = document.getElementById('bannerRight');
@@ -426,91 +409,181 @@
       }
     }
     window.addEventListener('scroll', checkScroll, { passive: true });
-    checkScroll();
+    checkScroll(); // проверить сразу при загрузке
   </script>
-  
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    function waitForSupabase(callback, attempts = 0) {
-      if (window.supabase && window.supabase.createClient) { callback(); }
-      else if (attempts < 50) { setTimeout(() => waitForSupabase(callback, attempts + 1), 100); }
-      else { document.getElementById('feedbackList').innerHTML = '<p class="error">Failed to load Supabase library</p>'; }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+function waitForSupabase(callback, attempts = 0) {
+  if (window.supabase && window.supabase.createClient) { callback(); }
+  else if (attempts < 50) { setTimeout(() => waitForSupabase(callback, attempts + 1), 100); }
+  else { document.getElementById('feedbackList').innerHTML = '<p class="error">Failed to load Supabase library</p>'; }
+}
+waitForSupabase(() => { initApp(); });
+function initApp() {
+window.addEventListener('load', () => { document.body.classList.add('loaded'); applyTranslations(); });
+const translations = {
+  en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading feedback..." },
+  ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов..." },
+  de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Контакте (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu набрать", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
+  es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios..." },
+  pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando feedback..." },
+  zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..." },
+  ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات..." }
+};
+function getPreferredLang(){ return localStorage.getItem('language')||localStorage.getItem('userLang')||(navigator.language||navigator.userLanguage||'en').split('-')[0]||'en'; }
+function applyTranslations(){
+  const lang=getPreferredLang(), t=translations[lang]||translations.en;
+  document.documentElement.dir=(lang==='ar')?'rtl':'ltr';
+  document.querySelectorAll('.translate').forEach(el=>{
+    const key=el.dataset.key; if(!key) return;
+    const value=t[key]||translations.en[key]||el.textContent;
+    const tag=el.tagName.toLowerCase();
+    if(tag==='input'||tag==='textarea') el.placeholder=value;
+    else el.textContent=value;
+  });
+  const loadingEl=document.querySelector('#feedbackList .loading');
+  if(loadingEl) loadingEl.textContent=t.loading||translations.en.loading;
+}
+const SUPABASE_URL='https://mcgcijdnzduzyqbbjtkm.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const feedbackList=document.getElementById('feedbackList');
+const feedbackForm=document.getElementById('feedbackForm');
+const submitBtn=document.getElementById('submitBtn');
+const errorMessage=document.getElementById('errorMessage');
+const recordBtn=document.getElementById('recordBtn');
+const stopBtn=document.getElementById('stopBtn');
+const deleteBtn=document.getElementById('deleteBtn');
+const visualizerContainer=document.getElementById('visualizerContainer');
+const audioPreview=document.getElementById('audioPreview');
+const previewPlayer=document.getElementById('previewPlayer');
+const canvas=document.getElementById('visualizer');
+const canvasCtx=canvas.getContext('2d');
+const volumeBar=document.getElementById('volumeBar');
+const recordStatus=document.getElementById('recordStatus');
+let mediaRecorder=null,audioChunks=[],audioBlob=null,audioContext=null,analyser=null,dataArray=null,animationId=null,recordTimer=null,stream=null;
+function drawWaveform(){
+  animationId=requestAnimationFrame(drawWaveform);
+  if(!analyser||!dataArray)return;
+  analyser.getByteTimeDomainData(dataArray);
+  canvasCtx.fillStyle='rgba(0,0,0,0.18)';canvasCtx.fillRect(0,0,canvas.width,canvas.height);
+  canvasCtx.lineWidth=3;canvasCtx.beginPath();
+  const sliceWidth=canvas.width/dataArray.length;let x=0,maxAmp=0;
+  for(let i=0;i<dataArray.length;i++){
+    const v=dataArray[i]/128.0,y=v*canvas.height/2,amp=Math.abs(v-1.0);
+    if(amp>maxAmp)maxAmp=amp;
+    if(i===0)canvasCtx.moveTo(x,y);else canvasCtx.lineTo(x,y);
+    x+=sliceWidth;
+  }
+  canvasCtx.lineTo(canvas.width,canvas.height/2);
+  canvasCtx.strokeStyle=maxAmp>0.7?'#ef4444':maxAmp>0.3?'#10b981':'#6b7280';
+  canvasCtx.stroke();
+  volumeBar.style.width=Math.min(Math.round(maxAmp*200),100)+'%';
+}
+recordBtn.addEventListener('click',async()=>{
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+    audioContext=new(window.AudioContext||window.webkitAudioContext)();
+    analyser=audioContext.createAnalyser();
+    audioContext.createMediaStreamSource(stream).connect(analyser);
+    analyser.fftSize=2048;analyser.smoothingTimeConstant=0.8;
+    dataArray=new Uint8Array(analyser.frequencyBinCount);
+    canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;
+    visualizerContainer.style.display='block';recordBtn.classList.add('recording');drawWaveform();
+    let mimeType='';
+    if(MediaRecorder.isTypeSupported('audio/ogg;codecs=opus'))mimeType='audio/ogg;codecs=opus';
+    else if(MediaRecorder.isTypeSupported('audio/webm;codecs=opus'))mimeType='audio/webm;codecs=opus';
+    else if(MediaRecorder.isTypeSupported('audio/webm'))mimeType='audio/webm';
+    mediaRecorder=new MediaRecorder(stream,mimeType?{mimeType}:{});
+    audioChunks=[];
+    mediaRecorder.ondataavailable=(e)=>{if(e.data&&e.data.size>0)audioChunks.push(e.data);};
+    mediaRecorder.onstop=()=>{
+      audioBlob=new Blob(audioChunks,{type:mimeType||'audio/webm'});
+      previewPlayer.src=URL.createObjectURL(audioBlob);
+      audioPreview.style.display='block';visualizerContainer.style.display='none';
+      recordBtn.classList.remove('recording');
+      recordStatus.textContent=`✅ Ready (${(audioBlob.size/1024).toFixed(1)} KB)`;
+      if(animationId)cancelAnimationFrame(animationId);
+      if(recordTimer)clearTimeout(recordTimer);
+      if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+      if(audioContext){audioContext.close();audioContext=null;}
+    };
+    mediaRecorder.start();recordBtn.disabled=true;stopBtn.disabled=false;
+    recordStatus.textContent='🔴 Recording... (max 2 min)';
+    recordTimer=setTimeout(()=>{
+      if(mediaRecorder&&mediaRecorder.state==='recording'){
+        mediaRecorder.stop();recordBtn.disabled=false;stopBtn.disabled=true;
+        recordStatus.textContent='⏱ Stopped (2 min limit)';
+      }
+    },120000);
+  }catch(err){showError('Cannot access microphone');console.error(err);}
+});
+stopBtn.addEventListener('click',()=>{
+  if(mediaRecorder&&mediaRecorder.state==='recording'){
+    mediaRecorder.stop();recordBtn.disabled=false;stopBtn.disabled=true;
+    recordBtn.classList.remove('recording');if(recordTimer)clearTimeout(recordTimer);
+  }
+});
+deleteBtn.addEventListener('click',()=>{
+  audioBlob=null;audioPreview.style.display='none';previewPlayer.src='';
+  recordStatus.textContent='';recordBtn.disabled=false;stopBtn.disabled=true;
+});
+async function loadFeedback(){
+  try{
+    const{data,error}=await supabase.from('feedback').select('*').order('created_at',{ascending:false});
+    if(error)throw error;
+    const lang=getPreferredLang();
+    feedbackList.innerHTML=(data.length===0)?`<p style="text-align:center;color:#ddd">${translations[lang]?.loading||translations.en.loading}</p>`:'';
+    data.forEach(item=>{
+      const div=document.createElement('div');div.className='feedback-item';
+      const date=new Date(item.created_at).toLocaleString(undefined,{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',year:'numeric'});
+      let html=`<strong translate="no">${escapeHtml(item.contact||'Anonymous')}</strong><small>${date}</small><p translate="no">${escapeHtml(item.message)}</p>`;
+      if(item.audio_url)html+=`<audio controls preload="metadata" src="${item.audio_url}"></audio>`;
+      if(item.reply&&item.reply.trim()){
+        const replyLabel=(translations[getPreferredLang()]||translations.en).replyLabel||'Our reply:';
+        html+=`<div class="admin-reply"><div class="admin-reply-label">${escapeHtml(replyLabel)}</div><p class="admin-reply-text" translate="no">${escapeHtml(item.reply)}</p></div>`;
+      }
+      div.innerHTML=html;feedbackList.appendChild(div);
+    });
+  }catch(err){console.error(err);feedbackList.innerHTML=`<p class="error">Failed to load feedback</p>`;}
+}
+feedbackForm.addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const name=document.getElementById('name').value.trim();
+  const message=document.getElementById('message').value.trim();
+  if(!name||!message){showError('Please fill in name and message');return;}
+  if(audioBlob&&audioBlob.size<100){showError('Audio too short or corrupted');return;}
+  submitBtn.disabled=true;
+  const lang=getPreferredLang();
+  submitBtn.textContent=translations[lang]?.sending||'Sending...';
+  try{
+    let audioUrl=null;
+    if(audioBlob){
+      const extension=audioBlob.type.includes('ogg')?'ogg':'webm';
+      const fileName=`voice-${Date.now()}.${extension}`;
+      const{error:uploadError}=await supabase.storage.from('voice-feedback').upload(fileName,audioBlob,{contentType:audioBlob.type,upsert:false});
+      if(uploadError)throw uploadError;
+      const{data:publicData}=supabase.storage.from('voice-feedback').getPublicUrl(fileName);
+      audioUrl=publicData?.publicUrl||null;
     }
-    waitForSupabase(() => { initApp(); });
-    
-    function initApp() {
-      window.addEventListener('load', () => { document.body.classList.add('loaded'); applyTranslations(); });
-      
-      const translations = {
-        en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading feedback..." },
-        ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов..." },
-        de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Kontakte (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
-        es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios..." },
-        pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando feedback..." },
-        zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..." },
-        ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات..." }
-      };
-      
-      function getPreferredLang(){ return localStorage.getItem('language')||localStorage.getItem('userLang')||(navigator.language||navigator.userLanguage||'en').split('-')[0]||'en'; }
-      
-      function applyTranslations(){
-        const lang=getPreferredLang(), t=translations[lang]||translations.en;
-        document.documentElement.dir=(lang==='ar')?'rtl':'ltr';
-        document.querySelectorAll('.translate').forEach(el=>{
-          const key=el.dataset.key; if(!key) return;
-          const value=t[key]||translations.en[key]||el.textContent;
-          const tag=el.tagName.toLowerCase();
-          if(tag==='input'||tag==='textarea') el.placeholder=value;
-          else el.textContent=value;
-        });
-        const loadingEl=document.querySelector('#feedbackList .loading');
-        if(loadingEl) loadingEl.textContent=t.loading||translations.en.loading;
-      }
-      
-      const SUPABASE_URL='https://mcgcijdnzduzyqbbjtkm.supabase.co';
-      const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
-      const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-      const feedbackList=document.getElementById('feedbackList');
-      const feedbackForm=document.getElementById('feedbackForm');
-      const submitBtn=document.getElementById('submitBtn');
-      const errorMessage=document.getElementById('errorMessage');
-      const recordBtn=document.getElementById('recordBtn');
-      const stopBtn=document.getElementById('stopBtn');
-      const deleteBtn=document.getElementById('deleteBtn');
-      const visualizerContainer=document.getElementById('visualizerContainer');
-      const audioPreview=document.getElementById('audioPreview');
-      const previewPlayer=document.getElementById('previewPlayer');
-      const canvas=document.getElementById('visualizer');
-      const canvasCtx=canvas.getContext('2d');
-      const volumeBar=document.getElementById('volumeBar');
-      const recordStatus=document.getElementById('recordStatus');
-      let mediaRecorder=null,audioChunks=[],audioBlob=null,audioContext=null,analyser=null,dataArray=null,animationId=null,recordTimer=null,stream=null;
-      
-      function drawWaveform(){
-        animationId=requestAnimationFrame(drawWaveform);
-        if(!analyser||!dataArray)return;
-        analyser.getByteTimeDomainData(dataArray);
-        canvasCtx.fillStyle='rgba(0,0,0,0.18)';canvasCtx.fillRect(0,0,canvas.width,canvas.height);
-        canvasCtx.lineWidth=3;canvasCtx.beginPath();
-        const sliceWidth=canvas.width/dataArray.length;let x=0,maxAmp=0;
-        for(let i=0;i<dataArray.length;i++){
-          const v=dataArray[i]/128.0,y=v*canvas.height/2,amp=Math.abs(v-1.0);
-          if(amp>maxAmp)maxAmp=amp;
-          if(i===0)canvasCtx.moveTo(x,y);else canvasCtx.lineTo(x,y);
-          x+=sliceWidth;
-        }
-        canvasCtx.lineTo(canvas.width,canvas.height/2);
-        canvasCtx.strokeStyle=maxAmp>0.7?'#ef4444':maxAmp>0.3?'#10b981':'#6b7280';
-        canvasCtx.stroke();
-        volumeBar.style.width=Math.min(Math.round(maxAmp*200),100)+'%';
-      }
-      
-      recordBtn.addEventListener('click',async()=>{
-        try{
-          stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
-          audioContext=new(window.AudioContext||window.webkitAudioContext)();
-          analyser=audioContext.createAnalyser();
-          audioContext.createMediaStreamSource(stream).connect(analyser);
-          analyser.fftSize=2048;analyser.smoothingTimeConstant=0.8;
-          dataArray=new Uint8Array(analyser.frequencyBinCount);
-          canvas
+    const{error}=await supabase.from('feedback').insert([{contact:name,message,audio_url:audioUrl}]);
+    if(error)throw error;
+    feedbackForm.reset();audioBlob=null;audioPreview.style.display='none';
+    previewPlayer.src='';visualizerContainer.style.display='none';
+    recordStatus.textContent='';recordBtn.disabled=false;stopBtn.disabled=true;
+    await loadFeedback();
+    submitBtn.textContent=translations[lang]?.sent||'✅ Sent!';
+    setTimeout(()=>{submitBtn.textContent=translations[lang]?.send||'Send Feedback';},1700);
+  }catch(err){console.error(err);showError('Failed to send - check console');}
+  finally{submitBtn.disabled=false;}
+});
+function showError(msg){errorMessage.innerHTML=`<div class="error">${escapeHtml(msg)}</div>`;setTimeout(()=>{errorMessage.innerHTML='';},5000);}
+function escapeHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+loadFeedback();
+setInterval(loadFeedback,10000);
+window.applyTranslations=applyTranslations;
+window.getPreferredLang=getPreferredLang;
+} // end initApp
+</script>
+</body>
+</html>
