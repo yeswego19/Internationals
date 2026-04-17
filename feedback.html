@@ -59,11 +59,18 @@
     .feedback-item small{float:right;color:#333;font-size:12px}
     .admin-reply{margin-top:10px;padding:10px;background:rgba(240,249,255,0.9);border-left:3px solid #3b82f6;border-radius:6px;}
     .loading,.error{text-align:center;color:#fff;padding:14px;}
+    /* Мобил: баннеры под отзывами */
     .mobile-banners{display:none;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:16px;}
+    /* =============================================
+       ФИКСИРОВАННЫЕ БОКОВЫЕ БАННЕРЫ
+       По умолчанию скрыты (opacity:0, pointer-events:none)
+       JavaScript показывает их после скролла за фото
+       ============================================= */
     .fixed-banner-left,
     .fixed-banner-right {
       position: fixed;
       top: 50%;
+      transform: translateY(-50%);
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -71,10 +78,10 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.4s ease;
-      will-change: transform;
     }
     .fixed-banner-left  { left: 8px; }
     .fixed-banner-right { right: 8px; }
+    /* Класс который JS добавляет после скролла */
     .fixed-banner-left.visible,
     .fixed-banner-right.visible {
       opacity: 1;
@@ -97,6 +104,7 @@
       .mobile-banners{display:flex;}
       .feedback-container{margin:18px;padding:18px;}
     }
+    /* ===== CVC CRUISE SLIDESHOW BANNER ===== */
     .cvc-banner{
       width:300px; height:250px;
       border-radius:8px;
@@ -122,6 +130,7 @@
     .cvc-slide.cvc-active{
       opacity:1;
     }
+    /* Dot indicators */
     .cvc-dots{
       position:absolute;
       top:8px; left:50%;
@@ -138,6 +147,7 @@
     .cvc-dot.cvc-dot-active{
       background:#fff;
     }
+    /* Text overlay */
     .cvc-text-overlay{
       position:absolute;
       bottom:0; left:0; right:0;
@@ -171,21 +181,27 @@
   </style>
 </head>
 <body>
+  <!-- ЛЕВЫЕ БАННЕРЫ (fixed, появляются после скролла) -->
   <div class="fixed-banner-left" id="bannerLeft">
     <div class="banner-card">
+      <!-- admitad.banner: rxy3nfk7gdf1d04a03ac1926b3984a Zippo -->
       <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
         <img width="240" height="240" border="0" src="https://aflink.ru/b/rxy3nfk7gdf1d04a03ac1926b3984a/" alt="Zippo"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
     <div class="banner-card">
+      <!-- admitad.banner: fdazww1xzxf1d04a03ac8f408ce589 NH-Hotels -->
       <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
         <img width="240" height="200" border="0" src="https://ad.admitad.com/b/fdazww1xzxf1d04a03ac8f408ce589/" alt="NH-Hotels"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
+    <!-- БАННЕР: EKTA Traveling -->
     <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
-      <a target="_blank" rel="nofollow" href="https://ogsib.com/g/92qb79zvwnf1d04a03ac239505df72/" style="display:block;text-decoration:none;background:linear-gradient(135deg,#3d1a8e,#5b2d9e);padding:12px;color:#fff;">
+      <a target="_blank" rel="nofollow" href="https://ogsib.com/g/92qb79zvwnf1d04a03ac239505df72/" style="display:block;text-decoration:none;background:linear-gradient(135deg,#3d1a8e,#5b2d9e);border-radius:10px;padding:16px;color:#fff;font-family:'Inter',sans-serif;">
         <div style="font-size:11px;font-weight:700;letter-spacing:.08em;opacity:.7;margin-bottom:6px;">EKTA TRAVELING</div>
         <div style="font-size:13px;font-weight:700;line-height:1.4;margin-bottom:8px;">Travel Medical Insurance<br>Best Price · All Countries</div>
         <div style="font-size:11px;opacity:.8;margin-bottom:10px;">✓ COVID-19 · ✓ Visa · ✓ 0–200 yrs</div>
@@ -193,18 +209,24 @@
       </a>
       <div class="banner-label">Ad</div>
     </div>
+    <!-- сюда добавляй новые баннеры слева -->
   </div>
+  <!-- ПРАВЫЕ БАННЕРЫ (fixed, появляются после скролла) -->
   <div class="fixed-banner-right" id="bannerRight">
     <div class="banner-card">
-      <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback"><img width="300" height="250" border="0" src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
-      </a>
+      <!-- admitad.banner: qrws63iscqf1d04a03ac5ea594bb46 DiscoverCars WW -->
+<a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback"><img width="300" height="250" border="0" src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/></a>
+<!-- /admitad.banner -->
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
     <div class="banner-card">
-      <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback"><img width="300" height="250" border="0" src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/>
-      </a>
+      <!-- admitad.banner: e1vjup7uphf1d04a03acd820413c43 Oman Airway Global -->
+      <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback"><img width="300" height="250" border="0" src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/></a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
+    <!-- admitad.banner: xo8ehfl68mf1d04a03acafa41ba253 CVC Corp -->
     <div class="banner-card" style="padding:0;overflow:hidden;">
       <a class="cvc-banner" id="cvcBannerRight" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
         <div class="cvc-slides">
@@ -229,13 +251,20 @@
       </a>
       <div class="banner-label">Ad</div>
     </div>
+    <!-- /admitad.banner -->
+    <!-- БАННЕР: Airalo WW — растянут до квадрата через object-fit -->
     <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
+      <!-- admitad.banner: k5qe5k9nasf1d04a03ac0471e42028 Airalo WW -->
       <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback" style="display:block;width:260px;height:200px;overflow:hidden;position:relative;">
-        <img width="1456" height="180" border="0" src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:8px;"/>
+        <img width="1456" height="180" border="0" src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:8px;"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
+    <!-- сюда добавляй новые баннеры справа -->
   </div>
+  <!-- ЦЕНТРАЛЬНЫЙ КОНТЕНТ -->
   <div class="feedback-container">
     <div class="feedback-header">
       <h2 class="translate" data-key="feedback">Feedback</h2>
@@ -265,6 +294,7 @@
     <div class="feedback-list-container">
       <div class="feedback-list-title translate" data-key="recent">Recent Feedback</div>
       <div id="feedbackList"><div class="loading translate" data-key="loading">Loading feedback...</div></div>
+      <!-- МОБИЛ: баннеры под отзывами -->
       <div class="mobile-banners">
         <div class="banner-card">
           <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
@@ -273,11 +303,11 @@
           <div class="banner-label">Ad</div>
         </div>
         <div class="banner-card">
-          <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
-            <img src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
+  <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
+    <img src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
+  </a>
+  <div class="banner-label">Ad</div>
+</div>
         <div class="banner-card">
           <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
             <img src="https://ad.admitad.com/b/fdazww1xzxf1d04a03ac8f408ce589/" alt="NH-Hotels"/>
@@ -285,10 +315,12 @@
           <div class="banner-label">Ad</div>
         </div>
         <div class="banner-card">
-          <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback"><img src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/>
-          </a>
+          <!-- admitad.banner: e1vjup7uphf1d04a03acd820413c43 Oman Airway Global -->
+          <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback"><img src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/></a>
+          <!-- /admitad.banner -->
           <div class="banner-label">Ad</div>
         </div>
+        <!-- admitad.banner: xo8ehfl68mf1d04a03acafa41ba253 CVC Corp mobile -->
         <div class="banner-card" style="padding:0;overflow:hidden;">
           <a class="cvc-banner" id="cvcBannerMobile" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
             <div class="cvc-slides">
@@ -313,8 +345,10 @@
           </a>
           <div class="banner-label">Ad</div>
         </div>
+        <!-- /admitad.banner -->
+        <!-- EKTA мобил -->
         <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
-          <a target="_blank" rel="nofollow" href="https://ogsib.com/g/92qb79zvwnf1d04a03ac239505df72/" style="display:block;text-decoration:none;background:linear-gradient(135deg,#3d1a8e,#5b2d9e);padding:10px;color:#fff;">
+          <a target="_blank" rel="nofollow" href="https://ogsib.com/g/92qb79zvwnf1d04a03ac239505df72/" style="display:block;text-decoration:none;background:linear-gradient(135deg,#3d1a8e,#5b2d9e);border-radius:10px;padding:14px;color:#fff;font-family:'Inter',sans-serif;">
             <div style="font-size:10px;font-weight:700;letter-spacing:.08em;opacity:.7;margin-bottom:4px;">EKTA TRAVELING</div>
             <div style="font-size:12px;font-weight:700;line-height:1.4;margin-bottom:6px;">Travel Medical Insurance</div>
             <div style="font-size:10px;opacity:.8;margin-bottom:8px;">✓ COVID-19 · ✓ Visa · ✓ All countries</div>
@@ -322,6 +356,7 @@
           </a>
           <div class="banner-label">Ad</div>
         </div>
+        <!-- Airalo мобил — растянут до квадрата -->
         <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
           <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback" style="display:block;width:260px;height:160px;overflow:hidden;position:relative;">
             <img src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:8px;"/>
@@ -331,6 +366,7 @@
       </div>
     </div>
   </div>
+  <!-- CVC Slideshow Script -->
   <script>
     (function() {
       function initCvcSlideshow(bannerId, dotsId) {
@@ -356,6 +392,9 @@
     })();
   </script>
   <script>
+    /* Показываем боковые баннеры только после скролла за фото.
+       Фото занимает примерно 800px.
+       Меняй PHOTO_HEIGHT если нужно подстроить. */
     const PHOTO_HEIGHT = 800;
     const bannerLeft  = document.getElementById('bannerLeft');
     const bannerRight = document.getElementById('bannerRight');
@@ -369,7 +408,7 @@
       }
     }
     window.addEventListener('scroll', checkScroll, { passive: true });
-    checkScroll();
+    checkScroll(); // проверить сразу при загрузке
   </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -382,13 +421,13 @@ waitForSupabase(() => { initApp(); });
 function initApp() {
 window.addEventListener('load', () => { document.body.classList.add('loaded'); applyTranslations(); });
 const translations = {
-  en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", sending:"Sending...", sent:"✅ Sent!", loading:"Loading feedback...", replyLabel:"Our reply:" },
-  ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить", delete:"🗑 Удалить и переписать", send:"Отправить отзыв", sending:"Отправка...", sent:"✅ Отправлено!", loading:"Загрузка отзывов...", replyLabel:"Наш ответ:" },
-  de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Kontakte (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", sending:"Wird gesendet...", sent:"✅ Gesendet!", loading:"Feedback wird geladen...", replyLabel:"Unsere Antwort:" },
-  es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", sending:"Enviando...", sent:"✅ ¡Enviado!", loading:"Cargando comentarios...", replyLabel:"Nuestra respuesta:" },
-  pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar comentário", sending:"Enviando...", sent:"✅ Enviado!", loading:"Carregando comentários...", replyLabel:"Nossa resposta:" },
-  zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", sending:"发送中...", sent:"✅ 已发送!", loading:"加载反馈中...", replyLabel:"我们的回复:" },
-  ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", sending:"جاري الإرسال...", sent:"✅ تم الإرسال!", loading:"جاري تحميل الملاحظات...", replyLabel:"ردنا:" }
+  en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading feedback..." },
+  ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов..." },
+  de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Контакте (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu набрать", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
+  es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios..." },
+  pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando feedback..." },
+  zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..." },
+  ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات..." }
 };
 function getPreferredLang(){ return localStorage.getItem('language')||localStorage.getItem('userLang')||(navigator.language||navigator.userLanguage||'en').split('-')[0]||'en'; }
 function applyTranslations(){
@@ -405,7 +444,7 @@ function applyTranslations(){
   if(loadingEl) loadingEl.textContent=t.loading||translations.en.loading;
 }
 const SUPABASE_URL='https://mcgcijdnzduzyqbbjtkm.supabase.co';
-const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMkOqagb0VcCTqAB1aFbvfKgF8r0XFgI5nM';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
 const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const feedbackList=document.getElementById('feedbackList');
 const feedbackForm=document.getElementById('feedbackForm');
@@ -543,34 +582,6 @@ loadFeedback();
 setInterval(loadFeedback,10000);
 window.applyTranslations=applyTranslations;
 window.getPreferredLang=getPreferredLang;
-
-// === SMART BANNER PARALLAX SCROLL ===
-function setupSmartBannerParallax() {
-  const bannerLeft = document.getElementById('bannerLeft');
-  const bannerRight = document.getElementById('bannerRight');
-  if (!bannerLeft || !bannerRight) return;
-  
-  const banners = bannerLeft.querySelectorAll('.banner-card');
-  let totalBannerHeight = 0;
-  banners.forEach(banner => {
-    totalBannerHeight += banner.offsetHeight + 14;
-  });
-  
-  const viewportHeight = window.innerHeight;
-  const extraPadding = Math.max(0, totalBannerHeight - viewportHeight + 50);
-  document.body.style.paddingBottom = extraPadding + 'px';
-  
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercent = maxScroll > 0 ? scrollY / maxScroll : 0;
-    const bannerOffset = -(totalBannerHeight * scrollPercent);
-    bannerLeft.style.transform = `translateY(${bannerOffset}px)`;
-    bannerRight.style.transform = `translateY(${bannerOffset}px)`;
-  }, { passive: true });
-}
-
-setupSmartBannerParallax();
 } // end initApp
 </script>
 </body>
