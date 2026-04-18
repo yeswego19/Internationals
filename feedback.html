@@ -78,8 +78,7 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.4s ease;
-      /* transform меняется через JS синхронно со скроллом — без transition */
-      will-change: transform;
+      will-change: top;
     }
     .fixed-banner-left  { left: 8px; }
     .fixed-banner-right { right: 8px; }
@@ -357,85 +356,64 @@
     })();
   </script>
   <script>
-    /* ================================================
-       БАННЕРЫ:
-       1. Появляются после скролла за фото (800px)
-       2. После последнего отзыва — едут вверх
-          синхронно со скроллом (parallax)
-       3. Внизу страницы добавляется пространство
-          чтобы было куда скроллить
-       ================================================ */
-
+    const PHOTO_HEIGHT = 800;
     const bannerLeft  = document.getElementById('bannerLeft');
     const bannerRight = document.getElementById('bannerRight');
     const feedbackListEl = document.getElementById('feedbackList');
-    const PHOTO_HEIGHT = 800;
 
-    // Добавляем пространство внизу страницы для скролла баннеров
-    const scrollSpacer = document.createElement('div');
-    scrollSpacer.id = 'bannerScrollSpacer';
-    scrollSpacer.style.height = '0px';
-    document.body.appendChild(scrollSpacer);
+    // Spacer внизу страницы — появляется чтобы было куда скроллить когда баннеры едут
+    const spacer = document.createElement('div');
+    spacer.style.cssText = 'pointer-events:none;';
+    document.body.appendChild(spacer);
 
-    function updateBannerHeight() {
-      const leftH  = bannerLeft.scrollHeight  || 0;
-      const rightH = bannerRight.scrollHeight || 0;
-      const maxH   = Math.max(leftH, rightH);
-      scrollSpacer.style.height = maxH + 'px';
+    function updateSpacer() {
+      const maxBannerH = Math.max(bannerLeft.scrollHeight||0, bannerRight.scrollHeight||0);
+      const extra = Math.max(0, maxBannerH - window.innerHeight + 80);
+      spacer.style.height = extra + 'px';
     }
 
-    function handleScroll() {
+    function checkScroll() {
       const scrollY = window.scrollY;
 
-      // Показываем/прячем баннеры (за фото)
-      if (scrollY > PHOTO_HEIGHT) {
-        bannerLeft.classList.add('visible');
-        bannerRight.classList.add('visible');
-      } else {
+      // Скрываем пока фото не прокрутили
+      if (scrollY <= PHOTO_HEIGHT) {
         bannerLeft.classList.remove('visible');
         bannerRight.classList.remove('visible');
-        bannerLeft.style.transform  = 'translateY(-50%)';
-        bannerRight.style.transform = 'translateY(-50%)';
+        bannerLeft.style.top  = '50%';
+        bannerRight.style.top = '50%';
         return;
       }
 
-      // Триггер — конец списка отзывов
-      const listRect = feedbackListEl.getBoundingClientRect();
-      const listBottom = scrollY + listRect.bottom; // абс. позиция низа отзывов
+      bannerLeft.classList.add('visible');
+      bannerRight.classList.add('visible');
 
-      if (scrollY + window.innerHeight < listBottom) {
-        // Ещё не дошли до конца отзывов — баннеры на месте
-        bannerLeft.style.transform  = 'translateY(-50%)';
-        bannerRight.style.transform = 'translateY(-50%)';
+      // Где заканчиваются отзывы (абсолютная позиция низа)
+      const listBottom = scrollY + feedbackListEl.getBoundingClientRect().bottom;
+      const windowBottom = scrollY + window.innerHeight;
+
+      if (windowBottom <= listBottom) {
+        // Не дошли до конца отзывов — баннеры на месте
+        bannerLeft.style.top  = '50%';
+        bannerRight.style.top = '50%';
         return;
       }
 
-      // Дошли до конца отзывов — баннеры едут вверх
-      const scrollPastList = (scrollY + window.innerHeight) - listBottom;
-      const offset = -50; // базовое смещение (translateY -50%)
-      const pxUp   = scrollPastList; // пикселей вверх = пикселей проскроллено после конца отзывов
-
-      // Переводим px в % от высоты банера для translateY
-      const leftH  = bannerLeft.offsetHeight  || 1;
-      const rightH = bannerRight.offsetHeight || 1;
-
-      const leftPct  = offset - (pxUp / leftH  * 100);
-      const rightPct = offset - (pxUp / rightH * 100);
-
-      bannerLeft.style.transform  = `translateY(${leftPct}%)`;
-      bannerRight.style.transform = `translateY(${rightPct}%)`;
+      // Дошли — баннеры ползут вверх пропорционально скроллу
+      const pastPx  = windowBottom - listBottom;
+      const pct     = (pastPx / window.innerHeight) * 100;
+      const newTop  = Math.max(0, 50 - pct);
+      bannerLeft.style.top  = newTop + '%';
+      bannerRight.style.top = newTop + '%';
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    window.addEventListener('resize', () => { updateSpacer(); checkScroll(); });
 
-    // Обновляем высоту спейсера когда загружаются отзывы
-    const observer = new MutationObserver(() => {
-      updateBannerHeight();
-    });
-    observer.observe(feedbackListEl, { childList: true, subtree: true });
+    // Пересчёт когда подгружаются отзывы
+    new MutationObserver(() => { updateSpacer(); checkScroll(); })
+      .observe(feedbackListEl, { childList: true, subtree: true });
 
-    // Первичный запуск
-    setTimeout(() => { updateBannerHeight(); handleScroll(); }, 300);
+    setTimeout(() => { updateSpacer(); checkScroll(); }, 600);
   </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
