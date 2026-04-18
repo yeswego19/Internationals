@@ -361,59 +361,57 @@
     const bannerRight = document.getElementById('bannerRight');
     const feedbackListEl = document.getElementById('feedbackList');
 
-    // Spacer внизу страницы — появляется чтобы было куда скроллить когда баннеры едут
-    const spacer = document.createElement('div');
-    spacer.style.cssText = 'pointer-events:none;';
-    document.body.appendChild(spacer);
+    // Запоминаем позицию конца отзывов когда они загрузились
+    let listBottomAbs = 0;
 
-    function updateSpacer() {
-      const maxBannerH = Math.max(bannerLeft.scrollHeight||0, bannerRight.scrollHeight||0);
-      const extra = Math.max(0, maxBannerH - window.innerHeight + 80);
-      spacer.style.height = extra + 'px';
+    function recalcListBottom() {
+      listBottomAbs = window.scrollY + feedbackListEl.getBoundingClientRect().bottom;
     }
 
     function checkScroll() {
-      const scrollY = window.scrollY;
+      const scrollY    = window.scrollY;
+      const viewH      = window.innerHeight;
+      const maxBannerH = Math.max(bannerLeft.scrollHeight||0, bannerRight.scrollHeight||0);
 
-      // Скрываем пока фото не прокрутили
+      // Скрываем пока не проскроллили за фото
       if (scrollY <= PHOTO_HEIGHT) {
         bannerLeft.classList.remove('visible');
         bannerRight.classList.remove('visible');
-        bannerLeft.style.top  = '50%';
-        bannerRight.style.top = '50%';
         return;
       }
 
       bannerLeft.classList.add('visible');
       bannerRight.classList.add('visible');
 
-      // Где заканчиваются отзывы (абсолютная позиция низа)
-      const listBottom = scrollY + feedbackListEl.getBoundingClientRect().bottom;
-      const windowBottom = scrollY + window.innerHeight;
+      // Базовая позиция — баннеры по центру экрана
+      const centeredTop = (viewH - maxBannerH) / 2;
 
-      if (windowBottom <= listBottom) {
-        // Не дошли до конца отзывов — баннеры на месте
-        bannerLeft.style.top  = '50%';
-        bannerRight.style.top = '50%';
+      const windowBottom = scrollY + viewH;
+
+      if (windowBottom <= listBottomAbs) {
+        // Не дошли до конца отзывов — стоят на месте
+        bannerLeft.style.top  = centeredTop + 'px';
+        bannerRight.style.top = centeredTop + 'px';
         return;
       }
 
-      // Дошли — баннеры ползут вверх пропорционально скроллу
-      const pastPx  = windowBottom - listBottom;
-      const pct     = (pastPx / window.innerHeight) * 100;
-      const newTop  = Math.max(0, 50 - pct);
-      bannerLeft.style.top  = newTop + '%';
-      bannerRight.style.top = newTop + '%';
+      // Дошли до конца — едут вверх синхронно со скроллом
+      const pastPx = windowBottom - listBottomAbs;
+      const newTop = centeredTop - pastPx;
+      bannerLeft.style.top  = newTop + 'px';
+      bannerRight.style.top = newTop + 'px';
     }
 
     window.addEventListener('scroll', checkScroll, { passive: true });
-    window.addEventListener('resize', () => { updateSpacer(); checkScroll(); });
+    window.addEventListener('resize', checkScroll);
 
-    // Пересчёт когда подгружаются отзывы
-    new MutationObserver(() => { updateSpacer(); checkScroll(); })
-      .observe(feedbackListEl, { childList: true, subtree: true });
+    // Пересчёт когда загружаются отзывы
+    new MutationObserver(() => {
+      recalcListBottom();
+      checkScroll();
+    }).observe(feedbackListEl, { childList: true, subtree: true });
 
-    setTimeout(() => { updateSpacer(); checkScroll(); }, 600);
+    setTimeout(() => { recalcListBottom(); checkScroll(); }, 600);
   </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
