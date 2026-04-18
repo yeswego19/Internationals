@@ -355,23 +355,45 @@
     })();
   </script>
   <script>
-    /* Показываем боковые баннеры только после скролла за фото.
-       Фото занимает примерно 800px.
-       Меняй PHOTO_HEIGHT если нужно подстроить. */
     const PHOTO_HEIGHT = 800;
     const bannerLeft  = document.getElementById('bannerLeft');
     const bannerRight = document.getElementById('bannerRight');
+    const feedbackListEl = document.getElementById('feedbackList');
+
     function checkScroll() {
-      if (window.scrollY > PHOTO_HEIGHT) {
-        bannerLeft.classList.add('visible');
-        bannerRight.classList.add('visible');
-      } else {
+      const scrollY    = window.scrollY;
+      const viewH      = window.innerHeight;
+      const maxBannerH = Math.max(bannerLeft.scrollHeight||0, bannerRight.scrollHeight||0);
+
+      if (scrollY <= PHOTO_HEIGHT) {
         bannerLeft.classList.remove('visible');
         bannerRight.classList.remove('visible');
+        return;
       }
+
+      bannerLeft.classList.add('visible');
+      bannerRight.classList.add('visible');
+
+      const listBottomAbs = scrollY + feedbackListEl.getBoundingClientRect().bottom;
+      const centeredTop   = (viewH - maxBannerH) / 2;
+      const windowBottom  = scrollY + viewH;
+
+      if (windowBottom <= listBottomAbs) {
+        bannerLeft.style.top  = centeredTop + 'px';
+        bannerRight.style.top = centeredTop + 'px';
+        return;
+      }
+
+      const pastPx = windowBottom - listBottomAbs;
+      const newTop = centeredTop - pastPx;
+      bannerLeft.style.top  = newTop + 'px';
+      bannerRight.style.top = newTop + 'px';
     }
+
     window.addEventListener('scroll', checkScroll, { passive: true });
-    checkScroll(); // проверить сразу при загрузке
+    window.addEventListener('resize', checkScroll);
+    new MutationObserver(checkScroll).observe(feedbackListEl, { childList: true, subtree: true });
+    setTimeout(checkScroll, 600);
   </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
