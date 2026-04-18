@@ -70,7 +70,7 @@
     .fixed-banner-right {
       position: fixed;
       top: 50%;
-      transform: translateY(-50%);
+
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -78,7 +78,6 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.4s ease;
-      will-change: top;
     }
     .fixed-banner-left  { left: 8px; }
     .fixed-banner-right { right: 8px; }
@@ -356,62 +355,23 @@
     })();
   </script>
   <script>
+    /* Показываем боковые баннеры только после скролла за фото.
+       Фото занимает примерно 800px.
+       Меняй PHOTO_HEIGHT если нужно подстроить. */
     const PHOTO_HEIGHT = 800;
     const bannerLeft  = document.getElementById('bannerLeft');
     const bannerRight = document.getElementById('bannerRight');
-    const feedbackListEl = document.getElementById('feedbackList');
-
-    // Запоминаем позицию конца отзывов когда они загрузились
-    let listBottomAbs = 0;
-
-    function recalcListBottom() {
-      listBottomAbs = window.scrollY + feedbackListEl.getBoundingClientRect().bottom;
-    }
-
     function checkScroll() {
-      const scrollY    = window.scrollY;
-      const viewH      = window.innerHeight;
-      const maxBannerH = Math.max(bannerLeft.scrollHeight||0, bannerRight.scrollHeight||0);
-
-      // Скрываем пока не проскроллили за фото
-      if (scrollY <= PHOTO_HEIGHT) {
+      if (window.scrollY > PHOTO_HEIGHT) {
+        bannerLeft.classList.add('visible');
+        bannerRight.classList.add('visible');
+      } else {
         bannerLeft.classList.remove('visible');
         bannerRight.classList.remove('visible');
-        return;
       }
-
-      bannerLeft.classList.add('visible');
-      bannerRight.classList.add('visible');
-
-      // Базовая позиция — баннеры по центру экрана
-      const centeredTop = (viewH - maxBannerH) / 2;
-
-      const windowBottom = scrollY + viewH;
-
-      if (windowBottom <= listBottomAbs) {
-        // Не дошли до конца отзывов — стоят на месте
-        bannerLeft.style.top  = centeredTop + 'px';
-        bannerRight.style.top = centeredTop + 'px';
-        return;
-      }
-
-      // Дошли до конца — едут вверх синхронно со скроллом
-      const pastPx = windowBottom - listBottomAbs;
-      const newTop = centeredTop - pastPx;
-      bannerLeft.style.top  = newTop + 'px';
-      bannerRight.style.top = newTop + 'px';
     }
-
     window.addEventListener('scroll', checkScroll, { passive: true });
-    window.addEventListener('resize', checkScroll);
-
-    // Пересчёт когда загружаются отзывы
-    new MutationObserver(() => {
-      recalcListBottom();
-      checkScroll();
-    }).observe(feedbackListEl, { childList: true, subtree: true });
-
-    setTimeout(() => { recalcListBottom(); checkScroll(); }, 600);
+    checkScroll(); // проверить сразу при загрузке
   </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
