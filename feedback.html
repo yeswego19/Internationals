@@ -377,75 +377,62 @@
     })();
   </script>
 
-  <!-- ══ СКРИПТ: баннеры выезжают снизу после конца отзывов ══ -->
+  <!-- ══ СКРИПТ: баннеры выезжают снизу по wheel после конца отзывов (только десктоп) ══ -->
   <script>
     (function(){
-      var bannerLeft      = document.getElementById('bannerLeft');
-      var bannerRight     = document.getElementById('bannerRight');
-      var feedbackListEl  = document.getElementById('feedbackList');
-      var spacer          = document.createElement('div');
-      spacer.style.cssText = 'pointer-events:none;height:0px;';
-      document.body.appendChild(spacer);
+      var bannerLeft     = document.getElementById('bannerLeft');
+      var bannerRight    = document.getElementById('bannerRight');
+      var feedbackListEl = document.getElementById('feedbackList');
+      var progress = 0; // 0 = за экраном снизу, 1 = полностью на месте
 
-      // Высота самой длинной колонки баннеров
       function bannerH() {
         return Math.max(bannerLeft.scrollHeight||0, bannerRight.scrollHeight||0);
       }
 
-      // Расширяем страницу снизу на высоту баннеров
-      function updateSpacer() {
-        spacer.style.height = bannerH() + 'px';
-      }
-
-      function onScroll() {
-        var scrollY      = window.scrollY;
-        var viewH        = window.innerHeight;
-        var maxH         = bannerH();
-
-        // Абсолютная позиция низа списка отзывов
-        var listBottom   = scrollY + feedbackListEl.getBoundingClientRect().bottom;
-
-        // Когда низ экрана достиг низа отзывов — начинаем показывать
-        var windowBottom = scrollY + viewH;
-
-        if (windowBottom < listBottom) {
-          // Ещё не дошли — баннеры спрятаны за нижним краем
-          bannerLeft.classList.remove('visible');
-          bannerRight.classList.remove('visible');
-          bannerLeft.style.top  = '100vh';
-          bannerRight.style.top = '100vh';
-          return;
-        }
-
-        bannerLeft.classList.add('visible');
-        bannerRight.classList.add('visible');
-
-        // Сколько проскроллено после конца отзывов
-        var past   = windowBottom - listBottom;
-
-        // Баннеры выезжают снизу: начало top=100vh, конец top=(viewH-maxH)/2
-        // past идёт от 0 до maxH
-        var startTop = viewH;                      // 100vh в px
-        var endTop   = (viewH - maxH) / 2;         // центр экрана
-        var newTop   = startTop - past;
-
-        // Не уезжать выше центра
-        if (newTop < endTop) newTop = endTop;
-
+      function applyProgress() {
+        var viewH  = window.innerHeight;
+        var maxH   = bannerH();
+        var endTop = (viewH - maxH) / 2;
+        var newTop = viewH - progress * (viewH - endTop);
         bannerLeft.style.top  = newTop + 'px';
         bannerRight.style.top = newTop + 'px';
+        if (progress > 0) {
+          bannerLeft.classList.add('visible');
+          bannerRight.classList.add('visible');
+        } else {
+          bannerLeft.classList.remove('visible');
+          bannerRight.classList.remove('visible');
+        }
       }
 
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', function(){ updateSpacer(); onScroll(); });
+      function isAtBottom() {
+        var listBottom   = window.scrollY + feedbackListEl.getBoundingClientRect().bottom;
+        var windowBottom = window.scrollY + window.innerHeight;
+        return windowBottom >= listBottom - 10;
+      }
 
-      // Пересчёт когда загружаются отзывы
-      new MutationObserver(function(){
-        updateSpacer();
-        onScroll();
-      }).observe(feedbackListEl, { childList: true, subtree: true });
+      window.addEventListener('wheel', function(e) {
+        if (!isAtBottom()) return;
+        var step = Math.abs(e.deltaY) / bannerH();
+        if (e.deltaY > 0) {
+          progress = Math.min(1, progress + step);
+        } else {
+          progress = Math.max(0, progress - step);
+        }
+        applyProgress();
+      }, { passive: true });
 
-      setTimeout(function(){ updateSpacer(); onScroll(); }, 700);
+      // Скроллим обратно вверх — прячем баннеры
+      window.addEventListener('scroll', function() {
+        if (!isAtBottom()) {
+          progress = 0;
+          applyProgress();
+        }
+      }, { passive: true });
+
+      new MutationObserver(applyProgress).observe(feedbackListEl, { childList: true, subtree: true });
+      window.addEventListener('resize', applyProgress);
+      setTimeout(applyProgress, 700);
     })();
   </script>
 
