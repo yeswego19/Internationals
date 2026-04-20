@@ -85,20 +85,22 @@
     .fixed-banner-left,
     .fixed-banner-right {
       position: fixed;
-      top: 100vh;          /* начинают ЗА экраном снизу */
+      bottom: -100vh;      /* начинают ЗА нижним краем */
       display: flex;
       flex-direction: column;
       gap: 14px;
       z-index: 50;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.4s ease;
+      transition: bottom 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  opacity 0.8s ease;
     }
     .fixed-banner-left  { left: 8px; }
     .fixed-banner-right { right: 8px; }
 
     .fixed-banner-left.visible,
     .fixed-banner-right.visible {
+      bottom: 20px;        /* встают внизу экрана */
       opacity: 1;
       pointer-events: auto;
     }
@@ -377,67 +379,44 @@
     })();
   </script>
 
-  <!-- ══ СКРИПТ: баннеры как титры — поднимаются снизу вверх со скроллом ══ -->
+  <!-- ══ СКРИПТ: баннеры появляются снизу когда дошёл до середины отзывов ══ -->
   <script>
     (function(){
       var bannerLeft     = document.getElementById('bannerLeft');
       var bannerRight    = document.getElementById('bannerRight');
       var feedbackListEl = document.getElementById('feedbackList');
+      var shown = false;
 
-      // Spacer — добавляем пустое место после контейнера равное высоте баннеров
-      var spacer = document.createElement('div');
-      spacer.style.cssText = 'pointer-events:none;';
-      document.querySelector('.feedback-container').after(spacer);
-
-      function bannerH() {
-        return Math.max(bannerLeft.scrollHeight||0, bannerRight.scrollHeight||0);
-      }
-
-      function updateSpacer() {
-        spacer.style.height = bannerH() + 'px';
-      }
-
-      function onScroll() {
-        var scrollY      = window.scrollY;
-        var viewH        = window.innerHeight;
-        var maxH         = bannerH();
-
-        // Абсолютная позиция низа отзывов
-        var listBottom   = scrollY + feedbackListEl.getBoundingClientRect().bottom;
-        var windowBottom = scrollY + viewH;
-
-        if (windowBottom < listBottom) {
-          // Не дошли до конца — баннеры за нижним краем, скрыты
-          bannerLeft.classList.remove('visible');
-          bannerRight.classList.remove('visible');
-          bannerLeft.style.top  = viewH + 'px';
-          bannerRight.style.top = viewH + 'px';
-          return;
-        }
-
+      function showBanners() {
+        if (shown) return;
+        shown = true;
         bannerLeft.classList.add('visible');
         bannerRight.classList.add('visible');
-
-        // Сколько проскроллено после конца отзывов
-        // past: 0 → maxH (баннеры проходят снизу вверх)
-        var past   = windowBottom - listBottom;
-
-        // top начинается с viewH (внизу экрана) и уходит вверх
-        var newTop = viewH - past;
-
-        bannerLeft.style.top  = newTop + 'px';
-        bannerRight.style.top = newTop + 'px';
       }
 
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', function(){ updateSpacer(); onScroll(); });
+      function hideBanners() {
+        if (!shown) return;
+        shown = false;
+        bannerLeft.classList.remove('visible');
+        bannerRight.classList.remove('visible');
+      }
 
-      new MutationObserver(function(){
-        updateSpacer();
-        onScroll();
-      }).observe(feedbackListEl, { childList: true, subtree: true });
+      function check() {
+        var rect   = feedbackListEl.getBoundingClientRect();
+        var listH  = rect.height;
+        var viewH  = window.innerHeight;
+        // Середина списка отзывов
+        var midpoint = rect.top + listH / 2;
+        if (midpoint < viewH) {
+          showBanners();
+        } else {
+          hideBanners();
+        }
+      }
 
-      setTimeout(function(){ updateSpacer(); onScroll(); }, 700);
+      window.addEventListener('scroll', check, { passive: true });
+      new MutationObserver(check).observe(feedbackListEl, { childList: true, subtree: true });
+      setTimeout(check, 700);
     })();
   </script>
 
