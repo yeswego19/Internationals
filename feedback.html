@@ -18,7 +18,6 @@
     }
     body.loaded{ opacity:1; }
 
-    /* ── Центральный контейнер ── */
     .feedback-container{
       max-width:760px; margin:48px auto; padding:30px;
       border-radius:12px; background:rgba(255,255,255,0.02);
@@ -75,17 +74,11 @@
     .admin-reply{ margin-top:10px; padding:10px; background:rgba(240,249,255,0.9); border-left:3px solid #3b82f6; border-radius:6px; }
     .loading,.error{ text-align:center; color:#fff; padding:14px; }
 
-    /* ── Боковые баннеры (десктоп) ──
-       Стартуют за нижним краем экрана (top: 100vh).
-       JS двигает их вверх синхронно со скроллом
-       после того как пользователь проскроллил за конец отзывов.
-       Страница расширяется вниз на высоту баннерной колонки
-       чтобы было место для скролла.
-    ── */
+    /* Баннеры — появляются снизу, остаются навсегда */
     .fixed-banner-left,
     .fixed-banner-right {
       position: fixed;
-      bottom: -100vh;      /* начинают ЗА нижним краем */
+      bottom: -100vh;
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -100,12 +93,11 @@
 
     .fixed-banner-left.visible,
     .fixed-banner-right.visible {
-      bottom: 20px;        /* встают внизу экрана */
+      bottom: 20px;
       opacity: 1;
       pointer-events: auto;
     }
 
-    /* ── Карточка баннера ── */
     .banner-card{
       background:rgba(255,255,255,0.08);
       backdrop-filter:blur(8px);
@@ -119,7 +111,6 @@
     .banner-card img{ max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto; }
     .banner-label{ font-size:10px; color:rgba(255,255,255,0.35); margin-top:6px; letter-spacing:.05em; text-transform:uppercase; }
 
-    /* ── CVC slideshow ── */
     .cvc-banner{
       width:280px; height:230px; border-radius:8px; overflow:hidden;
       position:relative; cursor:pointer; display:block; text-decoration:none; background:#0a1628;
@@ -135,7 +126,6 @@
     .cvc-sub{ font-size:10px; opacity:.85; margin-top:2px; color:#cce4ff; }
     .cvc-cta{ display:inline-block; margin-top:5px; padding:3px 10px; background:linear-gradient(135deg,#1565c0,#0288d1); border-radius:20px; font-size:10px; font-weight:600; color:#fff; }
 
-    /* ── Мобил ── */
     .mobile-banners{ display:none; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:16px; }
 
     @media(max-width:1100px){
@@ -147,11 +137,9 @@
 </head>
 <body>
 
-  <!-- ══ ЛЕВЫЕ БАННЕРЫ ══
-       Чтобы добавить новый: скопируй блок .banner-card и вставь сюда -->
+  <!-- ЛЕВЫЕ БАННЕРЫ -->
   <div class="fixed-banner-left" id="bannerLeft">
 
-    <!-- Zippo -->
     <div class="banner-card">
       <!-- admitad.banner: rxy3nfk7gdf1d04a03ac1926b3984a Zippo -->
       <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
@@ -161,7 +149,6 @@
       <div class="banner-label">Ad</div>
     </div>
 
-    <!-- NH-Hotels -->
     <div class="banner-card">
       <!-- admitad.banner: fdazww1xzxf1d04a03ac8f408ce589 NH-Hotels -->
       <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
@@ -171,7 +158,6 @@
       <div class="banner-label">Ad</div>
     </div>
 
-    <!-- EKTA Traveling -->
     <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
       <a target="_blank" rel="nofollow" href="https://ogsib.com/g/92qb79zvwnf1d04a03ac239505df72/"
          style="display:block;text-decoration:none;background:linear-gradient(135deg,#3d1a8e,#5b2d9e);border-radius:10px;padding:16px;color:#fff;font-family:'Inter',sans-serif;">
@@ -186,11 +172,9 @@
     <!-- сюда добавляй новые баннеры слева -->
   </div>
 
-  <!-- ══ ПРАВЫЕ БАННЕРЫ ══
-       Чтобы добавить новый: скопируй блок .banner-card и вставь сюда -->
+  <!-- ПРАВЫЕ БАННЕРЫ -->
   <div class="fixed-banner-right" id="bannerRight">
 
-    <!-- DiscoverCars -->
     <div class="banner-card">
       <!-- admitad.banner: qrws63iscqf1d04a03ac5ea594bb46 DiscoverCars WW -->
       <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
@@ -200,7 +184,6 @@
       <div class="banner-label">Ad</div>
     </div>
 
-    <!-- Oman Airways -->
     <div class="banner-card">
       <!-- admitad.banner: e1vjup7uphf1d04a03acd820413c43 Oman Airway Global -->
       <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback">
@@ -210,7 +193,6 @@
       <div class="banner-label">Ad</div>
     </div>
 
-    <!-- CVC Corp slideshow -->
     <div class="banner-card" style="padding:0;overflow:hidden;">
       <!-- admitad.banner: xo8ehfl68mf1d04a03acafa41ba253 CVC Corp -->
       <a class="cvc-banner" id="cvcBannerRight" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
@@ -236,11 +218,11 @@
       <div class="banner-label">Ad</div>
     </div>
 
-    <!-- Airalo -->
+    <!-- Airalo — высота 240px (x2 от оригинала для читаемости) -->
     <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
       <!-- admitad.banner: k5qe5k9nasf1d04a03ac0471e42028 Airalo WW -->
       <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback"
-         style="display:block;height:120px;overflow:hidden;position:relative;">
+         style="display:block;height:240px;overflow:hidden;position:relative;">
         <img src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW"
              style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;border-radius:8px;"/>
       </a>
@@ -251,7 +233,7 @@
     <!-- сюда добавляй новые баннеры справа -->
   </div>
 
-  <!-- ══ ЦЕНТРАЛЬНЫЙ КОНТЕНТ ══ -->
+  <!-- ЦЕНТРАЛЬНЫЙ КОНТЕНТ -->
   <div class="feedback-container">
     <div class="feedback-header">
       <h2 class="translate" data-key="feedback">Feedback</h2>
@@ -285,7 +267,7 @@
       <div class="feedback-list-title translate" data-key="recent">Recent Feedback</div>
       <div id="feedbackList"><div class="loading translate" data-key="loading">Loading feedback...</div></div>
 
-      <!-- Баннеры на мобиле — под отзывами -->
+      <!-- Мобил: баннеры под отзывами -->
       <div class="mobile-banners">
         <div class="banner-card">
           <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
@@ -355,7 +337,7 @@
     </div>
   </div>
 
-  <!-- ══ СКРИПТ: CVC slideshow ══ -->
+  <!-- CVC slideshow -->
   <script>
     (function(){
       function initCvc(bannerId, dotsId) {
@@ -379,7 +361,7 @@
     })();
   </script>
 
-  <!-- ══ СКРИПТ: баннеры появляются снизу когда дошёл до середины отзывов ══ -->
+  <!-- Баннеры появляются снизу при середине отзывов и остаются навсегда -->
   <script>
     (function(){
       var bannerLeft     = document.getElementById('bannerLeft');
@@ -394,23 +376,13 @@
         bannerRight.classList.add('visible');
       }
 
-      function hideBanners() {
-        if (!shown) return;
-        shown = false;
-        bannerLeft.classList.remove('visible');
-        bannerRight.classList.remove('visible');
-      }
-
       function check() {
-        var rect   = feedbackListEl.getBoundingClientRect();
-        var listH  = rect.height;
-        var viewH  = window.innerHeight;
-        // Середина списка отзывов
+        var rect     = feedbackListEl.getBoundingClientRect();
+        var listH    = rect.height;
+        var viewH    = window.innerHeight;
         var midpoint = rect.top + listH / 2;
         if (midpoint < viewH) {
           showBanners();
-        } else {
-          hideBanners();
         }
       }
 
@@ -420,7 +392,6 @@
     })();
   </script>
 
-  <!-- ══ SUPABASE + основная логика ══ -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     function waitForSupabase(cb, n) {
