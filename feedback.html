@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{ --accent-1:#1f3f83; --accent-2:#2f5597; --danger:#d9534f; }
-
     html,body{ height:100%; margin:0; }
     body{
       font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
@@ -17,7 +16,6 @@
       min-height:100vh; opacity:0; transition:opacity .35s ease;
     }
     body.loaded{ opacity:1; }
-
     .feedback-container{
       max-width:760px; margin:48px auto; padding:30px;
       border-radius:12px; background:rgba(255,255,255,0.02);
@@ -28,16 +26,13 @@
     .feedback-header h2{ margin:0; color:#fff; font-size:22px; line-height:1; }
     .close-btn{ background:transparent; border:0; color:#fff; font-size:46px; cursor:pointer; line-height:1; padding:0 4px; transition:color .2s,transform .2s; }
     .close-btn:hover{ color:#ff4444; transform:translateX(-4px); }
-
     .feedback-form{ margin-top:8px; }
-    .feedback-form input,
-    .feedback-form textarea{
+    .feedback-form input,.feedback-form textarea{
       width:100%; padding:12px; margin:8px 0; border-radius:8px;
       border:2px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.12);
       font-size:15px; box-sizing:border-box; color:#000 !important;
     }
-    .feedback-form input::placeholder,
-    .feedback-form textarea::placeholder{ color:#666; }
+    .feedback-form input::placeholder,.feedback-form textarea::placeholder{ color:#666; }
     .feedback-form button{
       display:block; width:100%; padding:14px; margin-top:12px;
       border-radius:8px; border:0; cursor:pointer; color:#fff;
@@ -47,7 +42,6 @@
     }
     .feedback-form button:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.15); }
     .feedback-form button:disabled{ opacity:.6; cursor:not-allowed; }
-
     .audio-buttons{ display:flex; gap:10px; flex-direction:column; margin-top:8px; }
     #recordBtn{ background:linear-gradient(135deg,var(--accent-2),var(--accent-1)); border:0; padding:12px; border-radius:8px; cursor:pointer; color:#fff; }
     #recordBtn.recording{ animation:pulse 1.5s infinite; }
@@ -58,15 +52,12 @@
     }
     #stopBtn{ background:var(--danger); color:#fff; border:0; padding:12px; border-radius:8px; }
     #stopBtn:disabled{ opacity:.5; cursor:not-allowed; }
-
     .visualizer-container{ display:none; margin-top:12px; padding:12px; border-radius:8px; background:rgba(255,255,255,0.04); }
     #visualizer{ width:100%; height:80px; border-radius:6px; background:rgba(0,0,0,0.25); display:block; }
     .volume-meter{ width:100%; height:8px; border-radius:4px; background:rgba(0,0,0,0.2); overflow:hidden; margin-top:8px; }
     .volume-bar{ height:100%; width:0%; transition:width .1s; background:linear-gradient(90deg,#10b981,#ef4444); }
-
     .audio-preview{ display:none; margin-top:10px; background:rgba(255,255,255,0.04); padding:10px; border-radius:8px; }
     .audio-preview audio{ width:100%; display:block; margin-bottom:8px; }
-
     .feedback-list-title{ color:#fff; font-size:18px; font-weight:600; margin-top:18px; margin-bottom:12px; }
     .feedback-item{ background:rgba(255,255,255,0.12); padding:12px; border-radius:8px; margin-bottom:12px; border-left:4px solid #1f4ba5; color:#000 !important; }
     .feedback-item strong{ font-size:15px; }
@@ -74,7 +65,10 @@
     .admin-reply{ margin-top:10px; padding:10px; background:rgba(240,249,255,0.9); border-left:3px solid #3b82f6; border-radius:6px; }
     .loading,.error{ text-align:center; color:#fff; padding:14px; }
 
-    /* Баннеры — появляются снизу, остаются навсегда */
+    /* ── Баннеры ──
+       Фаза 1 (sliding): position:fixed, выезжают снизу за 2.5s
+       Фаза 2 (stuck):   position:absolute, прилипают к странице навсегда
+    */
     .fixed-banner-left,
     .fixed-banner-right {
       position: fixed;
@@ -91,21 +85,27 @@
     .fixed-banner-left  { left: 8px; }
     .fixed-banner-right { right: 8px; }
 
-    .fixed-banner-left.visible,
-    .fixed-banner-right.visible {
+    .fixed-banner-left.sliding,
+    .fixed-banner-right.sliding {
       bottom: 20px;
       opacity: 1;
       pointer-events: auto;
+    }
+
+    .fixed-banner-left.stuck,
+    .fixed-banner-right.stuck {
+      position: absolute;
+      bottom: auto;
+      opacity: 1;
+      pointer-events: auto;
+      transition: none;
     }
 
     .banner-card{
       background:rgba(255,255,255,0.08);
       backdrop-filter:blur(8px);
       border:1px solid rgba(255,255,255,0.15);
-      border-radius:10px;
-      padding:10px;
-      text-align:center;
-      transition:box-shadow .2s;
+      border-radius:10px; padding:10px; text-align:center; transition:box-shadow .2s;
     }
     .banner-card:hover{ box-shadow:0 8px 24px rgba(0,0,0,0.25); }
     .banner-card img{ max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto; }
@@ -137,9 +137,7 @@
 </head>
 <body>
 
-  <!-- ЛЕВЫЕ БАННЕРЫ -->
   <div class="fixed-banner-left" id="bannerLeft">
-
     <div class="banner-card">
       <!-- admitad.banner: rxy3nfk7gdf1d04a03ac1926b3984a Zippo -->
       <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
@@ -148,7 +146,6 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-
     <div class="banner-card">
       <!-- admitad.banner: fdazww1xzxf1d04a03ac8f408ce589 NH-Hotels -->
       <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
@@ -157,7 +154,6 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-
     <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
       <a target="_blank" rel="nofollow" href="https://ogsib.com/g/92qb79zvwnf1d04a03ac239505df72/"
          style="display:block;text-decoration:none;background:linear-gradient(135deg,#3d1a8e,#5b2d9e);border-radius:10px;padding:16px;color:#fff;font-family:'Inter',sans-serif;">
@@ -168,13 +164,10 @@
       </a>
       <div class="banner-label">Ad</div>
     </div>
-
     <!-- сюда добавляй новые баннеры слева -->
   </div>
 
-  <!-- ПРАВЫЕ БАННЕРЫ -->
   <div class="fixed-banner-right" id="bannerRight">
-
     <div class="banner-card">
       <!-- admitad.banner: qrws63iscqf1d04a03ac5ea594bb46 DiscoverCars WW -->
       <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
@@ -183,7 +176,6 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-
     <div class="banner-card">
       <!-- admitad.banner: e1vjup7uphf1d04a03acd820413c43 Oman Airway Global -->
       <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback">
@@ -192,7 +184,6 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-
     <div class="banner-card" style="padding:0;overflow:hidden;">
       <!-- admitad.banner: xo8ehfl68mf1d04a03acafa41ba253 CVC Corp -->
       <a class="cvc-banner" id="cvcBannerRight" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
@@ -217,8 +208,6 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-
-    <!-- Airalo — высота 240px (x2 от оригинала для читаемости) -->
     <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
       <!-- admitad.banner: k5qe5k9nasf1d04a03ac0471e42028 Airalo WW -->
       <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback"
@@ -229,19 +218,15 @@
       <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-
     <!-- сюда добавляй новые баннеры справа -->
   </div>
 
-  <!-- ЦЕНТРАЛЬНЫЙ КОНТЕНТ -->
   <div class="feedback-container">
     <div class="feedback-header">
       <h2 class="translate" data-key="feedback">Feedback</h2>
       <button class="close-btn" onclick="window.history.back();">&#8592;</button>
     </div>
-
     <div id="errorMessage"></div>
-
     <div class="feedback-form">
       <form id="feedbackForm" autocomplete="off">
         <input type="text" id="name" class="translate" data-key="name" placeholder="Your name" required>
@@ -262,12 +247,9 @@
         <button type="submit" id="submitBtn" class="translate" data-key="send">Send Feedback</button>
       </form>
     </div>
-
     <div class="feedback-list-container">
       <div class="feedback-list-title translate" data-key="recent">Recent Feedback</div>
       <div id="feedbackList"><div class="loading translate" data-key="loading">Loading feedback...</div></div>
-
-      <!-- Мобил: баннеры под отзывами -->
       <div class="mobile-banners">
         <div class="banner-card">
           <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
@@ -337,13 +319,12 @@
     </div>
   </div>
 
-  <!-- CVC slideshow -->
   <script>
     (function(){
       function initCvc(bannerId, dotsId) {
         var b = document.getElementById(bannerId); if(!b) return;
         var slides = b.querySelectorAll('.cvc-slide');
-        var dots   = (document.getElementById(dotsId)||{}).querySelectorAll ? document.getElementById(dotsId).querySelectorAll('.cvc-dot') : [];
+        var dots = (document.getElementById(dotsId)||{}).querySelectorAll ? document.getElementById(dotsId).querySelectorAll('.cvc-dot') : [];
         if(slides.length < 2) return;
         var cur = 0;
         setInterval(function(){
@@ -361,27 +342,50 @@
     })();
   </script>
 
-  <!-- Баннеры появляются снизу при середине отзывов и остаются навсегда -->
   <script>
     (function(){
       var bannerLeft     = document.getElementById('bannerLeft');
       var bannerRight    = document.getElementById('bannerRight');
       var feedbackListEl = document.getElementById('feedbackList');
       var shown = false;
+      var stuck = false;
+
+      function stickToPage() {
+        if (stuck) return;
+        stuck = true;
+        // Запоминаем текущие координаты на экране
+        var rL = bannerLeft.getBoundingClientRect();
+        var rR = bannerRight.getBoundingClientRect();
+        // Переводим в абсолютные координаты страницы
+        var topL  = rL.top  + window.scrollY;
+        var topR  = rR.top  + window.scrollY;
+        var leftL = rL.left;
+        var leftR = rR.left;
+        // Переключаем на absolute — теперь часть страницы
+        bannerLeft.classList.remove('sliding');
+        bannerLeft.classList.add('stuck');
+        bannerLeft.style.top  = topL + 'px';
+        bannerLeft.style.left = leftL + 'px';
+        bannerRight.classList.remove('sliding');
+        bannerRight.classList.add('stuck');
+        bannerRight.style.top  = topR + 'px';
+        bannerRight.style.left = leftR + 'px';
+      }
 
       function showBanners() {
         if (shown) return;
         shown = true;
-        bannerLeft.classList.add('visible');
-        bannerRight.classList.add('visible');
+        bannerLeft.classList.add('sliding');
+        bannerRight.classList.add('sliding');
+        // После завершения анимации прилипаем к странице
+        setTimeout(stickToPage, 2700);
       }
 
       function check() {
+        if (shown) return;
         var rect     = feedbackListEl.getBoundingClientRect();
-        var listH    = rect.height;
-        var viewH    = window.innerHeight;
-        var midpoint = rect.top + listH / 2;
-        if (midpoint < viewH) {
+        var midpoint = rect.top + rect.height / 2;
+        if (midpoint < window.innerHeight) {
           showBanners();
         }
       }
@@ -404,7 +408,6 @@
 
     function initApp() {
       window.addEventListener('load', function(){ document.body.classList.add('loaded'); applyTranslations(); });
-
       var translations = {
         en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading feedback..." },
         ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов..." },
@@ -414,55 +417,39 @@
         zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..." },
         ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات..." }
       };
-
       function getPreferredLang() {
         return localStorage.getItem('language') || localStorage.getItem('userLang') ||
                (navigator.language || navigator.userLanguage || 'en').split('-')[0] || 'en';
       }
-
       function applyTranslations() {
-        var lang = getPreferredLang();
-        var t = translations[lang] || translations.en;
+        var lang = getPreferredLang(), t = translations[lang] || translations.en;
         document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
         document.querySelectorAll('.translate').forEach(function(el){
           var key = el.dataset.key; if(!key) return;
           var val = t[key] || translations.en[key] || el.textContent;
           var tag = el.tagName.toLowerCase();
-          if(tag==='input'||tag==='textarea') el.placeholder = val;
-          else el.textContent = val;
+          if(tag==='input'||tag==='textarea') el.placeholder = val; else el.textContent = val;
         });
         var loadEl = document.querySelector('#feedbackList .loading');
         if(loadEl) loadEl.textContent = t.loading || translations.en.loading;
       }
-
       var SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
       var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
       var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-      var feedbackList      = document.getElementById('feedbackList');
-      var feedbackForm      = document.getElementById('feedbackForm');
-      var submitBtn         = document.getElementById('submitBtn');
-      var errorMessage      = document.getElementById('errorMessage');
-      var recordBtn         = document.getElementById('recordBtn');
-      var stopBtn           = document.getElementById('stopBtn');
-      var deleteBtn         = document.getElementById('deleteBtn');
-      var visualizerContainer = document.getElementById('visualizerContainer');
-      var audioPreview      = document.getElementById('audioPreview');
-      var previewPlayer     = document.getElementById('previewPlayer');
-      var canvas            = document.getElementById('visualizer');
-      var canvasCtx         = canvas.getContext('2d');
-      var volumeBar         = document.getElementById('volumeBar');
-      var recordStatus      = document.getElementById('recordStatus');
-
+      var feedbackList=document.getElementById('feedbackList'), feedbackForm=document.getElementById('feedbackForm'),
+          submitBtn=document.getElementById('submitBtn'), errorMessage=document.getElementById('errorMessage'),
+          recordBtn=document.getElementById('recordBtn'), stopBtn=document.getElementById('stopBtn'),
+          deleteBtn=document.getElementById('deleteBtn'), visualizerContainer=document.getElementById('visualizerContainer'),
+          audioPreview=document.getElementById('audioPreview'), previewPlayer=document.getElementById('previewPlayer'),
+          canvas=document.getElementById('visualizer'), canvasCtx=canvas.getContext('2d'),
+          volumeBar=document.getElementById('volumeBar'), recordStatus=document.getElementById('recordStatus');
       var mediaRecorder=null,audioChunks=[],audioBlob=null,audioContext=null,
           analyser=null,dataArray=null,animationId=null,recordTimer=null,stream=null;
-
       function drawWaveform(){
-        animationId = requestAnimationFrame(drawWaveform);
+        animationId=requestAnimationFrame(drawWaveform);
         if(!analyser||!dataArray) return;
         analyser.getByteTimeDomainData(dataArray);
-        canvasCtx.fillStyle='rgba(0,0,0,0.18)';
-        canvasCtx.fillRect(0,0,canvas.width,canvas.height);
+        canvasCtx.fillStyle='rgba(0,0,0,0.18)'; canvasCtx.fillRect(0,0,canvas.width,canvas.height);
         canvasCtx.lineWidth=3; canvasCtx.beginPath();
         var sliceW=canvas.width/dataArray.length, x=0, maxAmp=0;
         for(var i=0;i<dataArray.length;i++){
@@ -476,31 +463,27 @@
         canvasCtx.stroke();
         volumeBar.style.width=Math.min(Math.round(maxAmp*200),100)+'%';
       }
-
       recordBtn.addEventListener('click', async function(){
         try{
-          stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
-          audioContext = new(window.AudioContext||window.webkitAudioContext)();
-          analyser = audioContext.createAnalyser();
+          stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+          audioContext=new(window.AudioContext||window.webkitAudioContext)();
+          analyser=audioContext.createAnalyser();
           audioContext.createMediaStreamSource(stream).connect(analyser);
           analyser.fftSize=2048; analyser.smoothingTimeConstant=0.8;
-          dataArray = new Uint8Array(analyser.frequencyBinCount);
+          dataArray=new Uint8Array(analyser.frequencyBinCount);
           canvas.width=canvas.offsetWidth; canvas.height=canvas.offsetHeight;
-          visualizerContainer.style.display='block';
-          recordBtn.classList.add('recording');
-          drawWaveform();
+          visualizerContainer.style.display='block'; recordBtn.classList.add('recording'); drawWaveform();
           var mimeType='';
           if(MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) mimeType='audio/ogg;codecs=opus';
           else if(MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) mimeType='audio/webm;codecs=opus';
           else if(MediaRecorder.isTypeSupported('audio/webm')) mimeType='audio/webm';
-          mediaRecorder = new MediaRecorder(stream, mimeType?{mimeType}:{});
+          mediaRecorder=new MediaRecorder(stream,mimeType?{mimeType}:{});
           audioChunks=[];
           mediaRecorder.ondataavailable=function(e){ if(e.data&&e.data.size>0) audioChunks.push(e.data); };
           mediaRecorder.onstop=function(){
             audioBlob=new Blob(audioChunks,{type:mimeType||'audio/webm'});
             previewPlayer.src=URL.createObjectURL(audioBlob);
-            audioPreview.style.display='block';
-            visualizerContainer.style.display='none';
+            audioPreview.style.display='block'; visualizerContainer.style.display='none';
             recordBtn.classList.remove('recording');
             recordStatus.textContent='✅ Ready ('+(audioBlob.size/1024).toFixed(1)+' KB)';
             if(animationId) cancelAnimationFrame(animationId);
@@ -508,8 +491,7 @@
             if(stream){ stream.getTracks().forEach(function(t){t.stop();}); stream=null; }
             if(audioContext){ audioContext.close(); audioContext=null; }
           };
-          mediaRecorder.start();
-          recordBtn.disabled=true; stopBtn.disabled=false;
+          mediaRecorder.start(); recordBtn.disabled=true; stopBtn.disabled=false;
           recordStatus.textContent='🔴 Recording... (max 2 min)';
           recordTimer=setTimeout(function(){
             if(mediaRecorder&&mediaRecorder.state==='recording'){
@@ -519,28 +501,22 @@
           },120000);
         }catch(err){ showError('Cannot access microphone'); console.error(err); }
       });
-
       stopBtn.addEventListener('click',function(){
         if(mediaRecorder&&mediaRecorder.state==='recording'){
           mediaRecorder.stop(); recordBtn.disabled=false; stopBtn.disabled=true;
-          recordBtn.classList.remove('recording');
-          if(recordTimer) clearTimeout(recordTimer);
+          recordBtn.classList.remove('recording'); if(recordTimer) clearTimeout(recordTimer);
         }
       });
-
       deleteBtn.addEventListener('click',function(){
         audioBlob=null; audioPreview.style.display='none'; previewPlayer.src='';
         recordStatus.textContent=''; recordBtn.disabled=false; stopBtn.disabled=true;
       });
-
       async function loadFeedback(){
         try{
-          var res = await sb.from('feedback').select('*').order('created_at',{ascending:false});
+          var res=await sb.from('feedback').select('*').order('created_at',{ascending:false});
           if(res.error) throw res.error;
-          var lang = getPreferredLang();
-          feedbackList.innerHTML = res.data.length===0
-            ? '<p style="text-align:center;color:#ddd">'+(translations[lang]||translations.en).loading+'</p>'
-            : '';
+          var lang=getPreferredLang();
+          feedbackList.innerHTML=res.data.length===0?'<p style="text-align:center;color:#ddd">'+(translations[lang]||translations.en).loading+'</p>':'';
           res.data.forEach(function(item){
             var div=document.createElement('div'); div.className='feedback-item';
             var date=new Date(item.created_at).toLocaleString(undefined,{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',year:'numeric'});
@@ -554,11 +530,9 @@
           });
         }catch(err){ console.error(err); feedbackList.innerHTML='<p class="error">Failed to load feedback</p>'; }
       }
-
       feedbackForm.addEventListener('submit', async function(e){
         e.preventDefault();
-        var name=document.getElementById('name').value.trim();
-        var message=document.getElementById('message').value.trim();
+        var name=document.getElementById('name').value.trim(), message=document.getElementById('message').value.trim();
         if(!name||!message){ showError('Please fill in name and message'); return; }
         if(audioBlob&&audioBlob.size<100){ showError('Audio too short or corrupted'); return; }
         submitBtn.disabled=true;
@@ -585,18 +559,12 @@
         }catch(err){ console.error(err); showError('Failed to send - check console'); }
         finally{ submitBtn.disabled=false; }
       });
-
-      function showError(msg){
-        errorMessage.innerHTML='<div class="error">'+esc(msg)+'</div>';
-        setTimeout(function(){ errorMessage.innerHTML=''; },5000);
-      }
+      function showError(msg){ errorMessage.innerHTML='<div class="error">'+esc(msg)+'</div>'; setTimeout(function(){ errorMessage.innerHTML=''; },5000); }
       function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-
       loadFeedback();
       setInterval(loadFeedback, 10000);
-
-      window.applyTranslations = applyTranslations;
-      window.getPreferredLang  = getPreferredLang;
+      window.applyTranslations=applyTranslations;
+      window.getPreferredLang=getPreferredLang;
     }
   </script>
 </body>
