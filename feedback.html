@@ -383,9 +383,15 @@
 
       function check() {
         if (shown) return;
-        var rect     = feedbackListEl.getBoundingClientRect();
-        var midpoint = rect.top + rect.height / 2;
-        if (midpoint < window.innerHeight) {
+        
+        // Ждем, пока исчезнет надпись загрузки
+        if (feedbackListEl.querySelector('.loading')) return;
+
+        var rect = feedbackListEl.getBoundingClientRect();
+        
+        // Срабатываем, когда доскроллили до конца отзывов
+        // (плюс 50 пикселей запаса, чтобы сработало наверняка)
+        if (rect.bottom <= window.innerHeight + 50) {
           showBanners();
         }
       }
@@ -411,7 +417,7 @@
       var translations = {
         en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading feedback..." },
         ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов..." },
-        de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Kontakte (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
+        de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Контакты (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
         es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios..." },
         pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando feedback..." },
         zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..." },
