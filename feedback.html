@@ -1,6 +1,3 @@
-Вот полный готовый код файла:
-
-```html
 <!DOCTYPE html>
 <html lang="en" translate="yes">
 <head>
@@ -67,7 +64,10 @@
     .feedback-item small{ float:right; color:#333; font-size:12px; }
     .admin-reply{ margin-top:10px; padding:10px; background:rgba(240,249,255,0.9); border-left:3px solid #3b82f6; border-radius:6px; }
     .loading,.error{ text-align:center; color:#fff; padding:14px; }
-
+    /* ── Баннеры ──
+       Фаза 1 (sliding): position:fixed, выезжают снизу за 2.5s
+       Фаза 2 (stuck):   position:absolute, прилипают к странице навсегда
+    */
     .fixed-banner-left,
     .fixed-banner-right {
       position: fixed;
@@ -83,14 +83,12 @@
     }
     .fixed-banner-left  { left: 8px; }
     .fixed-banner-right { right: 8px; }
-
     .fixed-banner-left.sliding,
     .fixed-banner-right.sliding {
       bottom: 20px;
       opacity: 1;
       pointer-events: auto;
     }
-
     .fixed-banner-left.stuck,
     .fixed-banner-right.stuck {
       position: absolute;
@@ -99,7 +97,6 @@
       pointer-events: auto;
       transition: none;
     }
-
     .banner-card{
       background:rgba(255,255,255,0.08);
       backdrop-filter:blur(8px);
@@ -109,9 +106,8 @@
     .banner-card:hover{ box-shadow:0 8px 24px rgba(0,0,0,0.25); }
     .banner-card img{ max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto; }
     .banner-label{ font-size:10px; color:rgba(255,255,255,0.35); margin-top:6px; letter-spacing:.05em; text-transform:uppercase; }
-
     .cvc-banner{
-      width:280px; height:230px; border-radius:8px; overflow:hidden;
+      width:330px; height:230px; border-radius:8px; overflow:hidden;
       position:relative; cursor:pointer; display:block; text-decoration:none; background:#0a1628;
     }
     .cvc-slides{ position:absolute; inset:0; }
@@ -124,9 +120,7 @@
     .cvc-title{ font-size:13px; font-weight:700; letter-spacing:.04em; text-shadow:0 1px 4px rgba(0,0,0,.7); }
     .cvc-sub{ font-size:10px; opacity:.85; margin-top:2px; color:#cce4ff; }
     .cvc-cta{ display:inline-block; margin-top:5px; padding:3px 10px; background:linear-gradient(135deg,#1565c0,#0288d1); border-radius:20px; font-size:10px; font-weight:600; color:#fff; }
-
     .mobile-banners{ display:none; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:16px; }
-
     @media(max-width:1100px){
       .fixed-banner-left,.fixed-banner-right{ display:none !important; }
       .mobile-banners{ display:flex; }
@@ -135,18 +129,21 @@
   </style>
 </head>
 <body>
-
   <div class="fixed-banner-left" id="bannerLeft">
     <div class="banner-card">
+      <!-- admitad.banner: rxy3nfk7gdf1d04a03ac1926b3984a Zippo -->
       <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
         <img width="240" height="240" border="0" src="https://aflink.ru/b/rxy3nfk7gdf1d04a03ac1926b3984a/" alt="Zippo"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
     <div class="banner-card">
+      <!-- admitad.banner: fdazww1xzxf1d04a03ac8f408ce589 NH-Hotels -->
       <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
         <img width="240" height="200" border="0" src="https://ad.admitad.com/b/fdazww1xzxf1d04a03ac8f408ce589/" alt="NH-Hotels"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
     <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
@@ -159,22 +156,27 @@
       </a>
       <div class="banner-label">Ad</div>
     </div>
+    <!-- сюда добавляй новые баннеры слева -->
   </div>
-
   <div class="fixed-banner-right" id="bannerRight">
     <div class="banner-card">
+      <!-- admitad.banner: qrws63iscqf1d04a03ac5ea594bb46 DiscoverCars WW -->
       <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
         <img width="280" height="230" border="0" src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
     <div class="banner-card">
+      <!-- admitad.banner: e1vjup7uphf1d04a03acd820413c43 Oman Airway Global -->
       <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback">
         <img width="280" height="230" border="0" src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
     <div class="banner-card" style="padding:0;overflow:hidden;">
+      <!-- admitad.banner: xo8ehfl68mf1d04a03acafa41ba253 CVC Corp -->
       <a class="cvc-banner" id="cvcBannerRight" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
         <div class="cvc-slides">
           <img class="cvc-slide cvc-active" src="cvc_slide1.png" alt="CVC Corp" loading="lazy"/>
@@ -194,18 +196,21 @@
           <div class="cvc-cta">Reservar agora →</div>
         </div>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
-    <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
+    <div class="banner-card" style="padding:6px;overflow:hidden;border-radius:10px;">
+      <!-- admitad.banner: k5qe5k9nasf1d04a03ac0471e42028 Airalo WW -->
       <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback"
-         style="display:block;height:100px;overflow:hidden;position:relative;">
+         style="display:block;">
         <img src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW"
-             style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill;border-radius:8px;"/>
+             style="width:100%;height:auto;display:block;border-radius:6px;"/>
       </a>
+      <!-- /admitad.banner -->
       <div class="banner-label">Ad</div>
     </div>
+    <!-- сюда добавляй новые баннеры справа -->
   </div>
-
   <div class="feedback-container">
     <div class="feedback-header">
       <h2 class="translate" data-key="feedback">Feedback</h2>
@@ -282,7 +287,7 @@
           </a>
           <div class="banner-label">Ad</div>
         </div>
-        <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
+        <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;width:100%;box-sizing:border-box;">
           <a target="_blank" rel="nofollow" href="https://ogsib.com/g/92qb79zvwnf1d04a03ac239505df72/"
              style="display:block;text-decoration:none;background:linear-gradient(135deg,#3d1a8e,#5b2d9e);border-radius:10px;padding:14px;color:#fff;">
             <div style="font-size:10px;font-weight:700;opacity:.7;margin-bottom:4px;">EKTA TRAVELING</div>
@@ -292,18 +297,17 @@
           </a>
           <div class="banner-label">Ad</div>
         </div>
-        <div class="banner-card" style="padding:0;overflow:hidden;border-radius:10px;">
+        <div class="banner-card" style="padding:6px;overflow:hidden;border-radius:10px;width:100%;box-sizing:border-box;">
           <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback"
-             style="display:block;height:80px;overflow:hidden;position:relative;">
+             style="display:block;">
             <img src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW"
-                 style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;border-radius:8px;"/>
+                 style="width:100%;height:auto;display:block;border-radius:6px;"/>
           </a>
           <div class="banner-label">Ad</div>
         </div>
       </div>
     </div>
   </div>
-
   <script>
     (function(){
       function initCvc(bannerId, dotsId) {
@@ -326,7 +330,6 @@
       });
     })();
   </script>
-
   <script>
     (function(){
       var bannerLeft     = document.getElementById('bannerLeft');
@@ -334,16 +337,18 @@
       var feedbackListEl = document.getElementById('feedbackList');
       var shown = false;
       var stuck = false;
-
       function stickToPage() {
         if (stuck) return;
         stuck = true;
+        // Запоминаем текущие координаты на экране
         var rL = bannerLeft.getBoundingClientRect();
         var rR = bannerRight.getBoundingClientRect();
+        // Переводим в абсолютные координаты страницы
         var topL  = rL.top  + window.scrollY;
         var topR  = rR.top  + window.scrollY;
         var leftL = rL.left;
         var leftR = rR.left;
+        // Переключаем на absolute — теперь часть страницы
         bannerLeft.classList.remove('sliding');
         bannerLeft.classList.add('stuck');
         bannerLeft.style.top  = topL + 'px';
@@ -353,30 +358,32 @@
         bannerRight.style.top  = topR + 'px';
         bannerRight.style.left = leftR + 'px';
       }
-
       function showBanners() {
         if (shown) return;
         shown = true;
         bannerLeft.classList.add('sliding');
         bannerRight.classList.add('sliding');
+        // После завершения анимации прилипаем к странице
         setTimeout(stickToPage, 2700);
       }
-
       function check() {
         if (shown) return;
+        
+        // Ждем, пока исчезнет надпись загрузки
         if (feedbackListEl.querySelector('.loading')) return;
         var rect = feedbackListEl.getBoundingClientRect();
+        
+        // Срабатываем, когда доскроллили до конца отзывов
+        // (плюс 50 пикселей запаса, чтобы сработало наверняка)
         if (rect.bottom <= window.innerHeight + 50) {
           showBanners();
         }
       }
-
       window.addEventListener('scroll', check, { passive: true });
       new MutationObserver(check).observe(feedbackListEl, { childList: true, subtree: true });
       setTimeout(check, 700);
     })();
   </script>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     function waitForSupabase(cb, n) {
@@ -386,7 +393,6 @@
       else { document.getElementById('feedbackList').innerHTML = '<p class="error">Failed to load Supabase</p>'; }
     }
     waitForSupabase(initApp);
-
     function initApp() {
       window.addEventListener('load', function(){ document.body.classList.add('loaded'); applyTranslations(); });
       var translations = {
@@ -550,6 +556,3 @@
   </script>
 </body>
 </html>
-```
-
-Копируйте и заливайте на сайт!
