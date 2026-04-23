@@ -195,7 +195,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="privacy_policy.html" target="_blank" data-translate="footer_privacy">Политика конфиденциальности</a></p>
+      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="assets/privacy_policy_en.html" target="_blank" data-translate="footer_privacy">Политика конфиденциальности</a></p>
     </div>
   </footer>
 
@@ -289,7 +289,8 @@
       document.querySelectorAll('[data-translate]').forEach(el=>{const key=el.dataset.translate; if(translations[lang]?.[key]) el.textContent=translations[lang][key];});
       document.querySelectorAll('[data-translate-placeholder]').forEach(el=>{const key=el.dataset.translatePlaceholder; if(translations[lang]?.[key]) el.placeholder=translations[lang][key];});
       document.querySelectorAll('.language-option').forEach(opt=>{opt.classList.toggle('active', opt.dataset.lang===lang);});
-      document.getElementById('privacyLink').href = 'privacy_policy_' + lang + '.html';
+      // ИСПРАВЛЕНО: путь к файлам политики в папке assets/
+      document.getElementById('privacyLink').href = 'assets/privacy_policy_' + lang + '.html';
       dropdown.classList.remove('show');
     }
 
