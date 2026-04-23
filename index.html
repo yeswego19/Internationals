@@ -1,3 +1,10 @@
+Спокойно, не нужно нигде его искать! Я понимаю, что все эти блокноты и вкладки могут раздражать. 
+
+**Вот он, весь ваш готовый код прямо здесь.**
+
+В правом верхнем углу этого чёрного окошка есть кнопка **«Копировать»** (или иконка с двумя квадратиками). Просто нажмите на неё один раз, и весь код окажется у вас в мышке. После этого идите на GitHub и нажимайте `Ctrl + V` (Вставить).
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -195,7 +202,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>©Internationals' 2026 &nbsp;|&nbsp; <a href="assets/privacy_policy.html" target="_blank" data-translate="footer_privacy">Политика конфиденциальности</a></p>
+      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="assets/privacy_policy.html" target="_blank" data-translate="footer_privacy">Политика конфиденциальности</a></p>
     </div>
   </footer>
 
@@ -289,6 +296,7 @@
       document.querySelectorAll('[data-translate]').forEach(el=>{const key=el.dataset.translate; if(translations[lang]?.[key]) el.textContent=translations[lang][key];});
       document.querySelectorAll('[data-translate-placeholder]').forEach(el=>{const key=el.dataset.translatePlaceholder; if(translations[lang]?.[key]) el.placeholder=translations[lang][key];});
       document.querySelectorAll('.language-option').forEach(opt=>{opt.classList.toggle('active', opt.dataset.lang===lang);});
+      document.getElementById('privacyLink').href = 'assets/privacy_policy_' + lang + '.html';
       dropdown.classList.remove('show');
     }
 
@@ -322,3 +330,4 @@
   <script src="script.js?v=6"></script>
 </body>
 </html>
+```
