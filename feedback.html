@@ -65,10 +65,6 @@
     .admin-reply{ margin-top:10px; padding:10px; background:rgba(240,249,255,0.9); border-left:3px solid #3b82f6; border-radius:6px; }
     .loading,.error{ text-align:center; color:#fff; padding:14px; }
 
-    /* ── Баннеры ──
-       Фаза 1 (sliding): position:fixed, выезжают снизу за 2.5s
-       Фаза 2 (stuck):   position:absolute, прилипают к странице навсегда
-    */
     .fixed-banner-left,
     .fixed-banner-right {
       position: fixed;
@@ -164,7 +160,22 @@
       </a>
       <div class="banner-label">Ad</div>
     </div>
-    <!-- сюда добавляй новые баннеры слева -->
+    <!-- admitad.banner: kkgx9u5sjhf1d04a03acc814d4b7c0 Lingualeo -->
+    <div class="banner-card">
+      <a target="_blank" rel="nofollow" href="https://xcdus.com/g/kkgx9u5sjhf1d04a03acc814d4b7c0/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4phUQTjR7e">
+        <img width="240" height="240" border="0" src="https://aflink.ru/b/kkgx9u5sjhf1d04a03acc814d4b7c0/" alt="Lingualeo"/>
+      </a>
+      <div class="banner-label">Ad</div>
+    </div>
+    <!-- /admitad.banner -->
+    <!-- admitad.banner: gmqkmcfn9if1d04a03acd0a9902774 TTGO E-bike Many GEOs -->
+    <div class="banner-card">
+      <a target="_blank" rel="nofollow" href="https://dkfrh.com/g/gmqkmcfn9if1d04a03acd0a9902774/?i=4&subid=feedback">
+        <img width="240" height="240" border="0" src="https://ad.admitad.com/b/gmqkmcfn9if1d04a03acd0a9902774/" alt="TTGO E-bike Many GEOs"/>
+      </a>
+      <div class="banner-label">Ad</div>
+    </div>
+    <!-- /admitad.banner -->
   </div>
 
   <div class="fixed-banner-right" id="bannerRight">
@@ -315,6 +326,22 @@
           </a>
           <div class="banner-label">Ad</div>
         </div>
+        <!-- admitad.banner: kkgx9u5sjhf1d04a03acc814d4b7c0 Lingualeo MOBILE -->
+        <div class="banner-card">
+          <a target="_blank" rel="nofollow" href="https://xcdus.com/g/kkgx9u5sjhf1d04a03acc814d4b7c0/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4phUQTjR7e">
+            <img style="width:100%;height:auto;display:block;border-radius:6px;" src="https://aflink.ru/b/kkgx9u5sjhf1d04a03acc814d4b7c0/" alt="Lingualeo"/>
+          </a>
+          <div class="banner-label">Ad</div>
+        </div>
+        <!-- /admitad.banner -->
+        <!-- admitad.banner: gmqkmcfn9if1d04a03acd0a9902774 TTGO E-bike MOBILE -->
+        <div class="banner-card">
+          <a target="_blank" rel="nofollow" href="https://dkfrh.com/g/gmqkmcfn9if1d04a03acd0a9902774/?i=4&subid=feedback">
+            <img style="width:100%;height:auto;display:block;border-radius:6px;" src="https://ad.admitad.com/b/gmqkmcfn9if1d04a03acd0a9902774/" alt="TTGO E-bike Many GEOs"/>
+          </a>
+          <div class="banner-label">Ad</div>
+        </div>
+        <!-- /admitad.banner -->
       </div>
     </div>
   </div>
@@ -353,15 +380,12 @@
       function stickToPage() {
         if (stuck) return;
         stuck = true;
-        // Запоминаем текущие координаты на экране
         var rL = bannerLeft.getBoundingClientRect();
         var rR = bannerRight.getBoundingClientRect();
-        // Переводим в абсолютные координаты страницы
         var topL  = rL.top  + window.scrollY;
         var topR  = rR.top  + window.scrollY;
         var leftL = rL.left;
         var leftR = rR.left;
-        // Переключаем на absolute — теперь часть страницы
         bannerLeft.classList.remove('sliding');
         bannerLeft.classList.add('stuck');
         bannerLeft.style.top  = topL + 'px';
@@ -377,20 +401,13 @@
         shown = true;
         bannerLeft.classList.add('sliding');
         bannerRight.classList.add('sliding');
-        // После завершения анимации прилипаем к странице
         setTimeout(stickToPage, 2700);
       }
 
       function check() {
         if (shown) return;
-        
-        // Ждем, пока исчезнет надпись загрузки
         if (feedbackListEl.querySelector('.loading')) return;
-
         var rect = feedbackListEl.getBoundingClientRect();
-        
-        // Срабатываем, когда доскроллили до конца отзывов
-        // (плюс 50 пикселей запаса, чтобы сработало наверняка)
         if (rect.bottom <= window.innerHeight + 50) {
           showBanners();
         }
