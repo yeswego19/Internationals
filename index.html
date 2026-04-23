@@ -105,7 +105,7 @@
         <div class="logo"><img src="assets/logo.png" alt="Internationals" class="site-logo"></div>
         <ul class="nav-menu">
           <li><a href="#home" data-translate="nav_home">Главная</a></li>
-          <li><a href="pricing.html" data-translate="nav_services">Услуги</a></li>
+          <li><a href="pricing.html" target="_blank" data-translate="nav_services">Услуги</a></li>
         </ul>
         <div class="nav-buttons"><a class="btn btn-primary" href="#contact" data-translate="nav_contact">Связаться с нами</a></div>
         <div class="hamburger"><span></span><span></span><span></span></div>
@@ -195,7 +195,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="assets/privacy_policy.html" target="_blank" data-translate="footer_privacy">Политика конфиденциальности</a></p>
+      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="privacy_policy.html" target="_blank" data-translate="footer_privacy">Политика конфиденциальности</a></p>
     </div>
   </footer>
 
@@ -289,7 +289,7 @@
       document.querySelectorAll('[data-translate]').forEach(el=>{const key=el.dataset.translate; if(translations[lang]?.[key]) el.textContent=translations[lang][key];});
       document.querySelectorAll('[data-translate-placeholder]').forEach(el=>{const key=el.dataset.translatePlaceholder; if(translations[lang]?.[key]) el.placeholder=translations[lang][key];});
       document.querySelectorAll('.language-option').forEach(opt=>{opt.classList.toggle('active', opt.dataset.lang===lang);});
-      document.getElementById('privacyLink').href = 'assets/privacy_policy_' + lang + '.html';
+      document.getElementById('privacyLink').href = 'privacy_policy_' + lang + '.html';
       dropdown.classList.remove('show');
     }
 
@@ -323,4 +323,3 @@
   <script src="script.js?v=6"></script>
 </body>
 </html>
-```
