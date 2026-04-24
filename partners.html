@@ -4,27 +4,159 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partnership | Internationals</title>
+    
+    <script>
+      (function (s, e, n, d, er) {
+        s['Sender'] = er;
+        s[er] = s[er] || function () {
+          (s[er].q = s[er].q || []).push(arguments)
+        }, s[er].l = 1 * new Date();
+        s[er].on = function(event, callback) {
+          s[er].listeners = s[er].listeners || {};
+          (s[er].listeners[event] = s[er].listeners[event] || []).push(callback);
+        };
+        var a = e.createElement(n),
+            m = e.getElementsByTagName(n)[0];
+        a.async = 1;
+        a.src = d;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://cdn.sender.net/accounts_resources/universal.js', 'sender');
+      sender('456b04acf96531')
+    </script>
+
     <style>
-        body { font-family: 'Inter', sans-serif; background: #0f172a; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .form-container { background: #1e293b; padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; border: 1px solid #334155; }
-        h1 { font-size: 24px; color: #3b82f6; text-align: center; margin-bottom: 20px; }
-        .back-btn { display: block; text-align: center; margin-top: 20px; color: #64748b; text-decoration: none; font-size: 14px; }
+        /* ЦВЕТ ФОНА КАК НА САЙТЕ */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a; /* Тот самый синий */
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .content-layer {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            pointer-events: none; /* Чтобы мышка сквозь пустые места долетала до частиц */
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            width: 100%;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            pointer-events: auto; /* А на карточке клики работают */
+            text-align: center;
+        }
+
+        h1 { color: #3b82f6; margin-bottom: 20px; }
+        
+        /* Прячем лого Сэндера */
+        .sender-form-container a { display: none !important; }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <h1>Стать партнёром</h1>
-    
-    <div class="sender-form-field" data-sender-form-id="ВСТАВЬ_СЮДА_ID"></div>
-    
-    <script src="https://cdn.sender.net/scripts/invoker.js"></script>
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="content-layer">
+        <div class="card">
+            <h1>Internationals</h1>
+            <p style="color: #94a3b8; margin-top: -10px;">Partnership Program</p>
+            
+            <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
+
+            <a href="index.html" style="display: block; margin-top: 20px; color: #64748b; text-decoration: none; font-size: 13px;">← На главную</a>
+        </div>
+    </div>
+
     <script>
-      Sender.init({ formId: "ВСТАВЬ_СЮДА_ID" });
+        const canvas = document.getElementById("particle-canvas");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+        let mouse = {x: -100, y: -100};
+        
+        // ТВОИ НАСТРОЙКИ
+        const TEXT = "Digital Signature";
+        const FONT_SIZE = 100;
+        const PARTICLE_COLOR = "#3b82f6"; // Синий под цвет сайта
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            ctx.fillStyle = "#ffffff";
+            ctx.font = `bold ${FONT_SIZE}px sans-serif`;
+            ctx.textAlign = "center";
+            ctx.fillText(TEXT, canvas.width/2, canvas.height/2);
+
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles = [];
+
+            for (let y = 0; y < canvas.height; y += 6) {
+                for (let x = 0; x < canvas.width; x += 6) {
+                    if (data[(x + y * canvas.width) * 4 + 3] > 128) {
+                        particles.push({
+                            x: Math.random() * canvas.width,
+                            y: Math.random() * canvas.height,
+                            baseX: x,
+                            baseY: y,
+                            vx: 0, vy: 0
+                        });
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let p of particles) {
+                let dx = mouse.x - p.x;
+                let dy = mouse.y - p.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                let force = (100 - dist) / 100;
+
+                if (dist < 100) {
+                    p.vx -= dx * force * 0.5;
+                    p.vy -= dy * force * 0.5;
+                }
+
+                p.vx += (p.baseX - p.x) * 0.05;
+                p.vy += (p.baseY - p.y) * 0.05;
+                p.vx *= 0.9;
+                p.vy *= 0.9;
+                p.x += p.vx;
+                p.y += p.vy;
+
+                ctx.fillStyle = PARTICLE_COLOR;
+                ctx.fillRect(p.x, p.y, 2, 2);
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener("mousemove", (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener("resize", init);
+
+        init();
+        animate();
     </script>
-
-    <a href="index.html" class="back-btn">← Вернуться назад</a>
-</div>
-
 </body>
 </html>
