@@ -12,12 +12,12 @@
             background-color: #0d121f;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh; font-family: sans-serif;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         .card {
             background: #ffffff;
-            padding: 30px 40px 60px 40px; 
+            padding: 40px; 
             border-radius: 20px;
             width: 90%;
             max-width: 400px;
@@ -28,15 +28,14 @@
             overflow: visible !important;
         }
 
-        /* Текстовое лого вместо картинки */
+        /* Только синяя надпись, без иконок и лишнего текста */
         .brand-name {
-            color: #3b82f6; /* Фирменный синий */
+            color: #3b82f6;
             font-size: 32px;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-bottom: 25px;
             display: block;
-            margin-bottom: 20px;
         }
 
         .form-wrapper {
@@ -45,36 +44,28 @@
             z-index: 5;
         }
 
-        /* ЕДИНЫЙ КОНТЕЙНЕР ДЛЯ ПОДПИСИ (Центровка и подъем) */
+        /* ПОДПИСЬ - поднял максимально (top: 85%) */
         .sig-container {
             position: absolute;
-            top: 95%; /* Поднял выше (было 110%) */
+            top: 85%; 
             left: 50%;
             transform: translateX(-50%);
             pointer-events: none;
             z-index: -1;
         }
 
-        #canvas-signature {
-            background: transparent;
-        }
-
-        /* КРАСНЫЙ ХОВЕР ДЛЯ ССЫЛКИ */
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 50px;
+            margin-top: 60px;
             color: #64748b;
             text-decoration: none;
             font-size: 14px;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 20;
+            transition: color 0.3s ease;
         }
 
         .back-link:hover {
             color: #ff4d4d !important;
-            text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
         }
     </style>
 </head>
@@ -84,13 +75,11 @@
         <div class="card">
             <span class="brand-name">Internationals</span>
             
-            <img src="https://internationals.pro/partners_files/logo.png" style="width: 50px; margin-bottom: 20px;" alt="I">
-            
             <div class="form-wrapper">
                 <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
 
                 <div class="sig-container">
-                    <canvas id="canvas-signature" width="600" height="150"></canvas>
+                    <canvas id="canvas-signature" width="800" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -115,10 +104,11 @@
         let mouse = { x: -1000, y: -1000, radius: 80 };
 
         function init() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
-            ctx.font = '80px "Reenie Beanie"';
+            ctx.font = '90px "Reenie Beanie"';
             ctx.textAlign = 'center';
-            // Рисуем всю фразу сразу по центру холста
+            // Сместил отрисовку чуть выше центра холста
             ctx.fillText('Digital Signature', canvas.width / 2, canvas.height / 2);
             
             const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -130,7 +120,7 @@
                     this.y = Math.random() * canvas.height;
                     this.destX = x; this.destY = y;
                     this.vx = 0; this.vy = 0;
-                    this.acc = 0.15; this.fric = 0.8;
+                    this.acc = 0.15; this.fric = 0.75;
                 }
                 draw() {
                     ctx.fillStyle = 'rgba(59, 130, 246, 0.6)';
@@ -143,7 +133,7 @@
                     let dy = this.y - mouse.y;
                     let dist = Math.sqrt(dx*dx + dy*dy);
                     if (dist < mouse.radius) {
-                        this.vx += dx / 8; this.vy += dy / 8;
+                        this.vx += dx / 7; this.vy += dy / 7;
                     }
                     this.vx += (this.destX - this.x) * this.acc;
                     this.vy += (this.destY - this.y) * this.acc;
