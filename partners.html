@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partnership | Internationals</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-    
     <script>
       (function (s, e, n, d, er) {
         s['Sender'] = er;
@@ -27,80 +25,170 @@
     </script>
 
     <style>
+        /* БАЗОВЫЕ СТИЛИ САЙТА */
         body {
             margin: 0;
             padding: 0;
-            background-color: #0d121f; /* Темно-синий фон как на сайте */
+            background-color: #0d121f; /* Темно-синий фон твоего сайта */
+            color: white;
+            font-family: sans-serif;
+            overflow: hidden; /* Чтобы не было полос прокрутки из-за холста */
+        }
+
+        /* НАСТРОЙКИ ХОЛСТА С ЭФФЕКТОМ (на весь задний план) */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1; /* Фон с частицами */
+        }
+
+        /* НАСТРОЙКИ КАРТОЧКИ ФОРМЫ (ПОВЕРХ ЭФФЕКТА) */
+        .content-layer {
+            position: relative;
+            z-index: 10; /* Форма поверх всего */
             display: flex;
+            flex-direction: column; /* Элементы друг под другом */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: sans-serif;
+            pointer-events: none; /* Пропускаем клики сквозь пустые места до частиц */
         }
 
         .card {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.95); /* Белая, чуть прозрачная */
             padding: 40px;
             border-radius: 20px;
             width: 100%;
             max-width: 400px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px); /* Размытие фона за карточкой */
+            pointer-events: auto; /* На карточке клики работают */
             text-align: center;
-            position: relative;
         }
 
-        h1 { 
-            color: #3b82f6; 
-            font-size: 32px; 
-            margin-bottom: 20px; 
-            margin-top: 0;
-        }
-
-        /* ПРЯЧЕМ ЛОГОТИП SENDER */
+        h1 { color: #3b82f6; font-size: 32px; margin-bottom: 25px; margin-top: 0; }
+        
+        /* Прячем логотип Sender */
         .sender-form-container a { display: none !important; }
 
-        /* ЭФФЕКТ ПОДПИСИ ПОД КНОПКОЙ */
-        .digital-signature {
-            font-family: 'Great Vibes', cursive;
-            font-size: 34px;
-            color: rgba(59, 130, 246, 0.4);
-            display: block;
-            margin-top: 10px;
-            transform: rotate(-2deg);
-            pointer-events: none;
-            user-select: none;
-        }
-
-        /* ССЫЛКА НА ГЛАВНУЮ С КРАСНОЙ ПОДСВЕТКОЙ */
+        /* ССЫЛКА НА ГЛАВНУЮ С КРАСНОЙ ПОДСВЕТКОЙ ПРИ НАВЕДЕНИИ */
         .back-link {
+            position: relative;
+            z-index: 20; /* Ссылка поверх всего */
             display: block;
             text-align: center;
             margin-top: 25px;
             color: #64748b;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
+            pointer-events: auto; /* Клики работают */
             transition: all 0.3s ease;
         }
-
         .back-link:hover {
             color: #ff4d4d; /* Красный цвет */
-            text-shadow: 0 0 8px rgba(255, 77, 77, 0.6); /* Красное свечение */
+            text-shadow: 0 0 8px rgba(255, 77, 77, 0.6);
+        }
+
+        /* ОТКЛЮЧАЕМ ЭФФЕКТ НА МОБИЛКАХ ДЛЯ СКОРОСТИ */
+        @media (max-width: 768px) {
+            #particle-canvas { display: none; }
+            body { overflow: auto; background-color: #0d121f; }
         }
     </style>
 </head>
 <body>
 
-    <div>
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="content-layer">
         <div class="card">
             <h1>Internationals</h1>
             
             <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
-            
-            <span class="digital-signature">Digital Signature</span>
         </div>
         
         <a href="index.html" class="back-link">← На главную</a>
     </div>
+
+    <script>
+        const canvas = document.getElementById("particle-canvas");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+        let mouse = {x: -100, y: -100};
+        
+        // --- ТВОИ НАСТРОЙКИ ЭФФЕКТА ---
+        const TEXT = "Digital Signature"; // Текст, который будет разлетаться
+        const FONT_SIZE = 100; // Размер букв
+        const PARTICLE_COLOR = "#3b82f6"; // Синий цвет точек под стиль сайта
+        // -----------------------------
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Рисуем текст невидимым для пользователя, чтобы получить координаты точек
+            ctx.fillStyle = "#ffffff";
+            ctx.font = `bold ${FONT_SIZE}px sans-serif`;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(TEXT, canvas.width/2, canvas.height/2);
+
+            const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles = [];
+
+            // Парсим пиксели и создаем частицы (прореживаем, чтобы не тормозило)
+            for (let y = 0; y < canvas.height; y += 6) {
+                for (let x = 0; x < canvas.width; x += 6) {
+                    if (data[(x + y * canvas.width) * 4 + 3] > 128) {
+                        particles.push({
+                            x: Math.random() * canvas.width,
+                            y: Math.random() * canvas.height,
+                            baseX: x,
+                            baseY: y,
+                            vx: 0, vy: 0
+                        });
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let p of particles) {
+                let dx = mouse.x - p.x;
+                let dy = mouse.y - p.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                let force = (100 - dist) / 100; // Сила разлета
+
+                if (dist < 100) {
+                    p.vx -= dx * force * 0.5;
+                    p.vy -= dy * force * 0.5;
+                }
+
+                // Сила возвращения на место
+                p.vx += (p.baseX - p.x) * 0.05;
+                p.vy += (p.baseY - p.y) * 0.05;
+                p.vx *= 0.9;
+                p.vy *= 0.9;
+                p.x += p.vx;
+                p.y += p.vy;
+
+                ctx.fillStyle = PARTICLE_COLOR;
+                ctx.fillRect(p.x, p.y, 2, 2); // Рисуем квадратные точки
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener("mousemove", (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener("resize", init);
+
+        init();
+        animate();
+    </script>
 
 </body>
 </html>
