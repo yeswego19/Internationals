@@ -11,32 +11,39 @@
             margin: 0; padding: 0;
             background-color: #0d121f;
             display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; font-family: sans-serif;
-            overflow: hidden;
+            min-height: 100vh; /* Центрируем по высоте */
+            font-family: sans-serif;
+            overflow-x: hidden;
         }
 
         .card {
             background: #ffffff;
-            /* Увеличил отступ снизу до 140px, чтобы форма не закрывала буквы */
-            padding: 40px 40px 140px 40px; 
+            /* Уменьшил падинги, чтобы сжать форму по вертикали */
+            padding: 20px 30px 60px 30px; 
             border-radius: 20px;
             width: 90%;
-            max-width: 400px;
+            max-width: 380px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
             position: relative;
             z-index: 10;
-            /* Разрешаем вылет элементов за границы */
             overflow: visible !important;
+            margin: 20px 0; /* Чтобы на маленьких экранах не прилипало к краям */
         }
 
         .brand-name {
             color: #3b82f6;
-            font-size: 32px;
+            font-size: 24px; /* Чуть уменьшил заголовок */
             font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 25px;
+            margin-bottom: 10px;
             display: block;
+        }
+
+        /* Уменьшил красное лого, оно крало место */
+        .main-logo {
+            width: 40px; 
+            margin-bottom: 10px;
         }
 
         .form-wrapper {
@@ -45,28 +52,35 @@
             z-index: 5;
         }
 
-        /* ПОДПИСЬ - Опустил на 115%, чтобы вышла из-под белого листа */
+        /* ПОДПИСЬ - опускаем так, чтобы она не резалась, но была компактнее */
         .sig-container {
             position: absolute;
-            top: 115%; 
+            top: 102%; 
             left: 50%;
             transform: translateX(-50%);
             pointer-events: none;
-            z-index: 11; /* Поднимаем над белым фоном карточки */
+            z-index: 11;
         }
 
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 80px;
+            margin-top: 30px; /* Уменьшил отступ снизу */
             color: #64748b;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             transition: color 0.3s ease;
         }
 
         .back-link:hover {
             color: #ff4d4d !important;
+        }
+
+        /* Если экран совсем низкий (ноутбуки) */
+        @media (max-height: 700px) {
+            .card { padding-top: 15px; }
+            .brand-name { font-size: 20px; }
+            .main-logo { width: 30px; }
         }
     </style>
 </head>
@@ -76,11 +90,13 @@
         <div class="card">
             <span class="brand-name">Internationals</span>
             
+            <img src="https://internationals.pro/partners_files/logo.png" class="main-logo" alt="I">
+            
             <div class="form-wrapper">
                 <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
 
                 <div class="sig-container">
-                    <canvas id="canvas-signature" width="1000" height="200"></canvas>
+                    <canvas id="canvas-signature" width="800" height="160"></canvas>
                 </div>
             </div>
         </div>
@@ -102,15 +118,14 @@
         const canvas = document.getElementById('canvas-signature');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
         let particles = [];
-        let mouse = { x: -1000, y: -1000, radius: 80 };
+        let mouse = { x: -1000, y: -1000, radius: 70 };
 
         function init() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
-            ctx.font = '90px "Reenie Beanie"';
+            ctx.font = '70px "Reenie Beanie"'; /* Немного уменьшил шрифт подписи */
             ctx.textAlign = 'center';
             
-            // Оставляю растянутый вариант, он смотрелся лучше
             ctx.fillText('D i g i t a l   S i g n a t u r e', canvas.width / 2, canvas.height / 2);
             
             const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -127,7 +142,7 @@
                 draw() {
                     ctx.fillStyle = 'rgba(59, 130, 246, 0.6)';
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, 1.8, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
                     ctx.fill();
                 }
                 update() {
