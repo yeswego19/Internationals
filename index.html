@@ -18,26 +18,32 @@
     "url": "https://internationals.pro",
     "logo": "https://internationals.pro/assets/logo.png",
     "image": "https://internationals.pro/assets/logo.png",
-    "description": "Professional translation and localization services with physical presence in airports and seaports worldwide.",
+    "description": "Professional translation and localization services with physical presence in airports and seaports worldwide. Documents, websites, video translation available 24/7.",
     "slogan": "We translate people",
     "email": "mailtomorrow@yahoo.com",
     "telephone": "+79991251025",
-    "areaServed": {"@type": "Place", "name": "Worldwide"},
+    "areaServed": {"@type": "Place", "name": "Worldwide - All international airports and seaports"},
+    "availableChannel": [
+      {"@type": "ServiceChannel", "serviceLocation": {"@type": "Place", "name": "International Airports Worldwide"}},
+      {"@type": "ServiceChannel", "serviceLocation": {"@type": "Place", "name": "Seaports Worldwide"}},
+      {"@type": "ServiceChannel", "serviceType": "Online Service", "availableLanguage": ["en", "ru", "de", "es", "pt", "zh", "ar"]}
+    ],
     "openingHours": "Mo-Su 00:00-23:59",
+    "openingHoursSpecification": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "00:00", "closes": "23:59"},
     "priceRange": "$$",
     "paymentAccepted": "Cash, Credit Card, Bank Transfer",
     "currenciesAccepted": "USD, EUR, RUB",
-    "sameAs": ["https://www.linkedin.com/company/internationalspro/", "https://youtube.com/@internationalspro"],
+    "sameAs": ["https://www.wikidata.org/wiki/Q138018744", "https://www.linkedin.com/company/internationalspro/", "https://youtube.com/@internationalspro"],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Translation and Localization Services",
       "itemListElement": [
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Instant Translation"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Document Translation"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website Localization"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Video Localization"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Concierge Service"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Document Delivery"}}
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Instant Translation", "description": "Real-time translations without delays"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Document Translation", "description": "Professional translation of documents in all formats"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website Localization", "description": "Full website localization for international markets"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Video Localization", "description": "Subtitles and voice-over for video content"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Concierge Service", "description": "Personal manager for urgent tasks and comprehensive support"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Document Delivery", "description": "Courier delivery of translated and notarized documents"}}
       ]
     },
     "knowsLanguage": ["en","ru","de","es","pt","zh","ar"]
@@ -49,25 +55,41 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   
   <style>
-    /* ПРАВКИ ДЛЯ МОБИЛОК (ВЕРСИЯ 2х2 И КНОПКА ПАРТНЕРАМ) */
+    /* АДАПТИВ МОБИЛЬНОЙ ВЕРСИИ */
     @media (max-width: 768px) {
+      /* Сетка услуг 2х2 */
       .features-grid {
         display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 12px !important;
+        padding: 0 10px !important;
       }
-      .feature-card { padding: 15px 10px !important; min-height: 160px !important; }
+      .feature-card {
+        padding: 15px 10px !important;
+        min-height: 160px !important;
+      }
       .feature-card h3 { font-size: 14px !important; }
       .feature-card p { font-size: 11px !important; line-height: 1.3 !important; }
       
-      .nav-container { justify-content: space-between !important; padding: 0 10px !important; }
-      .site-logo { height: 25px !important; }
-      .nav-menu { display: none !important; } /* Убираем список, кнопки выносим наружу */
+      /* Шапка: лого + кнопка "Партнерам" + кнопка "Связаться" */
+      .nav-container {
+        justify-content: space-between !important;
+        padding: 0 10px !important;
+      }
+      .nav-menu { display: none !important; } /* Скрываем список со ссылками */
+      .hamburger { display: none !important; } /* Убираем гамбургер совсем */
       
-      .nav-buttons { display: flex !important; gap: 8px !important; align-items: center; }
-      .nav-buttons .btn { padding: 6px 12px !important; font-size: 12px !important; white-space: nowrap; }
-
-      .music-player-toggle.globe { width: 40px !important; height: 40px !important; bottom: 15px !important; right: 15px !important; }
+      .nav-buttons {
+        display: flex !important;
+        gap: 8px !important;
+        align-items: center;
+      }
+      .nav-buttons .btn {
+        padding: 6px 12px !important;
+        font-size: 12px !important;
+        white-space: nowrap !important;
+      }
+      .site-logo { height: 28px !important; }
     }
   </style>
 
@@ -75,17 +97,27 @@
     (function(m,e,t,r,i,k,a){
       m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
       m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105858281', 'ym');
     ym(105858281, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
   </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/105858281" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0780Z702Y0"></script>
-  <script>window.dataLayer=window.dataLayer||[]; function gtag(){dataLayer.push(arguments);} gtag('js',new Date()); gtag('config','G-0780Z702Y0');</script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-0780Z702Y0');
+  </script>
 </head>
 <body>
   <audio id="bgMusic" preload="metadata" loop></audio>
   
-  <div class="music-player"><div class="music-player-toggle globe" id="musicToggle"></div></div>
+  <div class="music-player">
+    <div class="music-player-toggle globe" id="musicToggle"></div>
+  </div>
 
   <div class="volume-control">
     <i class="fas fa-volume-up volume-icon"></i>
@@ -111,13 +143,26 @@
       <div class="nav-container">
         <div class="logo"><img src="assets/logo.png" alt="Internationals" class="site-logo"></div>
         
+        <ul class="nav-menu">
+          <li><a href="partners.html" data-translate="nav_home">Для партнёров</a></li>
+          <li><a href="pricing.html" target="_blank" data-translate="nav_services">Услуги</a></li>
+        </ul>
+
         <div class="nav-buttons">
-          <a href="partners.html" class="btn btn-primary" data-translate="nav_home">Партнёрам</a>
-          <a class="btn btn-outline" href="#contact" data-translate="nav_contact">Связаться</a>
+          <a href="partners.html" class="btn btn-outline mobile-only-btn" style="display:none;" data-translate="nav_home">Партнёрам</a>
+          <a class="btn btn-primary" href="#contact" data-translate="nav_contact">Связаться с нами</a>
         </div>
+        
+        <div class="hamburger"><span></span><span></span><span></span></div>
       </div>
     </nav>
   </header>
+
+  <style>
+    @media (max-width: 768px) {
+      .mobile-only-btn { display: inline-block !important; }
+    }
+  </style>
 
   <section id="home" class="hero">
     <div class="hero-container">
@@ -140,7 +185,7 @@
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3 data-translate="service_4_title">Перевод документов</h3><p data-translate="service_4_desc">Работаем с любыми форматами файлов</p></div>
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-language"></i></div><h3 data-translate="service_5_title">Локализация сайтов и видео</h3><p data-translate="service_5_desc">Создание сайта и адаптация контента</p></div>
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-bell"></i></div><h3 data-translate="service_6_title">Персональный менеджер</h3><p data-translate="service_6_desc">Опишите вашу задачу — предложим решение</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3 data-translate="service_7_title">Доставка документов</h3><p data-translate="service_7_desc">Доставка переведённых документов на электронную почту или по адресу</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-truck"></i></div><h3 data-translate="service_7_title">Доставка документов</h3><p data-translate="service_7_desc">Доставка переведённых документов на электронную почту или по выбранному Вами адресу</p></div>
       </div>
     </div>
   </section>
@@ -157,11 +202,18 @@
       <div class="contact-content">
         <div class="contact-info">
           <h2 data-translate="contact_title">Связаться с нами</h2>
+          <p data-translate="contact_subtitle">Есть вопросы? Наша команда готова помочь с любым запросом на перевод.</p>
           <div class="contact-details">
-            <div class="contact-item"><i class="fas fa-envelope"></i><div><h4 data-translate="contact_email">Email</h4><p>mailtomorrow@yahoo.com<br>info@internationals.pro</p></div></div>
-            <div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4 data-translate="contact_whatsapp">WhatsApp</h4><p>+7 9991251025</p></div></div>
-            <div class="contact-item"><i class="fas fa-qrcode"></i><div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" alt="WeChat QR" style="max-width:200px;border-radius:8px;"></p></div></div>
-            <div class="contact-item"><img src="assets/Clock.png" alt="24/7" style="width:50px;"><h4 data-translate="contact_hours">24/7 Онлайн</h4></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><div><h4 data-translate="contact_email">Email</h4><p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:info@internationals.pro">info@internationals.pro</a></p></div></div>
+            <div class="contact-item"><i class="fab fa-whatsapp"></i><div><h4 data-translate="contact_whatsapp">WhatsApp и телефон</h4><p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 9991251025</a></p></div></div>
+            <div class="contact-item"><i class="fas fa-qrcode"></i><div><h4>WeChat</h4><p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p></div></div>
+            <div class="contact-item">
+              <img src="assets/Clock.png" alt="Часы работы" style="width:100px;height:100px;margin-right:12px;vertical-align:middle;">
+              <div>
+                <h4 data-translate="contact_hours">Часы работы</h4>
+                <p data-translate="contact_hours_text">Онлайн 24/7</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -181,30 +233,30 @@
   <footer class="footer">
     <div class="container footer-flex">
       <div class="footer-left">
-        <div class="logo">Language<span data-translate="footer_service">Сервис</span></div>
-        <p data-translate="footer_desc">Профессиональные услуги перевода и локализации.</p>
+        <div class="logo">Language<span data-translate="footer_service">Сервис</span><span class="footer-tagline-inline" data-translate="footer_tagline">Мы переводим людей</span></div>
+        <p data-translate="footer_desc">Профессиональные услуги перевода и локализации: документы, сайты, видео. Быстро и точно.</p>
       </div>
       <div class="footer-right">
-        <a href="feedback.html" class="btn btn-primary" data-translate="feedback_btn">Отзывы</a>
+        <a href="feedback.html" class="btn btn-primary btn-feedback" data-translate="feedback_btn">Отзывы</a>
         <div class="social-links">
-          <a href="https://youtube.com/@internationalspro" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YT" width="30"></a>
+          <a href="https://youtube.com/@internationalspro" target="_blank" title="YouTube"><img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube"></a>
+          <a href="https://www.linkedin.com/company/internationalspro/" target="_blank" title="LinkedIn"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn"></a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="#" target="_blank" data-translate="footer_privacy">Политика конфиденциальности</a></p>
+      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="assets/privacy_policy_en.html" target="_blank" data-translate="footer_privacy">Политика конфиденциальности</a></p>
     </div>
   </footer>
 
   <script>
-    // Весь твой скрипт (музыка, громкость, переводы) возвращен и дополнен кнопкой "Партнёрам"
     const audio = document.getElementById('bgMusic');
     const globe = document.getElementById('musicToggle');
     const dropdown = document.getElementById('languageDropdown');
     const volumeSlider = document.getElementById('volumeSlider');
     const volumeFill = document.getElementById('volumeFill');
+    let canPlay = false;
 
-    // Настройка громкости (твой код)
     volumeSlider.addEventListener('input', function() {
       const volume = this.value / 100;
       audio.volume = volume;
@@ -212,64 +264,378 @@
       localStorage.setItem('musicVolume', volume);
     });
 
-    const translations = {
-      ru: {
-        nav_home: "Партнёрам",
-        nav_contact: "Связаться",
-        hero_title_1: "Профессиональный",
-        hero_title_2: "онлайн-переводчик",
-        services_title: "Почему выбирают нас",
-        service_1_title: "Мгновенный перевод",
-        service_4_title: "Перевод документов",
-        service_5_title: "Локализация",
-        service_6_title: "Менеджер",
-        service_7_title: "Доставка",
-        form_submit: "Отправить сообщение",
-        footer_privacy: "Конфиденциальность"
-      },
-      en: {
-        nav_home: "Partners",
-        nav_contact: "Contact",
-        hero_title_1: "Professional",
-        hero_title_2: "Online Translator",
-        services_title: "Why choose us",
-        service_1_title: "Instant translation",
-        service_4_title: "Document translation",
-        service_5_title: "Localization",
-        service_6_title: "Personal manager",
-        service_7_title: "Delivery",
-        form_submit: "Send Message",
-        footer_privacy: "Privacy Policy"
-      }
-      // ... добавь остальные языки по аналогии
-    };
-
-    function setLanguage(lang){
-      localStorage.setItem('language', lang);
-      document.documentElement.lang=lang;
-      document.querySelectorAll('[data-translate]').forEach(el=>{
-        const key=el.dataset.translate; 
-        if(translations[lang]?.[key]) el.textContent=translations[lang][key];
-      });
-      document.getElementById('privacyLink').href = 'assets/privacy_policy_' + lang + '.html';
+    const savedVolume = localStorage.getItem('musicVolume');
+    if (savedVolume !== null) {
+      const volumePercent = Math.round(savedVolume * 100);
+      volumeSlider.value = volumePercent;
+      volumeFill.style.height = volumePercent + '%';
+      audio.volume = savedVolume;
+    } else {
+      volumeFill.style.height = '30%';
     }
 
-    // Твой баннер куки
-    const contactOverlay = document.getElementById('contactOverlay');
-    document.getElementById('acceptCookies').addEventListener('click', () => {
-      localStorage.setItem('cookieConsent', 'accepted');
-      contactOverlay.classList.remove('show');
+    const volumeContainer = document.querySelector('.volume-slider-container');
+    volumeContainer.addEventListener('click', function(e) {
+      const rect = this.getBoundingClientRect();
+      const y = e.clientY - rect.top;
+      const percent = Math.max(0, Math.min(100, 100 - (y / rect.height * 100)));
+      volumeSlider.value = percent;
+      audio.volume = percent / 100;
+      volumeFill.style.height = percent + '%';
+      localStorage.setItem('musicVolume', percent / 100);
+    });
+
+    volumeContainer.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      const rect = this.getBoundingClientRect();
+      const touch = e.touches[0];
+      const y = touch.clientY - rect.top;
+      const percent = Math.max(0, Math.min(100, 100 - (y / rect.height * 100)));
+      volumeSlider.value = percent;
+      audio.volume = percent / 100;
+      volumeFill.style.height = percent + '%';
+      localStorage.setItem('musicVolume', percent / 100);
     });
 
     document.body.addEventListener('click', () => {
-      if (audio.src) return;
+      if (canPlay) return;
+      canPlay = true;
       audio.src = 'Calli.mp3';
-      audio.play().catch(()=>{});
+      audio.volume = volumeSlider.value / 100;
+      audio.play().catch(() => {});
     }, { once: true });
 
-    globe.addEventListener('click', e => { e.stopPropagation(); dropdown.classList.toggle('show'); });
-    setLanguage(localStorage.getItem('language') || 'ru');
+    globe.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', e => {
+      if (!dropdown.contains(e.target) && e.target !== globe) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    // Огромный блок переводов (сократил для экономии места в ответе, но в коде он должен быть полным)
+    const translations = {
+      ru: {
+        nav_home:"Для партнёров",
+        nav_services:"Услуги",
+        nav_contact:"Связаться с нами",
+        hero_title_1:"Профессиональный",
+        hero_title_2:"онлайн-переводчик",
+        hero_subtitle:"Быстрые и точные переводы документов, видео и веб-страниц.",
+        services_title:"Почему выбирают нас",
+        services_subtitle:"Передовые технологии и международная команда специалистов",
+        service_1_title:"Мгновенный перевод",
+        service_1_desc:"Устные переводы по видеосвязи или на месте, письменные переводы любых текстов",
+        service_2_title:"Безопасность",
+        service_2_desc:"Ваши данные защищены современными протоколами шифрования",
+        service_4_title:"Перевод документов",
+        service_4_desc:"Работаем с любыми форматами файлов",
+        service_5_title:"Локализация сайтов и видео",
+        service_5_desc:"Создание сайта и адаптация контента",
+        service_6_title:"Персональный менеджер",
+        service_6_desc:"Опишите вашу задачу — предложим решение",
+        service_7_title:"Доставка документов",
+        service_7_desc:"Доставка переведённых документов на электронную почту или по выбранному Вами адресу",
+        contact_title:"Связаться с нами",
+        contact_subtitle:"Есть вопросы? Наша команда готова помочь с любым запросом на перевод.",
+        contact_email:"Email",
+        contact_whatsapp:"WhatsApp и телефон",
+        contact_hours:"Часы работы",
+        contact_hours_text:"Онлайн 24/7",
+        form_email:"Email",
+        form_subject:"Тема",
+        form_message:"Ваше сообщение",
+        form_submit:"Отправить сообщение",
+        footer_service:"Сервис",
+        footer_tagline:"Мы переводим людей",
+        footer_desc:"Профессиональные услуги перевода и локализации: документы, сайты, видео. Быстро и точно.",
+        feedback_btn:"Отзывы",
+        cookie_text:"Если вы случайно зашли на этот сайт/послушать музыку — не принимайте аналитические куки.",
+        cookie_accept:"Принять",
+        footer_privacy:"Политика конфиденциальности"
+      },
+      en: {
+        nav_home:"For Partners",
+        nav_services:"Services",
+        nav_contact:"Contact us",
+        hero_title_1:"Professional",
+        hero_title_2:"online translator",
+        hero_subtitle:"Fast and accurate translations of documents, video and web pages.",
+        services_title:"Why choose us",
+        services_subtitle:"Advanced technologies and international team of experts",
+        service_1_title:"Instant translation",
+        service_1_desc:"Verbal interpretation via video call or on-site, written translation of any texts",
+        service_2_title:"Security",
+        service_2_desc:"Your data is protected with modern encryption protocols",
+        service_4_title:"Document translation",
+        service_4_desc:"We work with any file format",
+        service_5_title:"Website and video localization",
+        service_5_desc:"Website creation and content adaptation",
+        service_6_title:"Personal manager",
+        service_6_desc:"Describe your task — we will find the solution",
+        service_7_title:"Document delivery",
+        service_7_desc:"Delivery of translated documents by email or to your chosen address",
+        contact_title:"Contact us",
+        contact_subtitle:"Have questions? Our team is ready to help with any translation request.",
+        contact_email:"Email",
+        contact_whatsapp:"WhatsApp and phone number",
+        contact_hours:"Working hours",
+        contact_hours_text:"Online 24/7",
+        form_email:"Email",
+        form_subject:"Subject",
+        form_message:"Your message",
+        form_submit:"Send message",
+        footer_service:"Translation Service",
+        footer_tagline:"We translate people",
+        footer_desc:"Professional translation and localization services: documents, websites, video. Fast and accurate.",
+        feedback_btn:"Feedback",
+        cookie_text:"If you accidentally landed on this site or just want to listen to music — do not accept analytical cookies.",
+        cookie_accept:"Accept",
+        footer_privacy:"Privacy Policy"
+      },
+      de: {
+        nav_home:"Für Partner",
+        nav_services:"Dienstleistungen",
+        nav_contact:"Kontakt",
+        hero_title_1:"Professioneller",
+        hero_title_2:"Online-Übersetzer",
+        hero_subtitle:"Schnelle und genaue Übersetzungen von Dokumenten, Videos und Webseiten.",
+        services_title:"Warum uns wählen",
+        services_subtitle:"Spitzentechnologien und internationales Team von Experten",
+        service_1_title:"Sofortübersetzung",
+        service_1_desc:"Dolmetschen per Videoschalte oder vor Ort, schriftliche Übersetzung jeglicher Texte",
+        service_2_title:"Sicherheit",
+        service_2_desc:"Ihre Daten sind durch moderne Verschlüsselungsprotokolle geschützt",
+        service_4_title:"Dokumentenübersetzung",
+        service_4_desc:"Wir arbeiten mit jedem Dateiformat",
+        service_5_title:"Website- und Video-Lokalisierung",
+        service_5_desc:"Website-Erstellung und Inhaltsanpassung",
+        service_6_title:"Persönlicher Manager",
+        service_6_desc:"Beschreiben Sie Ihre Aufgabe — wir finden die Lösung",
+        service_7_title:"Dokumentenlieferung",
+        service_7_desc:"Lieferung übersetzter Dokumente per E-Mail oder an Ihre gewählte Adresse",
+        contact_title:"Kontaktieren Sie uns",
+        contact_subtitle:"Haben Sie Fragen? Unser Team ist bereit, bei jeder Übersetzungsanfrage zu helfen.",
+        contact_email:"E-Mail",
+        contact_whatsapp:"WhatsApp und Telefonnummer",
+        contact_hours:"Arbeitszeiten",
+        contact_hours_text:"Online 24/7",
+        form_email:"E-Mail",
+        form_subject:"Betreff",
+        form_message:"Ihre Nachricht",
+        form_submit:"Nachricht senden",
+        footer_service:"Übersetzungsdienst",
+        footer_tagline:"Wir übersetzen Menschen",
+        footer_desc:"Professionelle Übersetzungs- und Lokalisierungsdienste: Dokumente, Websites, Videos. Schnell und genau.",
+        feedback_btn:"Rückmeldung",
+        cookie_text:"Falls Sie versehentlich auf diese Website gelangt sind oder nur Musik hören möchten — akzeptieren Sie keine analytischen Cookies.",
+        cookie_accept:"Akzeptieren",
+        footer_privacy:"Datenschutzrichtlinie"
+      },
+      es: {
+        nav_home:"Para socios",
+        nav_services:"Servicios",
+        nav_contact:"Contacto",
+        hero_title_1:"Traductor",
+        hero_title_2:"en línea profesional",
+        hero_subtitle:"Traducciones rápidas y precisas de documentos, videos y páginas web.",
+        services_title:"Por qué elegirnos",
+        services_subtitle:"Tecnologías de vanguardia y un equipo internacional de especialistas",
+        service_1_title:"Traducción instantánea",
+        service_1_desc:"Interpretación por videollamada o en persona, traducción escrita de cualquier texto",
+        service_2_title:"Seguridad",
+        service_2_desc:"Sus datos están protegidos con protocolos de cifrado modernos",
+        service_4_title:"Traducción de documentos",
+        service_4_desc:"Trabajamos con cualquier formato de archivo",
+        service_5_title:"Localización de sitios web y videos",
+        service_5_desc:"Creación de sitios web y adaptación de contenido",
+        service_6_title:"Gerente personal",
+        service_6_desc:"Describa su tarea — encontraremos la solución",
+        service_7_title:"Entrega de documentos",
+        service_7_desc:"Entrega de documentos traducidos por correo electrónico o a la dirección que elija",
+        contact_title:"Contáctenos",
+        contact_subtitle:"¿Tiene preguntas? Nuestro equipo está listo para ayudar con cualquier solicitud de traducción.",
+        contact_email:"Correo electrónico",
+        contact_whatsapp:"WhatsApp y teléfono",
+        contact_hours:"Horario laboral",
+        contact_hours_text:"Online 24/7",
+        form_email:"Correo electrónico",
+        form_subject:"Asunto",
+        form_message:"Su mensaje",
+        form_submit:"Enviar mensaje",
+        footer_service:"Servicio de traducción",
+        footer_tagline:"Traducimos personas",
+        footer_desc:"Servicios profesionales de traducción y localización: documentos, sitios web, videos. Rápido y preciso.",
+        feedback_btn:"Reseñas",
+        cookie_text:"Si has llegado a este sitio por accidente o solo quieres escuchar música — no aceptes las cookies analíticas.",
+        cookie_accept:"Aceptar",
+        footer_privacy:"Política de privacidad"
+      },
+      pt: {
+        nav_home:"Para parceiros",
+        nav_services:"Serviços",
+        nav_contact:"Contato",
+        hero_title_1:"Tradutor",
+        hero_title_2:"online profissional",
+        hero_subtitle:"Traduções rápidas e precisas de documentos, vídeos e páginas da web.",
+        services_title:"Por que nos escolher",
+        services_subtitle:"Tecnologias de ponta e uma equipe internacional de especialistas",
+        service_1_title:"Tradução instantânea",
+        service_1_desc:"Interpretação por videochamada ou presencial, tradução escrita de qualquer texto",
+        service_2_title:"Segurança",
+        service_2_desc:"Seus datos estão protegidos com protocolos modernos de criptografia",
+        service_4_title:"Tradução de documentos",
+        service_4_desc:"Trabalhamos com qualquer formato de arquivo",
+        service_5_title:"Localização de sites e vídeos",
+        service_5_desc:"Criação de sites e adaptação de conteúdo",
+        service_6_title:"Gerente pessoal",
+        service_6_desc:"Descreva sua tarefa — encontraremos a solução",
+        service_7_title:"Entrega de documentos",
+        service_7_desc:"Entrega de documentos traduzidos por e-mail ou no endereço escolhido por você",
+        contact_title:"Contate-nos",
+        contact_subtitle:"Tem perguntas? Nossa equipe está pronta para ajudar em qualquer solicitação de tradução.",
+        contact_email:"Email",
+        contact_whatsapp:"WhatsApp e telefone",
+        contact_hours:"Horário de funcionamento",
+        contact_hours_text:"Online 24/7",
+        form_email:"Email",
+        form_subject:"Assunto",
+        form_message:"Sua mensagem",
+        form_submit:"Enviar mensagem",
+        footer_service:"Serviço de Tradução",
+        footer_tagline:"Nós traduzimos pessoas",
+        footer_desc:"Serviços profissionais de tradução e localização: documentos, sites, vídeos. Rápido e preciso.",
+        feedback_btn:"Avaliações",
+        cookie_text:"Se você chegou a este site por engano ou apenas quer ouvir música — não aceite os cookies analíticos.",
+        cookie_accept:"Aceitar",
+        footer_privacy:"Política de privacidade"
+      },
+      zh: {
+        nav_home:"合作伙伴",
+        nav_services:"服务",
+        nav_contact:"联系我们",
+        hero_title_1:"专业",
+        hero_title_2:"在线翻译",
+        hero_subtitle:"快速准确的文档、视频和网页翻译。",
+        services_title:"为什么选择我们",
+        services_subtitle:"先进技术和国际专家团队",
+        service_1_title:"即时翻译",
+        service_1_desc:"视频通话或现场口译，任何文本的笔译",
+        service_2_title:"安全",
+        service_2_desc:"您的数据受现代加密协议保护",
+        service_4_title:"文档翻译",
+        service_4_desc:"支持任何文件格式",
+        service_5_title:"网站和视频本地化",
+        service_5_desc:"网站创建与内容本地化",
+        service_6_title:"专属经理",
+        service_6_desc:"描述您的任务——我们将提供解决方案",
+        service_7_title:"文件送达",
+        service_7_desc:"将翻译文件发送至您的电子邮箱或指定地址",
+        contact_title:"联系我们",
+        contact_subtitle:"有问题吗？我们的团队随时准备提供帮助。",
+        contact_email:"电子邮件",
+        contact_whatsapp:"WhatsApp和电话",
+        contact_hours:"工作时间",
+        contact_hours_text:"在线24/7",
+        form_email:"电子邮件",
+        form_subject:"主题",
+        form_message:"您的信息",
+        form_submit:"发送信息",
+        footer_service:"翻译服务",
+        footer_tagline:"我们翻译人们",
+        footer_desc:"专业翻译和本地化服务：文档、网站、视频。快速且准确。",
+        feedback_btn:"反馈",
+        cookie_text:"如果您是无意中进入本网站，或者只是想听音乐——请不要接受分析性 Cookie",
+        cookie_accept:"接受",
+        footer_privacy:"隐私政策"
+      },
+      ar: {
+        nav_home:"للشركاء",
+        nav_services:"الخدمات",
+        nav_contact:"اتصل بنا",
+        hero_title_1:"مترجم",
+        hero_title_2:"احترافي على الإنترنت",
+        hero_subtitle:"ترجمات سريعة ودقيقة للمستندات والفيديوهات وصفحات الويب.",
+        services_title:"لماذا تختارنا",
+        services_subtitle:"تقنيات متطورة وفريق دولي من المتخصصين",
+        service_1_title:"ترجمة فورية",
+        service_1_desc:"ترجمة شفهية عبر مكالمة فيديو أو في الموقع، وترجمة كتابية لأي نصوص",
+        service_2_title:"الأمان",
+        service_2_desc:"بياناتك محمية باستخدام بروتوكولات تشفير حديثة",
+        service_4_title:"ترجمة المستندات",
+        service_4_desc:"نعمل مع أي تنسيق ملف",
+        service_5_title:"توطين المواقع والفيديو",
+        service_5_desc:"إنشاء المواقع وتكييف المحتوى",
+        service_6_title:"مدير شخصي",
+        service_6_desc:"صف مهمتك — سنجد الحل",
+        service_7_title:"توصيل المستندات",
+        service_7_desc:"توصيل المستندات المترجمة إلى بريدك الإلكتروني أو عنوانك المختار",
+        contact_title:"اتصل بنا",
+        contact_subtitle:"هل لديك أسئلة؟ فريقنا جاهز لمساعدتك في أي طلب ترجمة.",
+        contact_email:"البريد الإلكتروني",
+        contact_whatsapp:"واتساب والهاتف",
+        contact_hours:"ساعات العمل",
+        contact_hours_text:"متاح 24/7",
+        form_email:"البريد الإلكتروني",
+        form_subject:"الموضوع",
+        form_message:"رسالتك",
+        form_submit:"إرسال الرسالة",
+        footer_service:"خدمة الترجمة",
+        footer_tagline:"نحن نترجم الناس",
+        footer_desc:"خدمات ترجمة وتوطين احترافية: مستندات، مواقع، فيديوهات. سريع ودقيق.",
+        feedback_btn:"المراجعات",
+        cookie_text:"إذا وصلت إلى هذا الموقع بالصدفة أو تريد فقط الاستماع إلى الموسيقى — لا تقبل ملفات تعريف الارتباط التحليلية.",
+        cookie_accept:"قبول",
+        footer_privacy:"سياسة الخصوصية"
+      }
+    };
+
+    const supportedLangs = ['ru','en','de','es','pt','zh','ar'];
+    let userLang = navigator.language || navigator.userLanguage;
+    userLang = userLang.split('-')[0];
+    let currentLang = localStorage.getItem('language') || (supportedLangs.includes(userLang) ? userLang : 'en');
+
+    function setLanguage(lang){
+      currentLang=lang;
+      localStorage.setItem('language', lang);
+      document.documentElement.lang=lang;
+      document.documentElement.dir=(lang==='ar')?'rtl':'ltr';
+      document.querySelectorAll('[data-translate]').forEach(el=>{const key=el.dataset.translate; if(translations[lang]?.[key]) el.textContent=translations[lang][key];});
+      document.querySelectorAll('[data-translate-placeholder]').forEach(el=>{const key=el.dataset.translatePlaceholder; if(translations[lang]?.[key]) el.placeholder=translations[lang][key];});
+      document.querySelectorAll('.language-option').forEach(opt=>{opt.classList.toggle('active', opt.dataset.lang===lang);});
+      document.getElementById('privacyLink').href = 'assets/privacy_policy_' + lang + '.html';
+      dropdown.classList.remove('show');
+    }
+
+    document.querySelectorAll('.language-option').forEach(opt=>{opt.addEventListener('click', e=>{e.stopPropagation(); setLanguage(opt.dataset.lang);});});
+    setLanguage(currentLang);
+    
+    const contactOverlay = document.getElementById('contactOverlay');
+    const acceptBtn = document.getElementById('acceptCookies');
+    const declineBtn = document.getElementById('declineCookies');
+    
+    function checkCookieConsent() {
+      const consent = localStorage.getItem('cookieConsent');
+      if (consent) { contactOverlay.classList.remove('show'); } 
+      else { contactOverlay.classList.add('show'); }
+    }
+    
+    acceptBtn.addEventListener('click', () => {
+      localStorage.setItem('cookieConsent', 'accepted'); 
+      contactOverlay.classList.remove('show');
+    });
+
+    declineBtn.addEventListener('click', () => {
+      localStorage.setItem('cookieConsent', 'declined'); 
+      contactOverlay.classList.remove('show');
+    });
+    
+    checkCookieConsent();
   </script>
+
   <script src="script.js?v=6"></script>
 </body>
 </html>
