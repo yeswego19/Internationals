@@ -15,7 +15,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-x: hidden; /* Чтобы не было горизонтального скролла от широкой надписи */
+            overflow-x: hidden;
         }
 
         .wrapper {
@@ -23,7 +23,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 50px 0 100px 0;
+            padding: 40px 0 80px 0;
             width: 100%;
         }
 
@@ -41,7 +41,7 @@
 
         .brand-name {
             color: #3b82f6;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 900;
             text-transform: uppercase;
             margin-bottom: 20px;
@@ -53,28 +53,28 @@
             width: 100%;
         }
 
-        /* ПОДПИСЬ - ТЕПЕРЬ ШИРОКАЯ НА ВЕСЬ ЭКРАН */
+        /* ПОДПИСЬ - сжата на 10% */
         .sig-container {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            top: 90%; /* Заходит на белую подложку */
-            width: 100vw; /* Ширина на весь экран */
-            height: 200px;
+            top: 92%; /* Позиция чуть выше, чтобы не висела слишком далеко */
+            width: 100vw;
+            height: 180px;
             display: flex;
             justify-content: center;
             pointer-events: none;
-            z-index: 15; /* Поверх всего */
+            z-index: 15;
         }
 
         canvas {
-            width: 1000px !important; /* Жесткая ширина холста для частиц */
-            height: 200px !important;
+            width: 800px !important; /* Уменьшил ширину холста */
+            height: 180px !important;
         }
 
         .back-link {
             display: block;
-            margin-top: 120px; /* Отступ, чтобы надпись не перекрывала ссылку */
+            margin-top: 100px;
             color: #64748b;
             text-decoration: none;
             font-size: 14px;
@@ -94,7 +94,7 @@
                 <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
                 
                 <div class="sig-container">
-                    <canvas id="canvas-signature" width="1000" height="200"></canvas>
+                    <canvas id="canvas-signature" width="800" height="180"></canvas>
                 </div>
             </div>
         </div>
@@ -116,16 +116,16 @@
         const canvas = document.getElementById('canvas-signature');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
         let particles = [];
-        let mouse = { x: -1000, y: -1000, radius: 80 };
+        let mouse = { x: -1000, y: -1000, radius: 75 };
 
         function init() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
-            ctx.font = '95px "Reenie Beanie"'; 
+            ctx.font = '85px "Reenie Beanie"'; /* Уменьшил с 95 до 85 */
             ctx.textAlign = 'center';
             
-            // Вернул растяжку буквами
-            ctx.fillText('D i g i t a l   S i g n a t u r e', canvas.width / 2, canvas.height / 2);
+            // Убрал лишние пробелы, оставил аккуратную растяжку
+            ctx.fillText('Digital Signature', canvas.width / 2, canvas.height / 2);
             
             const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
             particles = [];
@@ -136,12 +136,12 @@
                     this.y = Math.random() * canvas.height;
                     this.destX = x; this.destY = y;
                     this.vx = 0; this.vy = 0;
-                    this.acc = 0.15; this.fric = 0.8;
+                    this.acc = 0.18; this.fric = 0.75;
                 }
                 draw() {
-                    ctx.fillStyle = 'rgba(59, 130, 246, 0.65)';
+                    ctx.fillStyle = 'rgba(59, 130, 246, 0.7)';
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, 1.8, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, 1.6, 0, Math.PI * 2);
                     ctx.fill();
                 }
                 update() {
