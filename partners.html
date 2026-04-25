@@ -17,7 +17,7 @@
 
         .card {
             background: #ffffff;
-            padding: 40px 40px 80px 40px; /* Увеличил нижний отступ */
+            padding: 30px 40px 100px 40px; /* Увеличил нижний отступ для подписи */
             border-radius: 20px;
             width: 90%;
             max-width: 400px;
@@ -25,8 +25,22 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             position: relative;
             z-index: 10;
-            /* ВАЖНО: разрешаем вылет за пределы карточки */
             overflow: visible !important;
+        }
+
+        /* Заголовок вместо битой картинки */
+        .top-logo {
+            color: #3b82f6;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .sub-logo {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 25px;
+            display: block;
         }
 
         .form-wrapper {
@@ -35,30 +49,38 @@
             z-index: 5;
         }
 
-        /* Настройка положения холстов */
-        .sig-canvas {
+        /* КОНТЕЙНЕР ДЛЯ ХОЛСТОВ (Центровка) */
+        .sig-container {
             position: absolute;
-            top: 100%; /* Ставим ровно под кнопку Submit */
-            transform: translateY(-40%); /* Слегка приподнимаем, чтобы заходило под кнопку */
+            top: 110%; /* Опустил ниже кнопки Submit */
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 60px; /* Тот самый пробел между словами */
             pointer-events: none;
-            z-index: -1; /* ПОД кнопкой, но НАД белым фоном карточки (если нужно насквозь) */
+            z-index: -1;
         }
 
-        /* Если нужно, чтобы буквы были ВИДНЫ на белом, но ПОД кнопкой: 
-           ставим z-index: 1, а кнопке в Sender даем z-index: 2 */
-
-        #canvas-digital {
-            right: 45%; /* Сдвигаем вглубь карточки к кнопке */
+        .sig-canvas {
+            background: transparent;
         }
 
-        #canvas-signature {
-            left: 45%; /* Сдвигаем вглубь карточки к кнопке */
-        }
-
+        /* ССЫЛКА НА ГЛАВНУЮ С КРАСНЫМ ХОВЕРОМ */
         .back-link {
-            display: block; text-align: center; margin-top: 40px;
-            color: #64748b; text-decoration: none; font-size: 14px;
-            position: relative; z-index: 20;
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 20;
+        }
+
+        .back-link:hover {
+            color: #ff4d4d !important;
+            text-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
         }
     </style>
 </head>
@@ -66,13 +88,18 @@
 
     <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
         <div class="card">
-            <img src="https://internationals.pro/partners_files/logo.png" style="width: 80px; margin-bottom: 20px;" alt="I">
+            <span class="top-logo">Internationals</span>
+            <span class="sub-logo">Partnership Program</span>
+            
+            <img src="https://internationals.pro/partners_files/logo.png" style="width: 60px; margin-bottom: 20px;" alt="I">
             
             <div class="form-wrapper">
                 <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
 
-                <canvas id="canvas-digital" class="sig-canvas" width="400" height="200"></canvas>
-                <canvas id="canvas-signature" class="sig-canvas" width="450" height="200"></canvas>
+                <div class="sig-container">
+                    <canvas id="canvas-digital" class="sig-canvas" width="300" height="150"></canvas>
+                    <canvas id="canvas-signature" class="sig-canvas" width="350" height="150"></canvas>
+                </div>
             </div>
         </div>
         
@@ -90,20 +117,18 @@
 
     <script>
     if (window.innerWidth > 768) {
-        const initParticles = (canvasId, text, textAlign) => {
+        const initParticles = (canvasId, text, align) => {
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d', { willReadFrequently: true });
             let particles = [];
             let mouse = { x: -1000, y: -1000, radius: 80 };
 
-            // УВЕЛИЧЕННЫЙ ШРИФТ (в 2.5 раза больше прежнего)
-            const fontSize = 90; 
+            const fontSize = 85; 
             ctx.fillStyle = 'white';
             ctx.font = `${fontSize}px "Reenie Beanie"`;
-            ctx.textAlign = textAlign;
+            ctx.textAlign = align;
             
-            // Рисуем текст для сканирования точек
-            const xPos = textAlign === 'right' ? canvas.width - 10 : 10;
+            const xPos = align === 'right' ? canvas.width : 0;
             ctx.fillText(text, xPos, canvas.height / 2);
             
             const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -114,13 +139,12 @@
                     this.y = Math.random() * canvas.height;
                     this.destX = x; this.destY = y;
                     this.vx = 0; this.vy = 0;
-                    this.acc = 0.1; this.fric = 0.88;
+                    this.acc = 0.12; this.fric = 0.85;
                 }
                 draw() {
-                    // Цвет точек. Сделал чуть ярче, чтобы на белом было видно
-                    ctx.fillStyle = 'rgba(59, 130, 246, 0.7)';
+                    ctx.fillStyle = 'rgba(59, 130, 246, 0.65)';
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, 1.8, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, 1.6, 0, Math.PI * 2);
                     ctx.fill();
                 }
                 update() {
@@ -128,7 +152,7 @@
                     let dy = this.y - mouse.y;
                     let dist = Math.sqrt(dx*dx + dy*dy);
                     if (dist < mouse.radius) {
-                        this.vx += dx / 12; this.vy += dy / 12;
+                        this.vx += dx / 10; this.vy += dy / 10;
                     }
                     this.vx += (this.destX - this.x) * this.acc;
                     this.vy += (this.destY - this.y) * this.acc;
