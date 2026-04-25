@@ -295,8 +295,7 @@
         </div>
     </div>
 
-    <!-- ИСПРАВЛЕНО: window.close() вместо href="/" -->
-    <a href="javascript:window.close();" class="back-button"><span data-translate="back_button">Назад</span></a>
+    <a href="/" class="back-button" onclick="window.close(); setTimeout(function(){ window.location.href='/'; }, 300); return false;"><span data-translate="back_button">Назад</span></a>
 
     <script>
         // Переводы
