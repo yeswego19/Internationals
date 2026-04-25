@@ -71,6 +71,18 @@
             height: 180px !important;
         }
 
+        /* На мобиле canvas поменьше */
+        @media(max-width:768px){
+            .sig-container {
+                width: 100vw;
+                height: 120px;
+            }
+            canvas {
+                width: 100vw !important;
+                height: 120px !important;
+            }
+        }
+
         .back-link {
             display: block;
             margin-top: 100px;
@@ -93,7 +105,7 @@
                 <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
                 
                 <div class="sig-container">
-                    <canvas id="canvas-signature" width="800" height="180"></canvas>
+                    <canvas id="canvas-signature"></canvas>
                 </div>
             </div>
         </div>
@@ -111,75 +123,99 @@
     </script>
 
     <script>
-    if (window.innerWidth > 768) {
-        const canvas = document.getElementById('canvas-signature');
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        let particles = [];
-        let mouse = { x: -1000, y: -1000, radius: 75 };
+    const canvas = document.getElementById('canvas-signature');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const isMobile = window.innerWidth <= 768;
 
-        function init() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'white';
-            ctx.font = '85px "Reenie Beanie"';
-            ctx.textAlign = 'center';
-            ctx.fillText('Digital Signature', canvas.width / 2, canvas.height / 2);
-            
-            const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            particles = [];
+    // Размер холста зависит от устройства
+    const CW = isMobile ? window.innerWidth : 800;
+    const CH = isMobile ? 120 : 180;
+    canvas.width = CW;
+    canvas.height = CH;
 
-            class Particle {
-                constructor(x, y) {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.destX = x; this.destY = y;
-                    this.vx = 0; this.vy = 0;
-                    this.acc = 0.18; this.fric = 0.75;
-                }
-                draw() {
-                    ctx.fillStyle = 'rgba(59, 130, 246, 0.7)';
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, 1.6, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-                update() {
-                    let dx = this.x - mouse.x;
-                    let dy = this.y - mouse.y;
-                    let dist = Math.sqrt(dx*dx + dy*dy);
-                    if (dist < mouse.radius) {
-                        this.vx += dx / 7; this.vy += dy / 7;
-                    }
-                    this.vx += (this.destX - this.x) * this.acc;
-                    this.vy += (this.destY - this.y) * this.acc;
-                    this.vx *= this.fric; this.vy *= this.fric;
-                    this.x += this.vx; this.y += this.vy;
-                }
+    let particles = [];
+    let mouse = { x: -1000, y: -1000, radius: isMobile ? 50 : 75 };
+
+    // Шаг сетки: на мобиле крупнее — меньше частиц, меньше нагрузка
+    const STEP = isMobile ? 7 : 4;
+    const FONT_SIZE = isMobile ? 52 : 85;
+
+    function init() {
+        ctx.clearRect(0, 0, CW, CH);
+        ctx.fillStyle = 'white';
+        ctx.font = `${FONT_SIZE}px "Reenie Beanie"`;
+        ctx.textAlign = 'center';
+        ctx.fillText('Digital Signature', CW / 2, CH / 2 + FONT_SIZE * 0.3);
+
+        const data = ctx.getImageData(0, 0, CW, CH);
+        particles = [];
+
+        class Particle {
+            constructor(x, y) {
+                this.x = Math.random() * CW;
+                this.y = Math.random() * CH;
+                this.destX = x; this.destY = y;
+                this.vx = 0; this.vy = 0;
+                this.acc = isMobile ? 0.14 : 0.18;
+                this.fric = isMobile ? 0.78 : 0.75;
             }
-
-            for (let y = 0; y < data.height; y += 4) {
-                for (let x = 0; x < data.width; x += 4) {
-                    if (data.data[(y * 4 * data.width) + (x * 4) + 3] > 128) {
-                        particles.push(new Particle(x, y));
-                    }
+            draw() {
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.7)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, isMobile ? 1.2 : 1.6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            update() {
+                let dx = this.x - mouse.x;
+                let dy = this.y - mouse.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < mouse.radius) {
+                    this.vx += dx / 7; this.vy += dy / 7;
                 }
+                this.vx += (this.destX - this.x) * this.acc;
+                this.vy += (this.destY - this.y) * this.acc;
+                this.vx *= this.fric; this.vy *= this.fric;
+                this.x += this.vx; this.y += this.vy;
             }
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
+        for (let y = 0; y < data.height; y += STEP) {
+            for (let x = 0; x < data.width; x += STEP) {
+                if (data.data[(y * 4 * data.width) + (x * 4) + 3] > 128) {
+                    particles.push(new Particle(x, y));
+                }
+            }
         }
-
-        window.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouse.x = (e.clientX - rect.left) * (canvas.width / rect.width);
-            mouse.y = (e.clientY - rect.top) * (canvas.height / rect.height);
-        });
-
-        document.fonts.ready.then(() => {
-            init(); animate();
-        });
     }
+
+    function animate() {
+        ctx.clearRect(0, 0, CW, CH);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+
+    // Мышь — десктоп
+    window.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = (e.clientX - rect.left) * (CW / rect.width);
+        mouse.y = (e.clientY - rect.top) * (CH / rect.height);
+    });
+
+    // Тач — мобил
+    window.addEventListener('touchmove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        mouse.x = (touch.clientX - rect.left) * (CW / rect.width);
+        mouse.y = (touch.clientY - rect.top) * (CH / rect.height);
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+        mouse.x = -1000; mouse.y = -1000;
+    });
+
+    document.fonts.ready.then(() => {
+        init(); animate();
+    });
     </script>
 </body>
 </html>
