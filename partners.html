@@ -4,25 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partnership | Internationals</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     
     <style>
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background-color: #0d121f;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: sans-serif;
-            overflow-x: hidden; /* Чтобы частицы не создавали прокрутку */
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; font-family: sans-serif;
+            overflow-x: hidden;
         }
 
         .card {
             background: #ffffff;
-            padding: 40px;
+            padding: 40px 40px 80px 40px; /* Увеличил нижний отступ */
             border-radius: 20px;
             width: 90%;
             max-width: 400px;
@@ -30,57 +25,40 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             position: relative;
             z-index: 10;
-        }
-
-        h1 { 
-            color: #3b82f6; 
-            font-size: 32px; 
-            margin-top: 0; 
-            margin-bottom: 25px; 
-            font-weight: bold;
+            /* ВАЖНО: разрешаем вылет за пределы карточки */
+            overflow: visible !important;
         }
 
         .form-wrapper {
             position: relative;
             width: 100%;
-            min-height: 150px;
+            z-index: 5;
         }
 
-        /* Прячем логотип Sender */
-        .sender-form-container a { display: none !important; }
-
-        /* СТИЛИ ХОЛСТОВ (ПК) */
+        /* Настройка положения холстов */
         .sig-canvas {
             position: absolute;
-            top: 80%; /* Уровень оранжевой кнопки */
-            transform: translateY(-50%);
+            top: 100%; /* Ставим ровно под кнопку Submit */
+            transform: translateY(-40%); /* Слегка приподнимаем, чтобы заходило под кнопку */
             pointer-events: none;
-            z-index: -1; /* Чтобы не мешало кликать по форме */
+            z-index: -1; /* ПОД кнопкой, но НАД белым фоном карточки (если нужно насквозь) */
         }
 
+        /* Если нужно, чтобы буквы были ВИДНЫ на белом, но ПОД кнопкой: 
+           ставим z-index: 1, а кнопке в Sender даем z-index: 2 */
+
         #canvas-digital {
-            right: 100%; /* Слева от карточки */
-            margin-right: 10px;
+            right: 45%; /* Сдвигаем вглубь карточки к кнопке */
         }
 
         #canvas-signature {
-            left: 100%; /* Справа от карточки */
-            margin-left: 10px;
+            left: 45%; /* Сдвигаем вглубь карточки к кнопке */
         }
 
         .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 25px;
-            color: #64748b;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        /* СКРЫВАЕМ НА МОБИЛКАХ */
-        @media (max-width: 768px) {
-            .sig-canvas { display: none !important; }
-            .card { padding: 30px 20px; }
+            display: block; text-align: center; margin-top: 40px;
+            color: #64748b; text-decoration: none; font-size: 14px;
+            position: relative; z-index: 20;
         }
     </style>
 </head>
@@ -88,13 +66,13 @@
 
     <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
         <div class="card">
-            <h1>Internationals</h1>
+            <img src="https://internationals.pro/partners_files/logo.png" style="width: 80px; margin-bottom: 20px;" alt="I">
             
             <div class="form-wrapper">
                 <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
 
-                <canvas id="canvas-digital" class="sig-canvas" width="180" height="100"></canvas>
-                <canvas id="canvas-signature" class="sig-canvas" width="200" height="100"></canvas>
+                <canvas id="canvas-digital" class="sig-canvas" width="400" height="200"></canvas>
+                <canvas id="canvas-signature" class="sig-canvas" width="450" height="200"></canvas>
             </div>
         </div>
         
@@ -112,33 +90,37 @@
 
     <script>
     if (window.innerWidth > 768) {
-        const initParticles = (canvasId, text) => {
+        const initParticles = (canvasId, text, textAlign) => {
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d', { willReadFrequently: true });
             let particles = [];
-            let mouse = { x: -1000, y: -1000, radius: 70 };
+            let mouse = { x: -1000, y: -1000, radius: 80 };
 
-            // Сканируем текст
+            // УВЕЛИЧЕННЫЙ ШРИФТ (в 2.5 раза больше прежнего)
+            const fontSize = 90; 
             ctx.fillStyle = 'white';
-            ctx.font = '40px "Reenie Beanie"';
-            ctx.fillText(text, 10, 60);
+            ctx.font = `${fontSize}px "Reenie Beanie"`;
+            ctx.textAlign = textAlign;
+            
+            // Рисуем текст для сканирования точек
+            const xPos = textAlign === 'right' ? canvas.width - 10 : 10;
+            ctx.fillText(text, xPos, canvas.height / 2);
+            
             const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
             class Particle {
                 constructor(x, y) {
                     this.x = Math.random() * canvas.width;
                     this.y = Math.random() * canvas.height;
-                    this.destX = x;
-                    this.destY = y;
-                    this.vx = 0;
-                    this.vy = 0;
-                    this.acc = 0.08;
-                    this.fric = 0.85;
+                    this.destX = x; this.destY = y;
+                    this.vx = 0; this.vy = 0;
+                    this.acc = 0.1; this.fric = 0.88;
                 }
                 draw() {
-                    ctx.fillStyle = 'rgba(59, 130, 246, 0.6)';
+                    // Цвет точек. Сделал чуть ярче, чтобы на белом было видно
+                    ctx.fillStyle = 'rgba(59, 130, 246, 0.7)';
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, 1.3, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, 1.8, 0, Math.PI * 2);
                     ctx.fill();
                 }
                 update() {
@@ -146,20 +128,17 @@
                     let dy = this.y - mouse.y;
                     let dist = Math.sqrt(dx*dx + dy*dy);
                     if (dist < mouse.radius) {
-                        this.vx += dx / 15;
-                        this.vy += dy / 15;
+                        this.vx += dx / 12; this.vy += dy / 12;
                     }
                     this.vx += (this.destX - this.x) * this.acc;
                     this.vy += (this.destY - this.y) * this.acc;
-                    this.vx *= this.fric;
-                    this.vy *= this.fric;
-                    this.x += this.vx;
-                    this.y += this.vy;
+                    this.vx *= this.fric; this.vy *= this.fric;
+                    this.x += this.vx; this.y += this.vy;
                 }
             }
 
-            for (let y = 0; y < data.height; y += 3) {
-                for (let x = 0; x < data.width; x += 3) {
+            for (let y = 0; y < data.height; y += 4) {
+                for (let x = 0; x < data.width; x += 4) {
                     if (data.data[(y * 4 * data.width) + (x * 4) + 3] > 128) {
                         particles.push(new Particle(x, y));
                     }
@@ -180,10 +159,9 @@
             });
         };
 
-        // Ждем загрузки шрифта перед запуском
         document.fonts.ready.then(() => {
-            initParticles('canvas-digital', 'Digital');
-            initParticles('canvas-signature', 'Signature');
+            initParticles('canvas-digital', 'Digital', 'right');
+            initParticles('canvas-signature', 'Signature', 'left');
         });
     }
     </script>
