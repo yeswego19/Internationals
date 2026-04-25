@@ -17,7 +17,7 @@
 
         .card {
             background: #ffffff;
-            padding: 30px 40px 100px 40px; /* Увеличил нижний отступ для подписи */
+            padding: 30px 40px 60px 40px; 
             border-radius: 20px;
             width: 90%;
             max-width: 400px;
@@ -28,19 +28,15 @@
             overflow: visible !important;
         }
 
-        /* Заголовок вместо битой картинки */
-        .top-logo {
-            color: #3b82f6;
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 5px;
+        /* Текстовое лого вместо картинки */
+        .brand-name {
+            color: #3b82f6; /* Фирменный синий */
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             display: block;
-        }
-        .sub-logo {
-            color: #64748b;
-            font-size: 14px;
-            margin-bottom: 25px;
-            display: block;
+            margin-bottom: 20px;
         }
 
         .form-wrapper {
@@ -49,27 +45,25 @@
             z-index: 5;
         }
 
-        /* КОНТЕЙНЕР ДЛЯ ХОЛСТОВ (Центровка) */
+        /* ЕДИНЫЙ КОНТЕЙНЕР ДЛЯ ПОДПИСИ (Центровка и подъем) */
         .sig-container {
             position: absolute;
-            top: 110%; /* Опустил ниже кнопки Submit */
+            top: 95%; /* Поднял выше (было 110%) */
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 60px; /* Тот самый пробел между словами */
             pointer-events: none;
             z-index: -1;
         }
 
-        .sig-canvas {
+        #canvas-signature {
             background: transparent;
         }
 
-        /* ССЫЛКА НА ГЛАВНУЮ С КРАСНЫМ ХОВЕРОМ */
+        /* КРАСНЫЙ ХОВЕР ДЛЯ ССЫЛКИ */
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 40px;
+            margin-top: 50px;
             color: #64748b;
             text-decoration: none;
             font-size: 14px;
@@ -80,7 +74,7 @@
 
         .back-link:hover {
             color: #ff4d4d !important;
-            text-shadow: 0 0 10px rgba(255, 77, 77, 0.4);
+            text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
         }
     </style>
 </head>
@@ -88,17 +82,15 @@
 
     <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
         <div class="card">
-            <span class="top-logo">Internationals</span>
-            <span class="sub-logo">Partnership Program</span>
+            <span class="brand-name">Internationals</span>
             
-            <img src="https://internationals.pro/partners_files/logo.png" style="width: 60px; margin-bottom: 20px;" alt="I">
+            <img src="https://internationals.pro/partners_files/logo.png" style="width: 50px; margin-bottom: 20px;" alt="I">
             
             <div class="form-wrapper">
                 <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
 
                 <div class="sig-container">
-                    <canvas id="canvas-digital" class="sig-canvas" width="300" height="150"></canvas>
-                    <canvas id="canvas-signature" class="sig-canvas" width="350" height="150"></canvas>
+                    <canvas id="canvas-signature" width="600" height="150"></canvas>
                 </div>
             </div>
         </div>
@@ -117,21 +109,20 @@
 
     <script>
     if (window.innerWidth > 768) {
-        const initParticles = (canvasId, text, align) => {
-            const canvas = document.getElementById(canvasId);
-            const ctx = canvas.getContext('2d', { willReadFrequently: true });
-            let particles = [];
-            let mouse = { x: -1000, y: -1000, radius: 80 };
+        const canvas = document.getElementById('canvas-signature');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        let particles = [];
+        let mouse = { x: -1000, y: -1000, radius: 80 };
 
-            const fontSize = 85; 
+        function init() {
             ctx.fillStyle = 'white';
-            ctx.font = `${fontSize}px "Reenie Beanie"`;
-            ctx.textAlign = align;
-            
-            const xPos = align === 'right' ? canvas.width : 0;
-            ctx.fillText(text, xPos, canvas.height / 2);
+            ctx.font = '80px "Reenie Beanie"';
+            ctx.textAlign = 'center';
+            // Рисуем всю фразу сразу по центру холста
+            ctx.fillText('Digital Signature', canvas.width / 2, canvas.height / 2);
             
             const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            particles = [];
 
             class Particle {
                 constructor(x, y) {
@@ -139,12 +130,12 @@
                     this.y = Math.random() * canvas.height;
                     this.destX = x; this.destY = y;
                     this.vx = 0; this.vy = 0;
-                    this.acc = 0.12; this.fric = 0.85;
+                    this.acc = 0.15; this.fric = 0.8;
                 }
                 draw() {
-                    ctx.fillStyle = 'rgba(59, 130, 246, 0.65)';
+                    ctx.fillStyle = 'rgba(59, 130, 246, 0.6)';
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, 1.6, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
                     ctx.fill();
                 }
                 update() {
@@ -152,7 +143,7 @@
                     let dy = this.y - mouse.y;
                     let dist = Math.sqrt(dx*dx + dy*dy);
                     if (dist < mouse.radius) {
-                        this.vx += dx / 10; this.vy += dy / 10;
+                        this.vx += dx / 8; this.vy += dy / 8;
                     }
                     this.vx += (this.destX - this.x) * this.acc;
                     this.vy += (this.destY - this.y) * this.acc;
@@ -168,24 +159,23 @@
                     }
                 }
             }
+        }
 
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => { p.update(); p.draw(); });
-                requestAnimationFrame(animate);
-            }
-            animate();
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
 
-            window.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                mouse.x = e.clientX - rect.left;
-                mouse.y = e.clientY - rect.top;
-            });
-        };
+        window.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            mouse.y = (e.clientY - rect.top) * (canvas.height / rect.height);
+        });
 
         document.fonts.ready.then(() => {
-            initParticles('canvas-digital', 'Digital', 'right');
-            initParticles('canvas-signature', 'Signature', 'left');
+            init();
+            animate();
         });
     }
     </script>
