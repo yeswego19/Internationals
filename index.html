@@ -37,12 +37,12 @@
       "@type": "OfferCatalog",
       "name": "Translation and Localization Services",
       "itemListElement": [
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Instant Translation", "description": "Real-time translations without delays"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Document Translation", "description": "Professional translation of documents in all formats"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website Localization", "description": "Full website localization for international markets"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Video Localization", "description": "Subtitles and voice-over for video content"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Concierge Service", "description": "Personal manager for urgent tasks and comprehensive support"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Document Delivery", "description": "Courier delivery of translated and notarized documents"}}
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Instant Translation"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Document Translation"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website Localization"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Video Localization"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Concierge Service"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Document Delivery"}}
       ]
     },
     "knowsLanguage": ["en","ru","de","es","pt","zh","ar"]
@@ -54,11 +54,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
-    /* Мобильные кнопки навигации — скрыты на десктопе */
     .mobile-nav-btns { display: none; }
 
     @media (max-width: 768px) {
-      /* Логотип крупный слева */
+      /* Логотип */
       .site-logo {
         height: 58px !important;
         width: auto !important;
@@ -66,12 +65,12 @@
         max-width: 160px !important;
       }
 
-      /* Скрываем стандартное меню, кнопку контактов и гамбургер */
+      /* Скрываем десктопные элементы */
       .nav-menu,
       .nav-buttons,
       .hamburger { display: none !important; }
 
-      /* Мобильные кнопки справа от лого */
+      /* Мобильные кнопки справа */
       .mobile-nav-btns {
         display: flex !important;
         flex-direction: column;
@@ -79,7 +78,6 @@
         align-items: flex-end;
         margin-left: auto;
       }
-
       .mobile-nav-btns a {
         display: block;
         padding: 6px 12px;
@@ -95,7 +93,19 @@
       }
       .mobile-nav-btns a:hover { opacity: .82; }
 
-      /* Сетка 2 колонки на мобиле */
+      /* Глобус — верхний правый угол, 40px */
+      .music-player {
+        top: 15px !important;
+        right: 15px !important;
+        bottom: auto !important;
+      }
+      .music-player-toggle,
+      .globe {
+        width: 40px !important;
+        height: 40px !important;
+      }
+
+      /* Сетка услуг 2 колонки */
       .features-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 0.9rem !important;
@@ -112,18 +122,6 @@
       }
       .feature-card h3 { font-size: 0.82rem !important; margin-bottom: 0.35rem !important; }
       .feature-card p  { font-size: 0.75rem !important; line-height: 1.4 !important; }
-
-      /* Глобус — внизу справа, не перекрывается навигацией */
-      .music-player {
-        top: auto !important;
-        bottom: 20px !important;
-        right: 15px !important;
-      }
-      .music-player-toggle,
-      .globe {
-        width: 46px !important;
-        height: 46px !important;
-      }
     }
 
     @media (max-width: 480px) {
@@ -186,17 +184,17 @@
 
         <!-- Десктопное меню -->
         <ul class="nav-menu">
-          <li><a href="partners.html" target="_blank" data-translate="nav_home">Для партнёров</a></li>
-          <li><a href="pricing.html" target="_blank" data-translate="nav_services">Услуги</a></li>
+          <li><a href="partners.html" target="partners_tab" data-translate="nav_home">Для партнёров</a></li>
+          <li><a href="pricing.html" target="pricing_tab" data-translate="nav_services">Услуги</a></li>
         </ul>
         <div class="nav-buttons">
           <a class="btn btn-primary" href="#contact" data-translate="nav_contact">Связаться с нами</a>
         </div>
 
-        <!-- Мобильные кнопки (две кнопки вместо гамбургера) -->
+        <!-- Мобильные кнопки — только на мобиле -->
         <div class="mobile-nav-btns">
-          <a href="partners.html" target="_blank" data-translate="nav_home">Для партнёров</a>
-          <a href="pricing.html" target="_blank" data-translate="nav_services">Услуги</a>
+          <a href="partners.html" target="partners_tab" data-translate="nav_home">Для партнёров</a>
+          <a href="pricing.html" target="pricing_tab" data-translate="nav_services">Услуги</a>
         </div>
 
         <div class="hamburger"><span></span><span></span><span></span></div>
@@ -322,15 +320,15 @@
         <p data-translate="footer_desc">Профессиональные услуги перевода и локализации: документы, сайты, видео. Быстро и точно.</p>
       </div>
       <div class="footer-right">
-        <a href="feedback.html" target="_blank" class="btn btn-primary btn-feedback" data-translate="feedback_btn">Отзывы</a>
+        <a href="feedback.html" target="feedback_tab" class="btn btn-primary btn-feedback" data-translate="feedback_btn">Отзывы</a>
         <div class="social-links">
-          <a href="https://youtube.com/@internationalspro" target="_blank" title="YouTube"><img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube"></a>
-          <a href="https://www.linkedin.com/company/internationalspro/" target="_blank" title="LinkedIn"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn"></a>
+          <a href="https://youtube.com/@internationalspro" target="_blank" rel="noopener" title="YouTube"><img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube"></a>
+          <a href="https://www.linkedin.com/company/internationalspro/" target="_blank" rel="noopener" title="LinkedIn"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn"></a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="assets/privacy_policy_en.html" target="_blank" data-translate="footer_privacy">Политика конфиденциальности</a></p>
+      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="assets/privacy_policy_en.html" target="privacy_tab" data-translate="footer_privacy">Политика конфиденциальности</a></p>
     </div>
   </footer>
 
