@@ -17,7 +17,7 @@
 
         .card {
             background: #ffffff;
-            padding: 40px; 
+            padding: 40px 40px 110px 40px; /* Увеличил нижний отступ, чтобы подпись влезла */
             border-radius: 20px;
             width: 90%;
             max-width: 400px;
@@ -28,13 +28,13 @@
             overflow: visible !important;
         }
 
-        /* Только синяя надпись, без иконок и лишнего текста */
+        /* ЧИСТЫЙ ТЕКСТ БЕЗ БИТЫХ КАРТИНОК */
         .brand-name {
             color: #3b82f6;
             font-size: 32px;
-            font-weight: 800;
+            font-weight: 900;
             text-transform: uppercase;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             display: block;
         }
 
@@ -44,10 +44,10 @@
             z-index: 5;
         }
 
-        /* ПОДПИСЬ - поднял максимально (top: 85%) */
+        /* ПОДПИСЬ - Опустил чуть ниже (top: 105%) и растянул */
         .sig-container {
             position: absolute;
-            top: 85%; 
+            top: 105%; 
             left: 50%;
             transform: translateX(-50%);
             pointer-events: none;
@@ -57,7 +57,7 @@
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 60px;
+            margin-top: 50px;
             color: #64748b;
             text-decoration: none;
             font-size: 14px;
@@ -79,7 +79,7 @@
                 <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
 
                 <div class="sig-container">
-                    <canvas id="canvas-signature" width="800" height="200"></canvas>
+                    <canvas id="canvas-signature" width="1000" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -106,10 +106,12 @@
         function init() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
+            // Увеличил межбуквенный интервал визуально через пробелы для ширины
             ctx.font = '90px "Reenie Beanie"';
             ctx.textAlign = 'center';
-            // Сместил отрисовку чуть выше центра холста
-            ctx.fillText('Digital Signature', canvas.width / 2, canvas.height / 2);
+            
+            // "Растянул" надпись пробелами, чтобы была шире
+            ctx.fillText('D i g i t a l   S i g n a t u r e', canvas.width / 2, canvas.height / 2);
             
             const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
             particles = [];
