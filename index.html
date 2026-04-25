@@ -21,116 +21,19 @@
     "slogan": "We translate people",
     "email": "mailtomorrow@yahoo.com",
     "telephone": "+79991251025",
-    "areaServed": {"@type": "Place", "name": "Worldwide - All international airports and seaports"},
-    "availableChannel": [
-      {"@type": "ServiceChannel", "serviceLocation": {"@type": "Place", "name": "International Airports Worldwide"}},
-      {"@type": "ServiceChannel", "serviceLocation": {"@type": "Place", "name": "Seaports Worldwide"}},
-      {"@type": "ServiceChannel", "serviceType": "Online Service", "availableLanguage": ["en", "ru", "de", "es", "pt", "zh", "ar"]}
-    ],
+    "areaServed": {"@type": "Place", "name": "Worldwide"},
     "openingHours": "Mo-Su 00:00-23:59",
-    "openingHoursSpecification": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "opens": "00:00", "closes": "23:59"},
     "priceRange": "$$",
     "paymentAccepted": "Cash, Credit Card, Bank Transfer",
     "currenciesAccepted": "USD, EUR, RUB",
     "sameAs": ["https://www.wikidata.org/wiki/Q138018744", "https://www.linkedin.com/company/internationalspro/", "https://youtube.com/@internationalspro"],
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Translation and Localization Services",
-      "itemListElement": [
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Instant Translation"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Document Translation"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Website Localization"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Video Localization"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Concierge Service"}},
-        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Document Delivery"}}
-      ]
-    },
     "knowsLanguage": ["en","ru","de","es","pt","zh","ar"]
   }
   </script>
 
-  <link rel="stylesheet" href="styles.css?v=1.5">
+  <link rel="stylesheet" href="styles.css?v=1.6">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-  <style>
-    .mobile-nav-btns { display: none; }
-
-    @media (max-width: 768px) {
-      /* Логотип */
-      .site-logo {
-        height: 58px !important;
-        width: auto !important;
-        margin-left: 0 !important;
-        max-width: 160px !important;
-      }
-
-      /* Скрываем десктопные элементы */
-      .nav-menu,
-      .nav-buttons,
-      .hamburger { display: none !important; }
-
-      /* Мобильные кнопки справа */
-      .mobile-nav-btns {
-        display: flex !important;
-        flex-direction: column;
-        gap: 5px;
-        align-items: flex-end;
-        margin-left: auto;
-      }
-      .mobile-nav-btns a {
-        display: block;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-decoration: none;
-        white-space: nowrap;
-        color: #fff;
-        background: linear-gradient(135deg, #2f5597 0%, #1f3f83 100%);
-        box-shadow: 0 2px 6px rgba(0,0,0,.25);
-        transition: opacity .2s;
-      }
-      .mobile-nav-btns a:hover { opacity: .82; }
-
-      /* Глобус — верхний правый угол, 40px */
-      .music-player {
-        top: 15px !important;
-        right: 15px !important;
-        bottom: auto !important;
-      }
-      .music-player-toggle,
-      .globe {
-        width: 40px !important;
-        height: 40px !important;
-      }
-
-      /* Сетка услуг 2 колонки */
-      .features-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 0.9rem !important;
-      }
-      .feature-card {
-        padding: 1rem !important;
-        min-height: auto !important;
-      }
-      .feature-icon {
-        width: 46px !important;
-        height: 46px !important;
-        font-size: 1.1rem !important;
-        margin-bottom: 0.6rem !important;
-      }
-      .feature-card h3 { font-size: 0.82rem !important; margin-bottom: 0.35rem !important; }
-      .feature-card p  { font-size: 0.75rem !important; line-height: 1.4 !important; }
-    }
-
-    @media (max-width: 480px) {
-      .features-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 0.7rem !important;
-      }
-    }
-  </style>
 
   <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
@@ -191,7 +94,7 @@
           <a class="btn btn-primary" href="#contact" data-translate="nav_contact">Связаться с нами</a>
         </div>
 
-        <!-- Мобильные кнопки — только на мобиле -->
+        <!-- Мобильные кнопки (только мобил, управляется через styles.css) -->
         <div class="mobile-nav-btns">
           <a href="partners.html" target="partners_tab" data-translate="nav_home">Для партнёров</a>
           <a href="pricing.html" target="pricing_tab" data-translate="nav_services">Услуги</a>
@@ -299,7 +202,6 @@
             </div>
           </div>
         </div>
-
         <div class="contact-form">
           <form id="contactForm" enctype="multipart/form-data">
             <div class="form-group"><input type="email" id="email" data-translate-placeholder="form_email" placeholder="Email" required></div>
