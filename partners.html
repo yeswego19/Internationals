@@ -53,12 +53,11 @@
             width: 100%;
         }
 
-        /* ПОДПИСЬ - сжата на 10% */
         .sig-container {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            top: 92%; /* Позиция чуть выше, чтобы не висела слишком далеко */
+            top: 92%;
             width: 100vw;
             height: 180px;
             display: flex;
@@ -68,7 +67,7 @@
         }
 
         canvas {
-            width: 800px !important; /* Уменьшил ширину холста */
+            width: 800px !important;
             height: 180px !important;
         }
 
@@ -99,7 +98,7 @@
             </div>
         </div>
         
-        <a href="index.html" class="back-link">← На главную</a>
+        <a href="#" onclick="window.close(); return false;" class="back-link">← На главную</a>
     </div>
 
     <script>
@@ -121,10 +120,8 @@
         function init() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
-            ctx.font = '85px "Reenie Beanie"'; /* Уменьшил с 95 до 85 */
+            ctx.font = '85px "Reenie Beanie"';
             ctx.textAlign = 'center';
-            
-            // Убрал лишние пробелы, оставил аккуратную растяжку
             ctx.fillText('Digital Signature', canvas.width / 2, canvas.height / 2);
             
             const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
