@@ -7,36 +7,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     
     <style>
-        /* Блокируем скролл намертво */
+        /* Разрешаем скролл, но убираем лишние отступы */
         html, body {
             margin: 0; padding: 0;
             background-color: #0d121f;
-            height: 100vh; 
-            width: 100vw;
-            overflow: hidden; 
-            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh;
+            width: 100%;
             font-family: sans-serif;
-        }
-
-        .card {
-            background: #ffffff;
-            padding: 20px 30px 20px 30px; /* Минимальные отступы */
-            border-radius: 20px;
-            width: 90%;
-            max-width: 360px;
-            text-align: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            position: relative;
-            z-index: 10;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Только синий текст, никаких картинок! */
+        /* Контейнер, который позволит форме быть по центру, но скроллиться */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0; /* Отступы сверху и снизу, чтобы не липло к краям */
+            width: 100%;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 30px; 
+            border-radius: 20px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Только синий текст INTERNATIONALS */
         .brand-name {
             color: #3b82f6;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 900;
             text-transform: uppercase;
             margin: 0 0 15px 0;
@@ -48,51 +56,52 @@
             width: 100%;
         }
 
-        /* Подпись теперь ЖЕСТКО внутри карточки внизу */
+        /* Контейнер подписи под формой */
         .sig-container {
             width: 100%;
-            height: 80px;
-            margin-top: -10px; /* Накладываем чуть-чуть на форму */
-            pointer-events: none;
+            height: 100px;
+            margin-top: 10px;
             display: flex;
             justify-content: center;
+            pointer-events: none;
         }
 
         canvas {
             max-width: 100%;
-            height: auto;
         }
 
         .back-link {
-            position: absolute;
-            bottom: 20px;
+            display: block;
+            margin-top: 20px;
             color: #64748b;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 14px;
             transition: color 0.3s;
         }
 
         .back-link:hover { color: #ff4d4d; }
 
-        /* Убираем лишнее расстояние в самом виджете Sender */
+        /* Фикс для виджета Sender, чтобы не плодил отступы */
         .sender-form-field { margin-bottom: 0 !important; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <span class="brand-name">Internationals</span>
-        
-        <div class="form-wrapper">
-            <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
+    <div class="wrapper">
+        <div class="card">
+            <span class="brand-name">Internationals</span>
             
-            <div class="sig-container">
-                <canvas id="canvas-signature" width="500" height="120"></canvas>
+            <div class="form-wrapper">
+                <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
+                
+                <div class="sig-container">
+                    <canvas id="canvas-signature" width="600" height="120"></canvas>
+                </div>
             </div>
         </div>
+        
+        <a href="index.html" class="back-link">← На главную</a>
     </div>
-    
-    <a href="index.html" class="back-link">← На главную</a>
 
     <script>
       (function (s, e, n, d, er) {
@@ -108,12 +117,12 @@
         const canvas = document.getElementById('canvas-signature');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
         let particles = [];
-        let mouse = { x: -1000, y: -1000, radius: 60 };
+        let mouse = { x: -1000, y: -1000, radius: 70 };
 
         function init() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
-            ctx.font = '55px "Reenie Beanie"'; 
+            ctx.font = '60px "Reenie Beanie"'; 
             ctx.textAlign = 'center';
             ctx.fillText('Digital Signature', canvas.width / 2, canvas.height / 2 + 20);
             
@@ -129,9 +138,9 @@
                     this.acc = 0.2; this.fric = 0.7;
                 }
                 draw() {
-                    ctx.fillStyle = 'rgba(59, 130, 246, 0.8)'; // Сделал точки ярче
+                    ctx.fillStyle = 'rgba(59, 130, 246, 0.7)';
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, 1.4, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
                     ctx.fill();
                 }
                 update() {
@@ -139,7 +148,7 @@
                     let dy = this.y - mouse.y;
                     let dist = Math.sqrt(dx*dx + dy*dy);
                     if (dist < mouse.radius) {
-                        this.vx += dx / 6; this.vy += dy / 6;
+                        this.vx += dx / 7; this.vy += dy / 7;
                     }
                     this.vx += (this.destX - this.x) * this.acc;
                     this.vy += (this.destY - this.y) * this.acc;
