@@ -138,13 +138,14 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
   /* Логотип */
   .site-logo{height:58px!important;width:auto!important;margin:0!important;max-width:150px!important}
 
-  /* Мобильные кнопки — две кнопки справа столбиком */
+  /* Мобильные кнопки — столбик слева от глобуса */
   .mobile-nav-btns{
     display:flex!important;
     flex-direction:column;
     gap:5px;
     align-items:flex-end;
     margin-left:auto;
+    margin-right:72px;
   }
   .mobile-nav-btns a{
     display:block;
@@ -173,7 +174,7 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
   /* Языки под глобусом */
   #languageDropdown{top:80px!important;right:10px!important}
 
-  /* Герой — в два раза меньше */
+  /* Герой — вдвое короче */
   .hero{min-height:50vh!important;padding:60px 0 30px!important}
   .hero-title{font-size:2rem!important;margin-top:70px!important}
   .hero-subtitle{font-size:1rem!important;padding:0 10px}
@@ -210,6 +211,7 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 @media(max-width:480px){
   .site-logo{height:50px!important}
   .globe{width:54px!important;height:54px!important}
+  .mobile-nav-btns{margin-right:66px}
   .features-grid{grid-template-columns:repeat(2,1fr)!important;gap:0.7rem!important}
   .contact{padding-left:15px;padding-right:15px}
   .contact-item{flex-direction:column;align-items:center;text-align:center;gap:.75rem}
