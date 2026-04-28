@@ -114,7 +114,8 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 .cookie-close{position:absolute;top:25px;right:25px;background:rgba(255,255,255,0.9);border:none;font-size:2.5rem;width:45px;height:45px;line-height:45px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1f2937;box-shadow:0 4px 10px rgba(0,0,0,0.2);transition:all 0.3s}
 .cookie-close:hover{background:#fff;transform:scale(1.1)}
 .cookie-banner-contact p{font-size:1.2rem;color:#1f2937;max-width:600px;background:rgba(255,255,255,0.9);padding:20px;border-radius:12px;margin-bottom:30px;font-weight:600;box-shadow:0 4px 10px rgba(0,0,0,0.1);text-align:center}
-.cookie-accept{padding:16px 40px;background:#0066ff;color:#fff;border:none;border-radius:12px;font-size:1.2rem;font-weight:bold;cursor:pointer;box-shadow:0 4px 16px rgba(0,102,255,0.4)}
+.cookie-accept{padding:16px 40px;background:rgba(31,63,131,0.9);color:#fff;border:none;border-radius:12px;font-size:1.2rem;font-weight:bold;cursor:pointer;box-shadow:0 4px 16px rgba(31,63,131,0.4);transition:all .25s}
+.cookie-accept:hover{transform:translateY(-2px);background:rgba(31,63,131,1);box-shadow:0 6px 16px rgba(31,63,131,0.5)}
 .cookie-accept:active{transform:scale(0.95)}
 
 /* Footer */
