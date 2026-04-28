@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Internationals Translation Service</title><link rel=icon href=/favicon.ico type=image/x-icon>
+  <title>Professional Translation Services | Internationals.pro</title><link rel=icon href=/favicon.ico type=image/x-icon>
   <link rel="canonical" href="https://internationals.pro/" />
-  <meta name="description" content="Professional translations of documents, notarization, apostille, Sheremetievo, airport, translation in Moscow, interpretation, remote interpretation, russian translation, translation english">
-  <meta name="keywords" content="перевод документов, нотариальный перевод, апостиль, переводы Москва, الشحن الجوي, مطار شيريميتيفو, аэропорт, международные переводы">
+  <meta name="description" content="Professional translation services for documents, notarization, apostille, websites, and video. Fast and accurate translations for seafarers, travelers, and international clients worldwide.">
 
   <script type="application/ld+json">
   {
@@ -35,7 +34,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-  <script type="text/javascript">
+  <script>
+  // Аналитика грузится ТОЛЬКО после согласия
+  function loadAnalytics() {
+    // Яндекс.Метрика
     (function(m,e,t,r,i,k,a){
       m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
       m[i].l=1*new Date();
@@ -43,15 +45,22 @@
       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105858281', 'ym');
     ym(105858281, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
-  </script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/105858281" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0780Z702Y0"></script>
-  <script>
+    // Google Analytics
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-0780Z702Y0';
+    document.head.appendChild(s);
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-0780Z702Y0');
+  }
+
+  // Если уже принял раньше — грузим сразу
+  if (localStorage.getItem('cookieConsent') === 'accepted') {
+    loadAnalytics();
+  }
   </script>
 </head>
 <body>
@@ -84,22 +93,17 @@
     <nav class="nav">
       <div class="nav-container">
         <div class="logo"><img src="assets/logo.png" alt="Internationals" class="site-logo"></div>
-
-        <!-- Десктопное меню -->
         <ul class="nav-menu">
-          <li><a href="partners.html" target="partners_tab" data-translate="nav_home">Для партнёров</a></li>
-          <li><a href="pricing.html" target="pricing_tab" data-translate="nav_services">Услуги</a></li>
+          <li><a href="partners.html" target="partners_tab" data-translate="nav_home">For Partners</a></li>
+          <li><a href="pricing.html" target="pricing_tab" data-translate="nav_services">Services</a></li>
         </ul>
         <div class="nav-buttons">
-          <a class="btn btn-primary" href="#contact" data-translate="nav_contact">Связаться с нами</a>
+          <a class="btn btn-primary" href="#contact" data-translate="nav_contact">Contact us</a>
         </div>
-
-        <!-- Мобильные кнопки (только мобил, управляется через styles.css) -->
         <div class="mobile-nav-btns">
-          <a href="partners.html" target="partners_tab" data-translate="nav_home">Для партнёров</a>
-          <a href="pricing.html" target="pricing_tab" data-translate="nav_services">Услуги</a>
+          <a href="partners.html" target="partners_tab" data-translate="nav_home">For Partners</a>
+          <a href="pricing.html" target="pricing_tab" data-translate="nav_services">Services</a>
         </div>
-
         <div class="hamburger"><span></span><span></span><span></span></div>
       </div>
     </nav>
@@ -109,10 +113,10 @@
     <div class="hero-container">
       <div class="hero-content">
         <h1 class="hero-title">
-          <span data-translate="hero_title_1">Профессиональный</span>
-          <span class="highlight" data-translate="hero_title_2">переводчик</span>
+          <span data-translate="hero_title_1">Professional</span>
+          <span class="highlight" data-translate="hero_title_2">online translator</span>
         </h1>
-        <p class="hero-subtitle" data-translate="hero_subtitle">Быстрые и точные переводы документов, видео и веб-страниц.</p>
+        <p class="hero-subtitle" data-translate="hero_subtitle">Fast and accurate translations of documents, video and web pages.</p>
       </div>
     </div>
   </section>
@@ -120,39 +124,39 @@
   <section class="features">
     <div class="container">
       <div class="section-header">
-        <h2 data-translate="services_title">Почему выбирают нас</h2>
-        <p data-translate="services_subtitle">Передовые технологии и международная команда специалистов</p>
+        <h2 data-translate="services_title">Why choose us</h2>
+        <p data-translate="services_subtitle">Advanced technologies and international team of experts</p>
       </div>
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-bolt"></i></div>
-          <h3 data-translate="service_1_title">Мгновенный перевод</h3>
-          <p data-translate="service_1_desc">Устные переводы по видеосвязи или на месте, письменные переводы любых текстов</p>
+          <h3 data-translate="service_1_title">Instant translation</h3>
+          <p data-translate="service_1_desc">Verbal interpretation via video call or on-site, written translation of any texts</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
-          <h3 data-translate="service_2_title">Безопасность</h3>
-          <p data-translate="service_2_desc">Ваши данные защищены современными протоколами шифрования</p>
+          <h3 data-translate="service_2_title">Security</h3>
+          <p data-translate="service_2_desc">Your data is protected with modern encryption protocols</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
-          <h3 data-translate="service_4_title">Перевод документов</h3>
-          <p data-translate="service_4_desc">Работаем с любыми форматами файлов</p>
+          <h3 data-translate="service_4_title">Document translation</h3>
+          <p data-translate="service_4_desc">We work with any file format</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-language"></i></div>
-          <h3 data-translate="service_5_title">Локализация сайтов и видео</h3>
-          <p data-translate="service_5_desc">Создание сайта и адаптация контента</p>
+          <h3 data-translate="service_5_title">Website and video localization</h3>
+          <p data-translate="service_5_desc">Website creation and content adaptation</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-bell"></i></div>
-          <h3 data-translate="service_6_title">Персональный менеджер</h3>
-          <p data-translate="service_6_desc">Опишите вашу задачу — предложим решение</p>
+          <h3 data-translate="service_6_title">Personal manager</h3>
+          <p data-translate="service_6_desc">Describe your task — we will find the solution</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon"><i class="fas fa-truck"></i></div>
-          <h3 data-translate="service_7_title">Доставка документов</h3>
-          <p data-translate="service_7_desc">Доставка переведённых документов на электронную почту или по выбранному Вами адресу</p>
+          <h3 data-translate="service_7_title">Document delivery</h3>
+          <p data-translate="service_7_desc">Delivery of translated documents by email or to your chosen address</p>
         </div>
       </div>
     </div>
@@ -162,15 +166,15 @@
     <div class="contact-overlay" id="contactOverlay">
       <div class="cookie-banner-contact">
         <button class="cookie-close" id="declineCookies" title="Отклонить">&times;</button>
-        <p data-translate="cookie_text">Если вы случайно зашли на этот сайт/послушать музыку — не принимайте аналитические куки.</p>
-        <button class="cookie-accept" id="acceptCookies" data-translate="cookie_accept">Принять</button>
+        <p data-translate="cookie_text">If you accidentally landed on this site or just want to listen to music — do not accept analytical cookies.</p>
+        <button class="cookie-accept" id="acceptCookies" data-translate="cookie_accept">Accept</button>
       </div>
     </div>
     <div class="container">
       <div class="contact-content">
         <div class="contact-info">
-          <h2 data-translate="contact_title">Связаться с нами</h2>
-          <p data-translate="contact_subtitle">Есть вопросы? Наша команда готова помочь с любым запросом на перевод.</p>
+          <h2 data-translate="contact_title">Contact us</h2>
+          <p data-translate="contact_subtitle">Have questions? Our team is ready to help with any translation request.</p>
           <div class="contact-details">
             <div class="contact-item">
               <i class="fas fa-envelope"></i>
@@ -182,7 +186,7 @@
             <div class="contact-item">
               <i class="fab fa-whatsapp"></i>
               <div>
-                <h4 data-translate="contact_whatsapp">WhatsApp и телефон</h4>
+                <h4 data-translate="contact_whatsapp">WhatsApp and phone number</h4>
                 <p><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 9991251025</a></p>
               </div>
             </div>
@@ -196,8 +200,8 @@
             <div class="contact-item">
               <img src="assets/Clock.png" alt="Часы работы" style="width:100px;height:100px;margin-right:12px;vertical-align:middle;">
               <div>
-                <h4 data-translate="contact_hours">Часы работы</h4>
-                <p data-translate="contact_hours_text">Онлайн 24/7</p>
+                <h4 data-translate="contact_hours">Working hours</h4>
+                <p data-translate="contact_hours_text">Online 24/7</p>
               </div>
             </div>
           </div>
@@ -205,10 +209,10 @@
         <div class="contact-form">
           <form id="contactForm" enctype="multipart/form-data">
             <div class="form-group"><input type="email" id="email" data-translate-placeholder="form_email" placeholder="Email" required></div>
-            <div class="form-group"><input type="text" id="subject" data-translate-placeholder="form_subject" placeholder="Тема" required></div>
-            <div class="form-group"><textarea id="message" data-translate-placeholder="form_message" placeholder="Ваше сообщение" rows="5" required></textarea></div>
+            <div class="form-group"><input type="text" id="subject" data-translate-placeholder="form_subject" placeholder="Subject" required></div>
+            <div class="form-group"><textarea id="message" data-translate-placeholder="form_message" placeholder="Your message" rows="5" required></textarea></div>
             <div class="form-group"><input type="file" id="attachment" multiple></div>
-            <button type="submit" class="btn btn-primary btn-full" data-translate="form_submit">Отправить сообщение</button>
+            <button type="submit" class="btn btn-primary btn-full" data-translate="form_submit">Send message</button>
           </form>
         </div>
       </div>
@@ -218,11 +222,11 @@
   <footer class="footer">
     <div class="container footer-flex">
       <div class="footer-left">
-        <div class="logo">Language<span data-translate="footer_service">Сервис</span><span class="footer-tagline-inline" data-translate="footer_tagline">Мы переводим людей</span></div>
-        <p data-translate="footer_desc">Профессиональные услуги перевода и локализации: документы, сайты, видео. Быстро и точно.</p>
+        <div class="logo">Language<span data-translate="footer_service">Translation Service</span><span class="footer-tagline-inline" data-translate="footer_tagline">We translate people</span></div>
+        <p data-translate="footer_desc">Professional translation and localization services: documents, websites, video. Fast and accurate.</p>
       </div>
       <div class="footer-right">
-        <a href="feedback.html" target="feedback_tab" class="btn btn-primary btn-feedback" data-translate="feedback_btn">Отзывы</a>
+        <a href="feedback.html" target="feedback_tab" class="btn btn-primary btn-feedback" data-translate="feedback_btn">Feedback</a>
         <div class="social-links">
           <a href="https://youtube.com/@internationalspro" target="_blank" rel="noopener" title="YouTube"><img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube"></a>
           <a href="https://www.linkedin.com/company/internationalspro/" target="_blank" rel="noopener" title="LinkedIn"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn"></a>
@@ -230,7 +234,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="assets/privacy_policy_en.html" target="privacy_tab" data-translate="footer_privacy">Политика конфиденциальности</a></p>
+      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="assets/privacy_policy_en.html" target="privacy_tab" data-translate="footer_privacy">Privacy Policy</a></p>
     </div>
   </footer>
 
@@ -480,11 +484,13 @@
     acceptBtn.addEventListener('click', () => {
       localStorage.setItem('cookieConsent', 'accepted');
       contactOverlay.classList.remove('show');
+      loadAnalytics(); // Запускаем аналитику только после согласия
     });
 
     declineBtn.addEventListener('click', () => {
       localStorage.setItem('cookieConsent', 'declined');
       contactOverlay.classList.remove('show');
+      // Аналитика НЕ запускается
     });
 
     checkCookieConsent();
