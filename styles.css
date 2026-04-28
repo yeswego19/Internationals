@@ -52,8 +52,8 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 .site-logo:hover{filter:contrast(1.5) brightness(1.2) saturate(1.4)}
 .nav-menu{display:flex;list-style:none;gap:2rem;padding:0;margin:0}
 .nav-menu li{position:relative;left:-20px}
-.nav-menu a{text-decoration:none;color:var(--text);font-weight:500;transition:all .3s}
-.nav-menu a:hover{color:var(--primary)}
+.nav-menu a{text-decoration:none;color:#fff;font-weight:600;font-size:1.1rem;transition:all .3s;text-shadow:0 1px 4px rgba(0,0,0,.4)}
+.nav-menu a:hover{color:#d4af37}
 .nav-buttons{display:flex;gap:1rem}
 .hamburger{display:none;flex-direction:column;cursor:pointer;gap:4px}
 .hamburger span{width:25px;height:3px;background:var(--text);transition:all .3s}
