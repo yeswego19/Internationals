@@ -52,8 +52,10 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 .site-logo:hover{filter:contrast(1.5) brightness(1.2) saturate(1.4)}
 .nav-menu{display:flex;list-style:none;gap:2rem;padding:0;margin:0}
 .nav-menu li{position:relative;left:-20px}
-.nav-menu a{text-decoration:none;color:#fff;font-weight:600;font-size:1.1rem;transition:all .3s;text-shadow:0 1px 4px rgba(0,0,0,.4)}
-.nav-menu a:hover{color:#d4af37}
+.nav-menu a{text-decoration:none;color:#fff;font-weight:700;font-size:1rem;transition:all .25s;padding:8px 16px;border-radius:8px;background:rgba(31,63,131,0.75);backdrop-filter:blur(4px)}
+.nav-menu a:hover{transform:translateY(-2px);background:rgba(31,63,131,1);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.nav-buttons .btn-primary{background:rgba(31,63,131,0.75);backdrop-filter:blur(4px);border-radius:8px;font-weight:700;font-size:1rem;padding:8px 16px;box-shadow:none}
+.nav-buttons .btn-primary:hover{transform:translateY(-2px);background:rgba(31,63,131,1);box-shadow:0 4px 12px rgba(0,0,0,.3)}
 .nav-buttons{display:flex;gap:1rem}
 .hamburger{display:none;flex-direction:column;cursor:pointer;gap:4px}
 .hamburger span{width:25px;height:3px;background:var(--text);transition:all .3s}
@@ -120,7 +122,10 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 .footer-flex{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:0 20px}
 .footer-tagline-inline{position:relative;white-space:nowrap;font-size:1.5rem;font-weight:700;color:#d4af37;margin-left:20px}
 .social-links{display:flex;gap:22px;align-items:center}
-.social-links a img{height:56px;width:auto;transition:transform .25s ease;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15))}
+.social-links a img{height:56px;width:auto;transition:transform .25s ease,filter .25s ease;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.15))}
+.social-links a:hover img{transform:translateY(-3px);filter:drop-shadow(0 6px 12px rgba(0,0,0,0.35))}
+.btn-feedback{transition:all .25s ease!important}
+.btn-feedback:hover{transform:translateY(-3px)!important;box-shadow:0 6px 16px rgba(0,0,0,.3)!important}
 .footer-bottom{text-align:center;margin-top:15px;font-size:15px;color:#888}
 .footer-bottom a{color:#aaa;text-decoration:underline;transition:color .2s}
 .footer-bottom a:hover{color:#fff}
