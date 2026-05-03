@@ -75,11 +75,12 @@
       z-index: 50;
       opacity: 0;
       pointer-events: none;
+      will-change: transform;
       transition: bottom 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                   opacity 0.8s ease;
     }
-    .fixed-banner-left  { left: 8px; }
-    .fixed-banner-right { right: 8px; max-width: 330px; }
+    .fixed-banner-left  { left: 8px; max-width: 260px; }
+    .fixed-banner-right { right: 8px; width: 330px; }
 
     .fixed-banner-left.sliding,
     .fixed-banner-right.sliding {
@@ -98,17 +99,20 @@
     }
 
     .banner-card{
+      width: 100%;
+      box-sizing: border-box;
       background:rgba(255,255,255,0.08);
       backdrop-filter:blur(8px);
       border:1px solid rgba(255,255,255,0.15);
       border-radius:10px; padding:10px; text-align:center; transition:box-shadow .2s;
     }
     .banner-card:hover{ box-shadow:0 8px 24px rgba(0,0,0,0.25); }
-    .banner-card img{ max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto; }
+    .banner-card img{ width:100% !important; height:auto !important; border-radius:6px; display:block; margin:0 auto; }
     .banner-label{ font-size:10px; color:rgba(255,255,255,0.35); margin-top:6px; letter-spacing:.05em; text-transform:uppercase; }
 
     .cvc-banner{
-      width:330px; height:230px; border-radius:8px; overflow:hidden;
+      width:100%; aspect-ratio: 330 / 230; height:auto;
+      border-radius:8px; overflow:hidden;
       position:relative; cursor:pointer; display:block; text-decoration:none; background:#0a1628;
     }
     .cvc-slides{ position:absolute; inset:0; }
@@ -136,13 +140,13 @@
   <div class="fixed-banner-left" id="bannerLeft">
     <div class="banner-card">
       <a target="_blank" rel="nofollow" href="https://rzekl.com/g/rxy3nfk7gdf1d04a03ac1926b3984a/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4pfyeKYpVf">
-        <img width="240" height="240" border="0" src="https://aflink.ru/b/rxy3nfk7gdf1d04a03ac1926b3984a/" alt="Zippo"/>
+        <img src="https://aflink.ru/b/rxy3nfk7gdf1d04a03ac1926b3984a/" alt="Zippo"/>
       </a>
       <div class="banner-label">Ad</div>
     </div>
     <div class="banner-card">
       <a target="_blank" rel="nofollow" href="https://xnmik.com/g/fdazww1xzxf1d04a03ac8f408ce589/?i=4&subid=feedback">
-        <img width="240" height="200" border="0" src="https://ad.admitad.com/b/fdazww1xzxf1d04a03ac8f408ce589/" alt="NH-Hotels"/>
+        <img src="https://ad.admitad.com/b/fdazww1xzxf1d04a03ac8f408ce589/" alt="NH-Hotels"/>
       </a>
       <div class="banner-label">Ad</div>
     </div>
@@ -158,42 +162,46 @@
     </div>
     <div class="banner-card">
       <a target="_blank" rel="nofollow" href="https://xcdus.com/g/kkgx9u5sjhf1d04a03acc814d4b7c0/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4phUQTjR7e">
-        <img width="240" height="240" border="0" src="https://aflink.ru/b/kkgx9u5sjhf1d04a03acc814d4b7c0/" alt="Lingualeo"/>
+        <img src="https://aflink.ru/b/kkgx9u5sjhf1d04a03acc814d4b7c0/" alt="Lingualeo"/>
       </a>
       <div class="banner-label">Ad</div>
     </div>
     <div class="banner-card">
       <a target="_blank" rel="nofollow" href="https://dkfrh.com/g/gmqkmcfn9if1d04a03acd0a9902774/?i=4&subid=feedback">
-        <img width="240" height="240" border="0" src="https://ad.admitad.com/b/gmqkmcfn9if1d04a03acd0a9902774/" alt="TTGO E-bike Many GEOs"/>
+        <img src="https://ad.admitad.com/b/gmqkmcfn9if1d04a03acd0a9902774/" alt="TTGO E-bike Many GEOs"/>
+      </a>
+      <div class="banner-label">Ad</div>
+    </div>
+    <div class="banner-card">
+      <a target="_blank" rel="noopener" href="https://museos.arteyeducacion.org/en/resurgence-of-the-homeland">
+        <img src="resurgence_banner.png" alt="Resurgence of the Homeland"/>
       </a>
       <div class="banner-label">Ad</div>
     </div>
   </div>
 
   <div class="fixed-banner-right" id="bannerRight">
-    <!-- BOOST BANNER — десктоп, правая колонка -->
-    <div class="banner-card" style="padding:0;overflow:hidden;">
+    <div class="banner-card">
       <a target="_blank" rel="nofollow" href="https://grfpr.com/g/zehsdnxunvf1d04a03ac245c490fd8/">
-        <img src="boost_banner.png" width="330" height="230" alt="Boost Presence" style="display:block;border-radius:8px;width:100%;height:auto;">
+        <img src="boost_banner.png" alt="Boost Presence"/>
       </a>
       <div class="banner-label">Ad</div>
     </div>
-    <!-- TRAFFMONETIZER — десктоп, правая колонка -->
-    <div class="banner-card" style="padding:0;overflow:hidden;">
+    <div class="banner-card">
       <a target="_blank" rel="nofollow" href="https://traffmonetizer.com/?aff=2123948">
-        <img src="traffmonetizer-300x250.png" width="330" height="230" alt="TraffMonetizer" style="display:block;border-radius:8px;width:100%;height:auto;">
+        <img src="traffmonetizer-300x250.png" alt="TraffMonetizer"/>
       </a>
       <div class="banner-label">Ad</div>
     </div>
     <div class="banner-card">
       <a target="_blank" rel="nofollow" href="https://naiawork.com/g/qrws63iscqf1d04a03ac5ea594bb46/?i=4&subid=feedback">
-        <img width="330" height="230" border="0" src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
+        <img src="https://ad.admitad.com/b/qrws63iscqf1d04a03ac5ea594bb46/" alt="DiscoverCars WW"/>
       </a>
       <div class="banner-label">Ad</div>
     </div>
     <div class="banner-card">
       <a target="_blank" rel="nofollow" href="https://lsuix.com/g/e1vjup7uphf1d04a03acd820413c43/?i=4&subid=feedback">
-        <img width="330" height="230" border="0" src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/>
+        <img src="https://ad.admitad.com/b/e1vjup7uphf1d04a03acd820413c43/" alt="Oman Airway Global"/>
       </a>
       <div class="banner-label">Ad</div>
     </div>
@@ -219,11 +227,9 @@
       </a>
       <div class="banner-label">Ad</div>
     </div>
-    <div class="banner-card" style="padding:6px;overflow:hidden;border-radius:10px;width:330px;box-sizing:border-box;">
-      <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback"
-         style="display:block;overflow:hidden;">
-        <img src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW"
-             style="width:100%;height:auto;display:block;border-radius:6px;"/>
+    <div class="banner-card">
+      <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback">
+        <img src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW"/>
       </a>
       <div class="banner-label">Ad</div>
     </div>
@@ -259,17 +265,15 @@
       <div class="feedback-list-title translate" data-key="recent">Recent Feedback</div>
       <div id="feedbackList"><div class="loading translate" data-key="loading">Loading feedback...</div></div>
       <div class="mobile-banners">
-        <!-- BOOST BANNER — мобильный блок -->
-        <div class="banner-card" style="width:100%;padding:0;overflow:hidden;">
+        <div class="banner-card" style="width:100%;">
           <a target="_blank" rel="nofollow" href="https://grfpr.com/g/zehsdnxunvf1d04a03ac245c490fd8/">
-            <img src="boost_banner.png" alt="Boost Presence" style="width:100%;height:auto;display:block;border-radius:6px;">
+            <img src="boost_banner.png" alt="Boost Presence"/>
           </a>
           <div class="banner-label">Ad</div>
         </div>
-        <!-- TRAFFMONETIZER — мобильный блок -->
-        <div class="banner-card" style="width:100%;padding:0;overflow:hidden;">
+        <div class="banner-card" style="width:100%;">
           <a target="_blank" rel="nofollow" href="https://traffmonetizer.com/?aff=2123948">
-            <img src="traffmonetizer-300x250.png" alt="TraffMonetizer" style="width:100%;height:auto;display:block;border-radius:6px;">
+            <img src="traffmonetizer-300x250.png" alt="TraffMonetizer"/>
           </a>
           <div class="banner-label">Ad</div>
         </div>
@@ -329,23 +333,27 @@
           </a>
           <div class="banner-label">Ad</div>
         </div>
-        <div class="banner-card" style="padding:6px;overflow:hidden;border-radius:10px;width:100%;box-sizing:border-box;">
-          <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback"
-             style="display:block;">
-            <img src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW"
-                 style="width:100%;height:auto;display:block;border-radius:6px;"/>
+        <div class="banner-card" style="width:100%;">
+          <a target="_blank" rel="nofollow" href="https://dhwnh.com/g/k5qe5k9nasf1d04a03ac0471e42028/?i=4&subid=feedback">
+            <img src="https://ad.admitad.com/b/k5qe5k9nasf1d04a03ac0471e42028/" alt="Airalo WW"/>
           </a>
           <div class="banner-label">Ad</div>
         </div>
         <div class="banner-card">
           <a target="_blank" rel="nofollow" href="https://xcdus.com/g/kkgx9u5sjhf1d04a03acc814d4b7c0/?i=4&subid=feedback&erid=2bL9aMPo2e49hMef4phUQTjR7e">
-            <img style="width:100%;height:auto;display:block;border-radius:6px;" src="https://aflink.ru/b/kkgx9u5sjhf1d04a03acc814d4b7c0/" alt="Lingualeo"/>
+            <img src="https://aflink.ru/b/kkgx9u5sjhf1d04a03acc814d4b7c0/" alt="Lingualeo"/>
           </a>
           <div class="banner-label">Ad</div>
         </div>
         <div class="banner-card">
           <a target="_blank" rel="nofollow" href="https://dkfrh.com/g/gmqkmcfn9if1d04a03acd0a9902774/?i=4&subid=feedback">
-            <img style="width:100%;height:auto;display:block;border-radius:6px;" src="https://ad.admitad.com/b/gmqkmcfn9if1d04a03acd0a9902774/" alt="TTGO E-bike Many GEOs"/>
+            <img src="https://ad.admitad.com/b/gmqkmcfn9if1d04a03acd0a9902774/" alt="TTGO E-bike Many GEOs"/>
+          </a>
+          <div class="banner-label">Ad</div>
+        </div>
+        <div class="banner-card" style="width:100%;">
+          <a target="_blank" rel="noopener" href="https://museos.arteyeducacion.org/en/resurgence-of-the-homeland">
+            <img src="resurgence_banner.png" alt="Resurgence of the Homeland"/>
           </a>
           <div class="banner-label">Ad</div>
         </div>
