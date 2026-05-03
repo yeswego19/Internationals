@@ -79,8 +79,17 @@
       transition: bottom 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                   opacity 0.8s ease;
     }
-    .fixed-banner-left  { left: 8px; max-width: 260px; }
-    .fixed-banner-right { right: 8px; width: 330px; }
+    .fixed-banner-left  { left: 8px; width: 300px; }
+    .fixed-banner-right { right: 8px; width: 300px; }
+
+    @media(max-width:1500px){
+      .fixed-banner-left  { width: 220px; }
+      .fixed-banner-right { width: 220px; }
+    }
+    @media(max-width:1300px){
+      .fixed-banner-left  { width: 160px; }
+      .fixed-banner-right { width: 160px; }
+    }
 
     .fixed-banner-left.sliding,
     .fixed-banner-right.sliding {
