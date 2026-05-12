@@ -1,95 +1,81 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Трансферы | Internationals Pro</title>
+    <title>Transfer Service | Internationals Pro</title>
     <style>
-        /* Основные цвета твоего сайта */
         :root {
-            --primary-color: #003580; /* Твой фирменный синий */
-            --bg-color: #f4f7f9;
-            --text-color: #333;
+            --primary-color: #003580;
         }
-
-        body { 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--text-color);
-        }
-
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f7f9; }
+        
+        /* Шапка с твоим логотипом */
         .header {
             background-color: white;
-            padding: 15px 20px;
+            padding: 10px 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
-            justify-content: space-between;
         }
-
-        .logo-text {
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            text-transform: uppercase;
+        .header img {
+            height: 50px; /* Отрегулируй высоту под свой логотип */
+            margin-right: 15px;
         }
-
+        
         .wrapper { 
             width: 100%; 
             max-width: 1100px; 
-            margin: 30px auto; 
+            margin: 20px auto; 
             padding: 0 15px; 
             box-sizing: border-box; 
         }
-
-        .back-btn { 
-            display: inline-block; 
-            margin-bottom: 20px; 
-            padding: 10px 20px; 
-            background: var(--primary-color); 
-            color: white; 
-            text-decoration: none; 
-            border-radius: 4px; 
-            font-weight: 600;
-            transition: opacity 0.3s;
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
         }
 
-        .back-btn:hover {
-            opacity: 0.9;
-        }
-
-        /* Чтобы виджет Intui не конфликтовал с твоим фоном */
         .widget-container {
             background: white;
-            padding: 20px;
+            padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <div class="logo-text">Internationals Pro</div>
-        <div style="font-size: 0.9rem; color: #666;">Сервис бронирования трансферов</div>
+        <a href="index.html">
+            <img src="assets/logo.png" alt="Internationals Pro">
+        </a>
     </div>
 
     <div class="wrapper notranslate">
-        <a href="index.html" class="back-btn">← Вернуться на сайт</a>
+        <a href="index.html" class="back-link">← Back / Назад</a>
 
         <div class="widget-container">
-            <iframe id="intuiIframe" src="https://en.intui.travel/?p_site=28722858&constructor=1&color_scheme=blue&b=011010110011111111&h=%D0%A2%D1%80%D0%B0%D0%BD%D1%81%D1%84%D0%B5%D1%80%D1%8B%20%D0%B8%D0%B7%20%D0%B0%D1%8D%D1%80%D0%BE%D0%BF%D0%BE%D1%80%D1%82%D0%B0" frameborder="0" scrolling="no" width="100%" height="318px"></iframe>
-            <script type="text/javascript" src="https://www.intui.travel/public/js/jquery/iframeResizer.js"></script>
-            </div>
+            <iframe id="intuiIframe" 
+                src="https://www.intui.travel/?p_site=28722858&constructor=1&color_scheme=blue&b=011010110011111111" 
+                frameborder="0" 
+                scrolling="no" 
+                width="100%" 
+                style="border:none; min-height: 320px;">
+            </iframe>
+        </div>
     </div>
 
+    <script type="text/javascript" src="https://www.intui.travel/public/js/jquery/iframeResizer.js"></script>
     <script type="text/javascript">
-        // Автоматическая подстройка высоты виджета под контент
-        if (window.iFrameResize) {
-            iFrameResize({ log: false }, '#intuiIframe');
-        }
+        window.onload = function() {
+            if (window.iFrameResize) {
+                iFrameResize({ log: false, checkOrigin: false }, '#intuiIframe');
+            }
+        };
     </script>
 </body>
 </html>
