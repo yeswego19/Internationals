@@ -166,6 +166,11 @@
     </div>
   </section>
 
+  <!-- Reveal overlay canvas (over entire viewport) -->
+  <div id="revealOverlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:999;opacity:0;transition:opacity 0.2s;">
+    <canvas id="revealCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
+  </div>
+
   <section class="features">
     <div class="container">
       <div class="section-header">
@@ -173,32 +178,32 @@
         <p data-translate="services_subtitle">Advanced technologies and international team of experts</p>
       </div>
       <div class="features-grid">
-        <div class="feature-card">
+        <div class="feature-card" data-service="1" style="cursor:crosshair;user-select:none;">
           <div class="feature-icon"><i class="fas fa-bolt"></i></div>
           <h3 data-translate="service_1_title">Instant translation</h3>
           <p data-translate="service_1_desc">Verbal interpretation via video call or on-site, written translation of any texts</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card" data-service="2" style="cursor:crosshair;user-select:none;">
           <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
           <h3 data-translate="service_2_title">Security</h3>
           <p data-translate="service_2_desc">Your data is protected with modern encryption protocols</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card" data-service="3" style="cursor:crosshair;user-select:none;">
           <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
           <h3 data-translate="service_4_title">Document translation</h3>
           <p data-translate="service_4_desc">We work with any file format</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card" data-service="4" style="cursor:crosshair;user-select:none;">
           <div class="feature-icon"><i class="fas fa-language"></i></div>
           <h3 data-translate="service_5_title">Website and video localization</h3>
           <p data-translate="service_5_desc">Website creation and content adaptation</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card" data-service="5" style="cursor:crosshair;user-select:none;">
           <div class="feature-icon"><i class="fas fa-bell"></i></div>
           <h3 data-translate="service_6_title">Personal manager</h3>
           <p data-translate="service_6_desc">Describe your task — we will find the solution</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card" data-service="6" style="cursor:crosshair;user-select:none;">
           <div class="feature-icon"><i class="fas fa-truck"></i></div>
           <h3 data-translate="service_7_title">Document delivery</h3>
           <p data-translate="service_7_desc">Delivery of translated documents by email or to your chosen address</p>
@@ -206,6 +211,139 @@
       </div>
     </div>
   </section>
+
+  <script>
+  (function() {
+    const serviceMedia = {
+      1: { src: 'assets/service1.png', type: 'image' },
+      2: { src: 'assets/service2.png', type: 'image' },
+      3: { src: 'assets/service3.jpg', type: 'image' },
+      4: { src: 'assets/service4.png', type: 'image' },
+      5: { src: 'assets/service5.png', type: 'image' },
+      6: { src: 'assets/service6.mp4', type: 'video' },
+    };
+
+    const overlay = document.getElementById('revealOverlay');
+    const canvas = document.getElementById('revealCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let currentRadius = 0;
+    let isPressed = false;
+    let originX = 0, originY = 0;
+    let growTimer = null;
+    let animFrame = null;
+    let currentImg = null;
+    let currentVideo = null;
+    const MAX_RADIUS = Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2);
+    const GROW_PX = 7; // px per 16ms tick while held
+    const SHRINK = 0.10; // lerp factor when releasing
+
+    // Preload all images
+    const imgCache = {};
+    const vidCache = {};
+    Object.entries(serviceMedia).forEach(([n, m]) => {
+      if (m.type === 'image') {
+        const img = new Image();
+        img.src = m.src;
+        imgCache[n] = img;
+      } else {
+        const v = document.createElement('video');
+        v.src = m.src; v.loop = true; v.muted = true; v.playsInline = true; v.preload = 'auto';
+        vidCache[n] = v;
+      }
+    });
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (currentRadius <= 0) return;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(originX, originY, currentRadius, 0, Math.PI * 2);
+      ctx.clip();
+      if (currentVideo) {
+        ctx.drawImage(currentVideo, 0, 0, canvas.width, canvas.height);
+      } else if (currentImg && currentImg.complete && currentImg.naturalWidth) {
+        const iw = currentImg.naturalWidth, ih = currentImg.naturalHeight;
+        const scale = Math.max(canvas.width / iw, canvas.height / ih);
+        const dw = iw * scale, dh = ih * scale;
+        ctx.drawImage(currentImg, (canvas.width - dw) / 2, (canvas.height - dh) / 2, dw, dh);
+      }
+      ctx.restore();
+      // Soft vignette edge
+      const g = ctx.createRadialGradient(originX, originY, currentRadius * 0.8, originX, originY, currentRadius);
+      g.addColorStop(0, 'rgba(0,0,0,0)');
+      g.addColorStop(1, 'rgba(0,0,0,0.4)');
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(originX, originY, currentRadius, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function loop() {
+      draw();
+      if (!isPressed && currentRadius > 0) {
+        currentRadius += (0 - currentRadius) * SHRINK;
+        if (currentRadius < 1) {
+          currentRadius = 0;
+          overlay.style.opacity = '0';
+          if (currentVideo) { currentVideo.pause(); currentVideo.currentTime = 0; currentVideo = null; }
+          cancelAnimationFrame(animFrame); animFrame = null;
+          return;
+        }
+      }
+      animFrame = requestAnimationFrame(loop);
+    }
+
+    function startReveal(x, y, num) {
+      originX = x; originY = y;
+      isPressed = true;
+      const m = serviceMedia[num];
+      if (m.type === 'video') {
+        currentImg = null;
+        currentVideo = vidCache[num];
+        currentVideo.play().catch(() => {});
+      } else {
+        currentVideo = null;
+        currentImg = imgCache[num];
+      }
+      overlay.style.opacity = '1';
+      clearInterval(growTimer);
+      growTimer = setInterval(() => {
+        if (isPressed) currentRadius = Math.min(currentRadius + GROW_PX, MAX_RADIUS);
+      }, 16);
+      if (!animFrame) animFrame = requestAnimationFrame(loop);
+    }
+
+    function stopReveal() {
+      isPressed = false;
+      clearInterval(growTimer);
+    }
+
+    document.querySelectorAll('.feature-card[data-service]').forEach(card => {
+      const n = parseInt(card.dataset.service);
+      card.addEventListener('mousedown', e => startReveal(e.clientX, e.clientY, n));
+      card.addEventListener('touchstart', e => {
+        e.preventDefault();
+        const t = e.touches[0];
+        startReveal(t.clientX, t.clientY, n);
+      }, { passive: false });
+    });
+
+    document.addEventListener('mouseup', () => { if (isPressed) stopReveal(); });
+    document.addEventListener('mouseleave', () => { if (isPressed) stopReveal(); });
+    document.addEventListener('touchend', () => { if (isPressed) stopReveal(); });
+    document.addEventListener('touchcancel', () => { if (isPressed) stopReveal(); });
+  })();
+  </script>
 
   <section id="contact" class="contact">
     <div class="contact-overlay" id="contactOverlay">
