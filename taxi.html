@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,18 +18,20 @@
             background-color: #f4f7f9; 
         }
 
-        /* Шапка 1-в-1 как на главной странице */
+        /* Убираем "узкую белую строчку" */
         .header {
             background-color: white;
-            padding: 15px 20px;
+            padding: 20px 40px; /* Увеличенные отступы для масштаба */
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
+            min-height: 100px; /* Гарантируем высоту для большого лого */
         }
 
+        /* ЛОГОТИП: Размер в точности как на главной (image_df9b6f.jpg) */
         .logo img {
-            height: 60px; /* Тот самый размер */
-            width: auto;
+            width: 250px; /* Крупный размер из настроек основной страницы */
+            height: auto;
             display: block;
         }
 
@@ -45,16 +47,16 @@
         .action-bar {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .back-link {
             text-decoration: none;
             color: var(--primary-color);
-            font-size: 65px;
+            font-size: 60px;
             font-weight: bold;
             transition: color 0.3s ease;
-            line-height: 0.7;
+            line-height: 0.6;
         }
 
         .back-link:hover {
@@ -68,7 +70,6 @@
             box-shadow: 0 8px 30px rgba(0,0,0,0.1);
         }
 
-        /* Убираем фиксированную высоту из письма (318px мало для карты) */
         iframe {
             width: 100%;
             border: none;
