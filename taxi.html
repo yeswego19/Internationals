@@ -6,72 +6,82 @@
     <title>Transfer Service | Internationals Pro</title>
     <style>
         :root {
-            --primary-color: #003580;
-            --hover-color: #ff0000; /* Цвет стрелки при наведении */
+            --primary-color: #003580; /* Твой синий */
+            --hover-color: #ff0000;   /* Красный при наведении */
         }
-        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f7f9; }
         
-        /* Шапка с твоим логотипом */
-        .header {
-            background-color: white;
-            padding: 10px 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f7f9; 
+        }
+
+        .top-bar {
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px; /* Отступы по краям */
         }
-        .header img {
-            height: 50px; /* Отрегулируй высоту под свой логотип */
-            margin-right: 15px;
+
+        /* Огромный логотип без белой полосы */
+        .top-bar img {
+            height: 120px; /* В два раза больше, чем было */
+            width: auto;
+            display: block;
         }
-        
-        .wrapper { 
-            width: 100%; 
-            max-width: 1100px; 
-            margin: 20px auto; 
-            padding: 0 15px; 
-            box-sizing: border-box; 
-        }
-        
-        /* Стрелочка */
+
+        /* Большая синяя стрелка */
         .back-link {
-            display: inline-block;
-            margin-bottom: 15px;
-            color: white; /* Белая стрелочка по умолчанию */
             text-decoration: none;
-            font-size: 24px; /* Размер стрелочки */
+            color: var(--primary-color);
+            font-size: 60px; /* В два раза больше */
             font-weight: bold;
-            transition: color 0.3s; /* Плавный переход цвета */
+            transition: color 0.3s ease;
+            line-height: 1;
         }
 
         .back-link:hover {
-            color: var(--hover-color); /* Красная стрелочка при наведении */
+            color: var(--hover-color);
+        }
+
+        .wrapper { 
+            width: 100%; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px 40px 20px; 
+            box-sizing: border-box; 
         }
 
         .widget-container {
             background: white;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        iframe {
+            width: 100%;
+            border: none;
+            min-height: 600px;
         }
     </style>
 </head>
 <body>
 
-    <div class="header">
+    <div class="top-bar">
+        <a href="index.html" class="back-link">←</a>
         <a href="index.html">
             <img src="assets/logo.png" alt="Internationals Pro">
         </a>
-    </div>
+        <div style="width: 60px;"></div> </div>
 
     <div class="wrapper notranslate">
-        <a href="index.html" class="back-link">←</a>
-
         <div class="widget-container">
             <iframe id="intuiIframe" 
-                src="https://www.intui.travel/?p_site=28722858&constructor=1&color_scheme=blue&b=011010110011111111" 
-                frameborder="0" 
-                scrolling="no" 
-                width="100%" 
-                style="border:none; min-height: 320px;">
+                src="https://www.intui.travel/?p_site=28722858&constructor=1&color_scheme=blue&b=011010110011111111&currency=RUB" 
+                scrolling="no">
             </iframe>
         </div>
     </div>
