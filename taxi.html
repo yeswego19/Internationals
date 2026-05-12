@@ -7,6 +7,7 @@
     <style>
         :root {
             --primary-color: #003580;
+            --hover-color: #ff0000; /* Цвет стрелки при наведении */
         }
         body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f7f9; }
         
@@ -31,13 +32,19 @@
             box-sizing: border-box; 
         }
         
+        /* Стрелочка */
         .back-link {
             display: inline-block;
             margin-bottom: 15px;
-            color: var(--primary-color);
+            color: white; /* Белая стрелочка по умолчанию */
             text-decoration: none;
-            font-size: 14px;
+            font-size: 24px; /* Размер стрелочки */
             font-weight: bold;
+            transition: color 0.3s; /* Плавный переход цвета */
+        }
+
+        .back-link:hover {
+            color: var(--hover-color); /* Красная стрелочка при наведении */
         }
 
         .widget-container {
@@ -56,7 +63,7 @@
     </div>
 
     <div class="wrapper notranslate">
-        <a href="index.html" class="back-link">← Back / Назад</a>
+        <a href="index.html" class="back-link">←</a>
 
         <div class="widget-container">
             <iframe id="intuiIframe" 
