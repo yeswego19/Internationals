@@ -15,22 +15,20 @@
             margin: 0; 
             padding: 0; 
             font-family: 'Inter', Arial, sans-serif; 
-            background-color: #f4f7f9; 
+            background-color: #f4f7f9; /* Светлый фон всей страницы */
         }
 
-        /* Убираем "узкую белую строчку" */
+        /* Шапка БЕЗ белого фона, чтобы логотип был как на главной */
         .header {
-            background-color: white;
-            padding: 20px 40px; /* Увеличенные отступы для масштаба */
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px 40px 10px 40px;
             display: flex;
             align-items: center;
-            min-height: 100px; /* Гарантируем высоту для большого лого */
+            background: transparent; /* Прозрачный фон */
         }
 
-        /* ЛОГОТИП: Размер в точности как на главной (image_df9b6f.jpg) */
+        /* Логотип: увеличил размер, чтобы был один в один с главной */
         .logo img {
-            width: 250px; /* Крупный размер из настроек основной страницы */
+            width: 280px; /* Еще чуть больше для соответствия */
             height: auto;
             display: block;
         }
@@ -38,25 +36,25 @@
         .wrapper { 
             width: 100%; 
             max-width: 1200px; 
-            margin: 20px auto; 
-            padding: 0 20px; 
+            margin: 0 auto; 
+            padding: 0 20px 40px 20px; 
             box-sizing: border-box;
         }
 
-        /* Стрелка над правым верхним углом виджета */
+        /* Синяя стрелка над правым углом */
         .action-bar {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 10px;
+            margin-bottom: 0px;
         }
 
         .back-link {
             text-decoration: none;
             color: var(--primary-color);
-            font-size: 60px;
+            font-size: 70px;
             font-weight: bold;
             transition: color 0.3s ease;
-            line-height: 0.6;
+            line-height: 0.8;
         }
 
         .back-link:hover {
@@ -67,13 +65,13 @@
             background: white;
             padding: 15px;
             border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
         iframe {
             width: 100%;
             border: none;
-            min-height: 850px; 
+            min-height: 900px; /* Высота для карты */
         }
     </style>
 </head>
