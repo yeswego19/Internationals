@@ -4,157 +4,303 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partnership | Internationals</title>
-    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    
     <style>
-        body { margin: 0; padding: 0; background-color: #0d121f; font-family: 'Inter', sans-serif; color: white; overflow-x: hidden; }
-        .wrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; min-height: 100vh; }
-        
-        /* КАРТОЧКА С ФОРМОЙ */
-        .card { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5); position: relative; z-index: 100; margin-bottom: 80px; color: #333; }
-        .brand-name { color: #3b82f6; font-size: 26px; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; display: block; }
+        body {
+            margin: 0; padding: 0;
+            background-color: #0d121f;
+            min-height: 100vh;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
 
-        /* DIGITAL SIGNATURE (ПОДПИСЬ) */
-        .sig-container { position: absolute; left: 50%; transform: translateX(-50%); top: 92%; width: 100vw; height: 180px; display: flex; justify-content: center; pointer-events: none; z-index: 10; }
-        canvas { width: 800px !important; height: 180px !important; }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 0 80px 0;
+            width: 100%;
+        }
+
+        /* КАРТОЧКА С ФОРМОЙ — БЕЗ ИЗМЕНЕНИЙ */
+        .card {
+            background: #ffffff;
+            padding: 30px; 
+            border-radius: 20px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 10;
+        }
+
+        .brand-name {
+            color: #3b82f6;
+            font-size: 26px;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .form-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        /* ПОДПИСЬ — БЕЗ ИЗМЕНЕНИЙ */
+        .sig-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 92%;
+            width: 100vw;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        canvas {
+            width: 800px !important;
+            height: 180px !important;
+        }
+
+        @media(max-width:768px){
+            .sig-container { height: 120px; }
+            canvas { width: 100vw !important; height: 120px !important; }
+        }
 
         /* КНОПКА РАЗБЛОКИРОВКИ */
-        .unlock-btn { display: none; width: 100%; padding: 18px; background: #3b82f6; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 20px; font-size: 16px; transition: 0.3s; z-index: 101; }
-        .unlock-btn:hover { background: #2563eb; transform: scale(1.02); }
+        .unlock-btn {
+            display: none;
+            width: 100%;
+            padding: 15px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 16px;
+        }
 
         /* СТЕНА СТАТЕЙ С БЛЮРОМ */
-        #articlesWall { width: 90%; max-width: 800px; filter: blur(35px); opacity: 0.1; transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; margin-top: 20px; }
-        .unlocked { filter: blur(0) !important; opacity: 1 !important; pointer-events: auto !important; }
+        #articlesWall {
+            width: 90%;
+            max-width: 800px;
+            filter: blur(35px);
+            opacity: 0.1;
+            transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            margin-top: 80px;
+        }
+
+        #articlesWall.unlocked {
+            filter: blur(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
 
         /* БЛОКИ СТАТЕЙ */
-        .article-block { background: rgba(255,255,255,0.03); padding: 40px; margin-bottom: 40px; border-radius: 20px; border-left: 6px solid #3b82f6; }
-        .article-block h2 { color: #3b82f6; font-size: 32px; margin-top: 0; margin-bottom: 20px; }
-        .article-block p { line-height: 1.8; color: #cbd5e1; font-size: 19px; }
-        .article-block img { width: 100%; border-radius: 12px; margin: 25px 0; border: 1px solid rgba(59, 130, 246, 0.4); display: block; }
+        .article-block {
+            background: rgba(255,255,255,0.03);
+            padding: 40px;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            border-left: 6px solid #3b82f6;
+        }
+
+        .article-block h2 {
+            color: #3b82f6;
+            font-size: 32px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .article-block p {
+            line-height: 1.8;
+            color: #cbd5e1;
+            font-size: 19px;
+        }
+
+        .article-block img {
+            width: 100%;
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            display: block;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 60px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover { color: #ff4d4d; }
     </style>
 </head>
 <body>
 
     <div class="wrapper">
-        <!-- БЕЛАЯ КАРТОЧКА -->
+        <!-- КАРТОЧКА — ТА ЖЕ ЧТО РАБОТАЛА -->
         <div id="lockCard" class="card">
             <span class="brand-name">Internationals</span>
             
-            <!-- СЮДА ГРУЗИТСЯ ТВОЯ ФОРМА SENDER -->
-            <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
-            
-            <!-- КНОПКА ДОСТУПА -->
-            <button id="unlockBtn" class="unlock-btn" onclick="unlock()">ОТКРЫТЬ СТАТЬИ</button>
+            <div class="form-wrapper">
+                <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
 
-            <!-- ЛЕТАЮЩАЯ ПОДПИСЬ -->
-            <div class="sig-container">
-                <canvas id="canvas-signature"></canvas>
+                <!-- КНОПКА: появляется только при ?unlock в ссылке -->
+                <button id="unlockBtn" class="unlock-btn" onclick="unlock()">ОТКРЫТЬ СТАТЬИ</button>
+                
+                <div class="sig-container">
+                    <canvas id="canvas-signature"></canvas>
+                </div>
             </div>
         </div>
 
-        <!-- КОНТЕНТ ИЗ ФАЙЛА -->
+        <!-- СТАТЬИ ИЗ ФАЙЛА -->
         <div id="articlesWall"></div>
+        
+        <a href="#" onclick="window.close(); return false;" class="back-link">← На главную</a>
     </div>
 
+    <!-- SENDER — ТОЧНО ТАК ЖЕ КАК В РАБОЧЕЙ ВЕРСИИ -->
     <script>
-        // 1. Загружаем Sender только после готовности скрипта
-        (function() {
-            var s = document.createElement('script');
-            s.async = 1;
-            s.src = 'https://cdn.sender.net/accounts_resources/universal.js';
-            s.onload = function() {
-                if (window.sender) sender('456b04acf96531');
-            };
-            document.head.appendChild(s);
-        })();
+      (function (s, e, n, d, er) {
+        s['Sender'] = er; s[er] = s[er] || function () { (s[er].q = s[er].q || []).push(arguments) }, s[er].l = 1 * new Date();
+        var a = e.createElement(n), m = e.getElementsByTagName(n)[0];
+        a.async = 1; a.src = d; m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://cdn.sender.net/accounts_resources/universal.js', 'sender');
+      sender('456b04acf96531');
+    </script>
 
-        // 2. Функция разблокировки (убирает блюр и карточку)
-        function unlock() {
-            document.getElementById('articlesWall').classList.add('unlocked');
-            document.getElementById('lockCard').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('lockCard').style.display = 'none';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 600);
-        }
+    <script>
+    // ПОДПИСЬ — БЕЗ ИЗМЕНЕНИЙ (рабочая версия)
+    const canvas = document.getElementById('canvas-signature');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const isMobile = window.innerWidth <= 768;
+    const CW = isMobile ? window.innerWidth : 800;
+    const CH = isMobile ? 120 : 180;
+    canvas.width = CW;
+    canvas.height = CH;
 
-        // 3. Проверка на секретную ссылку ?unlock=true
-        if (window.location.search.includes('unlock')) {
-            document.getElementById('unlockBtn').style.display = 'block';
-        }
+    let particles = [];
+    let mouse = { x: -1000, y: -1000, radius: isMobile ? 50 : 75 };
+    const STEP = isMobile ? 7 : 4;
+    const FONT_SIZE = isMobile ? 52 : 85;
 
-        // 4. Загрузка статей из articles.txt
-        fetch('articles.txt')
-            .then(res => res.text())
-            .then(data => {
-                const wall = document.getElementById('articlesWall');
-                const parts = data.split('\n\n\n');
-                parts.forEach(p => {
-                    const lines = p.trim().split('\n');
-                    if (lines.length > 0) {
-                        const div = document.createElement('div');
-                        div.className = 'article-block';
-                        let html = `<h2>${lines[0]}</h2>`;
-                        lines.slice(1).forEach(l => {
-                            let val = l.trim();
-                            if (val.toUpperCase().startsWith('IMG:')) {
-                                html += `<img src="${val.substring(4).trim()}">`;
-                            } else if (val.includes('<a href')) {
-                                html += `<div style="margin-top:20px;">${val}</div>`;
-                            } else if (val !== "") {
-                                html += `<p>${val}</p>`;
-                            }
-                        });
-                        div.innerHTML = html;
-                        wall.appendChild(div);
-                    }
-                });
-            });
-
-        // 5. Digital Signature (Анимация)
-        const canvas = document.getElementById('canvas-signature');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 800; canvas.height = 180;
-        let particles = [];
-
-        function initSig() {
-            ctx.fillStyle = 'white';
-            ctx.font = '85px "Reenie Beanie"';
-            ctx.textAlign = 'center';
-            ctx.fillText('Digital Signature', 400, 100);
-            const imgData = ctx.getImageData(0, 0, 800, 180).data;
-            particles = [];
-            for (let y = 0; y < 180; y += 4) {
-                for (let x = 0; x < 800; x += 4) {
-                    if (imgData[(y * 800 + x) * 4 + 3] > 128) {
-                        particles.push({
-                            x: Math.random() * 800,
-                            y: Math.random() * 180,
-                            destX: x, destY: y,
-                            vx: 0, vy: 0
-                        });
-                    }
-                }
+    function init() {
+        ctx.clearRect(0, 0, CW, CH);
+        ctx.fillStyle = 'white';
+        ctx.font = `${FONT_SIZE}px "Reenie Beanie"`;
+        ctx.textAlign = 'center';
+        ctx.fillText('Digital Signature', CW / 2, CH / 2 + FONT_SIZE * 0.3);
+        const data = ctx.getImageData(0, 0, CW, CH);
+        particles = [];
+        class Particle {
+            constructor(x, y) {
+                this.x = Math.random() * CW; this.y = Math.random() * CH;
+                this.destX = x; this.destY = y;
+                this.vx = 0; this.vy = 0;
+                this.acc = isMobile ? 0.14 : 0.18;
+                this.fric = isMobile ? 0.78 : 0.75;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.7)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, isMobile ? 1.2 : 1.6, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            update() {
+                let dx = this.x - mouse.x, dy = this.y - mouse.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < mouse.radius) { this.vx += dx / 7; this.vy += dy / 7; }
+                this.vx += (this.destX - this.x) * this.acc;
+                this.vy += (this.destY - this.y) * this.acc;
+                this.vx *= this.fric; this.vy *= this.fric;
+                this.x += this.vx; this.y += this.vy;
             }
         }
+        for (let y = 0; y < data.height; y += STEP)
+            for (let x = 0; x < data.width; x += STEP)
+                if (data.data[(y * 4 * data.width) + (x * 4) + 3] > 128)
+                    particles.push(new Particle(x, y));
+    }
 
-        function animate() {
-            ctx.clearRect(0, 0, 800, 180);
-            particles.forEach(p => {
-                p.vx += (p.destX - p.x) * 0.12;
-                p.vy += (p.destY - p.y) * 0.12;
-                p.vx *= 0.8; p.vy *= 0.8;
-                p.x += p.vx; p.y += p.vy;
-                ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
-                ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2); ctx.fill();
+    function animate() {
+        ctx.clearRect(0, 0, CW, CH);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = (e.clientX - rect.left) * (CW / rect.width);
+        mouse.y = (e.clientY - rect.top) * (CH / rect.height);
+    });
+    window.addEventListener('touchmove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        mouse.x = (touch.clientX - rect.left) * (CW / rect.width);
+        mouse.y = (touch.clientY - rect.top) * (CH / rect.height);
+    }, { passive: true });
+    window.addEventListener('touchend', () => { mouse.x = -1000; mouse.y = -1000; });
+
+    document.fonts.ready.then(() => { init(); animate(); });
+
+    // ЗАГРУЗКА СТАТЕЙ — ЕДИНСТВЕННОЕ ЧТО ДОБАВЛЕНО К РАБОЧЕЙ ВЕРСИИ
+    fetch('articles.txt')
+        .then(r => r.text())
+        .then(data => {
+            const wall = document.getElementById('articlesWall');
+            data.split('\n\n\n').forEach(part => {
+                const lines = part.trim().split('\n');
+                if (lines.length === 0) return;
+                const div = document.createElement('div');
+                div.className = 'article-block';
+                let html = `<h2>${lines[0]}</h2>`;
+                lines.slice(1).forEach(line => {
+                    const l = line.trim();
+                    if (l.toUpperCase().startsWith('IMG:')) {
+                        html += `<img src="${l.substring(4).trim()}" alt="">`;
+                    } else if (l.includes('<a href')) {
+                        html += `<div style="margin-top:20px;">${l}</div>`;
+                    } else if (l !== '') {
+                        html += `<p>${l}</p>`;
+                    }
+                });
+                div.innerHTML = html;
+                wall.appendChild(div);
             });
-            requestAnimationFrame(animate);
-        }
+        })
+        .catch(() => {});
 
-        // Запуск после загрузки шрифтов
-        document.fonts.ready.then(() => {
-            initSig();
-            animate();
-        });
+    // РАЗБЛОКИРОВКА
+    function unlock() {
+        document.getElementById('articlesWall').classList.add('unlocked');
+        document.getElementById('lockCard').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('lockCard').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 600);
+    }
+
+    if (window.location.search.includes('unlock')) {
+        document.getElementById('unlockBtn').style.display = 'block';
+    }
     </script>
 </body>
 </html>
