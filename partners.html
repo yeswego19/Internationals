@@ -5,31 +5,51 @@
     <title>Partnership | Internationals</title>
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; background: #0d121f; font-family: 'Inter', sans-serif; color: white; }
-        .wrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; }
-        .card { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; position: relative; z-index: 100; margin-bottom: 50px; color: #333; }
-        .sig-container { position: absolute; left: 50%; transform: translateX(-50%); top: 95%; width: 100vw; height: 180px; pointer-events: none; }
+        body { margin: 0; background: #0d121f; font-family: 'Inter', sans-serif; color: white; overflow-x: hidden; }
+        .wrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
+        
+        /* КАРТОЧКА С ФОРМОЙ */
+        .card { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5); position: relative; z-index: 100; margin-bottom: 80px; color: #333; }
+        .brand-name { color: #3b82f6; font-size: 26px; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; display: block; }
+
+        /* ПОДПИСЬ ПОД КАРТОЧКОЙ */
+        .sig-container { position: absolute; left: 50%; transform: translateX(-50%); top: 92%; width: 100vw; height: 180px; display: flex; justify-content: center; pointer-events: none; z-index: 10; }
         canvas { width: 800px !important; height: 180px !important; }
-        #articlesWall { width: 90%; max-width: 800px; filter: blur(30px); opacity: 0.1; transition: 1s; pointer-events: auto; }
-        .unlocked { filter: blur(0) !important; opacity: 1 !important; }
+
+        /* СТЕНА СТАТЕЙ (РАЗМЫТА ПО УМОЛЧАНИЮ) */
+        #articlesWall { width: 90%; max-width: 800px; filter: blur(30px); opacity: 0.1; transition: 1s ease; pointer-events: none; }
+        .unlocked { filter: blur(0) !important; opacity: 1 !important; pointer-events: auto !important; }
+
         .article-block { background: rgba(255,255,255,0.03); padding: 40px; margin-bottom: 40px; border-radius: 15px; border-left: 5px solid #3b82f6; }
+        .article-block h2 { color: #3b82f6; font-size: 32px; margin: 0 0 20px 0; }
+        .article-block p { line-height: 1.8; color: #cbd5e1; font-size: 18px; }
         .article-block img { width: 100%; border-radius: 10px; margin: 20px 0; border: 1px solid #3b82f6; display: block; }
-        .unlock-btn { display: none; width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; }
+
+        .unlock-btn { display: none; width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; font-size: 16px; }
     </style>
 </head>
 <body>
+
     <div class="wrapper">
         <div id="lockCard" class="card">
-            <b style="font-size:24px; color:#3b82f6;">INTERNATIONALS</b>
+            <span class="brand-name">Internationals</span>
+            <!-- СЮДА ВСТАВЛЯЕТСЯ ФОРМА SENDER -->
             <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
-            <button id="unlockBtn" class="unlock-btn" onclick="unlock()">ОТКРЫТЬ СТАТЬИ</button>
-            <div class="sig-container"><canvas id="canvas-signature"></canvas></div>
+            
+            <!-- КНОПКА ПОЯВЛЯЕТСЯ ТОЛЬКО ЧЕРЕЗ URL ?unlock=true -->
+            <button id="unlockBtn" class="unlock-btn" onclick="unlock()">OPEN PARTNER ACCESS</button>
+
+            <div class="sig-container">
+                <canvas id="canvas-signature"></canvas>
+            </div>
         </div>
+
+        <!-- СЮДА ПОДГРУЖАЮТСЯ СТАТЬИ ИЗ ФАЙЛА -->
         <div id="articlesWall"></div>
     </div>
 
     <script>
-        // УНИВЕРСАЛЬНАЯ ЗАГРУЗКА
+        // 1. ЗАГРУЗКА И ПАРСИНГ ТЕКСТА
         fetch('articles.txt').then(r => r.text()).then(data => {
             const wall = document.getElementById('articlesWall');
             data.split('\n\n\n').forEach(art => {
@@ -40,10 +60,8 @@
                     let content = `<h2>${lines[0]}</h2>`;
                     lines.slice(1).forEach(l => {
                         let text = l.trim();
-                        // Если строка начинается с IMG:, берем название файла после двоеточия
                         if(text.toUpperCase().startsWith('IMG:')) {
-                            let imgName = text.substring(4).trim();
-                            content += `<img src="${imgName}" alt="Photo">`;
+                            content += `<img src="${text.substring(4).trim()}">`;
                         } else if(text.includes('<a href=')) {
                             content += `<div style="margin-top:20px;">${text}</div>`;
                         } else if(text !== "") {
@@ -56,40 +74,55 @@
             });
         });
 
+        // 2. ФУНКЦИЯ РАЗБЛОКИРОВКИ
         function unlock() {
             document.getElementById('articlesWall').classList.add('unlocked');
             document.getElementById('lockCard').style.display = 'none';
             window.scrollTo(0,0);
         }
 
+        // ПРОВЕРКА URL ДЛЯ ТЕСТА КНОПКИ
         if (window.location.search.includes('unlock')) {
             document.getElementById('unlockBtn').style.display = 'block';
         }
     </script>
-    
+
+    <!-- 3. СКРИПТЫ SENDER И АНИМАЦИЯ (ПОРЯДОК ВАЖЕН) -->
     <script src="https://cdn.sender.net/accounts_resources/universal.js"></script>
     <script>
-        // Тот самый скрипт подписи, который работал
+        sender('456b04acf96531');
+
         const canvas = document.getElementById('canvas-signature');
         const ctx = canvas.getContext('2d');
         canvas.width = 800; canvas.height = 180;
         let particles = [];
-        function init() {
-            ctx.fillStyle = 'white'; ctx.font = '80px "Reenie Beanie"'; ctx.textAlign = 'center';
+
+        function initSig() {
+            ctx.fillStyle = 'white';
+            ctx.font = '85px "Reenie Beanie"';
+            ctx.textAlign = 'center';
             ctx.fillText('Digital Signature', 400, 100);
             let d = ctx.getImageData(0,0,800,180).data;
-            for(let y=0;y<180;y+=4) for(let x=0;x<800;x+=4) if(d[(y*800+x)*4+3]>128) particles.push({x:Math.random()*800,y:Math.random()*180,dx:x,dy:y,vx:0,vy:0});
+            particles = [];
+            for(let y=0; y<180; y+=4) {
+                for(let x=0; x<800; x+=4) {
+                    if(d[(y*800+x)*4+3] > 128) {
+                        particles.push({x:Math.random()*800, y:Math.random()*180, dx:x, dy:y, vx:0, vy:0});
+                    }
+                }
+            }
         }
-        function draw() {
+
+        function animate() {
             ctx.clearRect(0,0,800,180);
             particles.forEach(p => {
                 p.vx += (p.dx-p.x)*0.1; p.vy += (p.dy-p.y)*0.1; p.vx*=0.8; p.vy*=0.8; p.x+=p.vx; p.y+=p.vy;
                 ctx.fillStyle = '#3b82f6'; ctx.beginPath(); ctx.arc(p.x,p.y,1.5,0,7); ctx.fill();
             });
-            requestAnimationFrame(draw);
+            requestAnimationFrame(animate);
         }
-        init(); draw();
-        sender('456b04acf96531');
+        
+        document.fonts.ready.then(() => { initSig(); animate(); });
     </script>
 </body>
 </html>
