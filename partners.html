@@ -9,22 +9,22 @@
         body { margin: 0; padding: 0; background-color: #0d121f; font-family: 'Inter', sans-serif; color: white; overflow-x: hidden; }
         .wrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
         
-        /* КАРТОЧКА */
+        /* КАРТОЧКА С ФОРМОЙ */
         .card { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5); position: relative; z-index: 100; margin-bottom: 50px; color: #333; }
         .brand-name { color: #3b82f6; font-size: 26px; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; display: block; }
 
-        /* СТЕНА СТАТЕЙ */
-        #articlesWall { width: 90%; max-width: 800px; filter: blur(25px); transition: 1s ease; pointer-events: none; }
-        .unlocked { filter: blur(0) !important; pointer-events: auto !important; }
+        /* ПОДПИСЬ ПОД ФОРМОЙ */
+        .sig-container { position: absolute; left: 50%; transform: translateX(-50%); top: 95%; width: 100vw; height: 180px; display: flex; justify-content: center; pointer-events: none; z-index: 10; }
+        canvas { width: 800px !important; height: 180px !important; }
+
+        /* СТАТЬИ */
+        #articlesWall { width: 90%; max-width: 800px; filter: blur(30px); transition: 1s ease; pointer-events: none; opacity: 0.3; }
+        .unlocked { filter: blur(0) !important; pointer-events: auto !important; opacity: 1 !important; }
 
         .article-block { background: rgba(255,255,255,0.03); padding: 40px; margin-bottom: 40px; border-radius: 15px; border-left: 5px solid #3b82f6; }
         .article-block h2 { color: #3b82f6; font-size: 32px; margin: 0 0 20px 0; }
-        .article-block p { line-height: 1.8; color: #cbd5e1; font-size: 18px; margin-bottom: 15px; }
+        .article-block p { line-height: 1.8; color: #cbd5e1; font-size: 18px; }
 
-        /* ПОДПИСЬ - ВОЗВРАЩАЕМ ЦЕЛИКОМ */
-        .sig-container { position: absolute; left: 50%; transform: translateX(-50%); top: 92%; width: 100vw; height: 180px; display: flex; justify-content: center; pointer-events: none; z-index: 15; }
-        canvas { width: 800px !important; height: 180px !important; }
-        
         .unlock-btn { display: none; width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; font-size: 16px; }
         .back-link { color: #64748b; text-decoration: none; margin-top: 50px; display: block; }
     </style>
@@ -34,21 +34,25 @@
     <div class="wrapper">
         <div id="lockCard" class="card">
             <span class="brand-name">Internationals</span>
+            <!-- ТВОЯ ФОРМА SENDER -->
             <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
             
-            <button id="unlockBtn" class="unlock-btn" onclick="unlock()">ЧИТАТЬ СТАТЬИ</button>
+            <!-- КНОПКА (ПОЯВИТСЯ ТОЛЬКО ПРИ НУЖНОМ УСЛОВИИ) -->
+            <button id="unlockBtn" class="unlock-btn" onclick="unlock()">ОТКРЫТЬ ДОСТУП К СТАТЬЯМ</button>
 
             <div class="sig-container">
                 <canvas id="canvas-signature"></canvas>
             </div>
         </div>
 
+        <!-- СЮДА ПОДГРУЖАЮТСЯ СТАТЬИ -->
         <div id="articlesWall"></div>
+
         <a href="#" onclick="window.close(); return false;" class="back-link">← На главную</a>
     </div>
 
     <script>
-        // ЗАГРУЗКА ТЕКСТА
+        // 1. ЗАГРУЗКА ТЕКСТА ИЗ ФАЙЛА
         fetch('articles.txt')
             .then(res => res.text())
             .then(data => {
@@ -74,29 +78,34 @@
                 });
             });
 
+        // 2. ЛОГИКА РАЗБЛОКИРОВКИ
         function unlock() {
             document.getElementById('articlesWall').classList.add('unlocked');
             document.getElementById('lockCard').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Кнопка появится ТОЛЬКО если человек пришел после заполнения формы
+        // Показываем кнопку только если в ссылке есть ?unlock=true
         if (window.location.search.includes('unlock')) {
             document.getElementById('unlockBtn').style.display = 'block';
         }
-        // Чтобы ТЫ мог потестить сейчас без Sender, я оставлю её видимой, но без таймера.
-        // Если хочешь скрыть её совсем до заполнения — удали строчку ниже:
-        document.getElementById('unlockBtn').style.display = 'block'; 
     </script>
 
+    <!-- ТВОИ СКРИПТЫ: ПОДПИСЬ И SENDER -->
+    <script src="https://cdn.sender.net/accounts_resources/universal.js"></script>
     <script>
-        // ПОЛНЫЙ КОД ПОДПИСИ (ВОЗВРАЩЕН)
+        // Инициализация Sender
+        (function(s,e,n,d,er){s['Sender']=er;s[er]=s[er]||function(){(s[er].q=s[er].q||[]).push(arguments)},s[er].l=1*new Date();var a=e.createElement(n),m=e.getElementsByTagName(n)[0];a.async=1;a.src=d;m.parentNode.insertBefore(a,m)})(window,document,'script','https://cdn.sender.net/accounts_resources/universal.js','sender');
+        sender('456b04acf96531');
+
+        // Анимация подписи
         const canvas = document.getElementById('canvas-signature');
         const ctx = canvas.getContext('2d');
         canvas.width = 800; canvas.height = 180;
         let particles = [];
         let mouse = { x: -1000, y: -1000, radius: 75 };
 
-        function init() {
+        function initSig() {
             ctx.fillStyle = 'white';
             ctx.font = '85px "Reenie Beanie"';
             ctx.textAlign = 'center';
@@ -111,7 +120,7 @@
                 }
             }
         }
-        function animate() {
+        function animateSig() {
             ctx.clearRect(0, 0, 800, 180);
             particles.forEach(p => {
                 let dx = p.x - mouse.x; let dy = p.y - mouse.y;
@@ -123,16 +132,14 @@
                 ctx.fillStyle = 'rgba(59, 130, 246, 0.7)';
                 ctx.beginPath(); ctx.arc(p.x, p.y, 1.6, 0, Math.PI*2); ctx.fill();
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(animateSig);
         }
         window.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
             mouse.x = (e.clientX - rect.left) * (800 / rect.width);
             mouse.y = (e.clientY - rect.top) * (180 / rect.height);
         });
-        document.fonts.ready.then(() => { init(); animate(); });
+        document.fonts.ready.then(() => { initSig(); animateSig(); });
     </script>
-    <script src="https://cdn.sender.net/accounts_resources/universal.js"></script>
-    <script>sender('456b04acf96531');</script>
 </body>
 </html>
