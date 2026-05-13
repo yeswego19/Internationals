@@ -2,172 +2,94 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partnership | Internationals</title>
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 0; background-color: #0d121f; font-family: 'Inter', sans-serif; color: white; overflow-x: hidden; }
-        .wrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; width: 100%; }
-        
-        /* КАРТОЧКА С ФОРМОЙ */
-        .card { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 15px 40px rgba(0,0,0,0.5); position: relative; z-index: 100; margin-bottom: 80px; color: #333; }
-        .brand-name { color: #3b82f6; font-size: 26px; font-weight: 900; text-transform: uppercase; margin-bottom: 20px; display: block; }
-
-        /* КОНТЕЙНЕР ПОДПИСИ */
-        .sig-container { position: absolute; left: 50%; transform: translateX(-50%); top: 92%; width: 100vw; height: 180px; display: flex; justify-content: center; pointer-events: none; z-index: 10; }
+        body { margin: 0; background: #0d121f; font-family: 'Inter', sans-serif; color: white; }
+        .wrapper { display: flex; flex-direction: column; align-items: center; padding: 40px 0; }
+        .card { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 380px; text-align: center; position: relative; z-index: 100; margin-bottom: 50px; color: #333; }
+        .sig-container { position: absolute; left: 50%; transform: translateX(-50%); top: 95%; width: 100vw; height: 180px; pointer-events: none; }
         canvas { width: 800px !important; height: 180px !important; }
-
-        /* СТЕНА СТАТЕЙ */
-        #articlesWall { width: 90%; max-width: 800px; filter: blur(30px); opacity: 0.1; transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; }
-        .unlocked { filter: blur(0) !important; opacity: 1 !important; pointer-events: auto !important; }
-
-        .article-block { background: rgba(255,255,255,0.03); padding: 45px; margin-bottom: 50px; border-radius: 20px; border-left: 6px solid #3b82f6; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .article-block h2 { color: #3b82f6; font-size: 34px; margin: 0 0 25px 0; line-height: 1.2; }
-        .article-block p { line-height: 1.8; color: #cbd5e1; font-size: 19px; margin-bottom: 20px; }
-        
-        /* СТИЛЬ ДЛЯ КАРТИНОК В СТАТЬЯХ */
-        .article-block img { width: 100%; border-radius: 12px; margin: 25px 0; border: 1px solid rgba(59, 130, 246, 0.3); display: block; }
-        
-        /* КНОПКА РАЗБЛОКИРОВКИ */
-        .unlock-btn { display: none; width: 100%; padding: 18px; background: #3b82f6; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; margin-top: 20px; font-size: 17px; transition: 0.3s; }
-        .unlock-btn:hover { background: #2563eb; transform: translateY(-2px); }
-        
-        .back-link { color: #64748b; text-decoration: none; margin-top: 60px; display: block; font-size: 14px; opacity: 0.6; }
-        .back-link:hover { opacity: 1; }
+        #articlesWall { width: 90%; max-width: 800px; filter: blur(30px); opacity: 0.1; transition: 1s; pointer-events: auto; }
+        .unlocked { filter: blur(0) !important; opacity: 1 !important; }
+        .article-block { background: rgba(255,255,255,0.03); padding: 40px; margin-bottom: 40px; border-radius: 15px; border-left: 5px solid #3b82f6; }
+        .article-block img { width: 100%; border-radius: 10px; margin: 20px 0; border: 1px solid #3b82f6; display: block; }
+        .unlock-btn { display: none; width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
         <div id="lockCard" class="card">
-            <span class="brand-name">Internationals</span>
-            <!-- Форма Sender -->
+            <b style="font-size:24px; color:#3b82f6;">INTERNATIONALS</b>
             <div class="sender-form-field" data-sender-form-id="dL9p2w"></div>
-            
-            <button id="unlockBtn" class="unlock-btn" onclick="unlock()">ACCESS GRANTED: READ ARTICLES</button>
-
-            <div class="sig-container">
-                <canvas id="canvas-signature"></canvas>
-            </div>
+            <button id="unlockBtn" class="unlock-btn" onclick="unlock()">ОТКРЫТЬ СТАТЬИ</button>
+            <div class="sig-container"><canvas id="canvas-signature"></canvas></div>
         </div>
-
         <div id="articlesWall"></div>
-        <a href="/" class="back-link">← Return to Main Page</a>
     </div>
 
     <script>
-        // 1. УНИВЕРСАЛЬНЫЙ ПАРСЕР ТЕКСТА
-        fetch('articles.txt')
-            .then(res => res.text())
-            .then(data => {
-                const wall = document.getElementById('articlesWall');
-                const articles = data.split('\n\n\n'); // Разделение статей тремя Enter
-                
-                articles.forEach(article => {
-                    const lines = article.trim().split('\n');
-                    if (lines.length > 0) {
-                        const div = document.createElement('div');
-                        div.className = 'article-block';
-                        
-                        let htmlContent = `<h2>${lines[0]}</h2>`; // Первая строка - заголовок
-                        
-                        lines.slice(1).forEach(line => {
-                            let trimmedLine = line.trim();
-                            
-                            if (trimmedLine.startsWith('IMG:')) {
-                                // Если строка начинается с IMG:, вставляем картинку
-                                let imgFile = trimmedLine.replace('IMG:', '').trim();
-                                htmlContent += `<img src="${imgFile}" alt="Internationals Insights">`;
-                            } else if (trimmedLine.includes('<a href')) {
-                                // Если есть ссылка, вставляем как HTML
-                                htmlContent += `<div style="margin-top:15px;">${trimmedLine}</div>`;
-                            } else if (trimmedLine !== "") {
-                                // Обычный текст
-                                htmlContent += `<p>${trimmedLine}</p>`;
-                            }
-                        });
-                        
-                        div.innerHTML = htmlContent;
-                        wall.appendChild(div);
-                    }
-                });
+        // УНИВЕРСАЛЬНАЯ ЗАГРУЗКА
+        fetch('articles.txt').then(r => r.text()).then(data => {
+            const wall = document.getElementById('articlesWall');
+            data.split('\n\n\n').forEach(art => {
+                let lines = art.trim().split('\n');
+                if (lines.length > 0) {
+                    let div = document.createElement('div');
+                    div.className = 'article-block';
+                    let content = `<h2>${lines[0]}</h2>`;
+                    lines.slice(1).forEach(l => {
+                        let text = l.trim();
+                        // Если строка начинается с IMG:, берем название файла после двоеточия
+                        if(text.toUpperCase().startsWith('IMG:')) {
+                            let imgName = text.substring(4).trim();
+                            content += `<img src="${imgName}" alt="Photo">`;
+                        } else if(text.includes('<a href=')) {
+                            content += `<div style="margin-top:20px;">${text}</div>`;
+                        } else if(text !== "") {
+                            content += `<p>${text}</p>`;
+                        }
+                    });
+                    div.innerHTML = content;
+                    wall.appendChild(div);
+                }
             });
+        });
 
-        // 2. ЛОГИКА ДОСТУПА
         function unlock() {
             document.getElementById('articlesWall').classList.add('unlocked');
-            document.getElementById('lockCard').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('lockCard').style.display = 'none';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 500);
+            document.getElementById('lockCard').style.display = 'none';
+            window.scrollTo(0,0);
         }
 
-        // Показать кнопку только если есть параметр в ссылке
         if (window.location.search.includes('unlock')) {
             document.getElementById('unlockBtn').style.display = 'block';
         }
     </script>
-
-    <!-- СКРИПТЫ SENDER И ПОДПИСИ -->
+    
     <script src="https://cdn.sender.net/accounts_resources/universal.js"></script>
     <script>
-        sender('456b04acf96531');
-
+        // Тот самый скрипт подписи, который работал
         const canvas = document.getElementById('canvas-signature');
         const ctx = canvas.getContext('2d');
         canvas.width = 800; canvas.height = 180;
         let particles = [];
-        let mouse = { x: -1000, y: -1000, radius: 80 };
-
-        function initSig() {
-            ctx.fillStyle = 'white';
-            ctx.font = '85px "Reenie Beanie"';
-            ctx.textAlign = 'center';
+        function init() {
+            ctx.fillStyle = 'white'; ctx.font = '80px "Reenie Beanie"'; ctx.textAlign = 'center';
             ctx.fillText('Digital Signature', 400, 100);
-            const imgData = ctx.getImageData(0, 0, 800, 180).data;
-            particles = [];
-            for (let y = 0; y < 180; y += 4) {
-                for (let x = 0; x < 800; x += 4) {
-                    if (imgData[(y * 800 + x) * 4 + 3] > 128) {
-                        particles.push({
-                            x: Math.random() * 800,
-                            y: Math.random() * 180,
-                            destX: x,
-                            destY: y,
-                            vx: 0, vy: 0
-                        });
-                    }
-                }
-            }
+            let d = ctx.getImageData(0,0,800,180).data;
+            for(let y=0;y<180;y+=4) for(let x=0;x<800;x+=4) if(d[(y*800+x)*4+3]>128) particles.push({x:Math.random()*800,y:Math.random()*180,dx:x,dy:y,vx:0,vy:0});
         }
-
-        function animate() {
-            ctx.clearRect(0, 0, 800, 180);
+        function draw() {
+            ctx.clearRect(0,0,800,180);
             particles.forEach(p => {
-                let dx = p.x - mouse.x;
-                let dy = p.y - mouse.y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-                if (dist < mouse.radius) {
-                    p.vx += dx/8; p.vy += dy/8;
-                }
-                p.vx += (p.destX - p.x) * 0.15;
-                p.vy += (p.destY - p.y) * 0.15;
-                p.vx *= 0.8; p.vy *= 0.8;
-                p.x += p.vx; p.y += p.vy;
-                ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
-                ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2); ctx.fill();
+                p.vx += (p.dx-p.x)*0.1; p.vy += (p.dy-p.y)*0.1; p.vx*=0.8; p.vy*=0.8; p.x+=p.vx; p.y+=p.vy;
+                ctx.fillStyle = '#3b82f6'; ctx.beginPath(); ctx.arc(p.x,p.y,1.5,0,7); ctx.fill();
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(draw);
         }
-
-        window.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            mouse.x = (e.clientX - rect.left) * (800 / rect.width);
-            mouse.y = (e.clientY - rect.top) * (180 / rect.height);
-        });
-
-        document.fonts.ready.then(() => { initSig(); animate(); });
+        init(); draw();
+        sender('456b04acf96531');
     </script>
 </body>
 </html>
