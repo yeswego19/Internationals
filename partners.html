@@ -55,11 +55,17 @@
         <div id="articlesWall"></div>
     </div>
 
-    <!-- 1. Сначала грузим универсальный скрипт Sender -->
-    <script src="https://cdn.sender.net/accounts_resources/universal.js"></script>
     <script>
-        // Инициализация формы
-        sender('456b04acf96531');
+        // 1. Загружаем Sender только после готовности скрипта
+        (function() {
+            var s = document.createElement('script');
+            s.async = 1;
+            s.src = 'https://cdn.sender.net/accounts_resources/universal.js';
+            s.onload = function() {
+                if (window.sender) sender('456b04acf96531');
+            };
+            document.head.appendChild(s);
+        })();
 
         // 2. Функция разблокировки (убирает блюр и карточку)
         function unlock() {
