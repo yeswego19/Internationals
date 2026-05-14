@@ -97,8 +97,8 @@
         #articlesWall {
             width: 90%;
             max-width: 800px;
-            filter: blur(35px);
-            opacity: 0.1;
+            filter: blur(8px);
+            opacity: 0.55;
             transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
             margin-top: 80px;
@@ -266,18 +266,21 @@
         .then(r => r.text())
         .then(data => {
             const wall = document.getElementById('articlesWall');
-            data.split('\n\n\n').forEach(part => {
+            // Статьи разделяются строкой ---
+            data.split(/\n---\n/).forEach(part => {
                 const lines = part.trim().split('\n');
                 if (lines.length === 0) return;
                 const div = document.createElement('div');
                 div.className = 'article-block';
-                let html = `<h2>${lines[0]}</h2>`;
-                lines.slice(1).forEach(line => {
+                let html = '';
+                lines.forEach(line => {
                     const l = line.trim();
                     if (l.toUpperCase().startsWith('IMG:')) {
                         html += `<img src="${l.substring(4).trim()}" alt="">`;
                     } else if (l.includes('<a href')) {
                         html += `<div style="margin-top:20px;">${l}</div>`;
+                    } else if (l.startsWith('##')) {
+                        html += `<h2>${l.substring(2).trim()}</h2>`;
                     } else if (l !== '') {
                         html += `<p>${l}</p>`;
                     }
