@@ -36,7 +36,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
-    /* Jitsi video call contact item styles */
     .jitsi-link {
       display: inline-flex;
       align-items: center;
@@ -80,9 +79,7 @@
   </style>
 
   <script>
-  // Аналитика грузится ТОЛЬКО после согласия
   function loadAnalytics() {
-    // Яндекс.Метрика
     (function(m,e,t,r,i,k,a){
       m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
       m[i].l=1*new Date();
@@ -91,7 +88,6 @@
     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105858281', 'ym');
     ym(105858281, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
 
-    // Google Analytics
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=G-0780Z702Y0';
@@ -102,7 +98,6 @@
     gtag('config', 'G-0780Z702Y0');
   }
 
-  // Если уже принял раньше — грузим сразу
   if (localStorage.getItem('cookieConsent') === 'accepted') {
     loadAnalytics();
   }
@@ -166,7 +161,6 @@
     </div>
   </section>
 
-  <!-- Reveal overlay canvas (over entire viewport) -->
   <div id="revealOverlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:999;opacity:0;transition:opacity 0.2s;">
     <canvas id="revealCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
   </div>
@@ -215,7 +209,7 @@
   <script>
   (function() {
     const serviceMedia = {
-      1: { src: 'assets/service1.png', type: 'image' },
+      1: { src: 'assets/service1.mp4', type: 'video' },
       2: { src: 'assets/service2.png', type: 'image' },
       3: { src: 'assets/service3.jpg', type: 'image' },
       4: { src: 'assets/service4.png', type: 'image' },
@@ -235,10 +229,9 @@
     let currentImg = null;
     let currentVideo = null;
     const MAX_RADIUS = Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2);
-    const GROW_PX = 7; // px per 16ms tick while held
-    const SHRINK = 0.10; // lerp factor when releasing
+    const GROW_PX = 7;
+    const SHRINK = 0.10;
 
-    // Preload all images
     const imgCache = {};
     const vidCache = {};
     Object.entries(serviceMedia).forEach(([n, m]) => {
@@ -276,7 +269,6 @@
         ctx.drawImage(currentImg, (canvas.width - dw) / 2, (canvas.height - dh) / 2, dw, dh);
       }
       ctx.restore();
-      // Soft vignette edge
       const g = ctx.createRadialGradient(originX, originY, currentRadius * 0.8, originX, originY, currentRadius);
       g.addColorStop(0, 'rgba(0,0,0,0)');
       g.addColorStop(1, 'rgba(0,0,0,0.4)');
@@ -380,8 +372,6 @@
                 <p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p>
               </div>
             </div>
-
-            <!-- Jitsi Meet video call -->
             <div class="contact-item">
               <i class="fas fa-video" style="font-size:1.5rem;"></i>
               <div>
@@ -395,7 +385,6 @@
                 </p>
               </div>
             </div>
-
             <div class="contact-item">
               <img src="assets/Clock.png" alt="Часы работы" style="width:100px;height:100px;margin-right:12px;vertical-align:middle;">
               <div>
@@ -702,13 +691,12 @@
     acceptBtn.addEventListener('click', () => {
       localStorage.setItem('cookieConsent', 'accepted');
       contactOverlay.classList.remove('show');
-      loadAnalytics(); // Запускаем аналитику только после согласия
+      loadAnalytics();
     });
 
     declineBtn.addEventListener('click', () => {
       localStorage.setItem('cookieConsent', 'declined');
       contactOverlay.classList.remove('show');
-      // Аналитика НЕ запускается
     });
 
     checkCookieConsent();
