@@ -10,29 +10,23 @@
             --primary-color: #003580;
             --hover-color: #ff0000;
         }
-        
         body { 
             margin: 0; 
             padding: 0; 
             font-family: 'Inter', Arial, sans-serif; 
-            background-color: #f4f7f9; /* Фон страницы как на главной */
+            background-color: #f4f7f9;
         }
-
-        /* Полностью прозрачная шапка без белых полос */
         .header {
-            padding: 40px 40px 10px 40px; /* Больше отступа сверху для солидности */
+            padding: 40px 40px 10px 40px;
             display: flex;
             align-items: center;
             background: transparent;
         }
-
-        /* Логотип: размер 1-в-1 с главной страницей */
         .logo img {
             width: 280px; 
             height: auto;
             display: block;
         }
-
         .wrapper { 
             width: 100%; 
             max-width: 1200px; 
@@ -40,44 +34,33 @@
             padding: 0 20px 50px 20px; 
             box-sizing: border-box;
         }
-
-        /* Стрелка справа сверху над формой */
         .action-bar {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: -10px; /* Прижимаем ближе к виджету */
+            margin-bottom: -10px;
         }
-
         .back-link {
             text-decoration: none;
             color: var(--primary-color);
-            font-size: 75px; /* Реально большая стрелка */
+            font-size: 75px;
             font-weight: bold;
             transition: color 0.3s ease;
             line-height: 0.8;
             cursor: pointer;
         }
-
         .back-link:hover {
             color: var(--hover-color);
         }
-
         .widget-container {
             background: white;
             padding: 15px;
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1); /* Мягкая тень */
-        }
-
-        iframe {
-            width: 100%;
-            border: none;
-            min-height: 900px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            min-height: 500px;
         }
     </style>
 </head>
 <body>
-
     <header class="header">
         <div class="logo">
             <a href="index.html">
@@ -85,32 +68,13 @@
             </a>
         </div>
     </header>
-
     <div class="wrapper">
         <div class="action-bar">
             <a onclick="window.close();" class="back-link" title="Закрыть и вернуться">←</a>
         </div>
-
         <div class="widget-container">
-            <iframe id="intuiIframe" 
-                src="https://www.intui.travel/?p_site=28722858&constructor=1&color_scheme=bg&b=000010010111011111&currency=RUB" 
-                frameborder="0" 
-                scrolling="no">
-            </iframe>
+            <script async src="https://tpemb.com/content?trs=527087&shmarker=726649.taxi&powered_by=true&locale=en&curr=EUR&color=blue&pbi=0&ag=18&ap=34&rid=481&campaign_id=22&promo_id=3507" charset="utf-8"></script>
         </div>
     </div>
-
-    <script type="text/javascript" src="https://www.intui.travel/public/js/jquery/iframeResizer.js"></script>
-    <script type="text/javascript">
-        window.onload = function() {
-            if (window.iFrameResize) {
-                iFrameResize({ 
-                    log: false, 
-                    checkOrigin: false,
-                    heightCalculationMethod: 'lowestElement' 
-                }, '#intuiIframe');
-            }
-        };
-    </script>
 </body>
 </html>
