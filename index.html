@@ -241,7 +241,7 @@
         imgCache[n] = img;
       } else {
         const v = document.createElement('video');
-        v.src = m.src; v.loop = true; v.muted = true; v.playsInline = true; v.preload = 'auto';
+        v.src = m.src; v.loop = true; v.muted = false; v.playsInline = true; v.preload = 'auto';
         vidCache[n] = v;
       }
     });
