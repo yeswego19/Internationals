@@ -440,6 +440,40 @@ video {
 
 const CHANNELS = [
 
+  // ══ КОРОТКОМЕТРАЖКИ ══
+  {
+    name: "🎬 ShortsTV",
+    tag: "SHORT FILMS • AWARDS • 24/7",
+    icon: "🏆",
+    url: "https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg00784-shortsinternati-shortstv-fast-italy-samsungit/playlist.m3u8"
+  },
+  {
+    name: "🎞 Shorts UK",
+    tag: "SHORT FILMS • UK • 24/7",
+    icon: "🎭",
+    url: "https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg00784-shortsinternati-shortstv-fast-uk-samsunguk/playlist.m3u8"
+  },
+
+  // ══ AMBIENT RADIO ══
+  {
+    name: "🌊 Ambient Lounge",
+    tag: "RADIO • AMBIENT • 24/7",
+    icon: "✨",
+    url: "https://streams.ilovemusic.de/iloveradio2.mp3"
+  },
+  {
+    name: "🎧 Lofi Chill",
+    tag: "RADIO • LOFI • 24/7",
+    icon: "🎵",
+    url: "https://streams.ilovemusic.de/iloveradio17.mp3"
+  },
+  {
+    name: "🎷 Jazz",
+    tag: "RADIO • JAZZ • 24/7",
+    icon: "🎷",
+    url: "https://streams.ilovemusic.de/iloveradio9.mp3"
+  },
+
   // ══ КАМЕРЫ МИРА ══
   {
     name: "🏔 Swiss Alps Cam",
@@ -573,12 +607,44 @@ function showError(show) {
   errorMsg.classList.toggle('show', show);
 }
 
+// CORS proxies — пробуем по очереди
+const PROXIES = [
+  u => u,  // сначала без прокси
+  u => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
+  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+];
+let proxyIdx = 0;
+let currentRawUrl = '';
+
+function proxied(url) {
+  if (url.match(/\.(mp3|aac|ogg)(\?|$)/i)) return url;
+  return PROXIES[proxyIdx](url);
+}
+
 function playUrl(url, label) {
   showError(false);
   showSpinner(true);
   nowPlaying.textContent = label;
+  currentRawUrl = url;
+  proxyIdx = 0;
+  tryPlay(url);
+}
 
+function tryPlay(url) {
   if (hls) { hls.destroy(); hls = null; }
+
+  // аудио mp3 — прямо в <audio>
+  if (url.match(/\.(mp3|aac|ogg)(\?|$)/i)) {
+    video.src = url;
+    video.addEventListener('loadedmetadata', () => {
+      showSpinner(false);
+      video.play().catch(() => {});
+    }, { once: true });
+    video.addEventListener('error', () => { showSpinner(false); showError(true); }, { once: true });
+    return;
+  }
+
+  const src = PROXIES[proxyIdx](url);
 
   if (Hls.isSupported()) {
     hls = new Hls({
@@ -587,7 +653,7 @@ function playUrl(url, label) {
       maxBufferLength: 30,
       backBufferLength: 60,
     });
-    hls.loadSource(url);
+    hls.loadSource(src);
     hls.attachMedia(video);
     hls.on(Hls.Events.MANIFEST_PARSED, () => {
       showSpinner(false);
@@ -599,22 +665,24 @@ function playUrl(url, label) {
     });
     hls.on(Hls.Events.ERROR, (e, data) => {
       if (data.fatal) {
-        showSpinner(false);
-        showError(true);
+        // пробуем следующий прокси
+        if (proxyIdx < PROXIES.length - 1) {
+          proxyIdx++;
+          streamQuality.textContent = 'proxy ' + proxyIdx;
+          setTimeout(() => tryPlay(currentRawUrl), 500);
+        } else {
+          showSpinner(false);
+          showError(true);
+        }
       }
     });
-  }
-  // Safari native HLS
-  else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = url;
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = src;
     video.addEventListener('loadedmetadata', () => {
       showSpinner(false);
       video.play().catch(() => {});
     }, { once: true });
-    video.addEventListener('error', () => {
-      showSpinner(false);
-      showError(true);
-    }, { once: true });
+    video.addEventListener('error', () => { showSpinner(false); showError(true); }, { once: true });
   } else {
     showSpinner(false);
     showError(true);
