@@ -1,60 +1,34 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>INTERNATIONALS TV</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <style>
 
-:root{
-  --bg:#04090f;
-  --surface:#0a1525;
-  --border:rgba(0,160,255,.18);
-  --accent:#0099ff;
-  --accent2:#00d4ff;
-  --text:#e8f4ff;
-  --muted:rgba(232,244,255,.45);
-}
-
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 html,body{
-  height:100%;
-  background:var(--bg);
-  color:var(--text);
-  font-family:'IBM Plex Mono',monospace;
-  overflow:hidden;
-}
 
-/* GRID */
+width:100%;
+height:100%;
 
-body::before{
+background:#050b14;
 
-  content:'';
+font-family:Arial,sans-serif;
 
-  position:fixed;
-  inset:0;
+overflow:hidden;
 
-  background-image:
-  linear-gradient(rgba(0,153,255,.04) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(0,153,255,.04) 1px, transparent 1px);
-
-  background-size:40px 40px;
-
-  pointer-events:none;
+color:white;
 
 }
 
@@ -62,102 +36,62 @@ body::before{
 
 .header{
 
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
+position:fixed;
 
-  height:60px;
+top:0;
+left:0;
+right:0;
 
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+height:58px;
 
-  padding:0 28px;
+background:rgba(0,0,0,.7);
 
-  background:rgba(4,9,15,.88);
+backdrop-filter:blur(12px);
 
-  backdrop-filter:blur(16px);
+display:flex;
+align-items:center;
+justify-content:space-between;
 
-  border-bottom:1px solid var(--border);
+padding:0 24px;
 
-  z-index:999;
+border-bottom:1px solid rgba(0,170,255,.2);
+
+z-index:999;
 
 }
 
 .logo{
 
-  font-family:'Rajdhani',sans-serif;
-  font-size:22px;
-  font-weight:700;
+font-size:22px;
+font-weight:bold;
 
-  letter-spacing:3px;
+letter-spacing:3px;
 
-  color:var(--accent2);
-
-}
-
-.logo span{
-
-  color:var(--muted);
-  font-weight:400;
+color:#00cfff;
 
 }
 
 .live{
 
-  display:flex;
-  align-items:center;
-  gap:8px;
+font-size:12px;
 
-  font-size:12px;
+letter-spacing:2px;
 
-  letter-spacing:2px;
-
-  color:var(--accent);
+color:#00cfff;
 
 }
 
-.dot{
-
-  width:8px;
-  height:8px;
-
-  border-radius:50%;
-
-  background:#ff3a3a;
-
-  box-shadow:0 0 10px #ff3a3a;
-
-  animation:pulse 1.2s infinite;
-
-}
-
-@keyframes pulse{
-
-  0%,100%{
-    opacity:1;
-    transform:scale(1);
-  }
-
-  50%{
-    opacity:.4;
-    transform:scale(.7);
-  }
-
-}
-
-/* MAIN */
+/* LAYOUT */
 
 .main{
 
-  display:grid;
+display:grid;
 
-  grid-template-columns:280px 1fr;
+grid-template-columns:260px 1fr;
 
-  height:100vh;
+height:100vh;
 
-  padding-top:60px;
+padding-top:58px;
 
 }
 
@@ -165,101 +99,66 @@ body::before{
 
 .sidebar{
 
-  background:rgba(10,21,37,.7);
+background:#08111d;
 
-  border-right:1px solid var(--border);
+border-right:1px solid rgba(0,170,255,.15);
 
-  overflow-y:auto;
+padding:14px;
 
-}
-
-.sidebar-title{
-
-  padding:20px;
-
-  font-size:11px;
-
-  letter-spacing:3px;
-
-  color:var(--muted);
-
-  border-bottom:1px solid var(--border);
+overflow-y:auto;
 
 }
 
 .channel{
 
-  display:flex;
-  align-items:center;
+background:#0d1725;
 
-  gap:14px;
+border:1px solid rgba(0,170,255,.15);
 
-  padding:14px 18px;
+border-radius:14px;
 
-  cursor:pointer;
+padding:14px;
 
-  transition:.2s;
+margin-bottom:10px;
 
-  border-left:3px solid transparent;
+cursor:pointer;
+
+transition:.2s;
 
 }
 
 .channel:hover{
 
-  background:rgba(0,153,255,.08);
+background:#102033;
+
+border-color:#00aaff;
 
 }
 
 .channel.active{
 
-  background:rgba(0,153,255,.14);
+background:#12304d;
 
-  border-left-color:var(--accent);
-
-}
-
-.icon{
-
-  width:42px;
-  height:42px;
-
-  border-radius:10px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:var(--surface);
-
-  border:1px solid var(--border);
-
-  font-size:18px;
-
-}
-
-.info{
-
-  flex:1;
+border-color:#00cfff;
 
 }
 
 .name{
 
-  font-family:'Rajdhani',sans-serif;
-  font-size:16px;
-  font-weight:700;
+font-size:16px;
+font-weight:bold;
+
+margin-bottom:4px;
 
 }
 
 .tag{
 
-  margin-top:3px;
+font-size:11px;
 
-  font-size:10px;
+opacity:.6;
 
-  color:var(--muted);
-
-  letter-spacing:1px;
+letter-spacing:1px;
 
 }
 
@@ -267,105 +166,43 @@ body::before{
 
 .player{
 
-  display:flex;
-  flex-direction:column;
+position:relative;
 
-  background:black;
-
-}
-
-.video-wrap{
-
-  flex:1;
-
-  position:relative;
-
-  background:black;
+background:black;
 
 }
 
 video{
 
-  width:100%;
-  height:100%;
+width:100%;
+height:100%;
 
-  object-fit:contain;
+object-fit:contain;
 
-  background:black;
+background:black;
 
 }
+
+/* STATUS */
 
 .status{
 
-  height:44px;
+position:absolute;
 
-  display:flex;
-  align-items:center;
+left:20px;
+bottom:20px;
 
-  padding:0 20px;
+background:rgba(0,0,0,.6);
 
-  border-top:1px solid var(--border);
+backdrop-filter:blur(10px);
 
-  background:rgba(4,9,15,.95);
+padding:10px 16px;
 
-  font-size:12px;
+border-radius:12px;
 
-  color:var(--muted);
+font-size:14px;
 
-}
-
-.now{
-
-  font-family:'Rajdhani',sans-serif;
-  font-size:15px;
-  font-weight:700;
-
-  color:var(--text);
-
-}
-
-/* LOADER */
-
-.loader{
-
-  position:absolute;
-  inset:0;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  pointer-events:none;
-
-}
-
-.spinner{
-
-  width:50px;
-  height:50px;
-
-  border:3px solid rgba(255,255,255,.1);
-  border-top-color:var(--accent);
-
-  border-radius:50%;
-
-  animation:spin .8s linear infinite;
-
-  display:none;
-
-}
-
-.spinner.active{
-
-  display:block;
-
-}
-
-@keyframes spin{
-
-  to{
-    transform:rotate(360deg);
-  }
+z-index:20;
 
 }
 
@@ -373,44 +210,26 @@ video{
 
 .error{
 
-  position:absolute;
-  inset:0;
+position:absolute;
 
-  display:none;
-  flex-direction:column;
+inset:0;
 
-  align-items:center;
-  justify-content:center;
+display:none;
 
-  background:rgba(4,9,15,.9);
+align-items:center;
+justify-content:center;
 
-  gap:14px;
+background:rgba(0,0,0,.7);
 
-  z-index:5;
+font-size:20px;
+
+z-index:50;
 
 }
 
 .error.show{
 
-  display:flex;
-
-}
-
-.error-icon{
-
-  font-size:50px;
-
-}
-
-.error-text{
-
-  font-family:'Rajdhani',sans-serif;
-
-  font-size:18px;
-
-  color:var(--muted);
-
-  text-align:center;
+display:flex;
 
 }
 
@@ -418,98 +237,67 @@ video{
 
 @media(max-width:700px){
 
-  .main{
+.main{
 
-    grid-template-columns:1fr;
-    grid-template-rows:1fr 200px;
+grid-template-columns:1fr;
+grid-template-rows:1fr 180px;
 
-  }
+}
 
-  .sidebar{
+.sidebar{
 
-    border-right:none;
-    border-top:1px solid var(--border);
+border-right:none;
+border-top:1px solid rgba(0,170,255,.15);
 
-  }
+}
 
 }
 
 </style>
+
 </head>
 
 <body>
 
-<header class="header">
+<div class="header">
 
-  <div class="logo">
-    INTERNATIONALS<span>.TV</span>
-  </div>
+<div class="logo">
+INTERNATIONALS.TV
+</div>
 
-  <div class="live">
+<div class="live">
+LIVE
+</div>
 
-    <div class="dot"></div>
-
-    LIVE
-
-  </div>
-
-</header>
+</div>
 
 <div class="main">
 
-  <!-- SIDEBAR -->
+<!-- SIDEBAR -->
 
-  <aside class="sidebar">
+<div class="sidebar" id="channels"></div>
 
-    <div class="sidebar-title">
-      CHANNELS
-    </div>
+<!-- PLAYER -->
 
-    <div id="channels"></div>
+<div class="player">
 
-  </aside>
+<video
+id="video"
+autoplay
+muted
+playsinline
+controls>
+</video>
 
-  <!-- PLAYER -->
+<div class="status" id="status">
+Loading...
+</div>
 
-  <div class="player">
+<div class="error" id="error">
+STREAM UNAVAILABLE
+</div>
 
-    <div class="video-wrap">
-
-      <video
-        id="video"
-        autoplay
-        muted
-        playsinline
-        controls>
-      </video>
-
-      <div class="loader">
-        <div class="spinner" id="spinner"></div>
-      </div>
-
-      <div class="error" id="error">
-
-        <div class="error-icon">
-          📡
-        </div>
-
-        <div class="error-text">
-          Stream unavailable
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="status">
-
-      <div class="now" id="now">
-        Loading...
-      </div>
-
-    </div>
-
-  </div>
+</div>
 
 </div>
 
@@ -519,44 +307,21 @@ video{
 
 const CHANNELS = [
 
-  {
-    name:"Big Buck Bunny",
-    tag:"MOVIE • STABLE",
-    icon:"🐰",
-    url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
-  },
+{
+name:"🎬 Short Film",
+tag:"24/7 MOVIE STREAM",
+type:"hls",
+url:"https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+},
 
-  {
-    name:"Sintel",
-    tag:"ANIMATION FILM",
-    icon:"🎞️",
-    url:"https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
-  },
-
-  {
-    name:"Tears of Steel",
-    tag:"SCI-FI SHORT FILM",
-    icon:"🚀",
-    url:"https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/hls/tears-of-steel.m3u8"
-  },
-
-  {
-    name:"Tokyo Live",
-    tag:"LIVE CAMERA",
-    icon:"🗼",
-    url:"https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
-  },
-
-  {
-    name:"Relax FM",
-    tag:"RADIO",
-    icon:"🎵",
-    url:"https://pub0302.101.ru:8443/stream/trust/mp3/128/200"
-  }
+{
+name:"🌊 Ambient Radio",
+tag:"RELAX • AMBIENT",
+type:"audio",
+url:"https://streams.ilovemusic.de/iloveradio2.mp3"
+}
 
 ];
-
-/* ELEMENTS */
 
 const video =
 document.getElementById('video');
@@ -564,54 +329,49 @@ document.getElementById('video');
 const channels =
 document.getElementById('channels');
 
-const spinner =
-document.getElementById('spinner');
+const status =
+document.getElementById('status');
 
 const error =
 document.getElementById('error');
 
-const now =
-document.getElementById('now');
-
 let hls = null;
 
-/* BUILD */
+/* BUILD CHANNELS */
 
-CHANNELS.forEach((ch,index)=>{
+CHANNELS.forEach((channel,index)=>{
 
-  const div =
-  document.createElement('div');
+const div =
+document.createElement('div');
 
-  div.className =
-  'channel';
+div.className =
+'channel';
 
-  div.innerHTML = `
-  
-    <div class="icon">${ch.icon}</div>
+div.innerHTML = `
 
-    <div class="info">
+<div class="name">
+${channel.name}
+</div>
 
-      <div class="name">${ch.name}</div>
+<div class="tag">
+${channel.tag}
+</div>
 
-      <div class="tag">${ch.tag}</div>
+`;
 
-    </div>
+div.onclick = ()=>{
 
-  `;
+document
+.querySelectorAll('.channel')
+.forEach(el=>el.classList.remove('active'));
 
-  div.onclick = ()=>{
+div.classList.add('active');
 
-    document
-    .querySelectorAll('.channel')
-    .forEach(el=>el.classList.remove('active'));
+play(channel);
 
-    div.classList.add('active');
+};
 
-    play(ch);
-
-  };
-
-  channels.appendChild(div);
+channels.appendChild(div);
 
 });
 
@@ -619,107 +379,85 @@ CHANNELS.forEach((ch,index)=>{
 
 function play(channel){
 
-  now.textContent =
-  channel.name;
+error.classList.remove('show');
 
-  error.classList.remove('show');
+status.innerText =
+channel.name;
 
-  spinner.classList.add('active');
+if(hls){
 
-  if(hls){
+hls.destroy();
 
-    hls.destroy();
+hls = null;
 
-    hls = null;
+}
 
-  }
+/* AUDIO */
 
-  // RADIO
+if(channel.type === 'audio'){
 
-  if(
-    channel.url.includes('.mp3')
-  ){
+video.src =
+channel.url;
 
-    video.src =
-    channel.url;
+video.play()
+.catch(()=>{
 
-    video.onloadedmetadata = ()=>{
+error.classList.add('show');
 
-      spinner.classList.remove('active');
+});
 
-      video.play();
+return;
 
-    };
+}
 
-    video.onerror = ()=>{
+/* HLS */
 
-      spinner.classList.remove('active');
+if(Hls.isSupported()){
 
-      error.classList.add('show');
+hls = new Hls();
 
-    };
+hls.loadSource(channel.url);
 
-    return;
+hls.attachMedia(video);
 
-  }
+hls.on(Hls.Events.MANIFEST_PARSED,()=>{
 
-  // HLS
+video.play()
+.catch(()=>{});
 
-  if(Hls.isSupported()){
+});
 
-    hls = new Hls({
+hls.on(Hls.Events.ERROR,(e,data)=>{
 
-      enableWorker:true,
-      lowLatencyMode:true
+if(data.fatal){
 
-    });
+error.classList.add('show');
 
-    hls.loadSource(channel.url);
+}
 
-    hls.attachMedia(video);
+});
 
-    hls.on(Hls.Events.MANIFEST_PARSED,()=>{
+}
 
-      spinner.classList.remove('active');
+/* SAFARI */
 
-      video.play().catch(()=>{});
+else if(
+video.canPlayType(
+'application/vnd.apple.mpegurl'
+)
+){
 
-    });
+video.src =
+channel.url;
 
-    hls.on(Hls.Events.ERROR,(e,data)=>{
+video.play()
+.catch(()=>{
 
-      if(data.fatal){
+error.classList.add('show');
 
-        spinner.classList.remove('active');
+});
 
-        error.classList.add('show');
-
-      }
-
-    });
-
-  }
-
-  // SAFARI
-
-  else if(
-    video.canPlayType(
-      'application/vnd.apple.mpegurl'
-    )
-  ){
-
-    video.src =
-    channel.url;
-
-    video.onloadedmetadata = ()=>{
-
-      spinner.classList.remove('active');
-
-      video.play();
-
-    };
-
-  }
+}
 
 }
 
@@ -727,11 +465,11 @@ function play(channel){
 
 setTimeout(()=>{
 
-  document
-  .querySelector('.channel')
-  .click();
+document
+.querySelector('.channel')
+.click();
 
-},400);
+},500);
 
 </script>
 
