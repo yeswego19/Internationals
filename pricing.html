@@ -168,50 +168,44 @@
             color: #ef4444;
         }
 
+        /* ТОЛЬКО СТРЕЛКА - без круга, без квадрата, без фона */
         .back-button {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 100;
-            background: rgba(220, 38, 38, 0.95);
-            border: 3px solid #ff4d4d;
-            border-radius: 14px;
-            padding: 12px 18px;
-            color: #fff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
             text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ef4444;
+            background: transparent;
             display: flex;
             align-items: center;
-            gap: 0;
-            backdrop-filter: blur(10px);
-            font-size: 2rem;
-            font-weight: 900;
+            justify-content: center;
         }
 
         .back-button:hover {
-            background: rgba(239, 68, 68, 0.8);
-            border-color: #ef4444;
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
-            transform: scale(1.08);
+            transform: scale(1.2);
+            text-shadow: 0 0 15px rgba(239, 68, 68, 0.8);
+            color: #ff6666;
         }
 
+        /* Только стрелка, никакого текста */
         .back-button::before {
             content: "←";
-            font-size: 2rem;
         }
 
         @media (max-width: 768px) {
-            .pricing-content {
-                padding: 2rem 1.5rem;
+            .back-button {
+                top: 15px;
+                right: 15px;
+                font-size: 2.5rem;
             }
             
-            .back-button {
-                bottom: 1rem;
-                padding: 0.8rem 1.5rem;
-                font-size: 1rem;
+            .pricing-content {
+                padding: 2rem 1.5rem;
             }
             
             #gameCanvas {
@@ -232,7 +226,7 @@
         <h1>Как мы считаем стоимость</h1>
 
         <div class="pricing-content">
-            <p>В индустрии перевода и локализации стоимостью более 60 миллиардов долларов в 2026 году побеждают не просто самые быстрые и дешёвые компании, а те, кто заставляет клиента чувствовать себя умным, выбрав именно их. От заверенных переводов до полной локализации сайтов, видео и устных переговоров по видеозвонку — лидеры рынка идеально отточили подачу услуг, ценообразование и весь путь клиента.</p>
+            <p>В индустрии перевода и локализации в 2026 году побеждают не просто самые быстрые и дешёвые компании, а те, кто заставляет клиента чувствовать себя умным, выбрав именно их. От заверенных переводов до полной локализации сайтов, видео и устных переговоров по видеозвонку — лидеры рынка идеально отточили подачу услуг, ценообразование и весь путь клиента.</p>
 
             <p>В <strong>Internationals.pro</strong> мы внимательно изучили их подход и создали свою модель, которая сочетает максимальную прозрачность с гибкостью. Мы не скрываем цены там, где их можно посчитать заранее, и не заставляем клиента гадать там, где без индивидуального расчёта не обойтись. Вот как это работает у нас.</p>
 
@@ -296,18 +290,18 @@
         </div>
     </div>
 
+    <!-- ТОЛЬКО СТРЕЛКА - без круга, без квадрата, без текста -->
     <a href="/" class="back-button" onclick="window.close(); setTimeout(function(){ window.location.href='/'; }, 300); return false;"></a>
 
     <script>
-        // Переводы
         const translations = {
-            ru: {game_title:"Лови Слова",score_correct:"Правильно",score_wrong:"Неправильно",back_button:"Назад"},
-            en: {game_title:"Catch The Words",score_correct:"Correct",score_wrong:"Wrong",back_button:"Back to Home"},
-            de: {game_title:"Fang die Wörter",score_correct:"Richtig",score_wrong:"Falsch",back_button:"Zurück"},
-            es: {game_title:"Atrapa las Palabras",score_correct:"Correcto",score_wrong:"Incorrecto",back_button:"Volver"},
-            pt: {game_title:"Pegue as Palavras",score_correct:"Correto",score_wrong:"Errado",back_button:"Voltar"},
-            zh: {game_title:"抓住单词",score_correct:"正确",score_wrong:"错误",back_button:"返回"},
-            ar: {game_title:"امسك الكلمات",score_correct:"صحيح",score_wrong:"خطأ",back_button:"رجوع"}
+            ru: {game_title:"Лови Слова",score_correct:"Правильно",score_wrong:"Неправильно"},
+            en: {game_title:"Catch The Words",score_correct:"Correct",score_wrong:"Wrong"},
+            de: {game_title:"Fang die Wörter",score_correct:"Richtig",score_wrong:"Falsch"},
+            es: {game_title:"Atrapa las Palabras",score_correct:"Correcto",score_wrong:"Incorrecto"},
+            pt: {game_title:"Pegue as Palavras",score_correct:"Correto",score_wrong:"Errado"},
+            zh: {game_title:"抓住单词",score_correct:"正确",score_wrong:"错误"},
+            ar: {game_title:"امسك الكلمات",score_correct:"صحيح",score_wrong:"خطأ"}
         };
 
         const supportedLangs = ['ru','en','de','es','pt','zh','ar'];
@@ -324,7 +318,6 @@
 
         setLanguage(currentLang);
 
-        // Игра
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreGoodElement = document.getElementById('scoreGood');
@@ -581,7 +574,6 @@
                 letter.checkCatch(pen.x, pen.y);
             });
 
-            // Перо только на десктопе
             if (!isMobile) {
                 drawPenTip(pen.x, pen.y);
             }
