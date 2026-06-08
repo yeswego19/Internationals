@@ -88,13 +88,6 @@
             margin-bottom: 1rem;
         }
 
-        .pricing-content h3 {
-            font-size: clamp(1.2rem, 3vw, 1.5rem);
-            color: #a8b9d1;
-            margin-top: 1.5rem;
-            margin-bottom: 0.8rem;
-        }
-
         .pricing-content p {
             color: #d1dae8;
             margin-bottom: 1rem;
@@ -149,10 +142,6 @@
             font-size: 1.5rem;
             color: #67b8ff;
             margin-bottom: 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
             background: rgba(10, 14, 26, 0.8);
             backdrop-filter: blur(10px);
             padding: 1rem;
@@ -168,7 +157,7 @@
             color: #ef4444;
         }
 
-        /* ТОЛЬКО СТРЕЛКА - без круга, без квадрата, без фона */
+        /* ТОЛЬКО СТРЕЛКА */
         .back-button {
             position: fixed;
             top: 20px;
@@ -192,7 +181,6 @@
             color: #ff6666;
         }
 
-        /* Только стрелка, никакого текста */
         .back-button::before {
             content: "←";
         }
@@ -223,101 +211,427 @@
     </video>
 
     <div class="content-wrapper">
-        <h1>Как мы считаем стоимость</h1>
+        <h1 id="pageTitle">Как мы считаем стоимость</h1>
 
         <div class="pricing-content">
-            <p>В индустрии перевода и локализации в 2026 году побеждают не просто самые быстрые и дешёвые компании, а те, кто заставляет клиента чувствовать себя умным, выбрав именно их. От заверенных переводов до полной локализации сайтов, видео и устных переговоров по видеозвонку — лидеры рынка идеально отточили подачу услуг, ценообразование и весь путь клиента.</p>
+            <p id="intro1">В индустрии перевода и локализации в 2026 году побеждают не просто самые быстрые и дешёвые компании, а те, кто заставляет клиента чувствовать себя умным, выбрав именно их. От заверенных переводов до полной локализации сайтов, видео и устных переговоров по видеозвонку — лидеры рынка идеально отточили подачу услуг, ценообразование и весь путь клиента.</p>
 
-            <p>В <strong>Internationals.pro</strong> мы внимательно изучили их подход и создали свою модель, которая сочетает максимальную прозрачность с гибкостью. Мы не скрываем цены там, где их можно посчитать заранее, и не заставляем клиента гадать там, где без индивидуального расчёта не обойтись. Вот как это работает у нас.</p>
+            <p id="intro2">В <strong>Internationals.pro</strong> мы внимательно изучили их подход и создали свою модель, которая сочетает максимальную прозрачность с гибкостью. Мы не скрываем цены там, где их можно посчитать заранее, и не заставляем клиента гадать там, где без индивидуального расчёта не обойтись. Вот как это работает у нас.</p>
 
-            <h2>1. Документы: простые и понятные тарифы</h2>
-            <p>Для большинства текстовых документов мы используем два прозрачных варианта ценообразования.</p>
+            <h2 id="section1Title">1. Документы: простые и понятные тарифы</h2>
+            <p id="section1Text1">Для большинства текстовых документов мы используем два прозрачных варианта ценообразования.</p>
             <ul>
-                <li><strong>Заверенный (certified) перевод</strong> — фиксированная цена за страницу. Это идеально для USCIS, судов, вузов, иммиграционных документов и любых бумаг, требующих официальной печати и подписи.</li>
-                <li><strong>Стандартный перевод</strong> (без нотариального заверения) — цена за слово. Это самый справедливый вариант для бизнес-текстов, контрактов, инструкций и любой информации, где важна точность, но не требуется официальная печать.</li>
+                <li id="section1Item1"><strong>Заверенный (certified) перевод</strong> — фиксированная цена за страницу. Это идеально для USCIS, судов, вузов, иммиграционных документов и любых бумаг, требующих официальной печати и подписи.</li>
+                <li id="section1Item2"><strong>Стандартный перевод</strong> (без нотариального заверения) — цена за слово. Это самый справедливый вариант для бизнес-текстов, контрактов, инструкций и любой информации, где важна точность, но не требуется официальная печать.</li>
             </ul>
-            <p>Клиент сразу видит стоимость после загрузки файла — без сюрпризов и без необходимости ждать коммерческое предложение.</p>
+            <p id="section1Text2">Клиент сразу видит стоимость после загрузки файла — без сюрпризов и без необходимости ждать коммерческое предложение.</p>
 
-            <h2>2. Культурная адаптация и локализация сайтов: индивидуальный подход</h2>
-            <p>Здесь заранее посчитать «по слову» почти невозможно. Сайт — это не просто текст. Это структура, дизайн, SEO, технические нюансы и культурный контекст.</p>
-            <p>Поэтому мы работаем по-другому:</p>
+            <h2 id="section2Title">2. Культурная адаптация и локализация сайтов: индивидуальный подход</h2>
+            <p id="section2Text1">Здесь заранее посчитать «по слову» почти невозможно. Сайт — это не просто текст. Это структура, дизайн, SEO, технические нюансы и культурный контекст.</p>
+            <p id="section2Text2">Поэтому мы работаем по-другому:</p>
             <ol>
-                <li>Сначала клиент описывает задачу (или предоставляет доступ к CMS / коду сайта).</li>
-                <li>Наш менеджер проводит бесплатный аудит и выдаёт точное коммерческое предложение с разбивкой по этапам.</li>
-                <li>Цена формируется индивидуально и зависит от объёма, сложности платформы и количества языков.</li>
+                <li id="section2Step1">Сначала клиент описывает задачу (или предоставляет доступ к CMS / коду сайта).</li>
+                <li id="section2Step2">Наш менеджер проводит бесплатный аудит и выдаёт точное коммерческое предложение с разбивкой по этапам.</li>
+                <li id="section2Step3">Цена формируется индивидуально и зависит от объёма, сложности платформы и количества языков.</li>
             </ol>
-            <p>Такой подход используют ведущие игроки — и он полностью оправдан: клиент получает не «перевод страниц», а работающий, культурно адаптированный сайт, который реально продаёт и конвертирует.</p>
+            <p id="section2Text3">Такой подход используют ведущие игроки — и он полностью оправдан: клиент получает не «перевод страниц», а работающий, культурно адаптированный сайт, который реально продаёт и конвертирует.</p>
 
-            <h2>3. Локализация видео: тариф за минуту</h2>
-            <p>Видео — один из самых востребованных форматов 2026 года. Мы считаем его максимально просто и понятно:</p>
+            <h2 id="section3Title">3. Локализация видео: тариф за минуту</h2>
+            <p id="section3Text1">Видео — один из самых востребованных форматов 2026 года. Мы считаем его максимально просто и понятно:</p>
             <ul>
-                <li><strong>Субтитры</strong> — цена за минуту видео.</li>
-                <li><strong>Voice-over / дубляж</strong> — цена за минуту (с учётом количества языков и качества записи).</li>
-                <li><strong>Полный пакет</strong> (субтитры + voice-over + адаптация) — тоже по минутам, как монтаж в видео-продакшене.</li>
+                <li id="section3Item1"><strong>Субтитры</strong> — цена за минуту видео.</li>
+                <li id="section3Item2"><strong>Voice-over / дубляж</strong> — цена за минуту (с учётом количества языков и качества записи).</li>
+                <li id="section3Item3"><strong>Полный пакет</strong> (субтитры + voice-over + адаптация) — тоже по минутам, как монтаж в видео-продакшене.</li>
             </ul>
-            <p>Клиент загружает файл, указывает языки и желаемый формат — и получает точную стоимость за считанные секунды.</p>
+            <p id="section3Text2">Клиент загружает файл, указывает языки и желаемый формат — и получает точную стоимость за считанные секунды.</p>
 
-            <h2>4. Устные переводы и видеозвонки: почасовая или поминутная оплата</h2>
-            <p>Для онлайн-встреч, переговоров, вебинаров и конференций мы предлагаем два удобных варианта:</p>
+            <h2 id="section4Title">4. Устные переводы и видеозвонки: почасовая или поминутная оплата</h2>
+            <p id="section4Text1">Для онлайн-встреч, переговоров, вебинаров и конференций мы предлагаем два удобных варианта:</p>
             <ul>
-                <li><strong>Поминутная тарификация</strong> (для коротких звонков).</li>
-                <li><strong>Почасовая ставка</strong> (для длительных переговоров и мероприятий).</li>
+                <li id="section4Item1"><strong>Поминутная тарификация</strong> (для коротких звонков).</li>
+                <li id="section4Item2"><strong>Почасовая ставка</strong> (для длительных переговоров и мероприятий).</li>
             </ul>
-            <p>Минимальный заказ обычно 30–60 минут. Цена зависит от языка, срочности и формата (последовательный или синхронный перевод).</p>
+            <p id="section4Text2">Минимальный заказ обычно 30–60 минут. Цена зависит от языка, срочности и формата (последовательный или синхронный перевод).</p>
 
-            <h2>5. Нестандартные заказы</h2>
-            <p>Иногда клиенту нужен не один из стандартных тарифов, а комплексное решение: перевод документов + локализация сайта + субтитры для промо-видео + устный перевод на презентацию. В таких случаях мы собираем индивидуальный пакет «под ключ».</p>
-            <p>Клиент описывает задачу, а мы предлагаем оптимальное решение с фиксированной стоимостью и чёткими сроками.</p>
+            <h2 id="section5Title">5. Нестандартные заказы</h2>
+            <p id="section5Text1">Иногда клиенту нужен не один из стандартных тарифов, а комплексное решение: перевод документов + локализация сайта + субтитры для промо-видео + устный перевод на презентацию. В таких случаях мы собираем индивидуальный пакет «под ключ».</p>
+            <p id="section5Text2">Клиент описывает задачу, а мы предлагаем оптимальное решение с фиксированной стоимостью и чёткими сроками.</p>
 
-            <h2>Почему это работает именно для клиента</h2>
-            <p>Мы не заставляем вас платить «за слово» там, где это нечестно, и не скрываем цены там, где их можно посчитать заранее. Вместо этого мы даём понятные правила:</p>
+            <h2 id="whyTitle">Почему это работает именно для клиента</h2>
+            <p id="whyText1">Мы не заставляем вас платить «за слово» там, где это нечестно, и не скрываем цены там, где их можно посчитать заранее. Вместо этого мы даём понятные правила:</p>
             <ul>
-                <li><strong>Простые документы</strong> → прозрачные тарифы за страницу или слово.</li>
-                <li><strong>Сложные проекты</strong> (сайты, видео, комплексные заказы) → индивидуальный расчёт и персональный менеджер.</li>
-                <li>Все цены зависят от языковой пары, объёма, сложности и сроков — и вы узнаёте их до оплаты.</li>
+                <li id="whyItem1"><strong>Простые документы</strong> → прозрачные тарифы за страницу или слово.</li>
+                <li id="whyItem2"><strong>Сложные проекты</strong> (сайты, видео, комплексные заказы) → индивидуальный расчёт и персональный менеджер.</li>
+                <li id="whyItem3">Все цены зависят от языковой пары, объёма, сложности и сроков — и вы узнаёте их до оплаты.</li>
             </ul>
-            <p>В результате клиент получает не просто перевод, а уверенность, что деньги потрачены разумно и результат будет именно таким, как нужно.</p>
-            <p>Если вы ищете переводчика, который говорит на языке бизнеса и понимает, что такое доверие в 2026 году — добро пожаловать в <strong>Internationals.pro</strong>.</p>
+            <p id="whyText2">В результате клиент получает не просто перевод, а уверенность, что деньги потрачены разумно и результат будет именно таким, как нужно.</p>
+            <p id="whyText3">Если вы ищете переводчика, который говорит на языке бизнеса и понимает, что такое доверие в 2026 году — добро пожаловать в <strong>Internationals.pro</strong>.</p>
         </div>
 
         <div class="game-section">
-            <h2 data-translate="game_title">Лови Слова</h2>
+            <h2 id="gameTitle">Лови Слова</h2>
             <div class="game-score">
-                <span class="score-good"><span data-translate="score_correct">Правильно</span>: <span id="scoreGood">0</span></span>
-                <span class="score-bad"><span data-translate="score_wrong">Неправильно</span>: <span id="scoreBad">0</span></span>
+                <span class="score-good"><span id="scoreCorrect">Правильно</span>: <span id="scoreGood">0</span></span>
+                <span class="score-bad"><span id="scoreWrong">Неправильно</span>: <span id="scoreBad">0</span></span>
             </div>
             <canvas id="gameCanvas" width="800" height="600"></canvas>
         </div>
     </div>
 
-    <!-- ТОЛЬКО СТРЕЛКА - без круга, без квадрата, без текста -->
     <a href="/" class="back-button" onclick="window.close(); setTimeout(function(){ window.location.href='/'; }, 300); return false;"></a>
 
     <script>
+        // ==================== ПОЛНЫЙ ПЕРЕВОД НА 7 ЯЗЫКОВ ====================
         const translations = {
-            ru: {game_title:"Лови Слова",score_correct:"Правильно",score_wrong:"Неправильно"},
-            en: {game_title:"Catch The Words",score_correct:"Correct",score_wrong:"Wrong"},
-            de: {game_title:"Fang die Wörter",score_correct:"Richtig",score_wrong:"Falsch"},
-            es: {game_title:"Atrapa las Palabras",score_correct:"Correcto",score_wrong:"Incorrecto"},
-            pt: {game_title:"Pegue as Palavras",score_correct:"Correto",score_wrong:"Errado"},
-            zh: {game_title:"抓住单词",score_correct:"正确",score_wrong:"错误"},
-            ar: {game_title:"امسك الكلمات",score_correct:"صحيح",score_wrong:"خطأ"}
+            ru: {
+                pageTitle: "Как мы считаем стоимость",
+                intro1: "В индустрии перевода и локализации в 2026 году побеждают не просто самые быстрые и дешёвые компании, а те, кто заставляет клиента чувствовать себя умным, выбрав именно их. От заверенных переводов до полной локализации сайтов, видео и устных переговоров по видеозвонку — лидеры рынка идеально отточили подачу услуг, ценообразование и весь путь клиента.",
+                intro2: "В Internationals.pro мы внимательно изучили их подход и создали свою модель, которая сочетает максимальную прозрачность с гибкостью. Мы не скрываем цены там, где их можно посчитать заранее, и не заставляем клиента гадать там, где без индивидуального расчёта не обойтись. Вот как это работает у нас.",
+                section1Title: "1. Документы: простые и понятные тарифы",
+                section1Text1: "Для большинства текстовых документов мы используем два прозрачных варианта ценообразования.",
+                section1Item1: "Заверенный (certified) перевод — фиксированная цена за страницу. Это идеально для USCIS, судов, вузов, иммиграционных документов и любых бумаг, требующих официальной печати и подписи.",
+                section1Item2: "Стандартный перевод (без нотариального заверения) — цена за слово. Это самый справедливый вариант для бизнес-текстов, контрактов, инструкций и любой информации, где важна точность, но не требуется официальная печать.",
+                section1Text2: "Клиент сразу видит стоимость после загрузки файла — без сюрпризов и без необходимости ждать коммерческое предложение.",
+                section2Title: "2. Культурная адаптация и локализация сайтов: индивидуальный подход",
+                section2Text1: "Здесь заранее посчитать «по слову» почти невозможно. Сайт — это не просто текст. Это структура, дизайн, SEO, технические нюансы и культурный контекст.",
+                section2Text2: "Поэтому мы работаем по-другому:",
+                section2Step1: "Сначала клиент описывает задачу (или предоставляет доступ к CMS / коду сайта).",
+                section2Step2: "Наш менеджер проводит бесплатный аудит и выдаёт точное коммерческое предложение с разбивкой по этапам.",
+                section2Step3: "Цена формируется индивидуально и зависит от объёма, сложности платформы и количества языков.",
+                section2Text3: "Такой подход используют ведущие игроки — и он полностью оправдан: клиент получает не «перевод страниц», а работающий, культурно адаптированный сайт, который реально продаёт и конвертирует.",
+                section3Title: "3. Локализация видео: тариф за минуту",
+                section3Text1: "Видео — один из самых востребованных форматов 2026 года. Мы считаем его максимально просто и понятно:",
+                section3Item1: "Субтитры — цена за минуту видео.",
+                section3Item2: "Voice-over / дубляж — цена за минуту (с учётом количества языков и качества записи).",
+                section3Item3: "Полный пакет (субтитры + voice-over + адаптация) — тоже по минутам, как монтаж в видео-продакшене.",
+                section3Text2: "Клиент загружает файл, указывает языки и желаемый формат — и получает точную стоимость за считанные секунды.",
+                section4Title: "4. Устные переводы и видеозвонки: почасовая или поминутная оплата",
+                section4Text1: "Для онлайн-встреч, переговоров, вебинаров и конференций мы предлагаем два удобных варианта:",
+                section4Item1: "Поминутная тарификация (для коротких звонков).",
+                section4Item2: "Почасовая ставка (для длительных переговоров и мероприятий).",
+                section4Text2: "Минимальный заказ обычно 30–60 минут. Цена зависит от языка, срочности и формата (последовательный или синхронный перевод).",
+                section5Title: "5. Нестандартные заказы",
+                section5Text1: "Иногда клиенту нужен не один из стандартных тарифов, а комплексное решение: перевод документов + локализация сайта + субтитры для промо-видео + устный перевод на презентацию. В таких случаях мы собираем индивидуальный пакет «под ключ».",
+                section5Text2: "Клиент описывает задачу, а мы предлагаем оптимальное решение с фиксированной стоимостью и чёткими сроками.",
+                whyTitle: "Почему это работает именно для клиента",
+                whyText1: "Мы не заставляем вас платить «за слово» там, где это нечестно, и не скрываем цены там, где их можно посчитать заранее. Вместо этого мы даём понятные правила:",
+                whyItem1: "Простые документы → прозрачные тарифы за страницу или слово.",
+                whyItem2: "Сложные проекты (сайты, видео, комплексные заказы) → индивидуальный расчёт и персональный менеджер.",
+                whyItem3: "Все цены зависят от языковой пары, объёма, сложности и сроков — и вы узнаёте их до оплаты.",
+                whyText2: "В результате клиент получает не просто перевод, а уверенность, что деньги потрачены разумно и результат будет именно таким, как нужно.",
+                whyText3: "Если вы ищете переводчика, который говорит на языке бизнеса и понимает, что такое доверие в 2026 году — добро пожаловать в Internationals.pro.",
+                gameTitle: "Лови Слова",
+                scoreCorrect: "Правильно",
+                scoreWrong: "Неправильно"
+            },
+            en: {
+                pageTitle: "How We Calculate Pricing",
+                intro1: "In the translation and localization industry in 2026, it's not just the fastest and cheapest companies that win, but those who make clients feel smart for choosing them. From certified translations to full website localization, video, and interpretation via video calls — market leaders have perfectly honed their service delivery, pricing, and entire customer journey.",
+                intro2: "At Internationals.pro, we've carefully studied their approach and created our own model that combines maximum transparency with flexibility. We don't hide prices where they can be calculated in advance, and we don't make clients guess where individual calculation is necessary. Here's how it works for us.",
+                section1Title: "1. Documents: Simple and Clear Rates",
+                section1Text1: "For most text documents, we use two transparent pricing options.",
+                section1Item1: "Certified translation — fixed price per page. Perfect for USCIS, courts, universities, immigration documents, and any papers requiring official stamp and signature.",
+                section1Item2: "Standard translation (without notarization) — price per word. The fairest option for business texts, contracts, manuals, and any information where accuracy matters but official stamps are not required.",
+                section1Text2: "Clients see the cost immediately after uploading a file — no surprises and no need to wait for a quote.",
+                section2Title: "2. Cultural Adaptation and Website Localization: Individual Approach",
+                section2Text1: "Calculating 'per word' in advance is almost impossible here. A website is more than just text — it's structure, design, SEO, technical details, and cultural context.",
+                section2Text2: "That's why we work differently:",
+                section2Step1: "First, the client describes the task (or provides access to CMS/code).",
+                section2Step2: "Our manager conducts a free audit and provides an accurate quote broken down by stages.",
+                section2Step3: "Pricing is individual and depends on volume, platform complexity, and number of languages.",
+                section2Text3: "This approach is used by industry leaders — and it's completely justified: clients get not just 'translated pages' but a functional, culturally adapted website that actually sells and converts.",
+                section3Title: "3. Video Localization: Per-Minute Rate",
+                section3Text1: "Video is one of the most sought-after formats in 2026. We calculate it simply and clearly:",
+                section3Item1: "Subtitles — price per minute of video.",
+                section3Item2: "Voice-over / dubbing — price per minute (depending on number of languages and recording quality).",
+                section3Item3: "Full package (subtitles + voice-over + adaptation) — also per minute, like video production editing.",
+                section3Text2: "Client uploads a file, selects languages and desired format — and gets an exact price in seconds.",
+                section4Title: "4. Interpretation and Video Calls: Hourly or Per-Minute Billing",
+                section4Text1: "For online meetings, negotiations, webinars, and conferences, we offer two convenient options:",
+                section4Item1: "Per-minute billing (for short calls).",
+                section4Item2: "Hourly rate (for longer negotiations and events).",
+                section4Text2: "Minimum order is typically 30–60 minutes. Price depends on language pair, urgency, and format (consecutive or simultaneous interpretation).",
+                section5Title: "5. Custom Orders",
+                section5Text1: "Sometimes clients need not just one standard service but a comprehensive solution: document translation + website localization + subtitles for promo video + interpretation at a presentation. In such cases, we put together a turnkey package.",
+                section5Text2: "Client describes the task, and we offer the optimal solution with fixed pricing and clear deadlines.",
+                whyTitle: "Why This Works for Clients",
+                whyText1: "We don't force you to pay 'per word' where it's unfair, and we don't hide prices where they can be calculated in advance. Instead, we provide clear rules:",
+                whyItem1: "Simple documents → transparent rates per page or word.",
+                whyItem2: "Complex projects (websites, video, custom orders) → individual quote and personal manager.",
+                whyItem3: "All prices depend on language pair, volume, complexity, and deadlines — and you know them before paying.",
+                whyText2: "As a result, clients get not just a translation, but confidence that their money was spent wisely and the result will be exactly as needed.",
+                whyText3: "If you're looking for a translator who speaks the language of business and understands what trust means in 2026 — welcome to Internationals.pro.",
+                gameTitle: "Catch The Letters",
+                scoreCorrect: "Correct",
+                scoreWrong: "Wrong"
+            },
+            de: {
+                pageTitle: "Wie wir Preise berechnen",
+                intro1: "In der Übersetzungs- und Lokalisierungsbranche im Jahr 2026 gewinnen nicht nur die schnellsten und billigsten Unternehmen, sondern diejenigen, die Kunden das Gefühl geben, klug zu sein, wenn sie sich für sie entscheiden. Von beglaubigten Übersetzungen bis zur vollständigen Lokalisierung von Websites, Videos und Dolmetschen per Videoanruf – die Marktführer haben ihre Dienstleistungen, Preisgestaltung und die gesamte Customer Journey perfektioniert.",
+                intro2: "Bei Internationals.pro haben wir ihren Ansatz sorgfältig studiert und unser eigenes Modell entwickelt, das maximale Transparenz mit Flexibilität verbindet. Wir verstecken keine Preise, wo sie im Voraus berechnet werden können, und lassen Kunden nicht raten, wo eine individuelle Berechnung notwendig ist. So funktioniert es bei uns.",
+                section1Title: "1. Dokumente: Einfache und klare Tarife",
+                section1Text1: "Für die meisten Textdokumente verwenden wir zwei transparente Preisoptionen.",
+                section1Item1: "Beglaubigte Übersetzung – fester Preis pro Seite. Perfekt für USCIS, Gerichte, Universitäten, Einwanderungsdokumente und alle Papiere, die einen offiziellen Stempel und eine Unterschrift erfordern.",
+                section1Item2: "Standardübersetzung (ohne Beglaubigung) – Preis pro Wort. Die fairste Option für Geschäftstexte, Verträge, Anleitungen und alle Informationen, bei denen Genauigkeit zählt, aber keine offiziellen Stempel erforderlich sind.",
+                section1Text2: "Kunden sehen die Kosten sofort nach dem Hochladen einer Datei – keine Überraschungen und kein Warten auf ein Angebot.",
+                section2Title: "2. Kulturelle Anpassung und Website-Lokalisierung: Individueller Ansatz",
+                section2Text1: "Eine Vorabberechnung „pro Wort“ ist hier fast unmöglich. Eine Website ist mehr als nur Text – sie ist Struktur, Design, SEO, technische Details und kultureller Kontext.",
+                section2Text2: "Deshalb arbeiten wir anders:",
+                section2Step1: "Zuerst beschreibt der Kunde die Aufgabe (oder gewährt Zugang zum CMS/Code).",
+                section2Step2: "Unser Manager führt ein kostenloses Audit durch und erstellt ein genaues Angebot mit Aufschlüsselung nach Phasen.",
+                section2Step3: "Die Preisgestaltung ist individuell und hängt vom Umfang, der Komplexität der Plattform und der Anzahl der Sprachen ab.",
+                section2Text3: "Diesen Ansatz verfolgen Branchenführer – und er ist völlig gerechtfertigt: Kunden erhalten nicht nur „übersetzte Seiten“, sondern eine funktionale, kulturell angepasste Website, die tatsächlich verkauft und konvertiert.",
+                section3Title: "3. Video-Lokalisierung: Preis pro Minute",
+                section3Text1: "Video ist eines der gefragtesten Formate im Jahr 2026. Wir berechnen es einfach und klar:",
+                section3Item1: "Untertitel – Preis pro Minute Video.",
+                section3Item2: "Voice-over / Synchronisation – Preis pro Minute (abhängig von der Anzahl der Sprachen und der Aufnahmequalität).",
+                section3Item3: "Komplettpaket (Untertitel + Voice-over + Adaption) – ebenfalls pro Minute, wie bei der Videoproduktion.",
+                section3Text2: "Der Kunde lädt eine Datei hoch, wählt Sprachen und das gewünschte Format – und erhält in Sekundenschnelle einen genauen Preis.",
+                section4Title: "4. Dolmetschen und Videoanrufe: Stündliche oder minutengenaue Abrechnung",
+                section4Text1: "Für Online-Meetings, Verhandlungen, Webinare und Konferenzen bieten wir zwei praktische Optionen an:",
+                section4Item1: "Minutengenaue Abrechnung (für kurze Anrufe).",
+                section4Item2: "Stundensatz (für längere Verhandlungen und Veranstaltungen).",
+                section4Text2: "Die Mindestbestellung beträgt in der Regel 30–60 Minuten. Der Preis hängt vom Sprachpaar, der Dringlichkeit und dem Format (konsekutive oder simultane Verdolmetschung) ab.",
+                section5Title: "5. Maßgeschneiderte Aufträge",
+                section5Text1: "Manchmal benötigen Kunden nicht nur einen Standarddienst, sondern eine umfassende Lösung: Dokumentenübersetzung + Website-Lokalisierung + Untertitel für Promo-Video + Dolmetschen bei einer Präsentation. In solchen Fällen stellen wir ein Komplettpaket zusammen.",
+                section5Text2: "Der Kunde beschreibt die Aufgabe und wir bieten die optimale Lösung mit festen Preisen und klaren Fristen.",
+                whyTitle: "Warum das für Kunden funktioniert",
+                whyText1: "Wir zwingen Sie nicht, „pro Wort“ zu zahlen, wo es unfair ist, und verstecken keine Preise, wo sie im Voraus berechnet werden können. Stattdessen geben wir klare Regeln vor:",
+                whyItem1: "Einfache Dokumente → transparente Tarife pro Seite oder Wort.",
+                whyItem2: "Komplexe Projekte (Websites, Video, maßgeschneiderte Aufträge) → individuelles Angebot und persönlicher Betreuer.",
+                whyItem3: "Alle Preise hängen vom Sprachpaar, Umfang, Komplexität und Fristen ab – und Sie erfahren sie vor der Zahlung.",
+                whyText2: "Das Ergebnis ist für Kunden nicht nur eine Übersetzung, sondern die Gewissheit, dass ihr Geld sinnvoll ausgegeben wurde und das Ergebnis genau so ist, wie sie es brauchen.",
+                whyText3: "Wenn Sie einen Übersetzer suchen, der die Sprache der Wirtschaft spricht und versteht, was Vertrauen im Jahr 2026 bedeutet – willkommen bei Internationals.pro.",
+                gameTitle: "Fang die Buchstaben",
+                scoreCorrect: "Richtig",
+                scoreWrong: "Falsch"
+            },
+            es: {
+                pageTitle: "Cómo Calculamos los Precios",
+                intro1: "En la industria de la traducción y localización en 2026, no solo ganan las empresas más rápidas y baratas, sino aquellas que hacen que los clientes se sientan inteligentes al elegirlas. Desde traducciones certificadas hasta la localización completa de sitios web, videos e interpretación por videollamada, los líderes del mercado han perfeccionado su prestación de servicios, precios y todo el recorrido del cliente.",
+                intro2: "En Internationals.pro, hemos estudiado cuidadosamente su enfoque y creado nuestro propio modelo que combina máxima transparencia con flexibilidad. No ocultamos precios cuando se pueden calcular de antemano, ni obligamos a los clientes a adivinar cuando es necesario un cálculo individual. Así es como funciona para nosotros.",
+                section1Title: "1. Documentos: Tarifas Simples y Claras",
+                section1Text1: "Para la mayoría de los documentos de texto, utilizamos dos opciones de precios transparentes.",
+                section1Item1: "Traducción certificada — precio fijo por página. Perfecto para USCIS, tribunales, universidades, documentos de inmigración y cualquier papel que requiera sello y firma oficial.",
+                section1Item2: "Traducción estándar (sin notarización) — precio por palabra. La opción más justa para textos comerciales, contratos, manuales y cualquier información donde la precisión sea importante pero no se requieran sellos oficiales.",
+                section1Text2: "Los clientes ven el costo inmediatamente después de subir un archivo — sin sorpresas y sin necesidad de esperar un presupuesto.",
+                section2Title: "2. Adaptación Cultural y Localización de Sitios Web: Enfoque Individual",
+                section2Text1: "Calcular 'por palabra' por adelantado es casi imposible aquí. Un sitio web es más que solo texto: es estructura, diseño, SEO, detalles técnicos y contexto cultural.",
+                section2Text2: "Por eso trabajamos de manera diferente:",
+                section2Step1: "Primero, el cliente describe la tarea (o proporciona acceso al CMS/código).",
+                section2Step2: "Nuestro gerente realiza una auditoría gratuita y proporciona un presupuesto preciso desglosado por etapas.",
+                section2Step3: "El precio es individual y depende del volumen, la complejidad de la plataforma y la cantidad de idiomas.",
+                section2Text3: "Este enfoque es utilizado por los líderes de la industria — y está completamente justificado: los clientes obtienen no solo 'páginas traducidas' sino un sitio web funcional y culturalmente adaptado que realmente vende y convierte.",
+                section3Title: "3. Localización de Video: Tarifa por Minuto",
+                section3Text1: "El video es uno de los formatos más buscados en 2026. Lo calculamos de manera simple y clara:",
+                section3Item1: "Subtítulos — precio por minuto de video.",
+                section3Item2: "Voice-over / doblaje — precio por minuto (dependiendo del número de idiomas y la calidad de grabación).",
+                section3Item3: "Paquete completo (subtítulos + voice-over + adaptación) — también por minuto, como en la edición de producción de video.",
+                section3Text2: "El cliente sube un archivo, selecciona idiomas y el formato deseado — y obtiene un precio exacto en segundos.",
+                section4Title: "4. Interpretación y Videollamadas: Facturación por Hora o por Minuto",
+                section4Text1: "Para reuniones en línea, negociaciones, seminarios web y conferencias, ofrecemos dos opciones convenientes:",
+                section4Item1: "Facturación por minuto (para llamadas cortas).",
+                section4Item2: "Tarifa por hora (para negociaciones más largas y eventos).",
+                section4Text2: "El pedido mínimo es típicamente de 30 a 60 minutos. El precio depende del par de idiomas, la urgencia y el formato (interpretación consecutiva o simultánea).",
+                section5Title: "5. Pedidos Personalizados",
+                section5Text1: "A veces los clientes necesitan no solo un servicio estándar sino una solución integral: traducción de documentos + localización de sitios web + subtítulos para video promocional + interpretación en una presentación. En tales casos, armamos un paquete llave en mano.",
+                section5Text2: "El cliente describe la tarea y ofrecemos la solución óptima con precios fijos y plazos claros.",
+                whyTitle: "Por Qué Esto Funciona para los Clientes",
+                whyText1: "No lo obligamos a pagar 'por palabra' donde es injusto, ni ocultamos precios donde se pueden calcular de antemano. En cambio, proporcionamos reglas claras:",
+                whyItem1: "Documentos simples → tarifas transparentes por página o palabra.",
+                whyItem2: "Proyectos complejos (sitios web, video, pedidos personalizados) → presupuesto individual y gerente personal.",
+                whyItem3: "Todos los precios dependen del par de idiomas, volumen, complejidad y plazos — y usted los conoce antes de pagar.",
+                whyText2: "Como resultado, los clientes obtienen no solo una traducción, sino la confianza de que su dinero se gastó sabiamente y el resultado será exactamente como lo necesitan.",
+                whyText3: "Si buscas un traductor que hable el idioma de los negocios y entienda lo que significa la confianza en 2026 — bienvenido a Internationals.pro.",
+                gameTitle: "Atrapa las Letras",
+                scoreCorrect: "Correcto",
+                scoreWrong: "Incorrecto"
+            },
+            pt: {
+                pageTitle: "Como Calculamos os Preços",
+                intro1: "Na indústria de tradução e localização em 2026, não são apenas as empresas mais rápidas e baratas que vencem, mas aquelas que fazem os clientes se sentirem inteligentes por escolhê-las. De traduções certificadas à localização completa de sites, vídeos e interpretação por videochamada — os líderes de mercado aperfeiçoaram sua prestação de serviços, preços e toda a jornada do cliente.",
+                intro2: "Na Internationals.pro, estudamos cuidadosamente sua abordagem e criamos nosso próprio modelo que combina máxima transparência com flexibilidade. Não escondemos preços onde podem ser calculados antecipadamente e não fazemos os clientes adivinharem onde o cálculo individual é necessário. É assim que funciona para nós.",
+                section1Title: "1. Documentos: Tarifas Simples e Claras",
+                section1Text1: "Para a maioria dos documentos de texto, usamos duas opções de preços transparentes.",
+                section1Item1: "Tradução certificada — preço fixo por página. Perfeito para USCIS, tribunais, universidades, documentos de imigração e quaisquer papéis que exijam carimbo e assinatura oficiais.",
+                section1Item2: "Tradução padrão (sem notarização) — preço por palavra. A opção mais justa para textos comerciais, contratos, manuais e qualquer informação onde a precisão seja importante, mas os selos oficiais não são necessários.",
+                section1Text2: "Os clientes veem o custo imediatamente após o upload de um arquivo — sem surpresas e sem necessidade de esperar por um orçamento.",
+                section2Title: "2. Adaptação Cultural e Localização de Sites: Abordagem Individual",
+                section2Text1: "Calcular 'por palavra' antecipadamente é quase impossível aqui. Um site é mais do que apenas texto — é estrutura, design, SEO, detalhes técnicos e contexto cultural.",
+                section2Text2: "É por isso que trabalhamos de forma diferente:",
+                section2Step1: "Primeiro, o cliente descreve a tarefa (ou fornece acesso ao CMS/código).",
+                section2Step2: "Nosso gerente realiza uma auditoria gratuita e fornece um orçamento preciso dividido por etapas.",
+                section2Step3: "O preço é individual e depende do volume, complexidade da plataforma e número de idiomas.",
+                section2Text3: "Esta abordagem é usada pelos líderes da indústria — e é completamente justificada: os clientes obtêm não apenas 'páginas traduzidas', mas um site funcional e culturalmente adaptado que realmente vende e converte.",
+                section3Title: "3. Localização de Vídeo: Tarifa por Minuto",
+                section3Text1: "O vídeo é um dos formatos mais procurados em 2026. Calculamos de forma simples e clara:",
+                section3Item1: "Legendas — preço por minuto de vídeo.",
+                section3Item2: "Voice-over / dublagem — preço por minuto (dependendo do número de idiomas e da qualidade da gravação).",
+                section3Item3: "Pacote completo (legendas + voice-over + adaptação) — também por minuto, como na edição de produção de vídeo.",
+                section3Text2: "O cliente faz o upload de um arquivo, seleciona os idiomas e o formato desejado — e obtém um preço exato em segundos.",
+                section4Title: "4. Interpretação e Videochamadas: Cobrança por Hora ou por Minuto",
+                section4Text1: "Para reuniões online, negociações, webinars e conferências, oferecemos duas opções convenientes:",
+                section4Item1: "Cobrança por minuto (para chamadas curtas).",
+                section4Item2: "Taxa horária (para negociações mais longas e eventos).",
+                section4Text2: "O pedido mínimo é tipicamente de 30 a 60 minutos. O preço depende do par de idiomas, urgência e formato (interpretação consecutiva ou simultânea).",
+                section5Title: "5. Pedidos Personalizados",
+                section5Text1: "Às vezes, os clientes precisam não apenas de um serviço padrão, mas de uma solução abrangente: tradução de documentos + localização de site + legendas para vídeo promocional + interpretação em uma apresentação. Nesses casos, montamos um pacote completo.",
+                section5Text2: "O cliente descreve a tarefa e oferecemos a solução ideal com preços fixos e prazos claros.",
+                whyTitle: "Por Que Isso Funciona para os Clientes",
+                whyText1: "Não obrigamos você a pagar 'por palavra' onde é injusto, nem escondemos preços onde podem ser calculados antecipadamente. Em vez disso, fornecemos regras claras:",
+                whyItem1: "Documentos simples → tarifas transparentes por página ou palavra.",
+                whyItem2: "Projetos complexos (sites, vídeo, pedidos personalizados) → orçamento individual e gerente pessoal.",
+                whyItem3: "Todos os preços dependem do par de idiomas, volume, complexidade e prazos — e você os conhece antes de pagar.",
+                whyText2: "Como resultado, os clientes obtêm não apenas uma tradução, mas a confiança de que seu dinheiro foi gasto com sabedoria e o resultado será exatamente como necessário.",
+                whyText3: "Se você está procurando um tradutor que fale o idioma dos negócios e entenda o que significa confiança em 2026 — bem-vindo à Internationals.pro.",
+                gameTitle: "Pegue as Letras",
+                scoreCorrect: "Correto",
+                scoreWrong: "Errado"
+            },
+            zh: {
+                pageTitle: "我们如何计算价格",
+                intro1: "在2026年的翻译和本地化行业中，胜出的不仅仅是速度最快、价格最低的公司，而是那些让客户觉得选择他们很明智的公司。从认证翻译到网站、视频的完整本地化，以及通过视频通话进行口译——市场领导者完美地完善了他们的服务交付、定价和整个客户旅程。",
+                intro2: "在Internationals.pro，我们仔细研究了他们的方法，并创建了自己的模式，将最大的透明度与灵活性相结合。我们不会在可以提前计算价格的地方隐藏价格，也不会在需要单独计算的地方让客户猜测。这就是我们的工作方式。",
+                section1Title: "1. 文件：简单透明的费率",
+                section1Text1: "对于大多数文本文档，我们使用两种透明的定价选项。",
+                section1Item1: "认证翻译 — 每页固定价格。非常适合USCIS、法院、大学、移民文件以及任何需要官方印章和签名的文件。",
+                section1Item2: "标准翻译（无需公证） — 按字定价。对于商业文本、合同、说明书以及任何需要准确性但不需要官方印章的信息，这是最公平的选择。",
+                section1Text2: "客户上传文件后立即看到费用 — 没有惊喜，无需等待报价。",
+                section2Title: "2. 文化适应和网站本地化：个性化方法",
+                section2Text1: "在这里，提前按字计算几乎是不可能的。网站不仅仅是文本 — 它是结构、设计、SEO、技术细节和文化背景。",
+                section2Text2: "这就是为什么我们采用不同的工作方式：",
+                section2Step1: "首先，客户描述任务（或提供对CMS/代码的访问权限）。",
+                section2Step2: "我们的经理进行免费审核，并提供按阶段细分的准确报价。",
+                section2Step3: "定价因人而异，取决于数量、平台复杂性和语言数量。",
+                section2Text3: "这种方法被行业领导者使用 — 并且是完全合理的：客户得到的不仅仅是'翻译的页面'，而是一个功能性的、经过文化调整的网站，能够真正销售和转化。",
+                section3Title: "3. 视频本地化：按分钟计费",
+                section3Text1: "视频是2026年最受欢迎的格式之一。我们简单明了地计算：",
+                section3Item1: "字幕 — 每分钟视频的价格。",
+                section3Item2: "画外音/配音 — 每分钟价格（取决于语言数量和录音质量）。",
+                section3Item3: "完整套餐（字幕 + 画外音 + 改编） — 也按分钟计算，就像视频制作编辑一样。",
+                section3Text2: "客户上传文件，选择语言和所需格式 — 并在几秒钟内获得准确价格。",
+                section4Title: "4. 口译和视频通话：按小时或按分钟计费",
+                section4Text1: "对于在线会议、谈判、网络研讨会和会议，我们提供两种便捷选择：",
+                section4Item1: "按分钟计费（适用于短时间通话）。",
+                section4Item2: "按小时收费（适用于较长的谈判和活动）。",
+                section4Text2: "最低订单通常为30-60分钟。价格取决于语言对、紧急程度和格式（交替传译或同声传译）。",
+                section5Title: "5. 定制订单",
+                section5Text1: "有时客户需要的不仅仅是单一标准服务，而是一个全面的解决方案：文件翻译 + 网站本地化 + 宣传视频字幕 + 演示文稿口译。在这种情况下，我们提供一个交钥匙套餐。",
+                section5Text2: "客户描述任务，我们提供具有固定价格和明确截止日期的优化解决方案。",
+                whyTitle: "为什么这对客户有效",
+                whyText1: "我们不会在不公平的地方强迫您按字付费，也不会在可以提前计算价格的地方隐藏价格。相反，我们提供清晰的规则：",
+                whyItem1: "简单文件 → 每页或每字的透明费率。",
+                whyItem2: "复杂项目（网站、视频、定制订单） → 个性化报价和个人经理。",
+                whyItem3: "所有价格取决于语言对、数量、复杂性和截止日期 — 您在付款前就知道了。",
+                whyText2: "结果是，客户得到的不仅仅是翻译，而是确信他们的钱花得明智，结果将完全符合需要。",
+                whyText3: "如果您正在寻找一个会说商业语言并理解2026年信任含义的翻译 — 欢迎来到Internationals.pro。",
+                gameTitle: "抓住字母",
+                scoreCorrect: "正确",
+                scoreWrong: "错误"
+            },
+            ar: {
+                pageTitle: "كيف نحسب التسعير",
+                intro1: "في صناعة الترجمة والتوطين في عام 2026، لا تفوز فقط الشركات الأسرع والأرخص، بل تلك التي تجعل العملاء يشعرون بالذكاء لاختيارهم. من الترجمات المعتمدة إلى التوطين الكامل للمواقع الإلكترونية والفيديو والترجمة الفورية عبر مكالمات الفيديو — أتقن قادة السوق تقديم خدماتهم والتسعير ورحلة العميل بأكملها.",
+                intro2: "في Internationals.pro، درسنا نهجهم بعناية وأنشأنا نموذجنا الخاص الذي يجمع بين أقصى درجات الشفافية والمرونة. نحن لا نخفي الأسعار حيث يمكن حسابها مقدمًا، ولا نجعل العملاء يخمنون حيث يكون الحساب الفردي ضروريًا. إليك كيف يعمل معنا.",
+                section1Title: "1. المستندات: أسعار بسيطة وواضحة",
+                section1Text1: "بالنسبة لمعظم المستندات النصية، نستخدم خيارين شفافين للتسعير.",
+                section1Item1: "الترجمة المعتمدة — سعر ثابت لكل صفحة. مثالي لـ USCIS والمحاكم والجامعات ووثائق الهجرة وأي أوراق تتطلب ختمًا وتوقيعًا رسميًا.",
+                section1Item2: "الترجمة القياسية (بدون توثيق) — سعر لكل كلمة. الخيار الأكثر عدالة للنصوص التجارية والعقود والتعليمات وأي معلومات حيث الدقة مهمة ولكن الأختام الرسمية غير مطلوبة.",
+                section1Text2: "يرى العملاء التكلفة فور تحميل الملف — بدون مفاجآت وبدون الحاجة إلى انتظار عرض سعر.",
+                section2Title: "2. التكيف الثقافي وتوطين المواقع الإلكترونية: نهج فردي",
+                section2Text1: "الحساب المسبق 'لكل كلمة' شبه مستحيل هنا. الموقع الإلكتروني هو أكثر من مجرد نص — إنه هيكل وتصميم وتحسين محركات البحث وتفاصيل تقنية وسياق ثقافي.",
+                section2Text2: "لهذا السبب نعمل بشكل مختلف:",
+                section2Step1: "أولاً، يصف العميل المهمة (أو يوفر الوصول إلى نظام إدارة المحتوى / الكود).",
+                section2Step2: "يجري مديرنا تدقيقًا مجانيًا ويقدم عرض سعر دقيق مقسم حسب المراحل.",
+                section2Step3: "التسعير فردي ويعتمد على الحجم وتعقيد المنصة وعدد اللغات.",
+                section2Text3: "يستخدم قادة الصناعة هذا النهج — وهو مبرر تمامًا: يحصل العملاء ليس فقط على 'صفحات مترجمة' ولكن على موقع إلكتروني وظيفي ومتكيف ثقافيًا يبيع ويحول بالفعل.",
+                section3Title: "3. توطين الفيديو: سعر بالدقيقة",
+                section3Text1: "الفيديو هو أحد أكثر التنسيقات طلبًا في عام 2026. نحسبه ببساطة ووضوح:",
+                section3Item1: "الترجمة — سعر لكل دقيقة فيديو.",
+                section3Item2: "الصوت التعليقي / الدبلجة — سعر لكل دقيقة (حسب عدد اللغات وجودة التسجيل).",
+                section3Item3: "الحزمة الكاملة (ترجمة + صوت تعليقي + تكييف) — أيضًا بالدقيقة، مثل تحرير إنتاج الفيديو.",
+                section3Text2: "يقوم العميل بتحميل ملف، ويختار اللغات والتنسيق المطلوب — ويحصل على سعر دقيق في ثوانٍ.",
+                section4Title: "4. الترجمة الفورية ومكالمات الفيديو: الفوترة بالساعة أو بالدقيقة",
+                section4Text1: "للاجتماعات عبر الإنترنت والمفاوضات والندوات عبر الإنترنت والمؤتمرات، نقدم خيارين مناسبين:",
+                section4Item1: "الفوترة بالدقيقة (للمكالمات القصيرة).",
+                section4Item2: "سعر بالساعة (للمفاوضات الطويلة والمناسبات).",
+                section4Text2: "الحد الأدنى للطلب عادة 30-60 دقيقة. السعر يعتمد على زوج اللغات والاستعجال والصيغة (ترجمة فورية متتابعة أو فورية).",
+                section5Title: "5. الطلبات المخصصة",
+                section5Text1: "في بعض الأحيان يحتاج العملاء ليس فقط خدمة واحدة قياسية ولكن حلاً شاملاً: ترجمة المستندات + توطين الموقع الإلكتروني + ترجمة فيديو ترويجي + ترجمة فورية في عرض تقديمي. في مثل هذه الحالات، نقدم حزمة متكاملة.",
+                section5Text2: "يصف العميل المهمة، ونحن نقدم الحل الأمثل بتسعير ثابت ومواعيد نهائية واضحة.",
+                whyTitle: "لماذا هذا يعمل للعميل",
+                whyText1: "نحن لا نجبرك على الدفع 'لكل كلمة' حيث يكون ذلك غير عادل، ولا نخفي الأسعار حيث يمكن حسابها مقدمًا. بدلاً من ذلك، نقدم قواعد واضحة:",
+                whyItem1: "المستندات البسيطة → أسعار شفافة لكل صفحة أو كلمة.",
+                whyItem2: "المشاريع المعقدة (المواقع الإلكترونية، الفيديو، الطلبات المخصصة) → عرض سعر فردي ومدير شخصي.",
+                whyItem3: "جميع الأسعار تعتمد على زوج اللغات والحجم والتعقيد والمواعيد النهائية — وتعرفها قبل الدفع.",
+                whyText2: "النتيجة هي أن العملاء يحصلون ليس فقط على ترجمة، ولكن على ثقة بأن أموالهم أنفقت بحكمة وأن النتيجة ستكون بالضبط كما هو مطلوب.",
+                whyText3: "إذا كنت تبحث عن مترجم يتحدث لغة الأعمال ويفهم معنى الثقة في عام 2026 — مرحبًا بك في Internationals.pro.",
+                gameTitle: "امسك الحروف",
+                scoreCorrect: "صحيح",
+                scoreWrong: "خطأ"
+            }
         };
 
-        const supportedLangs = ['ru','en','de','es','pt','zh','ar'];
+        // Определяем язык браузера автоматически
+        const supportedLangs = ['ru', 'en', 'de', 'es', 'pt', 'zh', 'ar'];
         let userLang = navigator.language || navigator.userLanguage;
         userLang = userLang.split('-')[0];
-        let currentLang = localStorage.getItem('language') || (supportedLangs.includes(userLang) ? userLang : 'en');
+        
+        // Маппинг китайского
+        if (userLang === 'zh') userLang = 'zh';
+        
+        // Выбираем язык (если не поддерживается - английский)
+        let currentLang = supportedLangs.includes(userLang) ? userLang : 'en';
 
-        function setLanguage(lang) {
-            document.querySelectorAll('[data-translate]').forEach(el => {
-                const key = el.dataset.translate;
-                if (translations[lang]?.[key]) el.textContent = translations[lang][key];
-            });
+        // Функция применения перевода
+        function applyTranslation(lang) {
+            const t = translations[lang];
+            if (!t) return;
+            
+            // Переводим все элементы с ID
+            for (const key in t) {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (key === 'intro2' || key === 'whyText3') {
+                        // Сохраняем strong теги
+                        const strongElement = element.querySelector('strong');
+                        if (strongElement && t[key].includes('Internationals.pro')) {
+                            const textWithoutStrong = t[key].replace(/<strong>.*?<\/strong>/, '');
+                            strongElement.textContent = 'Internationals.pro';
+                            element.innerHTML = textWithoutStrong;
+                            element.appendChild(strongElement);
+                        } else {
+                            element.innerHTML = t[key];
+                        }
+                    } else if (key.includes('Item') && (key.includes('section1') || key.includes('section3') || key.includes('section4') || key.includes('why'))) {
+                        // Для элементов списка с strong
+                        const strongElement = element.querySelector('strong');
+                        if (strongElement) {
+                            const strongMatch = t[key].match(/<strong>(.*?)<\/strong>/);
+                            if (strongMatch) {
+                                strongElement.textContent = strongMatch[1];
+                                const textAfter = t[key].split('</strong>')[1] || '';
+                                const textNode = document.createTextNode(textAfter);
+                                element.innerHTML = '';
+                                element.appendChild(strongElement);
+                                element.appendChild(textNode);
+                            } else {
+                                element.textContent = t[key];
+                            }
+                        } else {
+                            element.textContent = t[key];
+                        }
+                    } else {
+                        element.innerHTML = t[key];
+                    }
+                }
+            }
         }
 
-        setLanguage(currentLang);
+        // Применяем перевод автоматически при загрузке страницы
+        applyTranslation(currentLang);
 
+        // ==================== ИГРА ====================
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const scoreGoodElement = document.getElementById('scoreGood');
