@@ -7,15 +7,9 @@
   <title>Feedback - Internationals Translation Service</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
   <link rel="preload" as="image" href="feedback-bg.jpg">
+  <link rel="preconnect" href="https://mcgcijdnzduzyqbbjtkm.supabase.co">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1">
-    (function () {
-        var script = document.createElement("script");
-        script.async = 1;
-        script.src = 'https://tpembars.com/NTI3MDg3.js?t=527087';
-        document.head.appendChild(script);
-    })();
-  </script>
   <style>
     :root{ --accent-1:#1f3f83; --accent-2:#2f5597; --danger:#d9534f; }
     html,body{ height:100%; margin:0; }
@@ -72,7 +66,19 @@
     .feedback-item strong{ font-size:15px; }
     .feedback-item small{ float:right; color:#333; font-size:12px; }
     .admin-reply{ margin-top:10px; padding:10px; background:rgba(240,249,255,0.9); border-left:3px solid #3b82f6; border-radius:6px; }
-    .loading,.error{ text-align:center; color:#fff; padding:14px; }
+    .error{ text-align:center; color:#fff; padding:14px; }
+
+    /* Loading spinner */
+    .loading-container{ text-align:center; padding:30px 10px; }
+    .spinner{
+      width:40px; height:40px; margin:0 auto 12px;
+      border:4px solid rgba(255,255,255,0.15);
+      border-top-color:#fff; border-radius:50%;
+      animation:spin .8s linear infinite;
+    }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+    .loading-text{ color:#fff; font-size:14px; opacity:.85; }
+    .loading-subtext{ font-size:12px; opacity:.55; margin-top:4px; }
 
     .fixed-banner-left,
     .fixed-banner-right {
@@ -155,65 +161,12 @@
 </head>
 <body>
 
-  <!-- LEFT COLUMN -->
-  <div class="fixed-banner-left" id="bannerLeft">
-    <div class="banner-card">
-      <a target="_blank" rel="nofollow" href="https://dbnua.com/g/xwdnud2o3b19444e1cbd828f6d1d89/?i=4">
-        <img src="https://ad.admitad.com/b/xwdnud2o3b19444e1cbd828f6d1d89/" alt="Memphis Tours WW"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" rel="nofollow" href="https://salty.co.in/?utm_source=admitad&utm_medium=7_2522654_&utm_campaign=saltyaffiliate&click_id=16978671b122c79f3d24458a57235f65">
-        <img src="salty.png" alt="Salty"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" href="https://iz5.xyz/69febc97b1f51">
-        <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5d91926ebb862.png" alt="Go City / CPS"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" href="https://i0x.xyz/69febe2b91a76">
-        <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/2c1918026fbaa.png" alt="Elementor"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" href="https://trackerpro.org/69febee6234c3">
-        <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/7b881d309a4fe.jpeg" alt="Coursera"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" href="https://gettracker.net/69fec05932a2e">
-        <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/20ffacca76ca9.png" alt="Fiverr"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" rel="nofollow" href="https://grfpr.com/g/zehsdnxunvf1d04a03ac245c490fd8/">
-        <img src="boost_banner.png" alt="Boost Presence"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" rel="noopener" href="https://museos.arteyeducacion.org/en/resurgence-of-the-homeland">
-        <img src="resurgence_banner.png" alt="Resurgence of the Homeland"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card" style="padding:8px;">
-      <script async src="https://tpemb.com/content?trs=527087&shmarker=726649.feedback&locale=en&width=100&powered_by=true&campaign_id=86&promo_id=2110" charset="utf-8"></script>
-      <div class="banner-label">Ad</div>
-    </div>
-  </div>
+  <!-- LEFT COLUMN (desktop ads, injected later) -->
+  <div class="fixed-banner-left" id="bannerLeft"></div>
 
-  <!-- RIGHT COLUMN -->
+  <!-- RIGHT COLUMN (desktop ads, injected later) -->
   <div class="fixed-banner-right" id="bannerRight">
-    <!-- Google Review CTA -->
+    <!-- Google Review CTA stays immediate, it's cheap and important -->
     <div class="banner-card" style="text-align:center; padding:16px;">
       <svg width="24" height="24" viewBox="0 0 48 48" style="display:block;margin:0 auto 6px;flex-shrink:0;" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.09 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
       <div style="font-size:22px; margin-bottom:6px; letter-spacing:2px;">⭐⭐⭐⭐⭐</div>
@@ -224,63 +177,6 @@
                 color:#fff; border-radius:20px; font-size:12px; font-weight:600; text-decoration:none;">
         ✍️ Write a Review
       </a>
-    </div>
-    <!-- TraffMonetizer -->
-    <div class="banner-card">
-      <a target="_blank" rel="nofollow" href="https://traffmonetizer.com/?aff=2123948">
-        <img src="traffmonetizer-300x250.png" alt="TraffMonetizer"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" href="https://iz5.xyz/69fec16db1783">
-        <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/a87b8e27a71d7.jpeg" alt="OKX"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" href="https://iz5.xyz/69fec16db1783">
-        <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/9d3ad20c15260.jpeg" alt="OKX"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" href="https://i1b.xyz/69fee1c2b1360">
-        <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5c91f90fbf94a.jpeg" alt="TicketNetwork"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card">
-      <a target="_blank" href="https://ir3.xyz/69fee508dd949">
-        <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/495199b33e1b7.png" alt="Pelago SG & APAC"/>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card" style="padding:0;overflow:hidden;">
-      <a class="cvc-banner" id="cvcBannerRight" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
-        <div class="cvc-slides">
-          <img class="cvc-slide cvc-active" src="cvc_slide1.png" alt="CVC Corp" loading="lazy"/>
-          <img class="cvc-slide" src="cvc_slide2.png" alt="CVC Corp" loading="lazy"/>
-          <img class="cvc-slide" src="cvc_slide3.png" alt="CVC Corp" loading="lazy"/>
-          <img class="cvc-slide" src="cvc_slide4.png" alt="CVC Corp" loading="lazy"/>
-          <img class="cvc-slide" src="cvc_slide5.png" alt="CVC Corp" loading="lazy"/>
-        </div>
-        <div class="cvc-dots" id="cvcDotsRight">
-          <div class="cvc-dot cvc-dot-active"></div>
-          <div class="cvc-dot"></div><div class="cvc-dot"></div>
-          <div class="cvc-dot"></div><div class="cvc-dot"></div>
-        </div>
-        <div class="cvc-text-overlay">
-          <div class="cvc-title">CVC Corp</div>
-          <div class="cvc-sub">Viagens e Turismo &bull; Descubra o mundo</div>
-          <div class="cvc-cta">Reservar agora →</div>
-        </div>
-      </a>
-      <div class="banner-label">Ad</div>
-    </div>
-    <div class="banner-card" style="padding:8px;">
-      <script async src="https://tpemb.com/content?trs=527087&shmarker=726649.feedback&locale=en&limit=3&pages=1&powered_by=true&width=100&horizontal=true&lead_text=%22true%22&topbar=false&disable_logo=false&transparent=true&no_borders=false&show_top=true&all_btn=true&promo_id=1786&campaign_id=21" charset="utf-8"></script>
-      <div class="banner-label">Ad</div>
     </div>
   </div>
 
@@ -312,226 +208,74 @@
     </div>
     <div class="feedback-list-container">
       <div class="feedback-list-title translate" data-key="recent">Recent Feedback</div>
-      <div id="feedbackList"><div class="loading translate" data-key="loading">Loading feedback...</div></div>
-
-      <!-- MOBILE BANNERS -->
-      <div class="mobile-banners">
-        <!-- Google Review CTA mobile -->
-        <div class="banner-card" style="width:100%;text-align:center;padding:16px;">
-          <svg width="24" height="24" viewBox="0 0 48 48" style="display:block;margin:0 auto 6px;flex-shrink:0;" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.09 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
-          <div style="font-size:22px; margin-bottom:6px; letter-spacing:2px;">⭐⭐⭐⭐⭐</div>
-          <div style="color:#fff; font-size:13px; font-weight:600; margin-bottom:4px;">Rate us on Google</div>
-          <a href="https://g.page/r/CQwStbpHlV3gEAI/review" target="_blank" rel="nofollow"
-             style="display:inline-block; margin-top:8px; padding:8px 18px;
-                    background:linear-gradient(135deg,#1f3f83,#2f5597);
-                    color:#fff; border-radius:20px; font-size:12px; font-weight:600; text-decoration:none;">
-            ✍️ Write a Review
-          </a>
-        </div>
-        <!-- TraffMonetizer mobile -->
-        <div class="banner-card" style="width:100%;">
-          <a target="_blank" rel="nofollow" href="https://traffmonetizer.com/?aff=2123948">
-            <img src="traffmonetizer-300x250.png" alt="TraffMonetizer"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card" style="width:100%;">
-          <a target="_blank" rel="nofollow" href="https://dbnua.com/g/xwdnud2o3b19444e1cbd828f6d1d89/?i=4">
-            <img src="https://ad.admitad.com/b/xwdnud2o3b19444e1cbd828f6d1d89/" alt="Memphis Tours WW"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card" style="width:100%;">
-          <a target="_blank" rel="nofollow" href="https://salty.co.in/?utm_source=admitad&utm_medium=7_2522654_&utm_campaign=saltyaffiliate&click_id=16978671b122c79f3d24458a57235f65">
-            <img src="salty.png" alt="Salty"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card">
-          <a target="_blank" href="https://iz5.xyz/69febc97b1f51">
-            <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5d91926ebb862.png" alt="Go City / CPS"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card">
-          <a target="_blank" href="https://i0x.xyz/69febe2b91a76">
-            <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/2c1918026fbaa.png" alt="Elementor"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card">
-          <a target="_blank" href="https://trackerpro.org/69febee6234c3">
-            <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/7b881d309a4fe.jpeg" alt="Coursera"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card">
-          <a target="_blank" href="https://gettracker.net/69fec05932a2e">
-            <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/20ffacca76ca9.png" alt="Fiverr"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card">
-          <a target="_blank" href="https://iz5.xyz/69fec16db1783">
-            <img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/a87b8e27a71d7.jpeg" alt="OKX"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card" style="padding:0;overflow:hidden;">
-          <a class="cvc-banner" id="cvcBannerMobile" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/">
-            <div class="cvc-slides">
-              <img class="cvc-slide cvc-active" src="cvc_slide1.png" alt="CVC Corp" loading="lazy"/>
-              <img class="cvc-slide" src="cvc_slide2.png" alt="CVC Corp" loading="lazy"/>
-              <img class="cvc-slide" src="cvc_slide3.png" alt="CVC Corp" loading="lazy"/>
-              <img class="cvc-slide" src="cvc_slide4.png" alt="CVC Corp" loading="lazy"/>
-              <img class="cvc-slide" src="cvc_slide5.png" alt="CVC Corp" loading="lazy"/>
-            </div>
-            <div class="cvc-dots" id="cvcDotsMobile">
-              <div class="cvc-dot cvc-dot-active"></div>
-              <div class="cvc-dot"></div><div class="cvc-dot"></div>
-              <div class="cvc-dot"></div><div class="cvc-dot"></div>
-            </div>
-            <div class="cvc-text-overlay">
-              <div class="cvc-title">CVC Corp</div>
-              <div class="cvc-sub">Viagens e Turismo &bull; Descubra o mundo</div>
-              <div class="cvc-cta">Reservar agora →</div>
-            </div>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card">
-          <a target="_blank" rel="noopener" href="https://museos.arteyeducacion.org/en/resurgence-of-the-homeland">
-            <img src="resurgence_banner.png" alt="Resurgence of the Homeland"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card" style="width:100%;">
-          <a target="_blank" href="https://grfpr.com/g/zehsdnxunvf1d04a03ac245c490fd8/">
-            <img src="boost_banner.png" alt="Boost Presence"/>
-          </a>
-          <div class="banner-label">Ad</div>
-        </div>
-        <div class="banner-card" style="width:100%;padding:8px;">
-          <script async src="https://tpemb.com/content?trs=527087&shmarker=726649.feedback&locale=en&limit=3&pages=1&powered_by=true&width=100&horizontal=true&lead_text=%22true%22&topbar=false&disable_logo=false&transparent=true&no_borders=false&show_top=true&all_btn=true&promo_id=1786&campaign_id=21" charset="utf-8"></script>
-          <div class="banner-label">Ad</div>
+      <div id="feedbackList">
+        <div class="loading-container">
+          <div class="spinner"></div>
+          <p class="loading-text translate" data-key="loading">Loading reviews...</p>
+          <p class="loading-subtext">Usually takes 1-3 seconds</p>
         </div>
       </div>
+
+      <!-- MOBILE BANNERS (injected later) -->
+      <div class="mobile-banners" id="mobileBanners"></div>
     </div>
   </div>
 
   <script>
-    (function(){
-      function initCvc(bannerId, dotsId) {
-        var b = document.getElementById(bannerId); if(!b) return;
-        var slides = b.querySelectorAll('.cvc-slide');
-        var dots = (document.getElementById(dotsId)||{}).querySelectorAll ? document.getElementById(dotsId).querySelectorAll('.cvc-dot') : [];
-        if(slides.length < 2) return;
-        var cur = 0;
-        setInterval(function(){
-          slides[cur].classList.remove('cvc-active');
-          if(dots[cur]) dots[cur].classList.remove('cvc-dot-active');
-          cur = (cur+1) % slides.length;
-          slides[cur].classList.add('cvc-active');
-          if(dots[cur]) dots[cur].classList.add('cvc-dot-active');
-        }, 2500);
-      }
-      document.addEventListener('DOMContentLoaded', function(){
-        initCvc('cvcBannerRight','cvcDotsRight');
-        initCvc('cvcBannerMobile','cvcDotsMobile');
-      });
-    })();
-  </script>
-
-  <script>
-    (function(){
-      var bannerLeft     = document.getElementById('bannerLeft');
-      var bannerRight    = document.getElementById('bannerRight');
-      var feedbackListEl = document.getElementById('feedbackList');
-      var shown = false;
-      var stuck = false;
-
-      function stickToPage() {
-        if (stuck) return;
-        stuck = true;
-        var rL = bannerLeft.getBoundingClientRect();
-        var rR = bannerRight.getBoundingClientRect();
-        var topL  = rL.top  + window.scrollY;
-        var topR  = rR.top  + window.scrollY;
-        var leftL = rL.left;
-        var leftR = rR.left;
-        bannerLeft.classList.remove('sliding');
-        bannerLeft.classList.add('stuck');
-        bannerLeft.style.top  = topL + 'px';
-        bannerLeft.style.left = leftL + 'px';
-        bannerRight.classList.remove('sliding');
-        bannerRight.classList.add('stuck');
-        bannerRight.style.top  = topR + 'px';
-        bannerRight.style.left = leftR + 'px';
-      }
-
-      function showBanners() {
-        if (shown) return;
-        shown = true;
-        bannerLeft.classList.add('sliding');
-        bannerRight.classList.add('sliding');
-        setTimeout(stickToPage, 2700);
-      }
-
-      function check() {
-        if (shown) return;
-        if (feedbackListEl.querySelector('.loading')) return;
-        var rect = feedbackListEl.getBoundingClientRect();
-        if (rect.bottom <= window.innerHeight + 50) {
-          showBanners();
-        }
-      }
-
-      window.addEventListener('scroll', check, { passive: true });
-      new MutationObserver(check).observe(feedbackListEl, { childList: true, subtree: true });
-      setTimeout(check, 700);
-    })();
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    function waitForSupabase(cb, n) {
-      n = n||0;
-      if(window.supabase && window.supabase.createClient) { cb(); }
-      else if(n < 50) { setTimeout(function(){ waitForSupabase(cb, n+1); }, 100); }
-      else { document.getElementById('feedbackList').innerHTML = '<p class="error">Failed to load Supabase</p>'; }
+    /* ===== Translations & language ===== */
+    var translations = {
+      en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading reviews...", sending:"Sending...", sent:"✅ Sent!", replyLabel:"Our reply:" },
+      ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов...", sending:"Отправка...", sent:"✅ Отправлено!", replyLabel:"Наш ответ:" },
+      de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Kontakte (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Bewertungen werden geladen...", sending:"Senden...", sent:"✅ Gesendet!", replyLabel:"Unsere Antwort:" },
+      es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios...", sending:"Enviando...", sent:"✅ ¡Enviado!", replyLabel:"Nuestra respuesta:" },
+      pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando comentários...", sending:"Enviando...", sent:"✅ Enviado!", replyLabel:"Nossa resposta:" },
+      zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"正在加载评论...", sending:"发送中...", sent:"✅ 已发送!", replyLabel:"我们的回复:" },
+      ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات...", sending:"جاري الإرسال...", sent:"✅ تم الإرسال!", replyLabel:"ردنا:" }
+    };
+    function getPreferredLang() {
+      return localStorage.getItem('language') || localStorage.getItem('userLang') ||
+             (navigator.language || navigator.userLanguage || 'en').split('-')[0] || 'en';
     }
-    waitForSupabase(initApp);
+    function applyTranslations() {
+      var lang = getPreferredLang(), t = translations[lang] || translations.en;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+      document.querySelectorAll('.translate').forEach(function(el){
+        var key = el.dataset.key; if(!key) return;
+        var val = t[key] || translations.en[key] || el.textContent;
+        var tag = el.tagName.toLowerCase();
+        if(tag==='input'||tag==='textarea') el.placeholder = val; else el.textContent = val;
+      });
+    }
+    window.addEventListener('DOMContentLoaded', applyTranslations);
+    window.addEventListener('load', function(){ document.body.classList.add('loaded'); });
+  </script>
+
+  <!-- ===== Supabase: load with defer, init on script-load event (no polling) ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer onload="window.__sbReady && window.__sbReady()"></script>
+  <script>
+    var SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
+    var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
+    var sb = null;
+
+    window.__sbReady = function(){
+      if (window.supabase && window.supabase.createClient && !sb) {
+        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        initApp();
+      }
+    };
+    // Fallback in case onload fires before this script runs, or defer ordering quirk
+    document.addEventListener('DOMContentLoaded', function(){
+      if (window.supabase && !sb) window.__sbReady();
+    });
+    // Hard fallback: if nothing happened after 4s, show a real error (not infinite spinner)
+    setTimeout(function(){
+      if (!sb) {
+        var el = document.getElementById('feedbackList');
+        if (el) el.innerHTML = '<p class="error">Failed to load feedback. Please refresh the page.</p>';
+      }
+    }, 4000);
 
     function initApp() {
-      window.addEventListener('load', function(){ document.body.classList.add('loaded'); applyTranslations(); });
-      var translations = {
-        en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading feedback..." },
-        ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов..." },
-        de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Kontakte (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Feedback wird geladen..." },
-        es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios..." },
-        pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando feedback..." },
-        zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"加载反馈中..." },
-        ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات..." }
-      };
-      function getPreferredLang() {
-        return localStorage.getItem('language') || localStorage.getItem('userLang') ||
-               (navigator.language || navigator.userLanguage || 'en').split('-')[0] || 'en';
-      }
-      function applyTranslations() {
-        var lang = getPreferredLang(), t = translations[lang] || translations.en;
-        document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-        document.querySelectorAll('.translate').forEach(function(el){
-          var key = el.dataset.key; if(!key) return;
-          var val = t[key] || translations.en[key] || el.textContent;
-          var tag = el.tagName.toLowerCase();
-          if(tag==='input'||tag==='textarea') el.placeholder = val; else el.textContent = val;
-        });
-        var loadEl = document.querySelector('#feedbackList .loading');
-        if(loadEl) loadEl.textContent = t.loading || translations.en.loading;
-      }
-      var SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
-      var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jZ2NpamRuemR1enlxYmJqdGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQzMDk1NzksImV4cCI6MjA3OTg4NTU3OX0.rhiArHGVbMt0nOgEeP-qGzL0ZuX3Cr1EoOMR1w3dDQ0';
-      var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       var feedbackList=document.getElementById('feedbackList'), feedbackForm=document.getElementById('feedbackForm'),
           submitBtn=document.getElementById('submitBtn'), errorMessage=document.getElementById('errorMessage'),
           recordBtn=document.getElementById('recordBtn'), stopBtn=document.getElementById('stopBtn'),
@@ -541,6 +285,7 @@
           volumeBar=document.getElementById('volumeBar'), recordStatus=document.getElementById('recordStatus');
       var mediaRecorder=null,audioChunks=[],audioBlob=null,audioContext=null,
           analyser=null,dataArray=null,animationId=null,recordTimer=null,stream=null;
+
       function drawWaveform(){
         animationId=requestAnimationFrame(drawWaveform);
         if(!analyser||!dataArray) return;
@@ -559,6 +304,7 @@
         canvasCtx.stroke();
         volumeBar.style.width=Math.min(Math.round(maxAmp*200),100)+'%';
       }
+
       recordBtn.addEventListener('click', async function(){
         try{
           stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
@@ -597,35 +343,64 @@
           },120000);
         }catch(err){ showError('Cannot access microphone'); console.error(err); }
       });
+
       stopBtn.addEventListener('click',function(){
         if(mediaRecorder&&mediaRecorder.state==='recording'){
           mediaRecorder.stop(); recordBtn.disabled=false; stopBtn.disabled=true;
           recordBtn.classList.remove('recording'); if(recordTimer) clearTimeout(recordTimer);
         }
       });
+
       deleteBtn.addEventListener('click',function(){
         audioBlob=null; audioPreview.style.display='none'; previewPlayer.src='';
         recordStatus.textContent=''; recordBtn.disabled=false; stopBtn.disabled=true;
       });
+
+      var CACHE_KEY='cachedFeedbackV1';
+
+      function renderFeedback(rows){
+        var lang=getPreferredLang();
+        if(!rows || rows.length===0){
+          feedbackList.innerHTML='<p style="text-align:center;color:#ddd">'+(translations[lang]||translations.en).loading+'</p>';
+          return;
+        }
+        var frag=document.createDocumentFragment();
+        rows.forEach(function(item){
+          var div=document.createElement('div'); div.className='feedback-item';
+          var date=new Date(item.created_at).toLocaleString(undefined,{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',year:'numeric'});
+          var html='<strong translate="no">'+esc(item.contact||'Anonymous')+'</strong><small>'+date+'</small><p translate="no">'+esc(item.message)+'</p>';
+          if(item.audio_url) html+='<audio controls preload="metadata" src="'+item.audio_url+'"></audio>';
+          if(item.reply&&item.reply.trim()){
+            var lbl=((translations[lang]||translations.en).replyLabel)||'Our reply:';
+            html+='<div class="admin-reply"><div class="admin-reply-label">'+esc(lbl)+'</div><p class="admin-reply-text" translate="no">'+esc(item.reply)+'</p></div>';
+          }
+          div.innerHTML=html; frag.appendChild(div);
+        });
+        feedbackList.innerHTML='';
+        feedbackList.appendChild(frag);
+      }
+
+      // 1. Показать кэш мгновенно, если он есть
+      try{
+        var cached = localStorage.getItem(CACHE_KEY);
+        if(cached){ renderFeedback(JSON.parse(cached)); }
+      }catch(e){}
+
       async function loadFeedback(){
         try{
-          var res=await sb.from('feedback').select('*').order('created_at',{ascending:false});
+          var res=await sb.from('feedback').select('*').order('created_at',{ascending:false}).limit(50);
           if(res.error) throw res.error;
-          var lang=getPreferredLang();
-          feedbackList.innerHTML=res.data.length===0?'<p style="text-align:center;color:#ddd">'+(translations[lang]||translations.en).loading+'</p>':'';
-          res.data.forEach(function(item){
-            var div=document.createElement('div'); div.className='feedback-item';
-            var date=new Date(item.created_at).toLocaleString(undefined,{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',year:'numeric'});
-            var html='<strong translate="no">'+esc(item.contact||'Anonymous')+'</strong><small>'+date+'</small><p translate="no">'+esc(item.message)+'</p>';
-            if(item.audio_url) html+='<audio controls preload="metadata" src="'+item.audio_url+'"></audio>';
-            if(item.reply&&item.reply.trim()){
-              var lbl=((translations[getPreferredLang()]||translations.en).replyLabel)||'Our reply:';
-              html+='<div class="admin-reply"><div class="admin-reply-label">'+esc(lbl)+'</div><p class="admin-reply-text" translate="no">'+esc(item.reply)+'</p></div>';
-            }
-            div.innerHTML=html; feedbackList.appendChild(div);
-          });
-        }catch(err){ console.error(err); feedbackList.innerHTML='<p class="error">Failed to load feedback</p>'; }
+          renderFeedback(res.data);
+          try{ localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); }catch(e){}
+        }catch(err){
+          console.error(err);
+          // Если есть кэш — оставляем его на экране, не затираем ошибкой
+          if(!localStorage.getItem(CACHE_KEY)){
+            feedbackList.innerHTML='<p class="error">Failed to load feedback</p>';
+          }
+        }
       }
+
       feedbackForm.addEventListener('submit', async function(e){
         e.preventDefault();
         var name=document.getElementById('name').value.trim(), message=document.getElementById('message').value.trim();
@@ -655,19 +430,152 @@
         }catch(err){ console.error(err); showError('Failed to send - check console'); }
         finally{ submitBtn.disabled=false; }
       });
+
       function showError(msg){ errorMessage.innerHTML='<div class="error">'+esc(msg)+'</div>'; setTimeout(function(){ errorMessage.innerHTML=''; },5000); }
       function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
       loadFeedback();
       setInterval(loadFeedback, 10000);
-      window.applyTranslations=applyTranslations;
-      window.getPreferredLang=getPreferredLang;
     }
   </script>
+
+  <!-- ===== Ads & tracking: deferred, injected after main content is interactive ===== -->
   <script>
+    (function(){
+      var bannersHTML_left = ''
+        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://dbnua.com/g/xwdnud2o3b19444e1cbd828f6d1d89/?i=4"><img src="https://ad.admitad.com/b/xwdnud2o3b19444e1cbd828f6d1d89/" alt="Memphis Tours WW" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://salty.co.in/?utm_source=admitad&utm_medium=7_2522654_&utm_campaign=saltyaffiliate&click_id=16978671b122c79f3d24458a57235f65"><img src="salty.png" alt="Salty" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69febc97b1f51"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5d91926ebb862.png" alt="Go City / CPS" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://i0x.xyz/69febe2b91a76"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/2c1918026fbaa.png" alt="Elementor" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://trackerpro.org/69febee6234c3"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/7b881d309a4fe.jpeg" alt="Coursera" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://gettracker.net/69fec05932a2e"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/20ffacca76ca9.png" alt="Fiverr" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://grfpr.com/g/zehsdnxunvf1d04a03ac245c490fd8/"><img src="boost_banner.png" alt="Boost Presence" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" rel="noopener" href="https://museos.arteyeducacion.org/en/resurgence-of-the-homeland"><img src="resurgence_banner.png" alt="Resurgence of the Homeland" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card" style="padding:8px;" id="tpEmbedLeftSlot"><div class="banner-label">Ad</div></div>';
+
+      var bannersHTML_right_extra = ''
+        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://traffmonetizer.com/?aff=2123948"><img src="traffmonetizer-300x250.png" alt="TraffMonetizer" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69fec16db1783"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/a87b8e27a71d7.jpeg" alt="OKX" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69fec16db1783"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/9d3ad20c15260.jpeg" alt="OKX" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://i1b.xyz/69fee1c2b1360"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5c91f90fbf94a.jpeg" alt="TicketNetwork" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://ir3.xyz/69fee508dd949"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/495199b33e1b7.png" alt="Pelago SG & APAC" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card" style="padding:0;overflow:hidden;"><a class="cvc-banner" id="cvcBannerRight" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/"><div class="cvc-slides"><img class="cvc-slide cvc-active" src="cvc_slide1.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide2.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide3.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide4.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide5.png" alt="CVC Corp" loading="lazy"/></div><div class="cvc-dots" id="cvcDotsRight"><div class="cvc-dot cvc-dot-active"></div><div class="cvc-dot"></div><div class="cvc-dot"></div><div class="cvc-dot"></div><div class="cvc-dot"></div></div><div class="cvc-text-overlay"><div class="cvc-title">CVC Corp</div><div class="cvc-sub">Viagens e Turismo &bull; Descubra o mundo</div><div class="cvc-cta">Reservar agora →</div></div></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card" style="padding:8px;" id="tpEmbedRightSlot"><div class="banner-label">Ad</div></div>';
+
+      function initCvc(bannerId, dotsId) {
+        var b = document.getElementById(bannerId); if(!b) return;
+        var slides = b.querySelectorAll('.cvc-slide');
+        var dotsHolder = document.getElementById(dotsId);
+        var dots = dotsHolder ? dotsHolder.querySelectorAll('.cvc-dot') : [];
+        if(slides.length < 2) return;
+        var cur = 0;
+        setInterval(function(){
+          slides[cur].classList.remove('cvc-active');
+          if(dots[cur]) dots[cur].classList.remove('cvc-dot-active');
+          cur = (cur+1) % slides.length;
+          slides[cur].classList.add('cvc-active');
+          if(dots[cur]) dots[cur].classList.add('cvc-dot-active');
+        }, 2500);
+      }
+
+      function loadTpScript(slotId, query){
+        var slot = document.getElementById(slotId);
+        if(!slot) return;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://tpemb.com/content?' + query;
+        s.charset = 'utf-8';
+        slot.appendChild(s);
+      }
+
+      function injectBanners(){
+        var isMobile = window.matchMedia('(max-width:1100px)').matches;
+        if(isMobile){
+          var mobileBanners = document.getElementById('mobileBanners');
+          if(mobileBanners){
+            // mobile gets google review (already shown above container) + ad set, lighter list
+            mobileBanners.innerHTML = bannersHTML_left + bannersHTML_right_extra;
+            loadTpScript('tpEmbedLeftSlot', 'trs=527087&shmarker=726649.feedback&locale=en&limit=3&pages=1&powered_by=true&width=100&horizontal=true&lead_text=%22true%22&topbar=false&disable_logo=false&transparent=true&no_borders=false&show_top=true&all_btn=true&promo_id=1786&campaign_id=21');
+            initCvc('cvcBannerRight','cvcDotsRight');
+          }
+        } else {
+          var left = document.getElementById('bannerLeft');
+          var right = document.getElementById('bannerRight');
+          if(left) left.insertAdjacentHTML('beforeend', bannersHTML_left);
+          if(right) right.insertAdjacentHTML('beforeend', bannersHTML_right_extra);
+          loadTpScript('tpEmbedLeftSlot', 'trs=527087&shmarker=726649.feedback&locale=en&width=100&powered_by=true&campaign_id=86&promo_id=2110');
+          loadTpScript('tpEmbedRightSlot', 'trs=527087&shmarker=726649.feedback&locale=en&limit=3&pages=1&powered_by=true&width=100&horizontal=true&lead_text=%22true%22&topbar=false&disable_logo=false&transparent=true&no_borders=false&show_top=true&all_btn=true&promo_id=1786&campaign_id=21');
+          initCvc('cvcBannerRight','cvcDotsRight');
+          setupStickyBanners();
+        }
+      }
+
+      function setupStickyBanners(){
+        var bannerLeft = document.getElementById('bannerLeft');
+        var bannerRight = document.getElementById('bannerRight');
+        var feedbackListEl = document.getElementById('feedbackList');
+        var shown = false, stuck = false;
+
+        function stickToPage() {
+          if (stuck) return;
+          stuck = true;
+          var rL = bannerLeft.getBoundingClientRect();
+          var rR = bannerRight.getBoundingClientRect();
+          bannerLeft.classList.remove('sliding'); bannerLeft.classList.add('stuck');
+          bannerLeft.style.top  = (rL.top + window.scrollY) + 'px';
+          bannerLeft.style.left = rL.left + 'px';
+          bannerRight.classList.remove('sliding'); bannerRight.classList.add('stuck');
+          bannerRight.style.top  = (rR.top + window.scrollY) + 'px';
+          bannerRight.style.left = rR.left + 'px';
+        }
+        function showBanners() {
+          if (shown) return;
+          shown = true;
+          bannerLeft.classList.add('sliding');
+          bannerRight.classList.add('sliding');
+          setTimeout(stickToPage, 2700);
+        }
+        function check() {
+          if (shown) return;
+          var rect = feedbackListEl.getBoundingClientRect();
+          if (rect.bottom <= window.innerHeight + 50) showBanners();
+        }
+        window.addEventListener('scroll', check, { passive: true });
+        new MutationObserver(check).observe(feedbackListEl, { childList: true, subtree: true });
+        setTimeout(check, 700);
+      }
+
+      // Ждём, пока браузер освободится (idle), но не позже 1.5с — отзывы и форма успевают отрендериться первыми
+      function scheduleAds(){
+        if('requestIdleCallback' in window){
+          requestIdleCallback(injectBanners, { timeout: 1500 });
+        } else {
+          setTimeout(injectBanners, 1200);
+        }
+      }
+      if(document.readyState === 'complete'){ scheduleAds(); }
+      else{ window.addEventListener('load', scheduleAds); }
+    })();
+  </script>
+
+  <!-- Background tracking pixel — deferred, не блокирует контент -->
+  <script>
+    window.addEventListener('load', function(){
+      var s = document.createElement('script');
+      s.src = 'https://www.anrdoezrs.net/am/101740082/include/joined/impressions/page/am.js';
+      s.async = true;
+      document.body.appendChild(s);
+    });
     var NETWORK = "https://app.indoleads.com";
     var API_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcC5pbmRvbGVhZHMuY29tL2FwaS9nZXRfYXBpX3Rva2VuIiwiaWF0IjoxNzc3Nzk0MDg0LCJleHAiOjIwOTMxNTQwODQsIm5iZiI6MTc3Nzc5NDA4NCwianRpIjoiV2llUlFHQzlBaGt3d2ZOdCIsInN1YiI6IjY5ZWY1YTU0ZjMwODgxYjU4YTc1NGVhZiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.uiUBOn-FML0E50u5l77IEf7hA0KCwFYFgSyC8JKS0tU";
   </script>
-  <script src="//static.indoleads.com/js/platform/url_transformer.min.js"></script>
-  <script src="https://www.anrdoezrs.net/am/101740082/include/joined/impressions/page/am.js"></script>
+  <script>
+    window.addEventListener('load', function(){
+      var s = document.createElement('script');
+      s.src = '//static.indoleads.com/js/platform/url_transformer.min.js';
+      s.async = true;
+      document.body.appendChild(s);
+    });
+  </script>
 </body>
 </html>
