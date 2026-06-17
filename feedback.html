@@ -537,9 +537,13 @@
           var rect = feedbackListEl.getBoundingClientRect();
           if (rect.bottom <= window.innerHeight + 50) showBanners();
         }
-        window.addEventListener('scroll', check, { passive: true });
-        new MutationObserver(check).observe(feedbackListEl, { childList: true, subtree: true });
-        setTimeout(check, 700);
+        // Триггерим только на реальный скролл пользователя — не сразу при вставке баннеров в DOM.
+        // Небольшая задержка перед навешиванием listener'а, чтобы insertAdjacentHTML не вызвал
+        // ложное срабатывание из-за изменения высоты страницы в этот же тик.
+        setTimeout(function(){
+          window.addEventListener('scroll', check, { passive: true });
+          check(); // на случай, если страница изначально открыта в самом низу (короткий экран)
+        }, 50);
       }
 
       // Ждём, пока браузер освободится (idle), но не позже 1.5с — отзывы и форма успевают отрендериться первыми
