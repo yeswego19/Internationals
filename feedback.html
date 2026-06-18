@@ -4,12 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="verify-admitad" content="3631d02de8" />
+  <meta name="description" content="Leave feedback about Internationals translation and localization services. Share your experience, rate us, and read recent customer reviews.">
   <title>Feedback - Internationals Translation Service</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
-  <link rel="preload" as="image" href="feedback-bg.jpg">
+  <link rel="preload" as="image" href="feedback-bg.jpg" fetchpriority="high">
   <link rel="preconnect" href="https://mcgcijdnzduzyqbbjtkm.supabase.co">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
   <style>
     :root{ --accent-1:#1f3f83; --accent-2:#2f5597; --danger:#d9534f; }
     html,body{ height:100%; margin:0; }
@@ -131,7 +135,7 @@
       border-radius:10px; padding:10px; text-align:center; transition:box-shadow .2s;
     }
     .banner-card:hover{ box-shadow:0 8px 24px rgba(0,0,0,0.25); }
-    .banner-card img{ width:100% !important; height:auto !important; border-radius:6px; display:block; margin:0 auto; }
+    .banner-card img{ width:100% !important; height:auto !important; aspect-ratio: 300 / 250; object-fit:cover; border-radius:6px; display:block; margin:0 auto; background:rgba(255,255,255,0.05); }
     .banner-label{ font-size:10px; color:rgba(255,255,255,0.35); margin-top:6px; letter-spacing:.05em; text-transform:uppercase; }
 
     .cvc-banner{
@@ -180,7 +184,7 @@
     </div>
   </div>
 
-  <div class="feedback-container">
+  <main class="feedback-container">
     <div class="feedback-header">
       <h2 class="translate" data-key="feedback">Feedback</h2>
       <button class="close-btn" onclick="if(history.length>1){history.back();}else{window.close();}">&#8592;</button>
@@ -219,7 +223,7 @@
       <!-- MOBILE BANNERS (injected later) -->
       <div class="mobile-banners" id="mobileBanners"></div>
     </div>
-  </div>
+  </main>
 
   <script>
     /* ===== Translations & language ===== */
@@ -443,19 +447,19 @@
   <script>
     (function(){
       var bannersHTML_left = ''
-        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://salty.co.in/?utm_source=admitad&utm_medium=7_2522654_&utm_campaign=saltyaffiliate&click_id=16978671b122c79f3d24458a57235f65"><img src="salty.png" alt="Salty" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69febc97b1f51"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5d91926ebb862.png" alt="Go City / CPS" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://trackerpro.org/69febee6234c3"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/7b881d309a4fe.jpeg" alt="Coursera" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://gettracker.net/69fec05932a2e"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/20ffacca76ca9.png" alt="Fiverr" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://grfpr.com/g/zehsdnxunvf1d04a03ac245c490fd8/"><img src="boost_banner.png" alt="Boost Presence" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" rel="noopener" href="https://museos.arteyeducacion.org/en/resurgence-of-the-homeland"><img src="resurgence_banner.png" alt="Resurgence of the Homeland" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://salty.co.in/?utm_source=admitad&utm_medium=7_2522654_&utm_campaign=saltyaffiliate&click_id=16978671b122c79f3d24458a57235f65"><img width="300" height="250" src="salty.png" alt="Salty" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69febc97b1f51"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5d91926ebb862.png" alt="Go City / CPS" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://trackerpro.org/69febee6234c3"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/7b881d309a4fe.jpeg" alt="Coursera" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://gettracker.net/69fec05932a2e"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/20ffacca76ca9.png" alt="Fiverr" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://grfpr.com/g/zehsdnxunvf1d04a03ac245c490fd8/"><img width="300" height="250" src="boost_banner.png" alt="Boost Presence" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" rel="noopener" href="https://museos.arteyeducacion.org/en/resurgence-of-the-homeland"><img width="300" height="250" src="resurgence_banner.png" alt="Resurgence of the Homeland" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
         + '<div class="banner-card" style="padding:8px;" id="tpEmbedLeftSlot"><div class="banner-label">Ad</div></div>';
 
       var bannersHTML_right_extra = ''
-        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://traffmonetizer.com/?aff=2123948"><img src="traffmonetizer-300x250.png" alt="TraffMonetizer" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69fec16db1783"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/a87b8e27a71d7.jpeg" alt="OKX" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69fec16db1783"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/9d3ad20c15260.jpeg" alt="OKX" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://i1b.xyz/69fee1c2b1360"><img src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5c91f90fbf94a.jpeg" alt="TicketNetwork" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://traffmonetizer.com/?aff=2123948"><img width="300" height="250" src="traffmonetizer-300x250.png" alt="TraffMonetizer" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69fec16db1783"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/a87b8e27a71d7.jpeg" alt="OKX" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69fec16db1783"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/9d3ad20c15260.jpeg" alt="OKX" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
+        + '<div class="banner-card"><a target="_blank" href="https://i1b.xyz/69fee1c2b1360"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5c91f90fbf94a.jpeg" alt="TicketNetwork" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
         + '<div class="banner-card" style="padding:0;overflow:hidden;"><a class="cvc-banner" id="cvcBannerRight" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/"><div class="cvc-slides"><img class="cvc-slide cvc-active" src="cvc_slide1.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide2.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide3.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide4.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide5.png" alt="CVC Corp" loading="lazy"/></div><div class="cvc-dots" id="cvcDotsRight"><div class="cvc-dot cvc-dot-active"></div><div class="cvc-dot"></div><div class="cvc-dot"></div><div class="cvc-dot"></div><div class="cvc-dot"></div></div><div class="cvc-text-overlay"><div class="cvc-title">CVC Corp</div><div class="cvc-sub">Viagens e Turismo &bull; Descubra o mundo</div><div class="cvc-cta">Reservar agora →</div></div></a><div class="banner-label">Ad</div></div>'
         + '<div class="banner-card" style="padding:8px;" id="tpEmbedRightSlot"><div class="banner-label">Ad</div></div>';
 
