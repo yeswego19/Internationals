@@ -83,12 +83,11 @@ Content: ${content}`;
 async function main() {
   console.log("=== STARTING NEWS PARSER ===");
   
-  // КЛЮЧЕВОЙ МОМЕНТ: Перед началом работы удаляем ВСЕ старые новости из таблицы, чтобы не было мусора
   console.log("Cleaning up old articles from the database...");
   const { error: deleteError } = await supabase
     .from('articles')
     .delete()
-    .neq('id', 0); // Этот трюк удаляет вообще все строки в Supabase
+    .neq('id', 0);
     
   if (deleteError) {
     throw new Error(`Failed to clean database: ${deleteError.message}`);
@@ -97,8 +96,15 @@ async function main() {
 
   for (const url of RSS_FEEDS) {
     console.log(`Parsing feed: ${url}`);
-    const feed = await parser.parseURL(url);
-    const items = feed.items.slice(0, 2); // Берем по 2 самые свежие новости
+    let feed;
+    try {
+      feed = await parser.parseURL(url);
+    } catch (e) {
+      console.warn(`⚠️ Failed to parse RSS feed ${url}, skipping. Error:`, e.message);
+      continue;
+    }
+
+    const items = feed.items.slice(0, 2); 
     
     for (const item of items) {
       const slug = slugify(item.title || '');
@@ -108,7 +114,15 @@ async function main() {
       console.log(`Found image URL: ${imageUrl}`);
 
       console.log(`Sending to Gemini: ${item.title}`);
-      const aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content || '');
+      
+      let aiResult;
+      try {
+        aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content || '');
+      } catch (aiError) {
+        // Если Gemini перегружен, не падаем, а просто пропускаем статью
+        console.warn(`⚠️ Skipping article due to Gemini error: ${aiError.message}`);
+        continue;
+      }
       
       if (aiResult) {
         console.log(`Inserting into Supabase: ${aiResult.title}`);
@@ -118,7 +132,7 @@ async function main() {
           title: aiResult.title,
           summary: aiResult.summary,
           meta_description: aiResult.meta_description,
-          image_url: imageUrl // Картинка летит в базу
+          image_url: imageUrl
         }]);
         
         if (insertError) {
