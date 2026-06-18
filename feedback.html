@@ -98,25 +98,11 @@
       transition: bottom 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                   opacity 0.8s ease;
     }
-    .fixed-banner-left  { left: 4px; width: 420px; }
-    .fixed-banner-right { right: 4px; width: 420px; }
-
-    @media(max-width:1900px){
-      .fixed-banner-left  { width: 360px; }
-      .fixed-banner-right { width: 360px; }
-    }
-    @media(max-width:1700px){
-      .fixed-banner-left  { width: 300px; }
-      .fixed-banner-right { width: 300px; }
-    }
-    @media(max-width:1500px){
-      .fixed-banner-left  { width: 240px; }
-      .fixed-banner-right { width: 240px; }
-    }
-    @media(max-width:1300px){
-      .fixed-banner-left  { width: 180px; }
-      .fixed-banner-right { width: 180px; }
-    }
+    /* Ширина баннера = половина свободного пространства слева/справа от
+       центрального блока (760px + 2*48px margin). Формула:
+       (100vw - 856px) / 2, с разумными границами min/max через clamp(). */
+    .fixed-banner-left  { left: 4px; width: clamp(160px, calc((100vw - 856px) / 2), 460px); }
+    .fixed-banner-right { right: 4px; width: clamp(160px, calc((100vw - 856px) / 2), 460px); }
 
     .fixed-banner-left.sliding,
     .fixed-banner-right.sliding {
