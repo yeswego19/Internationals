@@ -20,7 +20,7 @@
         .close-btn {
             position: fixed;
             top: 15px;
-            left: 20px;
+            right: 20px;  /* ← СПРАВА */
             background: transparent;
             border: none;
             color: #d9534f;
@@ -34,7 +34,7 @@
 
         .close-btn:hover {
             color: #ff0000;
-            transform: translateX(-4px) scale(1.1);
+            transform: scale(1.1);
         }
 
         .date {
@@ -63,7 +63,7 @@
             .close-btn {
                 font-size: 40px;
                 top: 10px;
-                left: 10px;
+                right: 10px;
             }
             body {
                 margin: 20px auto;
@@ -73,7 +73,7 @@
     </style>
 </head>
 <body>
-    <!-- Красная стрелка назад - ЗАКРЫВАЕТ вкладку -->
+    <!-- Красная стрелка назад - СПРАВА -->
     <button class="close-btn" onclick="closeTab()">←</button>
 
     <h1 id="article-title">Loading...</h1>
