@@ -155,33 +155,21 @@
             }, 3000);
         }
 
-        // ===== ГЛОБУС - ПЕРЕВОД С ПЕРЕЗАГРУЗКОЙ =====
+        // ===== ГЛОБУС - ПЕРЕВОД =====
         globeBtn.addEventListener('click', function() {
             const userLang = navigator.language || navigator.userLanguage;
             const langCode = userLang.split('-')[0];
 
-            // Если язык английский - не переводим
             if (langCode === 'en') {
                 showToast('🌐 Your browser language is English.');
-                return;
-            }
-
-            // Получаем текущий URL
-            const url = new URL(window.location.href);
-
-            // Проверяем, есть ли уже параметр перевода
-            const currentLang = url.searchParams.get('lang');
-
-            // Если уже переведено на этот язык - ничего не делаем
-            if (currentLang === langCode) {
-                showToast('✅ Already translated to ' + getLangName(langCode));
                 return;
             }
 
             // Сохраняем язык
             localStorage.setItem('translateLang', langCode);
 
-            // Перезагружаем страницу с параметром lang
+            // Перезагружаем страницу с параметром
+            const url = new URL(window.location.href);
             url.searchParams.set('lang', langCode);
             window.location.href = url.toString();
         });
@@ -196,66 +184,77 @@
             return names[lang] || lang;
         }
 
-        // ===== АВТОМАТИЧЕСКИЙ ПЕРЕВОД ПРИ ЗАГРУЗКЕ =====
-        function autoTranslate() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const lang = urlParams.get('lang');
-
+        // ===== ПРИНУДИТЕЛЬНЫЙ ПЕРЕВОД =====
+        function forceTranslate(lang) {
             if (!lang || lang === 'en') return;
 
-            // Ждём загрузки страницы и запускаем Google Translate
-            setTimeout(function() {
-                // Проверяем, загружен ли Google Translate
+            // Пробуем найти select Google Translate
+            let attempts = 0;
+            const maxAttempts = 20;
+
+            const tryTranslate = setInterval(function() {
+                attempts++;
                 const select = document.querySelector('.goog-te-combo');
                 if (select) {
                     select.value = lang;
                     select.dispatchEvent(new Event('change'));
                     showToast('✅ Translated to ' + getLangName(lang));
-                } else {
-                    // Если не загружен - пробуем ещё раз
-                    setTimeout(function() {
-                        const select2 = document.querySelector('.goog-te-combo');
-                        if (select2) {
-                            select2.value = lang;
-                            select2.dispatchEvent(new Event('change'));
-                            showToast('✅ Translated to ' + getLangName(lang));
-                        }
-                    }, 2000);
+                    clearInterval(tryTranslate);
+                } else if (attempts >= maxAttempts) {
+                    // Если не нашли, пробуем ещё раз через перезагрузку Google Translate
+                    clearInterval(tryTranslate);
+                    loadGoogleTranslateAndRetry(lang);
                 }
-            }, 1500);
+            }, 500);
         }
 
-        // ===== ЗАГРУЖАЕМ GOOGLE TRANSLATE =====
-        function loadGoogleTranslate() {
-            // Проверяем, загружен ли уже
-            if (typeof google !== 'undefined' && google.translate) {
-                autoTranslate();
-                return;
+        function loadGoogleTranslateAndRetry(lang) {
+            // Загружаем Google Translate заново
+            if (typeof google === 'undefined' || !google.translate) {
+                const script = document.createElement('script');
+                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                script.async = true;
+                document.head.appendChild(script);
+
+                window.googleTranslateElementInit = function() {
+                    new google.translate.TranslateElement({
+                        pageLanguage: 'en',
+                        includedLanguages: 'en,ru,de,es,pt,zh,ar,fr,it,ja,ko,tr',
+                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                        autoDisplay: false
+                    }, 'google_translate_element');
+
+                    // Пробуем перевести после загрузки
+                    setTimeout(function() {
+                        const select = document.querySelector('.goog-te-combo');
+                        if (select) {
+                            select.value = lang;
+                            select.dispatchEvent(new Event('change'));
+                            showToast('✅ Translated to ' + getLangName(lang));
+                        }
+                    }, 1000);
+                };
+
+                if (!document.getElementById('google_translate_element')) {
+                    const container = document.createElement('div');
+                    container.id = 'google_translate_element';
+                    container.style.display = 'none';
+                    document.body.appendChild(container);
+                }
             }
+        }
 
-            // Загружаем скрипт
-            const script = document.createElement('script');
-            script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-            script.async = true;
-            document.head.appendChild(script);
+        // ===== АВТОПЕРЕВОД ПРИ ЗАГРУЗКЕ =====
+        function autoTranslateOnLoad() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lang = urlParams.get('lang');
 
-            window.googleTranslateElementInit = function() {
-                new google.translate.TranslateElement({
-                    pageLanguage: 'en',
-                    includedLanguages: 'en,ru,de,es,pt,zh,ar,fr,it,ja,ko,tr',
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                    autoDisplay: false
-                }, 'google_translate_element');
-
-                autoTranslate();
-            };
-
-            // Скрытый контейнер
-            if (!document.getElementById('google_translate_element')) {
-                const container = document.createElement('div');
-                container.id = 'google_translate_element';
-                container.style.display = 'none';
-                document.body.appendChild(container);
+            // Если есть параметр lang - переводим
+            if (lang && lang !== 'en') {
+                // Ждём загрузки контента
+                setTimeout(function() {
+                    forceTranslate(lang);
+                }, 2000);
             }
         }
 
@@ -283,15 +282,19 @@
                 return;
             }
 
+            // Получаем текущий язык из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentLang = urlParams.get('lang') || 'en';
+
             container.innerHTML = articles.map(art => `
                 <article>
                     ${art.image_url ? 
-                        `<a href="article.html?slug=${art.slug}&lang=${getCurrentLang()}" target="_blank">
+                        `<a href="article.html?slug=${art.slug}&lang=${currentLang}" target="_blank">
                             <img src="${art.image_url}" class="news-img" alt="${art.title}">
                         </a>` : ''
                     }
                     <h3>
-                        <a href="article.html?slug=${art.slug}&lang=${getCurrentLang()}" target="_blank">
+                        <a href="article.html?slug=${art.slug}&lang=${currentLang}" target="_blank">
                             ${art.title}
                         </a>
                     </h3>
@@ -306,13 +309,8 @@
                 </article>
             `).join('');
 
-            // Загружаем Google Translate после загрузки новостей
-            loadGoogleTranslate();
-        }
-
-        function getCurrentLang() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('lang') || 'en';
+            // Запускаем автоперевод
+            autoTranslateOnLoad();
         }
 
         loadNews();
