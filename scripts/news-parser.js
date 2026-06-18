@@ -83,29 +83,26 @@ Content: ${content}`;
 async function main() {
   console.log("=== STARTING NEWS PARSER ===");
   
+  // КЛЮЧЕВОЙ МОМЕНТ: Перед началом работы удаляем ВСЕ старые новости из таблицы, чтобы не было мусора
+  console.log("Cleaning up old articles from the database...");
+  const { error: deleteError } = await supabase
+    .from('articles')
+    .delete()
+    .neq('id', 0); // Этот трюк удаляет вообще все строки в Supabase
+    
+  if (deleteError) {
+    throw new Error(`Failed to clean database: ${deleteError.message}`);
+  }
+  console.log("Database is clean now!");
+
   for (const url of RSS_FEEDS) {
     console.log(`Parsing feed: ${url}`);
     const feed = await parser.parseURL(url);
-    const items = feed.items.slice(0, 3); 
+    const items = feed.items.slice(0, 2); // Берем по 2 самые свежие новости
     
     for (const item of items) {
       const slug = slugify(item.title || '');
       if (!slug) continue;
-
-      console.log(`Checking DB for slug: ${slug}`);
-      const { data: exists, error: checkError } = await supabase
-        .from('articles')
-        .select('id')
-        .eq('slug', slug);
-        
-      if (checkError) {
-        throw new Error(`Supabase SELECT error: ${checkError.message}`);
-      }
-        
-      if (exists && exists.length > 0) {
-        console.log(`Article already exists: ${slug}`);
-        continue; 
-      }
       
       const imageUrl = getImageUrl(item);
       console.log(`Found image URL: ${imageUrl}`);
@@ -121,7 +118,7 @@ async function main() {
           title: aiResult.title,
           summary: aiResult.summary,
           meta_description: aiResult.meta_description,
-          image_url: imageUrl
+          image_url: imageUrl // Картинка летит в базу
         }]);
         
         if (insertError) {
