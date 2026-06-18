@@ -14,8 +14,8 @@ if (!supabaseUrl || !supabaseServiceKey || !geminiApiKey) {
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const RSS_FEEDS = [
-  'https://techcrunch.com/feed/',
-  'https://feeds.bbci.co.uk/news/world/rss.xml'
+  '[https://techcrunch.com/feed/](https://techcrunch.com/feed/)',
+  '[https://feeds.bbci.co.uk/news/world/rss.xml](https://feeds.bbci.co.uk/news/world/rss.xml)'
 ];
 
 function slugify(text) {
@@ -26,22 +26,19 @@ async function adaptArticleWithAI(title, content) {
   const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`;
   
   const prompt = `You are a professional marketer. Summarize this news article in English for expats. 
-Your response MUST be a valid, parsable JSON object and NOTHING ELSE. Do not wrap it in \`\`\`json.
-JSON format:
+Your response MUST be a single, valid, parsable JSON object and absolutely nothing else. No markdown, no triple backticks.
+JSON structure:
 {
   "title": "headline",
   "summary": "3 sentences summarizing the content",
   "meta_description": "seo description",
-  "image_url": "Provide a real, high-quality, direct Unsplash image URL that perfectly matches the topic. Use general Unsplash keywords if needed, for example: https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800 for cyber/hackers, https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800 for smartphones/tech, https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=800 for global politics/iran, or any valid clean Unsplash image source link matching the exact mood."
-}
-
-Title: ${title}
-Content: ${content}`;
+  "image_url": "Provide a high-quality Unsplash image URL matching the theme (e.g., tech, business, space, world, cyber)."
+}`;
 
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+    body: JSON.stringify({ contents: [{ parts: [{ text: `${prompt}\n\nTitle: ${title}\nContent: ${content}` }] }] })
   });
 
   if (!response.ok) {
@@ -52,11 +49,15 @@ Content: ${content}`;
   const data = await response.json();
   let jsonText = data.candidates[0].content.parts[0].text.trim();
   
-  if (jsonText.startsWith('```')) {
-    jsonText = jsonText.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
-  }
+  // Жесткая зачистка ломающих JSON символов, если Gemini их добавила
+  jsonText = jsonText.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```$/, '').trim();
 
-  return JSON.parse(jsonText);
+  try {
+    return JSON.parse(jsonText);
+  } catch (e) {
+    console.error("🔥 Failed to parse JSON from Gemini. Raw text was:", jsonText);
+    return null;
+  }
 }
 
 async function main() {
@@ -79,7 +80,7 @@ async function main() {
     try {
       feed = await parser.parseURL(url);
     } catch (e) {
-      console.warn(`⚠️ Failed to parse RSS feed ${url}, skipping. Error:`, e.message);
+      console.warn(`⚠️ RSS feed error ${url}:`, e.message);
       continue;
     }
 
@@ -90,35 +91,31 @@ async function main() {
       if (!slug) continue;
 
       console.log(`Sending to Gemini: ${item.title}`);
+      const aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content || '');
       
-      let aiResult;
-      try {
-        aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content || '');
-      } catch (aiError) {
-        console.warn(`⚠️ Skipping article due to Gemini error: ${aiError.message}`);
+      if (!aiResult) {
+        console.warn("⚠️ Skipping article because Gemini returned bad format.");
         continue;
       }
+
+      // Если ИИ не вернул картинку, ставим хорошую стандартную
+      const finalImageUrl = aiResult.image_url || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800';
       
-      if (aiResult) {
-        // Берем прямую ссылку, которую сгенерировал ИИ. Если там пусто, страхуемся базовой картинкой.
-        const finalImageUrl = aiResult.image_url || '[https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800](https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800)';
-        
-        console.log(`AI picked image URL: ${finalImageUrl}`);
-        console.log(`Inserting into Supabase: ${aiResult.title}`);
-        
-        const { error: insertError } = await supabase.from('articles').insert([{
-          slug: slug,
-          title: aiResult.title,
-          summary: aiResult.summary,
-          meta_description: aiResult.meta_description,
-          image_url: finalImageUrl
-        }]);
-        
-        if (insertError) {
-          throw new Error(`Supabase INSERT error: ${insertError.message}`);
-        }
+      console.log(`Inserting into Supabase: ${aiResult.title}`);
+      const { error: insertError } = await supabase.from('articles').insert([{
+        slug: slug,
+        title: aiResult.title,
+        summary: aiResult.summary,
+        meta_description: aiResult.meta_description,
+        image_url: finalImageUrl
+      }]);
+      
+      if (insertError) {
+        console.error(`❌ Supabase INSERT error: ${insertError.message}`);
+      } else {
         console.log("-> Successfully inserted!");
       }
+      
       await new Promise(res => setTimeout(res, 2000));
     }
   }
