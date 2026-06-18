@@ -1,1 +1,11 @@
-
+{
+  "name": "internationals-news-parser",
+  "version": "1.0.0",
+  "description": "RSS News parser with Gemini AI and Supabase integration",
+  "main": "scripts/news-parser.js",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "node-fetch": "^2.7.0",
+    "rss-parser": "^3.13.0"
+  }
+}
