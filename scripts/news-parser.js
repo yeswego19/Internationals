@@ -2,7 +2,15 @@ const Parser = require('rss-parser');
 const { createClient } = require('@supabase/supabase-js');
 const fetch = require('node-fetch');
 
-const parser = new Parser();
+const parser = new Parser({
+  customFields: {
+    item: [
+      ['media:content', 'mediaContent'],
+      ['enclosure', 'enclosure']
+    ]
+  }
+});
+
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 const geminiApiKey = process.env.GEMINI_API_KEY;
@@ -22,10 +30,23 @@ function slugify(text) {
   return text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
 }
 
+function getImageUrl(item) {
+  if (item.mediaContent && item.mediaContent.$ && item.mediaContent.$.url) {
+    return item.mediaContent.$.url;
+  }
+  if (item.enclosure && item.enclosure.url) {
+    return item.enclosure.url;
+  }
+  if (item.content) {
+    const imgMatch = item.content.match(/<img[^>]+src="([^">]+)"/);
+    if (imgMatch) return imgMatch[1];
+  }
+  return 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800';
+}
+
 async function adaptArticleWithAI(title, content) {
   const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`;
   
-  // Жестко приказываем ИИ выдать только чистый JSON без markdown-кавычек
   const prompt = `You are a professional marketer. Summarize this news article in English for expats. 
 Your response MUST be a valid, parsable JSON object and NOTHING ELSE. Do not wrap it in \`\`\`json.
 JSON format:
@@ -41,9 +62,7 @@ Content: ${content}`;
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }]
-    })
+    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
   });
 
   if (!response.ok) {
@@ -54,7 +73,6 @@ Content: ${content}`;
   const data = await response.json();
   let jsonText = data.candidates[0].content.parts[0].text.trim();
   
-  // На случай, если ИИ всё-таки засунет ответ в ```json ... ```
   if (jsonText.startsWith('```')) {
     jsonText = jsonText.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
   }
@@ -68,7 +86,7 @@ async function main() {
   for (const url of RSS_FEEDS) {
     console.log(`Parsing feed: ${url}`);
     const feed = await parser.parseURL(url);
-    const items = feed.items.slice(0, 2); 
+    const items = feed.items.slice(0, 3); 
     
     for (const item of items) {
       const slug = slugify(item.title || '');
@@ -89,6 +107,9 @@ async function main() {
         continue; 
       }
       
+      const imageUrl = getImageUrl(item);
+      console.log(`Found image URL: ${imageUrl}`);
+
       console.log(`Sending to Gemini: ${item.title}`);
       const aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content || '');
       
@@ -99,11 +120,12 @@ async function main() {
           slug: slug,
           title: aiResult.title,
           summary: aiResult.summary,
-          meta_description: aiResult.meta_description
+          meta_description: aiResult.meta_description,
+          image_url: imageUrl
         }]);
         
         if (insertError) {
-          throw new Error(`Supabase INSERT error: ${insertError.message}. Code: ${insertError.code}`);
+          throw new Error(`Supabase INSERT error: ${insertError.message}`);
         }
         console.log("-> Successfully inserted!");
       }
@@ -114,7 +136,6 @@ async function main() {
 }
 
 main().catch(err => {
-  console.error("❌ CRITICAL PROCESS FAILURE:");
-  console.error(err);
+  console.error("❌ CRITICAL PROCESS FAILURE:", err);
   process.exit(1);
 });
