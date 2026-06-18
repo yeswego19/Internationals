@@ -8,13 +8,13 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 const geminiApiKey = process.env.GEMINI_API_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey || !geminiApiKey) {
-  console.error("Ошибка: Не все переменные окружения (SUPABASE_URL, SUPABASE_SERVICE_KEY, GEMINI_API_KEY) заданы в GitHub Secrets!");
+  console.error("Error: Missing environment variables (SUPABASE_URL, SUPABASE_SERVICE_KEY, GEMINI_API_KEY) in GitHub Secrets!");
   process.exit(1);
 }
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-// Твои источники новостей
+// Your RSS news sources
 const RSS_FEEDS = [
   'https://www.reutersagency.com/feed/', 
   'https://techcrunch.com/feed/'
@@ -32,19 +32,19 @@ function slugify(text) {
 }
 
 async function adaptArticleWithAI(title, content) {
-  const prompt = `Ты профессиональный маркетолог в сфере релокации и международных документов. 
-Твоя задача — перевести, адаптировать и пересказать следующую новость на русском языке. 
-Сделай фокус на том, как это может повлиять на экспатов, иммигрантов или международный бизнес.
+  const prompt = `You are a professional marketer in the field of relocation, immigration, and international documents. 
+Your task is to adapt and summarize the following news article in English. 
+Focus heavily on how this news might affect expats, immigrants, digital nomads, or international businesses.
 
-Заголовок: ${title}
-Текст: ${content}
+Title: ${title}
+Content: ${content}
 
-Верни ответ СТРОГО в формате JSON-объекта (без разметки markdown):
+Return the response STRICTLY as a JSON object (without markdown code blocks):
 {
-  "title": "Адаптированный заголовок на русском",
-  "summary": "Короткий пересказ/суть новости в 3-4 предложениях с точки зрения релокации",
-  "meta_description": "SEO-описание для страницы (до 160 символов)",
-  "keywords": "ключевые, слова, через, запятую"
+  "title": "Adapted catchy headline in English",
+  "summary": "A concise summary of the news (3-4 sentences) focused on the impact on expats and relocation",
+  "meta_description": "SEO description for the page (up to 160 characters)",
+  "keywords": "comma, separated, keywords, relevant, to, expats"
 }`;
 
   try {
@@ -66,19 +66,19 @@ async function adaptArticleWithAI(title, content) {
     const jsonText = data.candidates[0].content.parts[0].text;
     return JSON.parse(jsonText);
   } catch (error) {
-    console.error(`Ошибка AI-адаптации для "${title}":`, error);
+    console.error(`AI adaptation failed for "${title}":`, error);
     return null;
   }
 }
 
 async function main() {
-  console.log("Запуск парсера новостей...");
+  console.log("Starting news parser...");
   
   for (const url of RSS_FEEDS) {
     try {
-      console.log(`Парсим фид: ${url}`);
+      console.log(`Parsing feed: ${url}`);
       const feed = await parser.parseURL(url);
-      const items = feed.items.slice(0, 5); // Берем последние 5 новостей
+      const items = feed.items.slice(0, 5); // Take top 5 recent items
       
       for (const item of items) {
         const slug = slugify(item.title);
@@ -90,11 +90,11 @@ async function main() {
           .single();
           
         if (exists) {
-          console.log(`Новость уже есть в базе: ${item.title}`);
+          console.log(`Article already exists in DB: ${item.title}`);
           continue; 
         }
         
-        console.log(`Обрабатываем новую новость: ${item.title}`);
+        console.log(`Processing new article: ${item.title}`);
         const aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content);
         
         if (aiResult) {
@@ -107,17 +107,17 @@ async function main() {
             source_url: item.link
           }]);
           
-          if (error) console.error("Ошибка вставки в Supabase:", error);
-          else console.log(`Успешно добавлено: ${aiResult.title}`);
+          if (error) console.error("Supabase insert error:", error);
+          else console.log(`Successfully added: ${aiResult.title}`);
         }
         
-        await new Promise(res => setTimeout(res, 2000)); // Пауза 2 секунды
+        await new Promise(res => setTimeout(res, 2000)); // 2-second cooldown
       }
     } catch (e) {
-      console.error(`Ошибка обработки фида ${url}:`, e);
+      console.error(`Error processing feed ${url}:`, e);
     }
   }
-  console.log("Парсинг завершен.");
+  console.log("Parsing finished.");
 }
 
 main();
