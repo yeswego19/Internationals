@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global News & Insights | Internationals.pro</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -15,25 +16,51 @@
             color: #333;
         }
 
-        /* ===== КНОПКИ В ПРАВОМ ВЕРХНЕМ УГЛУ ===== */
-        .top-buttons {
+        /* ===== ТОЧНО ТАКОЙ ЖЕ ГЛОБУС КАК НА INDEX.HTML ===== */
+        .globe {
             position: fixed;
-            top: 15px;
+            top: 75px;
             right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
             z-index: 9999;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            border: none;
+            text-decoration: none;
+            user-select: none;
+            animation: spin 10s linear infinite;
+        }
+
+        .globe:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* ===== КРАСНАЯ СТРЕЛКА ===== */
         .close-btn {
+            position: fixed;
+            top: 15px;
+            right: 20px;
             background: transparent;
             border: none;
             color: #d9534f;
             font-size: 52px;
             cursor: pointer;
+            z-index: 9999;
             transition: all 0.2s ease;
             padding: 0 8px;
             line-height: 1;
@@ -44,42 +71,10 @@
             transform: scale(1.1);
         }
 
-        /* ===== ГЛОБУС (КАРТИНКА ИЗ ASSETS) ===== */
-        .globe-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-            border: none;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        .globe-btn img {
-            width: 70%;
-            height: 70%;
-            object-fit: contain;
-        }
-
-        .globe-btn:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
-        }
-
-        .globe-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ЯЗЫКОВ ===== */
+        /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ===== */
         #languageDropdown {
             position: fixed;
-            top: 120px;
+            top: 130px;
             right: 20px;
             background: #fff;
             border-radius: 16px;
@@ -162,20 +157,20 @@
         }
 
         @media (max-width: 600px) {
-            .top-buttons {
-                top: 10px;
+            .globe {
+                top: 65px;
                 right: 10px;
-                gap: 5px;
-            }
-            .close-btn {
-                font-size: 40px;
-            }
-            .globe-btn {
                 width: 40px;
                 height: 40px;
+                font-size: 20px;
+            }
+            .close-btn {
+                top: 10px;
+                right: 10px;
+                font-size: 40px;
             }
             #languageDropdown {
-                top: 105px;
+                top: 115px;
                 right: 10px;
                 min-width: 140px;
             }
@@ -184,23 +179,21 @@
 </head>
 <body>
 
-    <!-- ===== КНОПКИ В ПРАВОМ ВЕРХНЕМ УГЛУ ===== -->
-    <div class="top-buttons">
-        <button class="close-btn" onclick="closeTab()">←</button>
-        <button class="globe-btn" id="globeBtn" title="Change language">
-            <img src="assets/globe.png" alt="Language">
-        </button>
-    </div>
+    <!-- ===== ГЛОБУС (ТОЧНО КАК НА INDEX.HTML - КРУТИТСЯ) ===== -->
+    <div class="globe" id="globeBtn" title="Change language">🌍</div>
 
-    <!-- ===== ВЫПАДАЮЩЕЕ МЕНЮ ЯЗЫКОВ ===== -->
+    <!-- ===== КРАСНАЯ СТРЕЛКА ===== -->
+    <button class="close-btn" onclick="closeTab()">←</button>
+
+    <!-- ===== ВЫПАДАЮЩЕЕ МЕНЮ ===== -->
     <div id="languageDropdown">
-        <button class="language-option" data-lang="en">EN <span>English</span></button>
-        <button class="language-option" data-lang="ru">RU <span>Русский</span></button>
-        <button class="language-option" data-lang="de">DE <span>Deutsch</span></button>
-        <button class="language-option" data-lang="es">ES <span>Español</span></button>
-        <button class="language-option" data-lang="pt">PT <span>Português</span></button>
-        <button class="language-option" data-lang="zh">ZH <span>中文</span></button>
-        <button class="language-option" data-lang="ar">AR <span>العربية</span></button>
+        <div class="language-option" data-lang="en">EN <span>English</span></div>
+        <div class="language-option" data-lang="ru">RU <span>Русский</span></div>
+        <div class="language-option" data-lang="de">DE <span>Deutsch</span></div>
+        <div class="language-option" data-lang="es">ES <span>Español</span></div>
+        <div class="language-option" data-lang="pt">PT <span>Português</span></div>
+        <div class="language-option" data-lang="zh">ZH <span>中文</span></div>
+        <div class="language-option" data-lang="ar">AR <span>العربية</span></div>
     </div>
 
     <h1>Global News for Expats & Nomads</h1>
