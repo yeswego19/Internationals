@@ -7,10 +7,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
-        article { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
-        h3 a { color: #0066cc; text-decoration: none; }
+        article { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 30px; }
+        h3 a { color: #0066cc; text-decoration: none; font-size: 1.4em; }
         h3 a:hover { text-decoration: underline; }
-        .date { color: #666; font-size: 0.85em; }
+        .date { color: #666; font-size: 0.85em; display: block; margin-top: 10px; }
+        .news-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background-color: #f0f0f0; }
     </style>
 </head>
 <body>
@@ -19,16 +20,15 @@
     <div id="news-container">Loading latest insights...</div>
 
     <script>
-        // Конфигурация подключения к твоей базе
         const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co"; 
         const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function loadNews() {
-            // Запрашиваем данные из таблицы articles
+            // Добавили 'image_url' в список запрашиваемых полей
             const { data: articles, error } = await _supabase
                 .from('articles')
-                .select('title, summary, slug, created_at')
+                .select('title, summary, slug, created_at, image_url')
                 .order('created_at', { ascending: false });
 
             const container = document.getElementById('news-container');
@@ -43,9 +43,10 @@
                 return;
             }
 
-            // Рендерим новости на страницу
+            // Рендерим новости вместе с картинками
             container.innerHTML = articles.map(art => `
                 <article>
+                    ${art.image_url ? `<a href="article.html?slug=${art.slug}"><img src="${art.image_url}" class="news-img" alt="${art.title}"></a>` : ''}
                     <h3><a href="article.html?slug=${art.slug}">${art.title}</a></h3>
                     <p>${art.summary}</p>
                     <span class="date">${new Date(art.created_at).toLocaleDateString('en-US', {day: 'numeric', month: 'short', year: 'numeric'})}</span>
@@ -53,7 +54,6 @@
             `).join('');
         }
 
-        // Запускаем функцию при загрузке страницы
         loadNews();
     </script>
 </body>
