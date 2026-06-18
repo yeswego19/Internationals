@@ -138,15 +138,19 @@
     .banner-card img{ width:100% !important; height:auto !important; aspect-ratio: 300 / 250; object-fit:cover; border-radius:6px; display:block; margin:0 auto; background:rgba(255,255,255,0.05); }
     .banner-label{ font-size:10px; color:rgba(255,255,255,0.35); margin-top:6px; letter-spacing:.05em; text-transform:uppercase; }
 
-    /* Travelpayouts widget slot: ограничиваем высоту, иначе виджет растягивается
-       на любую длину в зависимости от количества туров и "ломает" страницу */
+    /* Travelpayouts widget slot: раньше виджет был компактным и читаемым.
+       Ограничение через overflow+scroll сбивало внутренние JS-замеры виджета
+       (он меряет размер контейнера для масштабирования логотипа/текста),
+       поэтому вместо скролла жёстко ограничиваем ширину/масштаб содержимого. */
     .tp-embed-slot{
       max-height: 420px;
-      overflow-y: auto;
-      overflow-x: hidden;
+      overflow: hidden;
     }
-    .tp-embed-slot::-webkit-scrollbar{ width:4px; }
-    .tp-embed-slot::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.25); border-radius:4px; }
+    .tp-embed-slot > div,
+    .tp-embed-slot iframe{
+      max-width: 100% !important;
+      width: 100% !important;
+    }
 
     .cvc-banner{
       width:100%; aspect-ratio: 330 / 230; height:auto;
