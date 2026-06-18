@@ -8,23 +8,96 @@
     <meta id="meta-keys" name="keywords" content="">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #333; }
-        .back-link { display: inline-block; margin-bottom: 20px; color: #0066cc; text-decoration: none; }
-        .date { color: #666; font-size: 0.9em; margin: -10px 0 20px 0; }
-        .source { margin-top: 40px; font-size: 0.9em; border-top: 1px solid #eee; padding-top: 20px; }
-        .main-img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 25px; background-color: #f0f0f0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+        }
+
+        .close-btn {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            background: transparent;
+            border: none;
+            color: #d9534f;
+            font-size: 52px;
+            cursor: pointer;
+            z-index: 9999;
+            transition: all 0.2s ease;
+            padding: 0 8px;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #ff0000;
+            transform: translateX(-4px) scale(1.1);
+        }
+
+        .date {
+            color: #666;
+            font-size: 0.9em;
+            margin: -10px 0 20px 0;
+        }
+
+        .source {
+            margin-top: 40px;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .main-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            background-color: #f0f0f0;
+        }
+
+        @media (max-width: 600px) {
+            .close-btn {
+                font-size: 40px;
+                top: 10px;
+                left: 10px;
+            }
+            body {
+                margin: 20px auto;
+                padding-top: 20px;
+            }
+        }
     </style>
 </head>
 <body>
-    <a class="back-link" href="blog.html">← Back to all news</a>
+    <!-- Красная стрелка назад (фиксированная) -->
+    <button class="close-btn" onclick="goBack()">←</button>
+
     <h1 id="article-title">Loading...</h1>
     <div id="article-date" class="date"></div>
-    <div id="article-image-wrapper"></div> <!-- Место для картинки -->
+    <div id="article-image-wrapper"></div>
     <div id="article-body"></div>
     <p id="article-source" class="source"></p>
 
     <script>
-        const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co"; 
+        // Функция для возврата на блог с переключением фокуса
+        function goBack() {
+            if (window.opener) {
+                // Переключаем фокус на родительскую вкладку (blog.html)
+                window.opener.focus();
+                // Закрываем текущую вкладку
+                window.close();
+            } else {
+                // Если открыта в текущей вкладке - переходим на blog.html
+                window.location.href = "blog.html";
+            }
+        }
+
+        // Конфигурация Supabase
+        const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co";
         const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -52,22 +125,29 @@
             document.getElementById('meta-desc').setAttribute('content', article.meta_description || '');
             document.getElementById('meta-keys').setAttribute('content', article.keywords || '');
 
-            // Выводим данные и картинку на страницу статьи
             document.getElementById('article-title').innerText = article.title;
-            document.getElementById('article-date').innerText = new Date(article.created_at).toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'});
-            
+            document.getElementById('article-date').innerText = new Date(article.created_at).toLocaleDateString('en-US', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+
             if (article.image_url) {
-                document.getElementById('article-image-wrapper').innerHTML = `<img src="${article.image_url}" class="main-img" alt="${article.title}">`;
+                document.getElementById('article-image-wrapper').innerHTML = `
+                    <img src="${article.image_url}" class="main-img" alt="${article.title}">
+                `;
             }
-            
+
             document.getElementById('article-body').innerText = article.summary;
-            
+
             if (article.source_url) {
-                document.getElementById('article-source').innerHTML = `Original source: <a href="${article.source_url}" target="_blank" rel="noopener noreferrer">View Original Feed</a>`;
+                document.getElementById('article-source').innerHTML = `
+                    Original source: <a href="${article.source_url}" target="_blank" rel="noopener noreferrer">View Original Feed</a>
+                `;
             }
         }
 
         loadArticle();
     </script>
 </body>
-</html> И здесь тоже также поправь Ну чтобы можно было на тью блок вернуться
+</html>
