@@ -8,44 +8,23 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 const geminiApiKey = process.env.GEMINI_API_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey || !geminiApiKey) {
-  console.error("Error: Missing environment variables (SUPABASE_URL, SUPABASE_SERVICE_KEY, GEMINI_API_KEY) in GitHub Secrets!");
+  console.error("CRITICAL: Missing environment variables!");
   process.exit(1);
 }
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-// Your RSS news sources
 const RSS_FEEDS = [
-  'https://www.reutersagency.com/feed/', 
-  'https://techcrunch.com/feed/'
+  'https://techcrunch.com/feed/',
+  'https://www.reutersagency.com/feed/'
 ];
 
 function slugify(text) {
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
+  return text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
 }
 
 async function adaptArticleWithAI(title, content) {
-  const prompt = `You are a professional marketer in the field of relocation, immigration, and international documents. 
-Your task is to adapt and summarize the following news article in English. 
-Focus heavily on how this news might affect expats, immigrants, digital nomads, or international businesses.
-
-Title: ${title}
-Content: ${content}
-
-Return the response STRICTLY as a JSON object (without markdown code blocks):
-{
-  "title": "Adapted catchy headline in English",
-  "summary": "A concise summary of the news (3-4 sentences) focused on the impact on expats and relocation",
-  "meta_description": "SEO description for the page (up to 160 characters)",
-  "keywords": "comma, separated, keywords, relevant, to, expats"
-}`;
+  const prompt = `You are a professional marketer in immigration. Summarize this news in English for expats. Return STRICTLY JSON: {"title": "headline", "summary": "3 sentences", "meta_description": "seo", "keywords": "keys"}\n\nTitle: ${title}\nContent: ${content}`;
 
   try {
     const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent', {
@@ -56,17 +35,20 @@ Return the response STRICTLY as a JSON object (without markdown code blocks):
       },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          responseMimeType: "application/json"
-        }
+        generationConfig: { responseMimeType: "application/json" }
       })
     });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`Gemini API error! Status: ${response.status}. Details: ${errText}`);
+    }
 
     const data = await response.json();
     const jsonText = data.candidates[0].content.parts[0].text;
     return JSON.parse(jsonText);
   } catch (error) {
-    console.error(`AI adaptation failed for "${title}":`, error);
+    console.error(`AI adaptation failed for "${title}":`, error.message);
     return null;
   }
 }
@@ -78,27 +60,33 @@ async function main() {
     try {
       console.log(`Parsing feed: ${url}`);
       const feed = await parser.parseURL(url);
-      const items = feed.items.slice(0, 5); // Take top 5 recent items
+      const items = feed.items.slice(0, 3);
       
       for (const item of items) {
-        const slug = slugify(item.title);
-        
-        const { data: exists } = await supabase
+        const slug = slugify(item.title || '');
+        if (!slug) continue;
+
+        console.log(`Checking DB for slug: ${slug}`);
+        const { data: exists, error: checkError } = await supabase
           .from('articles')
           .select('id')
-          .eq('slug', slug)
-          .single();
+          .eq('slug', slug);
           
-        if (exists) {
-          console.log(`Article already exists in DB: ${item.title}`);
+        if (checkError) {
+          console.error("CRITICAL: Supabase read error!", checkError.message);
+          process.exit(1);
+        }
+          
+        if (exists && exists.length > 0) {
+          console.log(`Article already exists: ${slug}`);
           continue; 
         }
         
-        console.log(`Processing new article: ${item.title}`);
+        console.log(`Sending to Gemini: ${item.title}`);
         const aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content);
         
         if (aiResult) {
-          const { error } = await supabase.from('articles').insert([{
+          const { error: insertError } = await supabase.from('articles').insert([{
             slug: slug,
             title: aiResult.title,
             summary: aiResult.summary,
@@ -107,17 +95,20 @@ async function main() {
             source_url: item.link
           }]);
           
-          if (error) console.error("Supabase insert error:", error);
-          else console.log(`Successfully added: ${aiResult.title}`);
+          if (insertError) {
+            console.error("CRITICAL: Supabase insert error!", insertError.message);
+            process.exit(1);
+          } else {
+            console.log(`Successfully added to DB: ${aiResult.title}`);
+          }
         }
-        
-        await new Promise(res => setTimeout(res, 2000)); // 2-second cooldown
       }
     } catch (e) {
-      console.error(`Error processing feed ${url}:`, e);
+      console.error(`CRITICAL: Error processing feed ${url}:`, e.message);
+      process.exit(1);
     }
   }
-  console.log("Parsing finished.");
+  console.log("Parsing finished successfully.");
 }
 
 main();
