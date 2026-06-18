@@ -43,23 +43,18 @@ JSON structure:
 
   if (!response.ok) {
     const errText = await response.text();
+    // Если поймали лимит 429, возвращаем специальную ошибку, которую обработаем в основном цикле
+    if (response.status === 429) {
+      return { isQuotaError: true };
+    }
     throw new Error(`Gemini API HTTP Error! Status: ${response.status}. Details: ${errText}`);
   }
 
   const data = await response.json();
-  
-  if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-    throw new Error(`Gemini returned empty response structure! Raw data: ${JSON.stringify(data)}`);
-  }
-
   let jsonText = data.candidates[0].content.parts[0].text.trim();
   jsonText = jsonText.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```$/, '').trim();
 
-  try {
-    return JSON.parse(jsonText);
-  } catch (e) {
-    throw new Error(`CRITICAL: Gemini returned invalid JSON string: "${jsonText}". Parse error: ${e.message}`);
-  }
+  return JSON.parse(jsonText);
 }
 
 async function main() {
@@ -86,16 +81,43 @@ async function main() {
       if (!slug) continue;
 
       console.log(`Sending to Gemini: ${item.title}`);
-      const aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content || '');
       
-      const finalImageUrl = aiResult.image_url || '[https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800](https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800)';
+      let aiResult;
+      let finalTitle = item.title;
+      let finalSummary = item.contentSnippet || item.content || 'No description available.';
+      let finalImageUrl = '[https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800](https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800)'; // красивый фон по умолчанию
+
+      try {
+        aiResult = await adaptArticleWithAI(item.title, finalSummary);
+        
+        if (aiResult && aiResult.isQuotaError) {
+          console.warn("⚠️ Gemini quota exceeded (429)! Using original RSS data to keep site alive.");
+          // Если лимит исчерпан, подбираем картинку по дефолтным словам из заголовка
+          if (slug.includes('nvidia') || slug.includes('ai') || slug.includes('chip') || slug.includes('tech')) {
+            finalImageUrl = '[https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800](https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800)'; // Кибер/Технологии
+          } else if (slug.includes('iran') || slug.includes('war') || slug.includes('us')) {
+            finalImageUrl = '[https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=800](https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=800)'; // Политика
+          }
+        } else if (aiResult) {
+          finalTitle = aiResult.title;
+          finalSummary = aiResult.summary;
+          finalImageUrl = aiResult.image_url || finalImageUrl;
+        }
+      } catch (aiError) {
+        console.warn(`⚠️ Gemini error, switching to backup mode: ${aiError.message}`);
+      }
       
-      console.log(`Inserting into Supabase: ${aiResult.title}`);
+      // Обрезаем слишком длинный текст для превью, если он из чистого RSS
+      if (finalSummary.length > 250) {
+        finalSummary = finalSummary.substring(0, 247) + '...';
+      }
+
+      console.log(`Inserting into Supabase: ${finalTitle}`);
       const { error: insertError } = await supabase.from('articles').insert([{
         slug: slug,
-        title: aiResult.title,
-        summary: aiResult.summary,
-        meta_description: aiResult.meta_description,
+        title: finalTitle,
+        summary: finalSummary,
+        meta_description: finalTitle,
         image_url: finalImageUrl
       }]);
       
@@ -111,8 +133,6 @@ async function main() {
 }
 
 main().catch(err => {
-  console.error("❌ PROCESS FAILED:");
-  console.error(err.message);
-  console.error(err.stack);
+  console.error("❌ PROCESS FAILED:", err.message);
   process.exit(1);
 });
