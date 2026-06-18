@@ -14,8 +14,8 @@ if (!supabaseUrl || !supabaseServiceKey || !geminiApiKey) {
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const RSS_FEEDS = [
-  '[https://techcrunch.com/feed/](https://techcrunch.com/feed/)',
-  '[https://feeds.bbci.co.uk/news/world/rss.xml](https://feeds.bbci.co.uk/news/world/rss.xml)'
+  'https://techcrunch.com/feed/',
+  'https://feeds.bbci.co.uk/news/world/rss.xml'
 ];
 
 function slugify(text) {
@@ -32,7 +32,7 @@ JSON structure:
   "title": "headline",
   "summary": "3 sentences summarizing the content",
   "meta_description": "seo description",
-  "image_url": "Provide a high-quality Unsplash image URL matching the theme (e.g., tech, business, space, world, cyber)."
+  "image_url": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800"
 }`;
 
   const response = await fetch(url, {
@@ -43,20 +43,22 @@ JSON structure:
 
   if (!response.ok) {
     const errText = await response.text();
-    throw new Error(`Gemini API error! Status: ${response.status}. Details: ${errText}`);
+    throw new Error(`Gemini API HTTP Error! Status: ${response.status}. Details: ${errText}`);
   }
 
   const data = await response.json();
-  let jsonText = data.candidates[0].content.parts[0].text.trim();
   
-  // Жесткая зачистка ломающих JSON символов, если Gemini их добавила
+  if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+    throw new Error(`Gemini returned empty response structure! Raw data: ${JSON.stringify(data)}`);
+  }
+
+  let jsonText = data.candidates[0].content.parts[0].text.trim();
   jsonText = jsonText.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```$/, '').trim();
 
   try {
     return JSON.parse(jsonText);
   } catch (e) {
-    console.error("🔥 Failed to parse JSON from Gemini. Raw text was:", jsonText);
-    return null;
+    throw new Error(`CRITICAL: Gemini returned invalid JSON string: "${jsonText}". Parse error: ${e.message}`);
   }
 }
 
@@ -70,20 +72,13 @@ async function main() {
     .neq('id', 0);
     
   if (deleteError) {
-    throw new Error(`Failed to clean database: ${deleteError.message}`);
+    throw new Error(`CRITICAL: Failed to clean database: ${deleteError.message}`);
   }
   console.log("Database is clean now!");
 
   for (const url of RSS_FEEDS) {
     console.log(`Parsing feed: ${url}`);
-    let feed;
-    try {
-      feed = await parser.parseURL(url);
-    } catch (e) {
-      console.warn(`⚠️ RSS feed error ${url}:`, e.message);
-      continue;
-    }
-
+    const feed = await parser.parseURL(url);
     const items = feed.items.slice(0, 2); 
     
     for (const item of items) {
@@ -93,13 +88,7 @@ async function main() {
       console.log(`Sending to Gemini: ${item.title}`);
       const aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content || '');
       
-      if (!aiResult) {
-        console.warn("⚠️ Skipping article because Gemini returned bad format.");
-        continue;
-      }
-
-      // Если ИИ не вернул картинку, ставим хорошую стандартную
-      const finalImageUrl = aiResult.image_url || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800';
+      const finalImageUrl = aiResult.image_url || '[https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800](https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800)';
       
       console.log(`Inserting into Supabase: ${aiResult.title}`);
       const { error: insertError } = await supabase.from('articles').insert([{
@@ -111,11 +100,10 @@ async function main() {
       }]);
       
       if (insertError) {
-        console.error(`❌ Supabase INSERT error: ${insertError.message}`);
-      } else {
-        console.log("-> Successfully inserted!");
+        throw new Error(`CRITICAL: Supabase INSERT failed: ${insertError.message}`);
       }
       
+      console.log("-> Successfully inserted!");
       await new Promise(res => setTimeout(res, 2000));
     }
   }
@@ -123,6 +111,8 @@ async function main() {
 }
 
 main().catch(err => {
-  console.error("❌ CRITICAL PROCESS FAILURE:", err);
+  console.error("❌ PROCESS FAILED:");
+  console.error(err.message);
+  console.error(err.stack);
   process.exit(1);
 });
