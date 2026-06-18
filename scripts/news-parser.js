@@ -14,9 +14,10 @@ if (!supabaseUrl || !supabaseServiceKey || !geminiApiKey) {
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+// Используем TechCrunch и стабильный фид BBC вместо Reuters
 const RSS_FEEDS = [
   'https://techcrunch.com/feed/',
-  'https://www.reutersagency.com/feed/'
+  'https://feeds.bbci.co.uk/news/world/rss.xml'
 ];
 
 function slugify(text) {
@@ -24,14 +25,16 @@ function slugify(text) {
 }
 
 async function adaptArticleWithAI(title, content) {
-  const prompt = `You are a professional marketer in immigration. Summarize this news in English for expats. Return STRICTLY JSON: {"title": "headline", "summary": "3 sentences", "meta_description": "seo", "keywords": "keys"}\n\nTitle: ${title}\nContent: ${content}`;
+  // Используем актуальную модель gemini-2.5-flash и стабильную версию v1
+  const url = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent';
+  
+  const prompt = `You are a professional marketer in immigration and relocation. Summarize this news article in English for expats, digital nomads, and international businesses. Focus on how it affects them. Return STRICTLY a raw JSON object, without any markdown wrapping or code blocks: {"title": "catchy headline", "summary": "3-4 informative sentences", "meta_description": "seo summary up to 160 chars", "keywords": "comma, separated, tags"}\n\nTitle: ${title}\nContent: ${content}`;
 
   try {
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent', {
+    const response = await fetch(`${url}?key=${geminiApiKey}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': geminiApiKey
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
@@ -60,7 +63,7 @@ async function main() {
     try {
       console.log(`Parsing feed: ${url}`);
       const feed = await parser.parseURL(url);
-      const items = feed.items.slice(0, 3);
+      const items = feed.items.slice(0, 3); // Берем топ-3 свежие новости
       
       for (const item of items) {
         const slug = slugify(item.title || '');
@@ -83,7 +86,7 @@ async function main() {
         }
         
         console.log(`Sending to Gemini: ${item.title}`);
-        const aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content);
+        const aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content || '');
         
         if (aiResult) {
           const { error: insertError } = await supabase.from('articles').insert([{
@@ -102,10 +105,11 @@ async function main() {
             console.log(`Successfully added to DB: ${aiResult.title}`);
           }
         }
+        await new Promise(res => setTimeout(res, 2000)); // Пауза во избежание спама API
       }
     } catch (e) {
-      console.error(`CRITICAL: Error processing feed ${url}:`, e.message);
-      process.exit(1);
+      console.error(`Error processing feed ${url}:`, e.message);
+      // Не останавливаем весь процесс, если упал один из фидов
     }
   }
   console.log("Parsing finished successfully.");
