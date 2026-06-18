@@ -100,18 +100,29 @@
         .goog-te-banner-frame {
             display: none !important;
         }
+        body { top: 0 !important; }
+        .skiptranslate iframe { display: none !important; }
+        .skiptranslate { display: none !important; }
 
-        body {
-            top: 0 !important;
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            z-index: 99999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            text-align: center;
+            max-width: 90%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
-
-        .skiptranslate iframe {
-            display: none !important;
-        }
-
-        .skiptranslate {
-            display: none !important;
-        }
+        #toast.show { opacity: 1; }
     </style>
 </head>
 <body>
@@ -122,159 +133,135 @@
         <img src="assets/globe.png" alt="Translate">
     </button>
 
+    <div id="toast">Loading...</div>
+
     <h1>Global News for Expats & Nomads</h1>
     <hr>
 
     <div id="news-container">Loading latest insights...</div>
 
     <script>
-        function closeTab() {
-            window.close();
+        function closeTab() { window.close(); }
+
+        const globeBtn = document.getElementById('globeBtn');
+        const toast = document.getElementById('toast');
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
-        let isTranslated = false;
-        let targetLang = null;
-
-        // ===== ГЛОБУС - ПЕРЕВОД НА ЯЗЫК БРАУЗЕРА =====
-        const globeBtn = document.getElementById('globeBtn');
-
+        // ===== ГЛОБУС - ПЕРЕВОД С ПЕРЕЗАГРУЗКОЙ =====
         globeBtn.addEventListener('click', function() {
-            translatePage();
-        });
-
-        function translatePage() {
             const userLang = navigator.language || navigator.userLanguage;
             const langCode = userLang.split('-')[0];
 
+            // Если язык английский - не переводим
             if (langCode === 'en') {
-                showToast('🌐 Your browser language is English. No translation needed.');
+                showToast('🌐 Your browser language is English.');
                 return;
             }
 
-            targetLang = langCode;
+            // Получаем текущий URL
+            const url = new URL(window.location.href);
+
+            // Проверяем, есть ли уже параметр перевода
+            const currentLang = url.searchParams.get('lang');
+
+            // Если уже переведено на этот язык - ничего не делаем
+            if (currentLang === langCode) {
+                showToast('✅ Already translated to ' + getLangName(langCode));
+                return;
+            }
+
+            // Сохраняем язык
             localStorage.setItem('translateLang', langCode);
 
-            showToast('🔄 Translating to ' + getLangName(langCode) + '...');
-
-            // Если уже переведено — просто меняем язык
-            if (isTranslated && typeof google !== 'undefined' && google.translate) {
-                const select = document.querySelector('.goog-te-combo');
-                if (select) {
-                    select.value = langCode;
-                    select.dispatchEvent(new Event('change'));
-                    showToast('✅ Translated to ' + getLangName(langCode));
-                    return;
-                }
-            }
-
-            // Загружаем Google Translate
-            if (typeof google === 'undefined' || !google.translate) {
-                const script = document.createElement('script');
-                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-                script.async = true;
-                document.head.appendChild(script);
-
-                window.googleTranslateElementInit = function() {
-                    new google.translate.TranslateElement({
-                        pageLanguage: 'en',
-                        includedLanguages: 'en,ru,de,es,pt,zh,ar,fr,it,ja,ko,tr,uk,pl,nl',
-                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                        autoDisplay: false
-                    }, 'google_translate_element');
-
-                    // Ждём загрузки и переводим
-                    setTimeout(function() {
-                        doTranslate(langCode);
-                    }, 1500);
-                };
-
-                if (!document.getElementById('google_translate_element')) {
-                    const container = document.createElement('div');
-                    container.id = 'google_translate_element';
-                    container.style.display = 'none';
-                    document.body.appendChild(container);
-                }
-            } else {
-                // Google Translate уже загружен
-                doTranslate(langCode);
-            }
-        }
-
-        function doTranslate(langCode) {
-            const select = document.querySelector('.goog-te-combo');
-            if (select) {
-                select.value = langCode;
-                select.dispatchEvent(new Event('change'));
-                isTranslated = true;
-                showToast('✅ Translated to ' + getLangName(langCode));
-            } else {
-                // Если select не найден, пробуем ещё раз через секунду
-                setTimeout(function() {
-                    doTranslate(langCode);
-                }, 1000);
-            }
-        }
+            // Перезагружаем страницу с параметром lang
+            url.searchParams.set('lang', langCode);
+            window.location.href = url.toString();
+        });
 
         function getLangName(lang) {
             const names = {
                 'en': 'English', 'ru': 'Русский', 'de': 'Deutsch',
                 'es': 'Español', 'pt': 'Português', 'zh': '中文',
                 'ar': 'العربية', 'fr': 'Français', 'it': 'Italiano',
-                'ja': '日本語', 'ko': '한국어', 'tr': 'Türkçe',
-                'uk': 'Українська', 'pl': 'Polski', 'nl': 'Nederlands'
+                'ja': '日本語', 'ko': '한국어', 'tr': 'Türkçe'
             };
-            return names[lang] || lang.toUpperCase();
+            return names[lang] || lang;
         }
 
-        function showToast(msg) {
-            let toast = document.getElementById('toast');
-            if (!toast) {
-                toast = document.createElement('div');
-                toast.id = 'toast';
-                toast.style.cssText = `
-                    position: fixed;
-                    bottom: 30px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: #1e293b;
-                    color: #fff;
-                    padding: 12px 24px;
-                    border-radius: 12px;
-                    font-size: 14px;
-                    z-index: 99999;
-                    opacity: 0;
-                    transition: opacity 0.3s ease;
-                    pointer-events: none;
-                    text-align: center;
-                    max-width: 90%;
-                    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-                `;
-                document.body.appendChild(toast);
+        // ===== АВТОМАТИЧЕСКИЙ ПЕРЕВОД ПРИ ЗАГРУЗКЕ =====
+        function autoTranslate() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lang = urlParams.get('lang');
+
+            if (!lang || lang === 'en') return;
+
+            // Ждём загрузки страницы и запускаем Google Translate
+            setTimeout(function() {
+                // Проверяем, загружен ли Google Translate
+                const select = document.querySelector('.goog-te-combo');
+                if (select) {
+                    select.value = lang;
+                    select.dispatchEvent(new Event('change'));
+                    showToast('✅ Translated to ' + getLangName(lang));
+                } else {
+                    // Если не загружен - пробуем ещё раз
+                    setTimeout(function() {
+                        const select2 = document.querySelector('.goog-te-combo');
+                        if (select2) {
+                            select2.value = lang;
+                            select2.dispatchEvent(new Event('change'));
+                            showToast('✅ Translated to ' + getLangName(lang));
+                        }
+                    }, 2000);
+                }
+            }, 1500);
+        }
+
+        // ===== ЗАГРУЖАЕМ GOOGLE TRANSLATE =====
+        function loadGoogleTranslate() {
+            // Проверяем, загружен ли уже
+            if (typeof google !== 'undefined' && google.translate) {
+                autoTranslate();
+                return;
             }
-            toast.textContent = msg;
-            toast.style.opacity = '1';
-            clearTimeout(toast._timer);
-            toast._timer = setTimeout(() => {
-                toast.style.opacity = '0';
-            }, 3000);
-        }
 
-        // ===== АВТОПЕРЕВОД ПОСЛЕ ЗАГРУЗКИ НОВОСТЕЙ =====
-        function autoTranslateAfterLoad() {
-            const savedLang = localStorage.getItem('translateLang');
-            if (savedLang && savedLang !== 'en') {
-                targetLang = savedLang;
-                // Ждём, пока Google Translate загрузится и переводим
-                setTimeout(function() {
-                    translatePage();
-                }, 1000);
+            // Загружаем скрипт
+            const script = document.createElement('script');
+            script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+            script.async = true;
+            document.head.appendChild(script);
+
+            window.googleTranslateElementInit = function() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,ru,de,es,pt,zh,ar,fr,it,ja,ko,tr',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                    autoDisplay: false
+                }, 'google_translate_element');
+
+                autoTranslate();
+            };
+
+            // Скрытый контейнер
+            if (!document.getElementById('google_translate_element')) {
+                const container = document.createElement('div');
+                container.id = 'google_translate_element';
+                container.style.display = 'none';
+                document.body.appendChild(container);
             }
         }
 
         // ===== SUPABASE =====
         const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co";
         const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
-
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function loadNews() {
@@ -299,12 +286,12 @@
             container.innerHTML = articles.map(art => `
                 <article>
                     ${art.image_url ? 
-                        `<a href="article.html?slug=${art.slug}" target="_blank">
+                        `<a href="article.html?slug=${art.slug}&lang=${getCurrentLang()}" target="_blank">
                             <img src="${art.image_url}" class="news-img" alt="${art.title}">
                         </a>` : ''
                     }
                     <h3>
-                        <a href="article.html?slug=${art.slug}" target="_blank">
+                        <a href="article.html?slug=${art.slug}&lang=${getCurrentLang()}" target="_blank">
                             ${art.title}
                         </a>
                     </h3>
@@ -319,8 +306,13 @@
                 </article>
             `).join('');
 
-            // ===== ПОСЛЕ ЗАГРУЗКИ НОВОСТЕЙ - ПЕРЕВОДИМ =====
-            autoTranslateAfterLoad();
+            // Загружаем Google Translate после загрузки новостей
+            loadGoogleTranslate();
+        }
+
+        function getCurrentLang() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('lang') || 'en';
         }
 
         loadNews();
