@@ -1,622 +1,720 @@
 <!DOCTYPE html>
-<html lang="en" translate="yes">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="verify-admitad" content="3631d02de8" />
-  <meta name="description" content="Leave feedback about Internationals translation and localization services. Share your experience, rate us, and read recent customer reviews.">
-  <title>Feedback - Internationals Translation Service</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎤</text></svg>">
-  <link rel="preload" as="image" href="feedback-bg.jpg" fetchpriority="high">
-  <link rel="preconnect" href="https://mcgcijdnzduzyqbbjtkm.supabase.co">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
+  <title>Professional Translation Services | Internationals.pro</title><link rel=icon href=/favicon.ico type=image/x-icon>
+  <link rel="canonical" href="https://internationals.pro/" />
+  <meta name="description" content="Professional translation services for documents, notarization, apostille, websites, and video. Fast and accurate translations for seafarers, travelers, and international clients worldwide.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["ProfessionalService", "TranslationService"],
+    "name": "Internationals' Translation Service",
+    "alternateName": "Internationals",
+    "url": "https://internationals.pro",
+    "logo": "https://internationals.pro/assets/logo.png",
+    "image": "https://internationals.pro/assets/logo.png",
+    "description": "Professional translation and localization services with physical presence in airports and seaports worldwide. Documents, websites, video translation available 24/7.",
+    "slogan": "We translate people",
+    "email": "mailtomorrow@yahoo.com",
+    "telephone": "+79991251025",
+    "areaServed": {"@type": "Place", "name": "Worldwide"},
+    "openingHours": "Mo-Su 00:00-23:59",
+    "priceRange": "$$",
+    "paymentAccepted": "Cash, Credit Card, Bank Transfer",
+    "currenciesAccepted": "USD, EUR, RUB",
+    "sameAs": ["https://www.wikidata.org/wiki/Q138018744", "https://www.linkedin.com/company/internationalspro/", "https://youtube.com/@internationalspro"],
+    "knowsLanguage": ["en","ru","de","es","pt","zh","ar"]
+  }
+  </script>
+
+  <link rel="stylesheet" href="styles.css?v=1.6">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
   <style>
-    :root{ --accent-1:#1f3f83; --accent-2:#2f5597; --danger:#d9534f; }
-    html,body{ height:100%; margin:0; }
-    body{
-      font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      background:#E89344 url('feedback-bg.jpg') top center / 100% auto no-repeat;
-      min-height:100vh; opacity:0; transition:opacity .35s ease;
+    .jitsi-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-top: 4px;
     }
-    body.loaded{ opacity:1; }
-    .feedback-container{
-      max-width:760px; margin:48px auto; padding:30px;
-      border-radius:12px; background:rgba(255,255,255,0.02);
-      backdrop-filter:blur(8px); box-shadow:0 8px 30px rgba(0,0,0,0.25);
-      border:1px solid rgba(255,255,255,0.12);
+    .jitsi-icon-camera {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: #1565C0;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      flex-shrink: 0;
     }
-    .feedback-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
-    .feedback-header h2{ margin:0; color:#fff; font-size:22px; line-height:1; }
-    .close-btn{ background:transparent; border:0; color:#fff; font-size:46px; cursor:pointer; line-height:1; padding:0 4px; transition:color .2s,transform .2s; }
-    .close-btn:hover{ color:#ff4444; transform:translateX(-4px); }
-    .feedback-form{ margin-top:8px; }
-    .feedback-form input,.feedback-form textarea{
-      width:100%; padding:12px; margin:8px 0; border-radius:8px;
-      border:2px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.12);
-      font-size:15px; box-sizing:border-box; color:#000 !important;
+    .jitsi-icon-phone {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: #22c55e;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 22px;
+      box-shadow: 0 2px 8px rgba(34,197,94,0.45);
+      flex-shrink: 0;
+      transition: transform 0.18s, box-shadow 0.18s;
     }
-    .feedback-form input::placeholder,.feedback-form textarea::placeholder{ color:#666; }
-    .feedback-form button{
-      display:block; width:100%; padding:14px; margin-top:12px;
-      border-radius:8px; border:0; cursor:pointer; color:#fff;
-      font-weight:600; font-size:15px;
-      background:linear-gradient(135deg,var(--accent-2),var(--accent-1));
-      transition:transform .15s,box-shadow .15s;
+    .jitsi-link:hover .jitsi-icon-phone {
+      transform: scale(1.12) rotate(-10deg);
+      box-shadow: 0 4px 16px rgba(34,197,94,0.6);
     }
-    .feedback-form button:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.15); }
-    .feedback-form button:disabled{ opacity:.6; cursor:not-allowed; }
-    .audio-buttons{ display:flex; gap:10px; flex-direction:column; margin-top:8px; }
-    #recordBtn{ background:linear-gradient(135deg,var(--accent-2),var(--accent-1)); border:0; padding:12px; border-radius:8px; cursor:pointer; color:#fff; }
-    #recordBtn.recording{ animation:pulse 1.5s infinite; }
-    @keyframes pulse{
-      0%{ box-shadow:0 0 0 0 rgba(220,38,38,0.7); }
-      50%{ box-shadow:0 0 0 12px rgba(220,38,38,0); }
-      100%{ box-shadow:0 0 0 0 rgba(220,38,38,0.7); }
-    }
-    #stopBtn{ background:var(--danger); color:#fff; border:0; padding:12px; border-radius:8px; }
-    #stopBtn:disabled{ opacity:.5; cursor:not-allowed; }
-    .visualizer-container{ display:none; margin-top:12px; padding:12px; border-radius:8px; background:rgba(255,255,255,0.04); }
-    #visualizer{ width:100%; height:80px; border-radius:6px; background:rgba(0,0,0,0.25); display:block; }
-    .volume-meter{ width:100%; height:8px; border-radius:4px; background:rgba(0,0,0,0.2); overflow:hidden; margin-top:8px; }
-    .volume-bar{ height:100%; width:0%; transition:width .1s; background:linear-gradient(90deg,#10b981,#ef4444); }
-    .audio-preview{ display:none; margin-top:10px; background:rgba(255,255,255,0.04); padding:10px; border-radius:8px; }
-    .audio-preview audio{ width:100%; display:block; margin-bottom:8px; }
-    .feedback-list-title{ color:#fff; font-size:18px; font-weight:600; margin-top:18px; margin-bottom:12px; }
-    .feedback-item{ background:rgba(255,255,255,0.12); padding:12px; border-radius:8px; margin-bottom:12px; border-left:4px solid #1f4ba5; color:#000 !important; }
-    .feedback-item strong{ font-size:15px; }
-    .feedback-item small{ float:right; color:#333; font-size:12px; }
-    .admin-reply{ margin-top:10px; padding:10px; background:rgba(240,249,255,0.9); border-left:3px solid #3b82f6; border-radius:6px; }
-    .error{ text-align:center; color:#fff; padding:14px; }
-
-    /* Loading spinner */
-    .loading-container{ text-align:center; padding:30px 10px; }
-    .spinner{
-      width:40px; height:40px; margin:0 auto 12px;
-      border:4px solid rgba(255,255,255,0.15);
-      border-top-color:#fff; border-radius:50%;
-      animation:spin .8s linear infinite;
-    }
-    @keyframes spin{ to{ transform:rotate(360deg); } }
-    .loading-text{ color:#fff; font-size:14px; opacity:.85; }
-    .loading-subtext{ font-size:12px; opacity:.55; margin-top:4px; }
-
-    .fixed-banner-left,
-    .fixed-banner-right {
-      position: fixed;
-      bottom: -100vh;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      z-index: 50;
-      opacity: 0;
-      pointer-events: none;
-      will-change: transform;
-      transition: bottom 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  opacity 0.8s ease;
-    }
-    /* Ширина баннера = половина свободного пространства слева/справа от
-       центрального блока (760px + 2*48px margin). Формула:
-       (100vw - 856px) / 2, с разумными границами min/max через clamp(). */
-    .fixed-banner-left  { left: 4px; width: clamp(160px, calc((100vw - 856px) / 2), 460px); }
-    .fixed-banner-right { right: 4px; width: clamp(160px, calc((100vw - 856px) / 2), 460px); }
-
-    .fixed-banner-left.sliding,
-    .fixed-banner-right.sliding {
-      bottom: 20px;
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .fixed-banner-left.stuck,
-    .fixed-banner-right.stuck {
-      position: absolute;
-      bottom: auto;
-      opacity: 1;
-      pointer-events: auto;
-      transition: none;
-    }
-
-    .banner-card{
-      width: 100%;
-      box-sizing: border-box;
-      background:rgba(255,255,255,0.08);
-      backdrop-filter:blur(8px);
-      border:1px solid rgba(255,255,255,0.15);
-      border-radius:10px; padding:10px; text-align:center; transition:box-shadow .2s;
-    }
-    .banner-card:hover{ box-shadow:0 8px 24px rgba(0,0,0,0.25); }
-    .banner-card img{ width:100% !important; height:auto !important; aspect-ratio: 300 / 250; object-fit:cover; border-radius:6px; display:block; margin:0 auto; background:rgba(255,255,255,0.05); }
-    .banner-label{ font-size:10px; color:rgba(255,255,255,0.35); margin-top:6px; letter-spacing:.05em; text-transform:uppercase; }
-
-    /* Travelpayouts widget slot: виджет запрошен с параметром width=100 в URL,
-       то есть сам масштабирует свой логотип/текст под контейнер шириной ~100px.
-       Если дать ему растягиваться вместе с остальным баннером (а тот теперь
-       динамической ширины через clamp), логотип растягивается и становится
-       огромным и размытым. Поэтому фиксируем слоту собственную узкую ширину
-       и центрируем его внутри баннера. */
-    .tp-embed-slot{
-      max-height: 2000px;
-      overflow: visible;
-      width: 140px !important;
-      max-width: 140px !important;
-      margin: 0 auto;
-    }
-    .tp-embed-slot > div,
-    .tp-embed-slot iframe{
-      max-width: 100% !important;
-      width: 100% !important;
-    }
-
-    .cvc-banner{
-      width:100%; aspect-ratio: 330 / 230; height:auto;
-      border-radius:8px; overflow:hidden;
-      position:relative; cursor:pointer; display:block; text-decoration:none; background:#0a1628;
-    }
-    .cvc-slides{ position:absolute; inset:0; }
-    .cvc-slide{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1s ease; }
-    .cvc-slide.cvc-active{ opacity:1; }
-    .cvc-dots{ position:absolute; top:8px; left:50%; transform:translateX(-50%); display:flex; gap:5px; z-index:3; }
-    .cvc-dot{ width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.4); transition:background .3s; }
-    .cvc-dot.cvc-dot-active{ background:#fff; }
-    .cvc-text-overlay{ position:absolute; bottom:0; left:0; right:0; padding:10px 12px; background:linear-gradient(transparent,rgba(0,20,60,.9)); color:#fff; font-family:'Inter',sans-serif; z-index:2; }
-    .cvc-title{ font-size:13px; font-weight:700; letter-spacing:.04em; text-shadow:0 1px 4px rgba(0,0,0,.7); }
-    .cvc-sub{ font-size:10px; opacity:.85; margin-top:2px; color:#cce4ff; }
-    .cvc-cta{ display:inline-block; margin-top:5px; padding:3px 10px; background:linear-gradient(135deg,#1565c0,#0288d1); border-radius:20px; font-size:10px; font-weight:600; color:#fff; }
-
-    .mobile-banners{ display:none; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:16px; }
-
-    @media(max-width:1100px){
-      .fixed-banner-left,.fixed-banner-right{ display:none !important; }
-      .mobile-banners{ display:flex; }
-      .feedback-container{ margin:18px; padding:18px; }
+    .jitsi-link:hover .jitsi-icon-camera {
+      background: #1976D2;
     }
   </style>
+
+  <script>
+  function loadAnalytics() {
+    (function(m,e,t,r,i,k,a){
+      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105858281', 'ym');
+    ym(105858281, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-0780Z702Y0';
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0780Z702Y0');
+  }
+
+  if (localStorage.getItem('cookieConsent') === 'accepted') {
+    loadAnalytics();
+  }
+  </script>
 </head>
 <body>
+  <audio id="bgMusic" preload="metadata" loop></audio>
 
-  <!-- LEFT COLUMN (desktop ads, injected later) -->
-  <div class="fixed-banner-left" id="bannerLeft"></div>
-
-  <!-- RIGHT COLUMN (desktop ads, injected later) -->
-  <div class="fixed-banner-right" id="bannerRight">
-    <!-- Google Review CTA stays immediate, it's cheap and important -->
-    <div class="banner-card" style="text-align:center; padding:16px;">
-      <svg width="24" height="24" viewBox="0 0 48 48" style="display:block;margin:0 auto 6px;flex-shrink:0;" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.09 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
-      <div style="font-size:22px; margin-bottom:6px; letter-spacing:2px;">⭐⭐⭐⭐⭐</div>
-      <div style="color:#fff; font-size:13px; font-weight:600; margin-bottom:4px;">Rate us on Google</div>
-      <a href="https://g.page/r/CQwStbpHlV3gEAI/review" target="_blank" rel="nofollow"
-         style="display:inline-block; margin-top:8px; padding:8px 18px;
-                background:linear-gradient(135deg,#1f3f83,#2f5597);
-                color:#fff; border-radius:20px; font-size:12px; font-weight:600; text-decoration:none;">
-        ✍️ Write a Review
-      </a>
-    </div>
+  <div class="music-player">
+    <div class="music-player-toggle globe" id="musicToggle"></div>
   </div>
 
-  <main class="feedback-container">
-    <div class="feedback-header">
-      <h2 class="translate" data-key="feedback">Feedback</h2>
-      <button class="close-btn" onclick="if(history.length>1){history.back();}else{window.close();}">&#8592;</button>
+  <div class="volume-control">
+    <i class="fas fa-volume-up volume-icon"></i>
+    <div class="volume-slider-container">
+      <div class="volume-fill" id="volumeFill"></div>
+      <input type="range" min="0" max="100" value="30" class="volume-slider" id="volumeSlider">
     </div>
-    <div id="errorMessage"></div>
-    <div class="feedback-form">
-      <form id="feedbackForm" autocomplete="off">
-        <input type="text" id="name" class="translate" data-key="name" placeholder="Your name" required>
-        <textarea id="message" rows="4" class="translate" data-key="message" placeholder="Your impressions, tips, contacts (optional)" required></textarea>
-        <div class="audio-buttons">
-          <button type="button" id="recordBtn" class="translate" data-key="record">🎙 Record Audio</button>
-          <button type="button" id="stopBtn" class="translate" data-key="stop" disabled>⏹ Stop Recording</button>
+    <i class="fas fa-volume-down volume-icon"></i>
+  </div>
+
+  <div id="languageDropdown">
+    <div class="language-option" data-lang="en">EN<span>English</span></div>
+    <div class="language-option" data-lang="ru">RU<span>Русский</span></div>
+    <div class="language-option" data-lang="de">DE<span>Deutsch</span></div>
+    <div class="language-option" data-lang="es">ES<span>Español</span></div>
+    <div class="language-option" data-lang="pt">PT<span>Português</span></div>
+    <div class="language-option" data-lang="zh">ZH<span>中文</span></div>
+    <div class="language-option" data-lang="ar">AR<span>العربية</span></div>
+  </div>
+
+  <header class="header" id="header">
+    <nav class="nav">
+      <div class="nav-container">
+        <div class="logo"><img src="assets/logo.png" alt="Internationals" class="site-logo"></div>
+        <ul class="nav-menu">
+          <li><a href="partners.html" target="partners_tab" data-translate="nav_home">For Partners</a></li>
+          <li><a href="pricing.html" target="pricing_tab" data-translate="nav_services">Services</a></li>
+        </ul>
+        <div class="nav-buttons">
+          <a class="btn btn-primary" href="#contact" data-translate="nav_contact">Contact us</a>
         </div>
-        <div class="visualizer-container" id="visualizerContainer">
-          <canvas id="visualizer"></canvas>
-          <div class="volume-meter"><div class="volume-bar" id="volumeBar"></div></div>
-          <div id="recordStatus"></div>
+        <div class="mobile-nav-btns">
+          <a href="partners.html" target="partners_tab" data-translate="nav_home">For Partners</a>
+          <a href="pricing.html" target="pricing_tab" data-translate="nav_services">Services</a>
         </div>
-        <div class="audio-preview" id="audioPreview">
-          <audio id="previewPlayer" controls></audio>
-          <button type="button" id="deleteBtn" class="translate" data-key="delete">🗑 Delete and re-record</button>
-        </div>
-        <button type="submit" id="submitBtn" class="translate" data-key="send">Send Feedback</button>
-      </form>
+        <div class="hamburger"><span></span><span></span><span></span></div>
+      </div>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span data-translate="hero_title_1">Professional</span>
+          <span class="highlight" data-translate="hero_title_2">online translator</span>
+        </h1>
+        <p class="hero-subtitle" data-translate="hero_subtitle">Fast and accurate translations of documents, video and web pages.</p>
+      </div>
     </div>
-    <div class="feedback-list-container">
-      <div class="feedback-list-title translate" data-key="recent">Recent Feedback</div>
-      <div id="feedbackList">
-        <div class="loading-container">
-          <div class="spinner"></div>
-          <p class="loading-text translate" data-key="loading">Loading reviews...</p>
-          <p class="loading-subtext">Usually takes 1-3 seconds</p>
+  </section>
+
+  <div id="revealOverlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:999;opacity:0;transition:opacity 0.2s;">
+    <canvas id="revealCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;"></canvas>
+  </div>
+
+  <section class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 data-translate="services_title">Why choose us</h2>
+        <p data-translate="services_subtitle">Advanced technologies and international team of experts</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card" data-service="1" style="cursor:crosshair;user-select:none;">
+          <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+          <h3 data-translate="service_1_title">Instant translation</h3>
+          <p data-translate="service_1_desc">Verbal interpretation via video call or on-site, written translation of any texts</p>
+        </div>
+        <div class="feature-card" data-service="2" style="cursor:crosshair;user-select:none;">
+          <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+          <h3 data-translate="service_2_title">Security</h3>
+          <p data-translate="service_2_desc">Your data is protected with modern encryption protocols</p>
+        </div>
+        <div class="feature-card" data-service="3" style="cursor:crosshair;user-select:none;">
+          <div class="feature-icon"><i class="fas fa-file-alt"></i></div>
+          <h3 data-translate="service_4_title">Document translation</h3>
+          <p data-translate="service_4_desc">We work with any file format</p>
+        </div>
+        <div class="feature-card" data-service="4" style="cursor:crosshair;user-select:none;">
+          <div class="feature-icon"><i class="fas fa-language"></i></div>
+          <h3 data-translate="service_5_title">Website and video localization</h3>
+          <p data-translate="service_5_desc">Website creation and content adaptation</p>
+        </div>
+        <div class="feature-card" data-service="5" style="cursor:crosshair;user-select:none;">
+          <div class="feature-icon"><i class="fas fa-bell"></i></div>
+          <h3 data-translate="service_6_title">Personal manager</h3>
+          <p data-translate="service_6_desc">Describe your task — we will find the solution</p>
+        </div>
+        <div class="feature-card" data-service="6" style="cursor:crosshair;user-select:none;">
+          <div class="feature-icon"><i class="fas fa-truck"></i></div>
+          <h3 data-translate="service_7_title">Document delivery</h3>
+          <p data-translate="service_7_desc">Delivery of translated documents by email or to your chosen address</p>
         </div>
       </div>
-
-      <!-- MOBILE BANNERS (injected later) -->
-      <div class="mobile-banners" id="mobileBanners"></div>
     </div>
-  </main>
+  </section>
 
   <script>
-    /* ===== Translations & language ===== */
-    var translations = {
-      en:{ feedback:"Feedback", name:"Your name", message:"Your impressions, tips, contacts (optional)", record:"🎙 Record Audio", stop:"⏹ Stop Recording", delete:"🗑 Delete and re-record", send:"Send Feedback", recent:"Recent Feedback", loading:"Loading reviews...", sending:"Sending...", sent:"✅ Sent!", replyLabel:"Our reply:" },
-      ru:{ feedback:"Отзывы", name:"Ваше имя", message:"Ваши впечатления, советы, контакты (необязательно)", record:"🎙 Записать аудио", stop:"⏹ Остановить запись", delete:"🗑 Удалить и перезаписать", send:"Отправить отзыв", recent:"Последние отзывы", loading:"Загрузка отзывов...", sending:"Отправка...", sent:"✅ Отправлено!", replyLabel:"Наш ответ:" },
-      de:{ feedback:"Feedback", name:"Ihr Name", message:"Ihre Eindrücke, Tipps, Kontakte (optional)", record:"🎙 Audio aufnehmen", stop:"⏹ Aufnahme stoppen", delete:"🗑 Löschen und neu aufnehmen", send:"Feedback senden", recent:"Neueste Bewertungen", loading:"Bewertungen werden geladen...", sending:"Senden...", sent:"✅ Gesendet!", replyLabel:"Unsere Antwort:" },
-      es:{ feedback:"Comentarios", name:"Tu nombre", message:"Tus impresiones, consejos, contactos (opcional)", record:"🎙 Grabar audio", stop:"⏹ Detener grabación", delete:"🗑 Eliminar y volver a grabar", send:"Enviar comentario", recent:"Comentarios recientes", loading:"Cargando comentarios...", sending:"Enviando...", sent:"✅ ¡Enviado!", replyLabel:"Nuestra respuesta:" },
-      pt:{ feedback:"Comentários", name:"Seu nome", message:"Suas impressões, dicas, contatos (opcional)", record:"🎙 Gravar áudio", stop:"⏹ Parar gravação", delete:"🗑 Excluir e regravar", send:"Enviar feedback", recent:"Feedback recente", loading:"Carregando comentários...", sending:"Enviando...", sent:"✅ Enviado!", replyLabel:"Nossa resposta:" },
-      zh:{ feedback:"反馈", name:"您的姓名", message:"您的印象、建议、联系方式(可选)", record:"🎙 录音", stop:"⏹ 停止录音", delete:"🗑 删除并重新录音", send:"发送反馈", recent:"最新评论", loading:"正在加载评论...", sending:"发送中...", sent:"✅ 已发送!", replyLabel:"我们的回复:" },
-      ar:{ feedback:"الملاحظات", name:"اسمك", message:"انطباعاتك، نصائحك، جهات الاتصال (اختياري)", record:"🎙 تسجيل الصوت", stop:"⏹ إيقاف التسجيل", delete:"🗑 حذف وإعادة التسجيل", send:"إرسال الملاحظات", recent:"أحدث التعليقات", loading:"جاري تحميل التعليقات...", sending:"جاري الإرسال...", sent:"✅ تم الإرسال!", replyLabel:"ردنا:" }
+  (function() {
+    const serviceMedia = {
+      1: { src: 'assets/service1.mp4', type: 'video' },
+      2: { src: 'assets/service2.png', type: 'image' },
+      3: { src: 'assets/service3.jpg', type: 'image' },
+      4: { src: 'assets/service4.png', type: 'image' },
+      5: { src: 'assets/service5.png', type: 'image' },
+      6: { src: 'assets/service6.mp4', type: 'video' },
     };
-    function getPreferredLang() {
-      return localStorage.getItem('language') || localStorage.getItem('userLang') ||
-             (navigator.language || navigator.userLanguage || 'en').split('-')[0] || 'en';
-    }
-    function applyTranslations() {
-      var lang = getPreferredLang(), t = translations[lang] || translations.en;
-      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-      document.querySelectorAll('.translate').forEach(function(el){
-        var key = el.dataset.key; if(!key) return;
-        var val = t[key] || translations.en[key] || el.textContent;
-        var tag = el.tagName.toLowerCase();
-        if(tag==='input'||tag==='textarea') el.placeholder = val; else el.textContent = val;
-      });
-    }
-    window.addEventListener('DOMContentLoaded', applyTranslations);
-    window.addEventListener('load', function(){ document.body.classList.add('loaded'); });
-  </script>
 
-  <!-- ===== Supabase: load with defer, init on script-load event (no polling) ===== -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer onload="window.__sbReady && window.__sbReady()"></script>
-  <script>
-    var SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
-    var SUPABASE_KEY = 'sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee';
-    var sb = null;
-    var __sbInitDone = false;
+    const overlay = document.getElementById('revealOverlay');
+    const canvas = document.getElementById('revealCanvas');
+    const ctx = canvas.getContext('2d');
 
-    window.__sbReady = function(){
-      if (__sbInitDone) return;
-      if (window.supabase && window.supabase.createClient) {
-        __sbInitDone = true;
-        sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        initApp();
+    let currentRadius = 0;
+    let isPressed = false;
+    let originX = 0, originY = 0;
+    let growTimer = null;
+    let animFrame = null;
+    let currentImg = null;
+    let currentVideo = null;
+    const MAX_RADIUS = Math.sqrt(window.innerWidth ** 2 + window.innerHeight ** 2);
+    const GROW_PX = 7;
+    const SHRINK = 0.10;
+
+    const imgCache = {};
+    const vidCache = {};
+    Object.entries(serviceMedia).forEach(([n, m]) => {
+      if (m.type === 'image') {
+        const img = new Image();
+        img.src = m.src;
+        imgCache[n] = img;
+      } else {
+        const v = document.createElement('video');
+        v.src = m.src; v.loop = true; v.muted = false; v.playsInline = true; v.preload = 'auto';
+        vidCache[n] = v;
       }
-    };
-    // Несколько способов поймать момент, когда supabase-js готов —
-    // onload-атрибут не всегда срабатывает в мобильных браузерах при defer.
-    document.addEventListener('DOMContentLoaded', function(){
-      if (window.supabase) window.__sbReady();
     });
-    window.addEventListener('load', function(){
-      if (window.supabase) window.__sbReady();
-    });
-    // Поллинг как последний рубеж — лёгкий, раз в 200мс, максимум 15 секунд
-    // (мобильный 4G slow может реально тормозить CDN дольше 4 секунд)
-    (function pollSupabase(triesLeft){
-      if (__sbInitDone) return;
-      if (window.supabase) { window.__sbReady(); return; }
-      if (triesLeft <= 0) {
-        showLoadError();
-        return;
-      }
-      setTimeout(function(){ pollSupabase(triesLeft - 1); }, 200);
-    })(75); // 75 * 200мс = 15 секунд
 
-    function showLoadError(){
-      var el = document.getElementById('feedbackList');
-      if (!el) return;
-      // Если есть кэш — не затираем его, просто молча оставляем как есть
-      var cached = null;
-      try { cached = localStorage.getItem('cachedFeedbackV1'); } catch(e){}
-      if (cached) return;
-      el.innerHTML = '<p class="error" style="text-align:center;">Не удалось загрузить отзывы.<br>'
-        + '<button onclick="location.reload()" style="margin-top:10px;padding:8px 16px;border-radius:8px;border:0;background:#2f5597;color:#fff;cursor:pointer;">Обновить страницу</button></p>';
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (currentRadius <= 0) return;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(originX, originY, currentRadius, 0, Math.PI * 2);
+      ctx.clip();
+      if (currentVideo) {
+        ctx.drawImage(currentVideo, 0, 0, canvas.width, canvas.height);
+      } else if (currentImg && currentImg.complete && currentImg.naturalWidth) {
+        const iw = currentImg.naturalWidth, ih = currentImg.naturalHeight;
+        const scale = Math.max(canvas.width / iw, canvas.height / ih);
+        const dw = iw * scale, dh = ih * scale;
+        ctx.drawImage(currentImg, (canvas.width - dw) / 2, (canvas.height - dh) / 2, dw, dh);
+      }
+      ctx.restore();
+      const g = ctx.createRadialGradient(originX, originY, currentRadius * 0.8, originX, originY, currentRadius);
+      g.addColorStop(0, 'rgba(0,0,0,0)');
+      g.addColorStop(1, 'rgba(0,0,0,0.4)');
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(originX, originY, currentRadius, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+      ctx.restore();
     }
 
-    function initApp() {
-      var feedbackList=document.getElementById('feedbackList'), feedbackForm=document.getElementById('feedbackForm'),
-          submitBtn=document.getElementById('submitBtn'), errorMessage=document.getElementById('errorMessage'),
-          recordBtn=document.getElementById('recordBtn'), stopBtn=document.getElementById('stopBtn'),
-          deleteBtn=document.getElementById('deleteBtn'), visualizerContainer=document.getElementById('visualizerContainer'),
-          audioPreview=document.getElementById('audioPreview'), previewPlayer=document.getElementById('previewPlayer'),
-          canvas=document.getElementById('visualizer'), canvasCtx=canvas.getContext('2d'),
-          volumeBar=document.getElementById('volumeBar'), recordStatus=document.getElementById('recordStatus');
-      var mediaRecorder=null,audioChunks=[],audioBlob=null,audioContext=null,
-
-          analyser=null,dataArray=null,animationId=null,recordTimer=null,stream=null;
-
-      function drawWaveform(){
-        animationId=requestAnimationFrame(drawWaveform);
-        if(!analyser||!dataArray) return;
-        analyser.getByteTimeDomainData(dataArray);
-        canvasCtx.fillStyle='rgba(0,0,0,0.18)'; canvasCtx.fillRect(0,0,canvas.width,canvas.height);
-        canvasCtx.lineWidth=3; canvasCtx.beginPath();
-        var sliceW=canvas.width/dataArray.length, x=0, maxAmp=0;
-        for(var i=0;i<dataArray.length;i++){
-          var v=dataArray[i]/128.0, y=v*canvas.height/2, amp=Math.abs(v-1.0);
-          if(amp>maxAmp) maxAmp=amp;
-          if(i===0) canvasCtx.moveTo(x,y); else canvasCtx.lineTo(x,y);
-          x+=sliceW;
-        }
-        canvasCtx.lineTo(canvas.width,canvas.height/2);
-        canvasCtx.strokeStyle=maxAmp>0.7?'#ef4444':maxAmp>0.3?'#10b981':'#6b7280';
-        canvasCtx.stroke();
-        volumeBar.style.width=Math.min(Math.round(maxAmp*200),100)+'%';
-      }
-
-      recordBtn.addEventListener('click', async function(){
-        try{
-          stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
-          audioContext=new(window.AudioContext||window.webkitAudioContext)();
-          analyser=audioContext.createAnalyser();
-          audioContext.createMediaStreamSource(stream).connect(analyser);
-          analyser.fftSize=2048; analyser.smoothingTimeConstant=0.8;
-          dataArray=new Uint8Array(analyser.frequencyBinCount);
-          canvas.width=canvas.offsetWidth; canvas.height=canvas.offsetHeight;
-          visualizerContainer.style.display='block'; recordBtn.classList.add('recording'); drawWaveform();
-          var mimeType='';
-          if(MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) mimeType='audio/ogg;codecs=opus';
-          else if(MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) mimeType='audio/webm;codecs=opus';
-          else if(MediaRecorder.isTypeSupported('audio/webm')) mimeType='audio/webm';
-          mediaRecorder=new MediaRecorder(stream,mimeType?{mimeType}:{});
-          audioChunks=[];
-          mediaRecorder.ondataavailable=function(e){ if(e.data&&e.data.size>0) audioChunks.push(e.data); };
-          mediaRecorder.onstop=function(){
-            audioBlob=new Blob(audioChunks,{type:mimeType||'audio/webm'});
-            previewPlayer.src=URL.createObjectURL(audioBlob);
-            audioPreview.style.display='block'; visualizerContainer.style.display='none';
-            recordBtn.classList.remove('recording');
-            recordStatus.textContent='✅ Ready ('+(audioBlob.size/1024).toFixed(1)+' KB)';
-            if(animationId) cancelAnimationFrame(animationId);
-            if(recordTimer) clearTimeout(recordTimer);
-            if(stream){ stream.getTracks().forEach(function(t){t.stop();}); stream=null; }
-            if(audioContext){ audioContext.close(); audioContext=null; }
-          };
-          mediaRecorder.start(); recordBtn.disabled=true; stopBtn.disabled=false;
-          recordStatus.textContent='🔴 Recording... (max 2 min)';
-          recordTimer=setTimeout(function(){
-            if(mediaRecorder&&mediaRecorder.state==='recording'){
-              mediaRecorder.stop(); recordBtn.disabled=false; stopBtn.disabled=true;
-              recordStatus.textContent='⏱ Stopped (2 min limit)';
-            }
-          },120000);
-        }catch(err){ showError('Cannot access microphone'); console.error(err); }
-      });
-
-      stopBtn.addEventListener('click',function(){
-        if(mediaRecorder&&mediaRecorder.state==='recording'){
-          mediaRecorder.stop(); recordBtn.disabled=false; stopBtn.disabled=true;
-          recordBtn.classList.remove('recording'); if(recordTimer) clearTimeout(recordTimer);
-        }
-      });
-
-      deleteBtn.addEventListener('click',function(){
-        audioBlob=null; audioPreview.style.display='none'; previewPlayer.src='';
-        recordStatus.textContent=''; recordBtn.disabled=false; stopBtn.disabled=true;
-      });
-
-      var CACHE_KEY='cachedFeedbackV1';
-
-      function renderFeedback(rows){
-        var lang=getPreferredLang();
-        if(!rows || rows.length===0){
-          feedbackList.innerHTML='<p style="text-align:center;color:#ddd">'+(translations[lang]||translations.en).loading+'</p>';
+    function loop() {
+      draw();
+      if (!isPressed && currentRadius > 0) {
+        currentRadius += (0 - currentRadius) * SHRINK;
+        if (currentRadius < 1) {
+          currentRadius = 0;
+          overlay.style.opacity = '0';
+          if (currentVideo) { currentVideo.pause(); currentVideo.currentTime = 0; currentVideo = null; }
+          cancelAnimationFrame(animFrame); animFrame = null;
           return;
         }
-        var frag=document.createDocumentFragment();
-        rows.forEach(function(item){
-          var div=document.createElement('div'); div.className='feedback-item';
-          var date=new Date(item.created_at).toLocaleString(undefined,{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit',year:'numeric'});
-          var html='<strong translate="no">'+esc(item.contact||'Anonymous')+'</strong><small>'+date+'</small><p translate="no">'+esc(item.message)+'</p>';
-          if(item.audio_url) html+='<audio controls preload="metadata" src="'+item.audio_url+'"></audio>';
-          if(item.reply&&item.reply.trim()){
-            var lbl=((translations[lang]||translations.en).replyLabel)||'Our reply:';
-            html+='<div class="admin-reply"><div class="admin-reply-label">'+esc(lbl)+'</div><p class="admin-reply-text" translate="no">'+esc(item.reply)+'</p></div>';
-          }
-          div.innerHTML=html; frag.appendChild(div);
-        });
-        feedbackList.innerHTML='';
-        feedbackList.appendChild(frag);
       }
-
-      // 1. Показать кэш мгновенно, если он есть
-      try{
-        var cached = localStorage.getItem(CACHE_KEY);
-        if(cached){ renderFeedback(JSON.parse(cached)); }
-      }catch(e){}
-
-      async function loadFeedback(){
-        try{
-          var res=await sb.from('feedback').select('*').order('created_at',{ascending:false}).limit(50);
-          if(res.error) throw res.error;
-          renderFeedback(res.data);
-          try{ localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); }catch(e){}
-        }catch(err){
-          console.error(err);
-          // Если есть кэш — оставляем его на экране, не затираем ошибкой
-          if(!localStorage.getItem(CACHE_KEY)){
-            feedbackList.innerHTML='<p class="error">Failed to load feedback</p>';
-          }
-        }
-      }
-
-      feedbackForm.addEventListener('submit', async function(e){
-        e.preventDefault();
-        var name=document.getElementById('name').value.trim(), message=document.getElementById('message').value.trim();
-        if(!name||!message){ showError('Please fill in name and message'); return; }
-        if(audioBlob&&audioBlob.size<100){ showError('Audio too short or corrupted'); return; }
-        submitBtn.disabled=true;
-        var lang=getPreferredLang();
-        submitBtn.textContent=(translations[lang]||translations.en).sending||'Sending...';
-        try{
-          var audioUrl=null;
-          if(audioBlob){
-            var ext=audioBlob.type.includes('ogg')?'ogg':'webm';
-            var fileName='voice-'+Date.now()+'.'+ext;
-            var up=await sb.storage.from('voice-feedback').upload(fileName,audioBlob,{contentType:audioBlob.type,upsert:false});
-            if(up.error) throw up.error;
-            var pub=sb.storage.from('voice-feedback').getPublicUrl(fileName);
-            audioUrl=pub.data?.publicUrl||null;
-          }
-          var ins=await sb.from('feedback').insert([{contact:name,message:message,audio_url:audioUrl}]);
-          if(ins.error) throw ins.error;
-          feedbackForm.reset(); audioBlob=null; audioPreview.style.display='none';
-          previewPlayer.src=''; visualizerContainer.style.display='none';
-          recordStatus.textContent=''; recordBtn.disabled=false; stopBtn.disabled=true;
-          await loadFeedback();
-          submitBtn.textContent=(translations[lang]||translations.en).sent||'✅ Sent!';
-          setTimeout(function(){ submitBtn.textContent=(translations[getPreferredLang()]||translations.en).send||'Send Feedback'; },1700);
-        }catch(err){ console.error(err); showError('Failed to send - check console'); }
-        finally{ submitBtn.disabled=false; }
-      });
-
-      function showError(msg){ errorMessage.innerHTML='<div class="error">'+esc(msg)+'</div>'; setTimeout(function(){ errorMessage.innerHTML=''; },5000); }
-      function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
-
-      loadFeedback();
-      setInterval(loadFeedback, 10000);
+      animFrame = requestAnimationFrame(loop);
     }
-  </script>
 
-  <!-- ===== Ads & tracking: deferred, injected after main content is interactive ===== -->
-  <script>
-    (function(){
-      var bannersHTML_left = ''
-        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://salty.co.in/?utm_source=admitad&utm_medium=7_2522654_&utm_campaign=saltyaffiliate&click_id=16978671b122c79f3d24458a57235f65"><img width="300" height="250" src="salty.png" alt="Salty" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69febc97b1f51"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5d91926ebb862.png" alt="Go City / CPS" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://trackerpro.org/69febee6234c3"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/7b881d309a4fe.jpeg" alt="Coursera" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://gettracker.net/69fec05932a2e"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/20ffacca76ca9.png" alt="Fiverr" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://grfpr.com/g/zehsdnxunvf1d04a03ac245c490fd8/"><img width="300" height="250" src="boost_banner.png" alt="Boost Presence" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" rel="noopener" href="https://museos.arteyeducacion.org/en/resurgence-of-the-homeland"><img width="300" height="250" src="resurgence_banner.png" alt="Resurgence of the Homeland" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card tp-embed-slot" style="padding:8px;" id="tpEmbedLeftSlot"><div class="banner-label">Ad</div></div>';
-
-      var bannersHTML_right_extra = ''
-        + '<div class="banner-card"><a target="_blank" rel="nofollow" href="https://traffmonetizer.com/?aff=2123948"><img width="300" height="250" src="traffmonetizer-300x250.png" alt="TraffMonetizer" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69fec16db1783"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/a87b8e27a71d7.jpeg" alt="OKX" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://iz5.xyz/69fec16db1783"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/9d3ad20c15260.jpeg" alt="OKX" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card"><a target="_blank" href="https://i1b.xyz/69fee1c2b1360"><img width="300" height="250" src="https://indoleads.nyc3.digitaloceanspaces.com/uploads/offers/banners/5c91f90fbf94a.jpeg" alt="TicketNetwork" loading="lazy" decoding="async"/></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card" style="padding:0;overflow:hidden;"><a class="cvc-banner" id="cvcBannerRight" target="_blank" rel="nofollow" href="https://rkdro.com/g/xo8ehfl68mf1d04a03acafa41ba253/"><div class="cvc-slides"><img class="cvc-slide cvc-active" src="cvc_slide1.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide2.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide3.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide4.png" alt="CVC Corp" loading="lazy"/><img class="cvc-slide" src="cvc_slide5.png" alt="CVC Corp" loading="lazy"/></div><div class="cvc-dots" id="cvcDotsRight"><div class="cvc-dot cvc-dot-active"></div><div class="cvc-dot"></div><div class="cvc-dot"></div><div class="cvc-dot"></div><div class="cvc-dot"></div></div><div class="cvc-text-overlay"><div class="cvc-title">CVC Corp</div><div class="cvc-sub">Viagens e Turismo &bull; Descubra o mundo</div><div class="cvc-cta">Reservar agora →</div></div></a><div class="banner-label">Ad</div></div>'
-        + '<div class="banner-card tp-embed-slot" style="padding:8px;" id="tpEmbedRightSlot"><div class="banner-label">Ad</div></div>';
-
-      function initCvc(bannerId, dotsId) {
-        var b = document.getElementById(bannerId); if(!b) return;
-        var slides = b.querySelectorAll('.cvc-slide');
-        var dotsHolder = document.getElementById(dotsId);
-        var dots = dotsHolder ? dotsHolder.querySelectorAll('.cvc-dot') : [];
-        if(slides.length < 2) return;
-        var cur = 0;
-        setInterval(function(){
-          slides[cur].classList.remove('cvc-active');
-          if(dots[cur]) dots[cur].classList.remove('cvc-dot-active');
-          cur = (cur+1) % slides.length;
-          slides[cur].classList.add('cvc-active');
-          if(dots[cur]) dots[cur].classList.add('cvc-dot-active');
-        }, 2500);
+    function startReveal(x, y, num) {
+      originX = x; originY = y;
+      isPressed = true;
+      const m = serviceMedia[num];
+      if (m.type === 'video') {
+        currentImg = null;
+        currentVideo = vidCache[num];
+        currentVideo.play().catch(() => {});
+      } else {
+        currentVideo = null;
+        currentImg = imgCache[num];
       }
+      overlay.style.opacity = '1';
+      clearInterval(growTimer);
+      growTimer = setInterval(() => {
+        if (isPressed) currentRadius = Math.min(currentRadius + GROW_PX, MAX_RADIUS);
+      }, 16);
+      if (!animFrame) animFrame = requestAnimationFrame(loop);
+    }
 
-      function loadTpScript(slotId, query){
-        var slot = document.getElementById(slotId);
-        if(!slot) return;
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://tpemb.com/content?' + query;
-        s.charset = 'utf-8';
-        slot.appendChild(s);
-      }
+    function stopReveal() {
+      isPressed = false;
+      clearInterval(growTimer);
+    }
 
-      function injectBanners(){
-        var isMobile = window.matchMedia('(max-width:1100px)').matches;
-        if(isMobile){
-          var mobileBanners = document.getElementById('mobileBanners');
-          if(mobileBanners){
-            // mobile gets google review (already shown above container) + ad set, lighter list
-            mobileBanners.innerHTML = bannersHTML_left + bannersHTML_right_extra;
-            loadTpScript('tpEmbedLeftSlot', 'trs=527087&shmarker=726649.feedback&locale=en&limit=3&pages=1&powered_by=true&width=100&horizontal=true&lead_text=%22true%22&topbar=false&disable_logo=false&transparent=true&no_borders=false&show_top=true&all_btn=true&promo_id=1786&campaign_id=21');
-            initCvc('cvcBannerRight','cvcDotsRight');
-          }
-        } else {
-          var left = document.getElementById('bannerLeft');
-          var right = document.getElementById('bannerRight');
-          if(left) left.insertAdjacentHTML('beforeend', bannersHTML_left);
-          if(right) right.insertAdjacentHTML('beforeend', bannersHTML_right_extra);
-          loadTpScript('tpEmbedLeftSlot', 'trs=527087&shmarker=726649.feedback&locale=en&width=100&powered_by=true&campaign_id=86&promo_id=2110');
-          loadTpScript('tpEmbedRightSlot', 'trs=527087&shmarker=726649.feedback&locale=en&limit=3&pages=1&powered_by=true&width=100&horizontal=true&lead_text=%22true%22&topbar=false&disable_logo=false&transparent=true&no_borders=false&show_top=true&all_btn=true&promo_id=1786&campaign_id=21');
-          initCvc('cvcBannerRight','cvcDotsRight');
-          setupStickyBanners();
-        }
-      }
-
-      function setupStickyBanners(){
-        var bannerLeft = document.getElementById('bannerLeft');
-        var bannerRight = document.getElementById('bannerRight');
-        var feedbackListEl = document.getElementById('feedbackList');
-        var shown = false, stuck = false;
-
-        function stickToPage() {
-          if (stuck) return;
-          stuck = true;
-          var rL = bannerLeft.getBoundingClientRect();
-          var rR = bannerRight.getBoundingClientRect();
-          bannerLeft.classList.remove('sliding'); bannerLeft.classList.add('stuck');
-          bannerLeft.style.top  = (rL.top + window.scrollY) + 'px';
-          bannerLeft.style.left = rL.left + 'px';
-          bannerRight.classList.remove('sliding'); bannerRight.classList.add('stuck');
-          bannerRight.style.top  = (rR.top + window.scrollY) + 'px';
-          bannerRight.style.left = rR.left + 'px';
-        }
-        function showBanners() {
-          if (shown) return;
-          shown = true;
-          bannerLeft.classList.add('sliding');
-          bannerRight.classList.add('sliding');
-          setTimeout(stickToPage, 2700);
-        }
-        function check() {
-          if (shown) return;
-          var rect = feedbackListEl.getBoundingClientRect();
-          if (rect.bottom <= window.innerHeight + 50) showBanners();
-        }
-        // Триггерим только на реальный скролл пользователя — не сразу при вставке баннеров в DOM.
-        // Небольшая задержка перед навешиванием listener'а, чтобы insertAdjacentHTML не вызвал
-        // ложное срабатывание из-за изменения высоты страницы в этот же тик.
-        setTimeout(function(){
-          window.addEventListener('scroll', check, { passive: true });
-          check(); // на случай, если страница изначально открыта в самом низу (короткий экран)
-        }, 50);
-      }
-
-      // Ждём, пока браузер освободится (idle), но не позже 1.5с — отзывы и форма успевают отрендериться первыми
-      function scheduleAds(){
-        if('requestIdleCallback' in window){
-          requestIdleCallback(injectBanners, { timeout: 1500 });
-        } else {
-          setTimeout(injectBanners, 1200);
-        }
-      }
-      if(document.readyState === 'complete'){ scheduleAds(); }
-      else{ window.addEventListener('load', scheduleAds); }
-    })();
-  </script>
-
-  <!-- Background tracking pixel — deferred, не блокирует контент -->
-  <script>
-    window.addEventListener('load', function(){
-      var s = document.createElement('script');
-      s.src = 'https://www.anrdoezrs.net/am/101740082/include/joined/impressions/page/am.js';
-      s.async = true;
-      document.body.appendChild(s);
+    document.querySelectorAll('.feature-card[data-service]').forEach(card => {
+      const n = parseInt(card.dataset.service);
+      card.addEventListener('mousedown', e => startReveal(e.clientX, e.clientY, n));
+      card.addEventListener('touchstart', e => {
+        e.preventDefault();
+        const t = e.touches[0];
+        startReveal(t.clientX, t.clientY, n);
+      }, { passive: false });
     });
-    var NETWORK = "https://app.indoleads.com";
-    var API_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwcC5pbmRvbGVhZHMuY29tL2FwaS9nZXRfYXBpX3Rva2VuIiwiaWF0IjoxNzc3Nzk0MDg0LCJleHAiOjIwOTMxNTQwODQsIm5iZiI6MTc3Nzc5NDA4NCwianRpIjoiV2llUlFHQzlBaGt3d2ZOdCIsInN1YiI6IjY5ZWY1YTU0ZjMwODgxYjU4YTc1NGVhZiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.uiUBOn-FML0E50u5l77IEf7hA0KCwFYFgSyC8JKS0tU";
+
+    document.addEventListener('mouseup', () => { if (isPressed) stopReveal(); });
+    document.addEventListener('mouseleave', () => { if (isPressed) stopReveal(); });
+    document.addEventListener('touchend', () => { if (isPressed) stopReveal(); });
+    document.addEventListener('touchcancel', () => { if (isPressed) stopReveal(); });
+  })();
   </script>
+
+  <section id="contact" class="contact">
+    <div class="contact-overlay" id="contactOverlay">
+      <div class="cookie-banner-contact">
+        <button class="cookie-close" id="declineCookies" title="Отклонить">&times;</button>
+        <p data-translate="cookie_text">If you accidentally landed on this site — do not accept analytical cookies.</p>
+        <button class="cookie-accept" id="acceptCookies" data-translate="cookie_accept">Accept</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="contact-content">
+        <div class="contact-info">
+          <h2 data-translate="contact_title">Contact us</h2>
+          <p data-translate="contact_subtitle">Have questions? Our team is ready to help with any translation request.</p>
+          <div class="contact-details">
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <div>
+                <h4 data-translate="contact_email">Email</h4>
+                <p><a href="mailto:mailtomorrow@yahoo.com">mailtomorrow@yahoo.com</a><br><a href="mailto:info@internationals.pro">info@internationals.pro</a></p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fab fa-whatsapp"></i>
+              <div>
+                <h4 data-translate="contact_whatsapp">WhatsApp and phone number</h4>
+                <p><a href="https://wa.me/5352674658" target="_blank" rel="noopener">+53 52674658 Madeline (español, русский)</a><br><a href="https://wa.me/201003187199" target="_blank" rel="noopener">+20 1003187199 Anton (français, العربية)</a><br><a href="https://wa.me/905455153295" target="_blank" rel="noopener">+90 545 515 32 95 Kenan (Türkçe, русский)</a><br><a href="https://wa.me/4916043300033" target="_blank" rel="noopener">+49 1604330033 Alexander (deutsch)</a><br><a href="https://wa.me/996551207410" target="_blank" rel="noopener">+996 551207410 Malik (中文, русский)</a><br><a href="https://wa.me/821057462463" target="_blank" rel="noopener">+82 1057462463 Donghyun Danny (한국어)</a><br><a href="https://wa.me/79991251025" target="_blank" rel="noopener">+7 9991251025 Artur</a></p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-qrcode"></i>
+              <div>
+                <h4>WeChat</h4>
+                <p><img id="wechatQR" src="assets/wechat-qr.jpg" loading="lazy" alt="WeChat QR" style="max-width:500px;height:auto;border-radius:8px;border:1px solid #e5e7eb;"></p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-video" style="font-size:1.5rem;"></i>
+              <div>
+                <h4 data-translate="contact_videocall">Video call</h4>
+                <p>
+                  <a href="https://meet.jit.si/InternationalsRoom883721" target="_blank" rel="noopener" class="jitsi-link">
+                    <span class="jitsi-icon-camera"><i class="fas fa-video"></i></span>
+                    <span class="jitsi-icon-phone"><i class="fas fa-phone"></i></span>
+                    <span data-translate="contact_videocall_label" style="font-weight:600;color:inherit;">Join video room</span>
+                  </a>
+                </p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <img src="assets/Clock.png" alt="Часы работы" style="width:100px;height:100px;margin-right:12px;vertical-align:middle;">
+              <div>
+                <h4 data-translate="contact_hours">Working hours</h4>
+                <p data-translate="contact_hours_text">Online 24/7</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form">
+          <form id="contactForm" enctype="multipart/form-data">
+            <div class="form-group"><input type="email" id="email" data-translate-placeholder="form_email" placeholder="Email" required></div>
+            <div class="form-group"><input type="text" id="subject" data-translate-placeholder="form_subject" placeholder="Subject" required></div>
+            <div class="form-group"><textarea id="message" data-translate-placeholder="form_message" placeholder="Your message" rows="5" required></textarea></div>
+            <div class="form-group"><input type="file" id="attachment" multiple></div>
+            <button type="submit" class="btn btn-primary btn-full" data-translate="form_submit">Send message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-flex">
+      <div class="footer-left">
+        <div class="footer-slogan">
+          <span data-translate="footer_slogan_1" style="color:#3b82f6;font-weight:700;font-size:1.1em;">Machine-level accuracy.</span>
+          <span data-translate="footer_slogan_2" style="color:#d4a017;font-weight:700;font-size:1.1em;"> Human-level meaning.</span>
+        </div>
+        <p data-translate="footer_desc">Professional translation services.</p>
+      </div>
+      <div class="footer-right">
+        <a href="feedback.html" target="feedback_tab" class="btn btn-primary btn-feedback" data-translate="feedback_btn">Feedback</a>
+        <a href="https://travel.internationals.pro" target="travel_tab" class="btn btn-primary btn-feedback" title="Travel"><i class="fas fa-plane"></i></a>
+        <a href="taxi.html" target="_blank" class="btn btn-primary btn-feedback" title="Taxi"><i class="fas fa-car"></i></a>
+        <div class="social-links">
+          <a href="https://youtube.com/@internationalspro" target="_blank" rel="noopener" title="YouTube"><img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube"></a>
+          <a href="https://www.linkedin.com/company/internationalspro/" target="_blank" rel="noopener" title="LinkedIn"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn"></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-partners" style="text-align:center;padding:25px 20px;">
+  <div style="font-size:2rem;font-weight:700;color:#e53935;margin-bottom:10px;">
+    Become a Partner Translator Worldwide
+  </div>
+
+  <div style="font-size:1.15rem;color:#e2e8f0;max-width:900px;margin:0 auto;line-height:1.6;">
+    If you are a certified language professional and your country, language, or specialization is not yet listed on our website, we invite you to apply for partnership.
+    <br><br>
+    <a href="partners.html" style="color:#d4a017;font-weight:700;text-decoration:none;">
+      Apply via our Partner Page →
+    </a>
+  </div>
+</div>
+<div class="footer-bottom">
+      <p>©Internationals' 2026 &nbsp;|&nbsp; <a id="privacyLink" href="assets/privacy_policy_en.html" target="privacy_tab" data-translate="footer_privacy">Privacy Policy</a></p>
+    </div>
+  </footer>
+
   <script>
-    window.addEventListener('load', function(){
-      var s = document.createElement('script');
-      s.src = '//static.indoleads.com/js/platform/url_transformer.min.js';
-      s.async = true;
-      document.body.appendChild(s);
+    const audio = document.getElementById('bgMusic');
+    const globe = document.getElementById('musicToggle');
+    const dropdown = document.getElementById('languageDropdown');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volumeFill = document.getElementById('volumeFill');
+    let canPlay = false;
+
+    volumeSlider.addEventListener('input', function() {
+      const volume = this.value / 100;
+      audio.volume = volume;
+      volumeFill.style.height = this.value + '%';
+      localStorage.setItem('musicVolume', volume);
     });
+
+    const savedVolume = localStorage.getItem('musicVolume');
+    if (savedVolume !== null) {
+      const volumePercent = Math.round(savedVolume * 100);
+      volumeSlider.value = volumePercent;
+      volumeFill.style.height = volumePercent + '%';
+      audio.volume = savedVolume;
+    } else {
+      volumeFill.style.height = '30%';
+    }
+
+    const volumeContainer = document.querySelector('.volume-slider-container');
+    volumeContainer.addEventListener('click', function(e) {
+      const rect = this.getBoundingClientRect();
+      const y = e.clientY - rect.top;
+      const percent = Math.max(0, Math.min(100, 100 - (y / rect.height * 100)));
+      volumeSlider.value = percent;
+      audio.volume = percent / 100;
+      volumeFill.style.height = percent + '%';
+      localStorage.setItem('musicVolume', percent / 100);
+    });
+
+    volumeContainer.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      const rect = this.getBoundingClientRect();
+      const touch = e.touches[0];
+      const y = touch.clientY - rect.top;
+      const percent = Math.max(0, Math.min(100, 100 - (y / rect.height * 100)));
+      volumeSlider.value = percent;
+      audio.volume = percent / 100;
+      volumeFill.style.height = percent + '%';
+      localStorage.setItem('musicVolume', percent / 100);
+    });
+
+    document.body.addEventListener('click', () => {
+      if (canPlay) return;
+      canPlay = true;
+      audio.src = 'Calli.mp3';
+      audio.volume = volumeSlider.value / 100;
+      audio.play().catch(() => {});
+    }, { once: true });
+
+    globe.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', e => {
+      if (!dropdown.contains(e.target) && e.target !== globe) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    const translations = {
+      ru: {
+        nav_home:"Для партнёров",nav_services:"Услуги",nav_contact:"Связаться с нами",
+        hero_title_1:"Профессиональный",hero_title_2:"онлайн-переводчик",
+        hero_subtitle:"Быстрые и точные переводы документов, видео и веб-страниц.",
+        services_title:"Почему выбирают нас",services_subtitle:"Передовые технологии и международная команда специалистов",
+        service_1_title:"Мгновенный перевод",service_1_desc:"Устные переводы по видеосвязи или на месте, письменные переводы любых текстов",
+        service_2_title:"Безопасность",service_2_desc:"Ваши данные защищены современными протоколами шифрования",
+        service_4_title:"Перевод документов",service_4_desc:"Работаем с любыми форматами файлов",
+        service_5_title:"Локализация сайтов и видео",service_5_desc:"Создание сайта и адаптация контента",
+        service_6_title:"Персональный менеджер",service_6_desc:"Опишите вашу задачу — предложим решение",
+        service_7_title:"Доставка документов",service_7_desc:"Доставка переведённых документов на электронную почту или по выбранному Вами адресу",
+        contact_title:"Связаться с нами",contact_subtitle:"Есть вопросы? Наша команда готова помочь с любым запросом на перевод.",
+        contact_email:"Email",contact_whatsapp:"WhatsApp и телефон",
+        contact_videocall:"Видеозвонок",contact_videocall_label:"Подключиться к видеоконференции",
+        contact_hours:"Часы работы",contact_hours_text:"Онлайн 24/7",
+        form_email:"Email",form_subject:"Тема",form_message:"Ваше сообщение",form_submit:"Отправить сообщение",
+        footer_slogan_1:"Точность уровня машины.",footer_slogan_2:" Смысл уровня человека.",
+        footer_desc:"Профессиональные услуги перевода.",
+        feedback_btn:"Отзывы",travel_btn:"Путешествия",cookie_text:"Если вы случайно зашли на этот сайт — не принимайте аналитические куки.",
+        cookie_accept:"Принять",footer_privacy:"Политика конфиденциальности"
+      },
+      en: {
+        nav_home:"For Partners",nav_services:"Services",nav_contact:"Contact us",
+        hero_title_1:"Professional",hero_title_2:"online translator",
+        hero_subtitle:"Fast and accurate translations of documents, video and web pages.",
+        services_title:"Why choose us",services_subtitle:"Advanced technologies and international team of experts",
+        service_1_title:"Instant translation",service_1_desc:"Verbal interpretation via video call or on-site, written translation of any texts",
+        service_2_title:"Security",service_2_desc:"Your data is protected with modern encryption protocols",
+        service_4_title:"Document translation",service_4_desc:"We work with any file format",
+        service_5_title:"Website and video localization",service_5_desc:"Website creation and content adaptation",
+        service_6_title:"Personal manager",service_6_desc:"Describe your task — we will find the solution",
+        service_7_title:"Document delivery",service_7_desc:"Delivery of translated documents by email or to your chosen address",
+        contact_title:"Contact us",contact_subtitle:"Have questions? Our team is ready to help with any translation request.",
+        contact_email:"Email",contact_whatsapp:"WhatsApp and phone number",
+        contact_videocall:"Video call",contact_videocall_label:"Join video conference room",
+        contact_hours:"Working hours",contact_hours_text:"Online 24/7",
+        form_email:"Email",form_subject:"Subject",form_message:"Your message",form_submit:"Send message",
+        footer_slogan_1:"Machine-level accuracy.",footer_slogan_2:" Human-level meaning.",
+        footer_desc:"Professional translation services.",
+        feedback_btn:"Feedback",travel_btn:"Travel",cookie_text:"If you accidentally landed on this site — do not accept analytical cookies.",
+        cookie_accept:"Accept",footer_privacy:"Privacy Policy"
+      },
+      de: {
+        nav_home:"Für Partner",nav_services:"Dienstleistungen",nav_contact:"Kontakt",
+        hero_title_1:"Professioneller",hero_title_2:"Online-Übersetzer",
+        hero_subtitle:"Schnelle und genaue Übersetzungen von Dokumenten, Videos und Webseiten.",
+        services_title:"Warum uns wählen",services_subtitle:"Spitzentechnologien und internationales Team von Experten",
+        service_1_title:"Sofortübersetzung",service_1_desc:"Dolmetschen per Videoschalte oder vor Ort, schriftliche Übersetzung jeglicher Texte",
+        service_2_title:"Sicherheit",service_2_desc:"Ihre Daten sind durch moderne Verschlüsselungsprotokolle geschützt",
+        service_4_title:"Dokumentenübersetzung",service_4_desc:"Wir arbeiten mit jedem Dateiformat",
+        service_5_title:"Website- und Video-Lokalisierung",service_5_desc:"Website-Erstellung und Inhaltsanpassung",
+        service_6_title:"Persönlicher Manager",service_6_desc:"Beschreiben Sie Ihre Aufgabe — wir finden die Lösung",
+        service_7_title:"Dokumentenlieferung",service_7_desc:"Lieferung übersetzter Dokumente per E-Mail oder an Ihre gewählte Adresse",
+        contact_title:"Kontaktieren Sie uns",contact_subtitle:"Haben Sie Fragen? Unser Team ist bereit, bei jeder Übersetzungsanfrage zu helfen.",
+        contact_email:"E-Mail",contact_whatsapp:"WhatsApp und Telefonnummer",
+        contact_videocall:"Videoanruf",contact_videocall_label:"Videokonferenzraum betreten",
+        contact_hours:"Arbeitszeiten",contact_hours_text:"Online 24/7",
+        form_email:"E-Mail",form_subject:"Betreff",form_message:"Ihre Nachricht",form_submit:"Nachricht senden",
+        footer_slogan_1:"Maschinengenaue Präzision.",footer_slogan_2:" Menschliche Bedeutung.",
+        footer_desc:"Professionelle Übersetzungsdienste.",
+        feedback_btn:"Rückmeldung",travel_btn:"Reisen",cookie_text:"Falls Sie versehentlich auf diese Website gelangt sind — akzeptieren Sie keine analytischen Cookies.",
+        cookie_accept:"Akzeptieren",footer_privacy:"Datenschutzrichtlinie"
+      },
+      es: {
+        nav_home:"Para socios",nav_services:"Servicios",nav_contact:"Contacto",
+        hero_title_1:"Traductor",hero_title_2:"en línea profesional",
+        hero_subtitle:"Traducciones rápidas y precisas de documentos, videos y páginas web.",
+        services_title:"Por qué elegirnos",services_subtitle:"Tecnologías de vanguardia y un equipo internacional de especialistas",
+        service_1_title:"Traducción instantánea",service_1_desc:"Interpretación por videollamada o en persona, traducción escrita de cualquier texto",
+        service_2_title:"Seguridad",service_2_desc:"Sus datos están protegidos con protocolos de cifrado modernos",
+        service_4_title:"Traducción de documentos",service_4_desc:"Trabajamos con cualquier formato de archivo",
+        service_5_title:"Localización de sitios web y videos",service_5_desc:"Creación de sitios web y adaptación de contenido",
+        service_6_title:"Gerente personal",service_6_desc:"Describa su tarea — encontraremos la solución",
+        service_7_title:"Entrega de documentos",service_7_desc:"Entrega de documentos traducidos por correo electrónico o a la dirección que elija",
+        contact_title:"Contáctenos",contact_subtitle:"¿Tiene preguntas? Nuestro equipo está listo para ayudar con cualquier solicitud de traducción.",
+        contact_email:"Correo electrónico",contact_whatsapp:"WhatsApp y teléfono",
+        contact_videocall:"Videollamada",contact_videocall_label:"Unirse a la sala de videoconferencia",
+        contact_hours:"Horario laboral",contact_hours_text:"Online 24/7",
+        form_email:"Correo electrónico",form_subject:"Asunto",form_message:"Su mensaje",form_submit:"Enviar mensaje",
+        footer_slogan_1:"Precisión a nivel de máquina.",footer_slogan_2:" Significado a nivel humano.",
+        footer_desc:"Servicios profesionales de traducción.",
+        feedback_btn:"Reseñas",travel_btn:"Viajes",cookie_text:"Si has llegado a este sitio por accidente — no aceptes las cookies analíticas.",
+        cookie_accept:"Aceptar",footer_privacy:"Política de privacidad"
+      },
+      pt: {
+        nav_home:"Para parceiros",nav_services:"Serviços",nav_contact:"Contato",
+        hero_title_1:"Tradutor",hero_title_2:"online profissional",
+        hero_subtitle:"Traduções rápidas e precisas de documentos, vídeos e páginas da web.",
+        services_title:"Por que nos escolher",services_subtitle:"Tecnologias de ponta e uma equipe internacional de especialistas",
+        service_1_title:"Tradução instantânea",service_1_desc:"Interpretação por videochamada ou presencial, tradução escrita de qualquer texto",
+        service_2_title:"Segurança",service_2_desc:"Seus dados estão protegidos com protocolos modernos de criptografia",
+        service_4_title:"Tradução de documentos",service_4_desc:"Trabalhamos com qualquer formato de arquivo",
+        service_5_title:"Localização de sites e vídeos",service_5_desc:"Criação de sites e adaptação de conteúdo",
+        service_6_title:"Gerente pessoal",service_6_desc:"Descreva sua tarefa — encontraremos a solução",
+        service_7_title:"Entrega de documentos",service_7_desc:"Entrega de documentos traduzidos por e-mail ou no endereço escolhido por você",
+        contact_title:"Contate-nos",contact_subtitle:"Tem perguntas? Nossa equipe está pronta para ajudar em qualquer solicitação de tradução.",
+        contact_email:"Email",contact_whatsapp:"WhatsApp e telefone",
+        contact_videocall:"Videochamada",contact_videocall_label:"Entrar na sala de videoconferência",
+        contact_hours:"Horário de funcionamento",contact_hours_text:"Online 24/7",
+        form_email:"Email",form_subject:"Assunto",form_message:"Sua mensagem",form_submit:"Enviar mensagem",
+        footer_slogan_1:"Precisão ao nível de máquina.",footer_slogan_2:" Significado ao nível humano.",
+        footer_desc:"Serviços profissionais de tradução.",
+        feedback_btn:"Avaliações",travel_btn:"Viagens",cookie_text:"Se você chegou a este site por engano — não aceite os cookies analíticos.",
+        cookie_accept:"Aceitar",footer_privacy:"Política de privacidade"
+      },
+      zh: {
+        nav_home:"合作伙伴",nav_services:"服务",nav_contact:"联系我们",
+        hero_title_1:"专业",hero_title_2:"在线翻译",
+        hero_subtitle:"快速准确的文档、视频和网页翻译。",
+        services_title:"为什么选择我们",services_subtitle:"先进技术和国际专家团队",
+        service_1_title:"即时翻译",service_1_desc:"视频通话或现场口译，任何文本的笔译",
+        service_2_title:"安全",service_2_desc:"您的数据受现代加密协议保护",
+        service_4_title:"文档翻译",service_4_desc:"支持任何文件格式",
+        service_5_title:"网站和视频本地化",service_5_desc:"网站创建与内容本地化",
+        service_6_title:"专属经理",service_6_desc:"描述您的任务——我们将提供解决方案",
+        service_7_title:"文件送达",service_7_desc:"将翻译文件发送至您的电子邮箱或指定地址",
+        contact_title:"联系我们",contact_subtitle:"有问题吗？我们的团队随时准备提供帮助。",
+        contact_email:"电子邮件",contact_whatsapp:"WhatsApp和电话",
+        contact_videocall:"视频通话",contact_videocall_label:"加入视频会议室",
+        contact_hours:"工作时间",contact_hours_text:"在线24/7",
+        form_email:"电子邮件",form_subject:"主题",form_message:"您的信息",form_submit:"发送信息",
+        footer_slogan_1:"机器级精度。",footer_slogan_2:" 人类级理解。",
+        footer_desc:"专业翻译服务。",
+        feedback_btn:"反馈",travel_btn:"旅行",cookie_text:"如果您是无意中进入本网站——请不要接受分析性 Cookie",
+        cookie_accept:"接受",footer_privacy:"隐私政策"
+      },
+      ar: {
+        nav_home:"للشركاء",nav_services:"الخدمات",nav_contact:"اتصل بنا",
+        hero_title_1:"مترجم",hero_title_2:"احترافي على الإنترنت",
+        hero_subtitle:"ترجمات سريعة ودقيقة للمستندات والفيديوهات وصفحات الويب.",
+        services_title:"لماذا تختارنا",services_subtitle:"تقنيات متطورة وفريق دولي من المتخصصين",
+        service_1_title:"ترجمة فورية",service_1_desc:"ترجمة شفهية عبر مكالمة فيديو أو في الموقع، وترجمة كتابية لأي نصوص",
+        service_2_title:"الأمان",service_2_desc:"بياناتك محمية باستخدام بروتوكولات تشفير حديثة",
+        service_4_title:"ترجمة المستندات",service_4_desc:"نعمل مع أي تنسيق ملف",
+        service_5_title:"توطين المواقع والفيديو",service_5_desc:"إنشاء المواقع وتكييف المحتوى",
+        service_6_title:"مدير شخصي",service_6_desc:"صف مهمتك — سنجد الحل",
+        service_7_title:"توصيل المستندات",service_7_desc:"توصيل المستندات المترجمة إلى بريدك الإلكتروني أو عنوانك المختار",
+        contact_title:"اتصل بنا",contact_subtitle:"هل لديك أسئلة؟ فريقنا جاهز لمساعدتك في أي طلب ترجمة.",
+        contact_email:"البريد الإلكتروني",contact_whatsapp:"واتساب والهاتف",
+        contact_videocall:"مكالمة فيديو",contact_videocall_label:"انضم إلى غرفة مؤتمرات الفيديو",
+        contact_hours:"ساعات العمل",contact_hours_text:"متاح 24/7",
+        form_email:"البريد الإلكتروني",form_subject:"الموضوع",form_message:"رسالتك",form_submit:"إرسال الرسالة",
+        footer_slogan_1:"دقة بمستوى الآلة.",footer_slogan_2:" معنى بمستوى الإنسان.",
+        footer_desc:"خدمات ترجمة احترافية.",
+        feedback_btn:"المراجعات",travel_btn:"السفر",cookie_text:"إذا وصلت إلى هذا الموقع بالصدفة — لا تقبل ملفات تعريف الارتباط التحليلية.",
+        cookie_accept:"قبول",footer_privacy:"سياسة الخصوصية"
+      }
+    };
+
+    const supportedLangs = ['ru','en','de','es','pt','zh','ar'];
+    let userLang = navigator.language || navigator.userLanguage;
+    userLang = userLang.split('-')[0];
+    let currentLang = localStorage.getItem('language') || (supportedLangs.includes(userLang) ? userLang : 'en');
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('language', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+      document.querySelectorAll('[data-translate]').forEach(el => {
+        const key = el.dataset.translate;
+        if (translations[lang]?.[key]) el.textContent = translations[lang][key];
+      });
+      document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+        const key = el.dataset.translatePlaceholder;
+        if (translations[lang]?.[key]) el.placeholder = translations[lang][key];
+      });
+      document.querySelectorAll('.language-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.lang === lang);
+      });
+      document.getElementById('privacyLink').href = 'assets/privacy_policy_' + lang + '.html';
+      dropdown.classList.remove('show');
+    }
+
+    document.querySelectorAll('.language-option').forEach(opt => {
+      opt.addEventListener('click', e => { e.stopPropagation(); setLanguage(opt.dataset.lang); });
+    });
+    setLanguage(currentLang);
+
+    const contactOverlay = document.getElementById('contactOverlay');
+    const acceptBtn = document.getElementById('acceptCookies');
+    const declineBtn = document.getElementById('declineCookies');
+
+    function checkCookieConsent() {
+      const consent = localStorage.getItem('cookieConsent');
+      if (consent) { contactOverlay.classList.remove('show'); }
+      else { contactOverlay.classList.add('show'); }
+    }
+
+    acceptBtn.addEventListener('click', () => {
+      localStorage.setItem('cookieConsent', 'accepted');
+      contactOverlay.classList.remove('show');
+      loadAnalytics();
+    });
+
+    declineBtn.addEventListener('click', () => {
+      localStorage.setItem('cookieConsent', 'declined');
+      contactOverlay.classList.remove('show');
+    });
+
+    checkCookieConsent();
   </script>
+
+  <script src="script.js?v=6"></script>
 </body>
 </html>
