@@ -141,20 +141,18 @@
     .tp-embed-slot{
       max-height: 2000px;
       overflow: visible;
-      width: 140px !important;
-      max-width: 140px !important;
-      margin: 0 auto;
+      width: 140px;
+      transform: scale(2.1);
+      transform-origin: center center;
+      margin: 40px auto;
     }
-    /* Карточка-обёртка вокруг tp-embed-slot должна визуально занимать
-       такую же площадь, как обычные баннеры 300x250, даже если сам
-       виджет внутри узкий (140px) — увеличиваем именно .banner-card,
-       а не сам виджет, чтобы не ломать его текст. */
     .banner-card:has(.tp-embed-slot){
       min-height: 250px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
     .tp-embed-slot > div,
     .tp-embed-slot iframe{
