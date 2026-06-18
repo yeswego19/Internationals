@@ -24,7 +24,7 @@ function slugify(text) {
 
 async function adaptArticleWithAI(title, content) {
   const url = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent';
-  const prompt = `You are a professional marketer. Summarize this news article in English for expats. Return STRICTLY a raw JSON object: {"title": "headline", "summary": "3 sentences", "meta_description": "seo", "keywords": "tags"}\n\nTitle: ${title}\nContent: ${content}`;
+  const prompt = `You are a professional marketer. Summarize this news article in English for expats. Return STRICTLY a raw JSON object: {"title": "headline", "summary": "3 sentences", "meta_description": "seo"}\n\nTitle: ${title}\nContent: ${content}`;
 
   const response = await fetch(`${url}?key=${geminiApiKey}`, {
     method: 'POST',
@@ -50,7 +50,7 @@ async function main() {
   for (const url of RSS_FEEDS) {
     console.log(`Parsing feed: ${url}`);
     const feed = await parser.parseURL(url);
-    const items = feed.items.slice(0, 2); // Берем по 2 новости для теста
+    const items = feed.items.slice(0, 2); 
     
     for (const item of items) {
       const slug = slugify(item.title || '');
@@ -76,13 +76,13 @@ async function main() {
       
       if (aiResult) {
         console.log(`Inserting into Supabase: ${aiResult.title}`);
+        
+        // Вставляем строго те поля, которые есть на твоем скриншоте базы данных
         const { error: insertError } = await supabase.from('articles').insert([{
           slug: slug,
           title: aiResult.title,
           summary: aiResult.summary,
-          meta_description: aiResult.meta_description,
-          keywords: aiResult.keywords,
-          source_url: item.link
+          meta_description: aiResult.meta_description
         }]);
         
         if (insertError) {
