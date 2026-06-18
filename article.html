@@ -67,7 +67,6 @@
             width: 70%;
             height: 70%;
             object-fit: contain;
-            filter: brightness(0) invert(1);
         }
 
         .globe-btn:hover {
@@ -183,9 +182,7 @@
 
     <!-- ===== КНОПКИ В ПРАВОМ ВЕРХНЕМ УГЛУ ===== -->
     <div class="top-buttons">
-        <!-- КРАСНАЯ СТРЕЛКА (закрытие) -->
         <button class="close-btn" onclick="closeTab()">←</button>
-        <!-- ГЛОБУС (картинка из assets) -->
         <button class="globe-btn" id="globeBtn" title="Change language">
             <img src="assets/globe.png" alt="Language">
         </button>
@@ -209,12 +206,10 @@
     <p id="article-source" class="source"></p>
 
     <script>
-        // ===== ФУНКЦИЯ ЗАКРЫТИЯ ВКЛАДКИ =====
         function closeTab() {
             window.close();
         }
 
-        // ===== ГЛОБУС И ЯЗЫКИ =====
         const globeBtn = document.getElementById('globeBtn');
         const dropdown = document.getElementById('languageDropdown');
 
@@ -238,7 +233,6 @@
             });
         });
 
-        // ===== ПЕРЕВОДЫ ДЛЯ СТРАНИЦЫ СТАТЬИ =====
         const translations = {
             en: { loading: "Loading...", not_found: "Article not found", source: "Original source:" },
             ru: { loading: "Загрузка...", not_found: "Статья не найдена", source: "Оригинальный источник:" },
@@ -262,7 +256,6 @@
             document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
         }
 
-        // ===== SUPABASE =====
         const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co";
         const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -320,7 +313,6 @@
             }
         }
 
-        // ===== ЗАГРУЗКА =====
         const savedLang = localStorage.getItem('blogLang');
         if (savedLang && translations[savedLang]) {
             currentLang = savedLang;
