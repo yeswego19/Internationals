@@ -73,8 +73,8 @@
     </style>
 </head>
 <body>
-    <!-- Красная стрелка назад (фиксированная) -->
-    <button class="close-btn" onclick="goBack()">←</button>
+    <!-- Красная стрелка назад - ЗАКРЫВАЕТ вкладку -->
+    <button class="close-btn" onclick="closeTab()">←</button>
 
     <h1 id="article-title">Loading...</h1>
     <div id="article-date" class="date"></div>
@@ -83,17 +83,9 @@
     <p id="article-source" class="source"></p>
 
     <script>
-        // Функция для возврата на блог с переключением фокуса
-        function goBack() {
-            if (window.opener) {
-                // Переключаем фокус на родительскую вкладку (blog.html)
-                window.opener.focus();
-                // Закрываем текущую вкладку
-                window.close();
-            } else {
-                // Если открыта в текущей вкладке - переходим на blog.html
-                window.location.href = "blog.html";
-            }
+        // Функция: просто закрыть вкладку
+        function closeTab() {
+            window.close();
         }
 
         // Конфигурация Supabase
