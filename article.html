@@ -12,12 +12,14 @@
         .back-link { display: inline-block; margin-bottom: 20px; color: #0066cc; text-decoration: none; }
         .date { color: #666; font-size: 0.9em; margin: -10px 0 20px 0; }
         .source { margin-top: 40px; font-size: 0.9em; border-top: 1px solid #eee; padding-top: 20px; }
+        .main-img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 25px; background-color: #f0f0f0; }
     </style>
 </head>
 <body>
     <a class="back-link" href="blog.html">← Back to all news</a>
     <h1 id="article-title">Loading...</h1>
     <div id="article-date" class="date"></div>
+    <div id="article-image-wrapper"></div> <!-- Место для картинки -->
     <div id="article-body"></div>
     <p id="article-source" class="source"></p>
 
@@ -27,7 +29,6 @@
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function loadArticle() {
-            // Извлекаем slug из адресной строки (например, ?slug=some-news-title)
             const urlParams = new URLSearchParams(window.location.search);
             const slug = urlParams.get('slug');
 
@@ -36,7 +37,6 @@
                 return;
             }
 
-            // Ищем в базе строку, где поле slug совпадает с тем, что в ссылке
             const { data: article, error } = await _supabase
                 .from('articles')
                 .select('*')
@@ -48,14 +48,18 @@
                 return;
             }
 
-            // Динамически прописываем SEO теги для поисковиков
             document.title = `${article.title} | Internationals.pro`;
             document.getElementById('meta-desc').setAttribute('content', article.meta_description || '');
             document.getElementById('meta-keys').setAttribute('content', article.keywords || '');
 
-            // Выводим данные на страницу
+            // Выводим данные и картинку на страницу статьи
             document.getElementById('article-title').innerText = article.title;
             document.getElementById('article-date').innerText = new Date(article.created_at).toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'});
+            
+            if (article.image_url) {
+                document.getElementById('article-image-wrapper').innerHTML = `<img src="${article.image_url}" class="main-img" alt="${article.title}">`;
+            }
+            
             document.getElementById('article-body').innerText = article.summary;
             
             if (article.source_url) {
