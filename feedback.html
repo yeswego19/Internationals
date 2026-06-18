@@ -132,18 +132,10 @@
     .banner-card img{ width:100% !important; height:auto !important; aspect-ratio: 300 / 250; object-fit:cover; border-radius:6px; display:block; margin:0 auto; background:rgba(255,255,255,0.05); }
     .banner-label{ font-size:10px; color:rgba(255,255,255,0.35); margin-top:6px; letter-spacing:.05em; text-transform:uppercase; }
 
-    /* Travelpayouts widget slot: виджет запрошен с параметром width=100 в URL,
-       то есть сам масштабирует свой логотип/текст под контейнер шириной ~100px.
-       Если дать ему растягиваться вместе с остальным баннером (а тот теперь
-       динамической ширины через clamp), логотип растягивается и становится
-       огромным и размытым. Поэтому фиксируем слоту собственную узкую ширину
-       и центрируем его внутри баннера. */
+    /* ===== ВИДЖЕТ TRAVELPAYOUTS - ШИРОКИЙ (взято из старого рабочего файла от 12 июня) ===== */
     .tp-embed-slot{
-      max-height: 2000px;
-      overflow: visible;
-      width: 140px !important;
-      max-width: 140px !important;
-      margin: 0 auto;
+      max-height: 420px;
+      overflow: hidden;
     }
     .tp-embed-slot > div,
     .tp-embed-slot iframe{
@@ -267,7 +259,7 @@
     window.addEventListener('load', function(){ document.body.classList.add('loaded'); });
   </script>
 
-  <!-- ===== Supabase: load with defer, init on script-load event (no polling) ===== -->
+  <!-- ===== Supabase: НОВЫЙ PUBLISHABLE KEY ===== -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer onload="window.__sbReady && window.__sbReady()"></script>
   <script>
     var SUPABASE_URL = 'https://mcgcijdnzduzyqbbjtkm.supabase.co';
@@ -283,16 +275,12 @@
         initApp();
       }
     };
-    // Несколько способов поймать момент, когда supabase-js готов —
-    // onload-атрибут не всегда срабатывает в мобильных браузерах при defer.
     document.addEventListener('DOMContentLoaded', function(){
       if (window.supabase) window.__sbReady();
     });
     window.addEventListener('load', function(){
       if (window.supabase) window.__sbReady();
     });
-    // Поллинг как последний рубеж — лёгкий, раз в 200мс, максимум 15 секунд
-    // (мобильный 4G slow может реально тормозить CDN дольше 4 секунд)
     (function pollSupabase(triesLeft){
       if (__sbInitDone) return;
       if (window.supabase) { window.__sbReady(); return; }
@@ -301,12 +289,11 @@
         return;
       }
       setTimeout(function(){ pollSupabase(triesLeft - 1); }, 200);
-    })(75); // 75 * 200мс = 15 секунд
+    })(75);
 
     function showLoadError(){
       var el = document.getElementById('feedbackList');
       if (!el) return;
-      // Если есть кэш — не затираем его, просто молча оставляем как есть
       var cached = null;
       try { cached = localStorage.getItem('cachedFeedbackV1'); } catch(e){}
       if (cached) return;
@@ -323,7 +310,6 @@
           canvas=document.getElementById('visualizer'), canvasCtx=canvas.getContext('2d'),
           volumeBar=document.getElementById('volumeBar'), recordStatus=document.getElementById('recordStatus');
       var mediaRecorder=null,audioChunks=[],audioBlob=null,audioContext=null,
-
           analyser=null,dataArray=null,animationId=null,recordTimer=null,stream=null;
 
       function drawWaveform(){
@@ -420,7 +406,6 @@
         feedbackList.appendChild(frag);
       }
 
-      // 1. Показать кэш мгновенно, если он есть
       try{
         var cached = localStorage.getItem(CACHE_KEY);
         if(cached){ renderFeedback(JSON.parse(cached)); }
@@ -434,7 +419,6 @@
           try{ localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); }catch(e){}
         }catch(err){
           console.error(err);
-          // Если есть кэш — оставляем его на экране, не затираем ошибкой
           if(!localStorage.getItem(CACHE_KEY)){
             feedbackList.innerHTML='<p class="error">Failed to load feedback</p>';
           }
@@ -530,7 +514,6 @@
         if(isMobile){
           var mobileBanners = document.getElementById('mobileBanners');
           if(mobileBanners){
-            // mobile gets google review (already shown above container) + ad set, lighter list
             mobileBanners.innerHTML = bannersHTML_left + bannersHTML_right_extra;
             loadTpScript('tpEmbedLeftSlot', 'trs=527087&shmarker=726649.feedback&locale=en&limit=3&pages=1&powered_by=true&width=100&horizontal=true&lead_text=%22true%22&topbar=false&disable_logo=false&transparent=true&no_borders=false&show_top=true&all_btn=true&promo_id=1786&campaign_id=21');
             initCvc('cvcBannerRight','cvcDotsRight');
@@ -577,16 +560,12 @@
           var rect = feedbackListEl.getBoundingClientRect();
           if (rect.bottom <= window.innerHeight + 50) showBanners();
         }
-        // Триггерим только на реальный скролл пользователя — не сразу при вставке баннеров в DOM.
-        // Небольшая задержка перед навешиванием listener'а, чтобы insertAdjacentHTML не вызвал
-        // ложное срабатывание из-за изменения высоты страницы в этот же тик.
         setTimeout(function(){
           window.addEventListener('scroll', check, { passive: true });
-          check(); // на случай, если страница изначально открыта в самом низу (короткий экран)
+          check();
         }, 50);
       }
 
-      // Ждём, пока браузер освободится (idle), но не позже 1.5с — отзывы и форма успевают отрендериться первыми
       function scheduleAds(){
         if('requestIdleCallback' in window){
           requestIdleCallback(injectBanners, { timeout: 1500 });
