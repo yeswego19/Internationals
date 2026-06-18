@@ -25,7 +25,6 @@ function slugify(text) {
 async function adaptArticleWithAI(title, content) {
   const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`;
   
-  // Просим ИИ подобрать ОДНО ключевое слово на английском для идеальной картинки
   const prompt = `You are a professional marketer. Summarize this news article in English for expats. 
 Your response MUST be a valid, parsable JSON object and NOTHING ELSE. Do not wrap it in \`\`\`json.
 JSON format:
@@ -33,7 +32,7 @@ JSON format:
   "title": "headline",
   "summary": "3 sentences summarizing the content",
   "meta_description": "seo description",
-  "image_keyword": "one clear specific english keyword for Unsplash image search that perfectly fits this article topic"
+  "image_url": "Provide a real, high-quality, direct Unsplash image URL that perfectly matches the topic. Use general Unsplash keywords if needed, for example: https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800 for cyber/hackers, https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800 for smartphones/tech, https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=800 for global politics/iran, or any valid clean Unsplash image source link matching the exact mood."
 }
 
 Title: ${title}
@@ -101,14 +100,10 @@ async function main() {
       }
       
       if (aiResult) {
-        // Формируем красивую ссылку на картинку на основе ключевого слова от ИИ
-        const keyword = encodeURIComponent(aiResult.image_keyword || 'news');
-        const imageUrl = `https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800`; // Заглушка по умолчанию
+        // Берем прямую ссылку, которую сгенерировал ИИ. Если там пусто, страхуемся базовой картинкой.
+        const finalImageUrl = aiResult.image_url || '[https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800](https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800)';
         
-        // Используем динамический источник картинок по ключевому слову
-        const dynamicImageUrl = `https://source.unsplash.com/featured/800x450/?${keyword}`;
-        
-        console.log(`Generated image topic: ${aiResult.image_keyword} -> URL: ${dynamicImageUrl}`);
+        console.log(`AI picked image URL: ${finalImageUrl}`);
         console.log(`Inserting into Supabase: ${aiResult.title}`);
         
         const { error: insertError } = await supabase.from('articles').insert([{
@@ -116,7 +111,7 @@ async function main() {
           title: aiResult.title,
           summary: aiResult.summary,
           meta_description: aiResult.meta_description,
-          image_url: dynamicImageUrl // Картинка теперь железно в тему!
+          image_url: finalImageUrl
         }]);
         
         if (insertError) {
