@@ -15,7 +15,6 @@
             color: #333;
         }
 
-        /* ===== КРАСНАЯ СТРЕЛКА ===== */
         .close-btn {
             position: fixed;
             top: 15px;
@@ -36,13 +35,13 @@
             transform: scale(1.1);
         }
 
-        /* ===== ГЛОБУС КАК НА INDEX.HTML (БОЛЬШОЙ, БЕЗ СИНЕГО ФОНА) ===== */
+        /* ===== ГЛОБУС - ОДИН РАЗМЕР ДЛЯ ВСЕХ ===== */
         .globe {
             position: fixed;
             top: 80px;
             right: 20px;
-            width: 64px;
-            height: 64px;
+            width: 68px;
+            height: 68px;
             cursor: pointer;
             z-index: 9999;
             transition: all 0.3s ease;
@@ -67,7 +66,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ===== */
         #languageDropdown {
             position: fixed;
             top: 155px;
@@ -119,7 +117,6 @@
             color: #1d4ed8;
         }
 
-        /* ===== СТИЛИ НОВОСТЕЙ ===== */
         article {
             margin-bottom: 40px;
             border-bottom: 1px solid #eee;
@@ -151,38 +148,16 @@
             margin-bottom: 15px;
             background-color: #f0f0f0;
         }
-
-        @media (max-width: 600px) {
-            .close-btn {
-                top: 10px;
-                right: 10px;
-                font-size: 40px;
-            }
-            .globe {
-                top: 65px;
-                right: 10px;
-                width: 50px;
-                height: 50px;
-            }
-            #languageDropdown {
-                top: 130px;
-                right: 10px;
-                min-width: 140px;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <!-- ===== КРАСНАЯ СТРЕЛКА ===== -->
     <button class="close-btn" onclick="closeTab()">←</button>
 
-    <!-- ===== ГЛОБУС (КАК НА INDEX.HTML - БОЛЬШОЙ, БЕЗ ФОНА) ===== -->
     <button class="globe" id="globeBtn" title="Change language">
         <img src="assets/globe.png" alt="Language">
     </button>
 
-    <!-- ===== ВЫПАДАЮЩЕЕ МЕНЮ ===== -->
     <div id="languageDropdown">
         <div class="language-option" data-lang="en">EN <span>English</span></div>
         <div class="language-option" data-lang="ru">RU <span>Русский</span></div>
