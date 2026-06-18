@@ -1,1 +1,29 @@
+name: Run News Parser
 
+on:
+  schedule:
+    # Запуск 3 раза в день: в 01:00, 09:00, 17:00 по UTC (06:00, 14:00, 22:00 по Перми / UTC+5)
+    - cron: '0 1,9,17 * * *'
+  workflow_dispatch: # Кнопка для ручного запуска в интерфейсе GitHub
+
+jobs:
+  parse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run parser script
+        env:
+          SUPABASE_URL: "https://internationals.supabase.co"
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/news-parser.js
