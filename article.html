@@ -125,6 +125,9 @@
             window.close();
         }
 
+        let isTranslated = false;
+        let targetLang = null;
+
         const globeBtn = document.getElementById('globeBtn');
 
         globeBtn.addEventListener('click', function() {
@@ -140,11 +143,12 @@
                 return;
             }
 
+            targetLang = langCode;
             localStorage.setItem('translateLang', langCode);
 
             showToast('🔄 Translating to ' + getLangName(langCode) + '...');
 
-            if (typeof google !== 'undefined' && google.translate) {
+            if (isTranslated && typeof google !== 'undefined' && google.translate) {
                 const select = document.querySelector('.goog-te-combo');
                 if (select) {
                     select.value = langCode;
@@ -154,54 +158,57 @@
                 }
             }
 
-            const script = document.createElement('script');
-            script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-            script.async = true;
-            document.head.appendChild(script);
+            if (typeof google === 'undefined' || !google.translate) {
+                const script = document.createElement('script');
+                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                script.async = true;
+                document.head.appendChild(script);
 
-            window.googleTranslateElementInit = function() {
-                new google.translate.TranslateElement({
-                    pageLanguage: 'en',
-                    includedLanguages: 'en,ru,de,es,pt,zh,ar,fr,it,ja,ko,tr,uk,pl,nl',
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                    autoDisplay: false
-                }, 'google_translate_element');
+                window.googleTranslateElementInit = function() {
+                    new google.translate.TranslateElement({
+                        pageLanguage: 'en',
+                        includedLanguages: 'en,ru,de,es,pt,zh,ar,fr,it,ja,ko,tr,uk,pl,nl',
+                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                        autoDisplay: false
+                    }, 'google_translate_element');
 
+                    setTimeout(function() {
+                        doTranslate(langCode);
+                    }, 1500);
+                };
+
+                if (!document.getElementById('google_translate_element')) {
+                    const container = document.createElement('div');
+                    container.id = 'google_translate_element';
+                    container.style.display = 'none';
+                    document.body.appendChild(container);
+                }
+            } else {
+                doTranslate(langCode);
+            }
+        }
+
+        function doTranslate(langCode) {
+            const select = document.querySelector('.goog-te-combo');
+            if (select) {
+                select.value = langCode;
+                select.dispatchEvent(new Event('change'));
+                isTranslated = true;
+                showToast('✅ Translated to ' + getLangName(langCode));
+            } else {
                 setTimeout(function() {
-                    const select = document.querySelector('.goog-te-combo');
-                    if (select) {
-                        select.value = langCode;
-                        select.dispatchEvent(new Event('change'));
-                        showToast('✅ Translated to ' + getLangName(langCode));
-                    }
-                }, 1500);
-            };
-
-            if (!document.getElementById('google_translate_element')) {
-                const container = document.createElement('div');
-                container.id = 'google_translate_element';
-                container.style.display = 'none';
-                document.body.appendChild(container);
+                    doTranslate(langCode);
+                }, 1000);
             }
         }
 
         function getLangName(lang) {
             const names = {
-                'en': 'English',
-                'ru': 'Русский',
-                'de': 'Deutsch',
-                'es': 'Español',
-                'pt': 'Português',
-                'zh': '中文',
-                'ar': 'العربية',
-                'fr': 'Français',
-                'it': 'Italiano',
-                'ja': '日本語',
-                'ko': '한국어',
-                'tr': 'Türkçe',
-                'uk': 'Українська',
-                'pl': 'Polski',
-                'nl': 'Nederlands'
+                'en': 'English', 'ru': 'Русский', 'de': 'Deutsch',
+                'es': 'Español', 'pt': 'Português', 'zh': '中文',
+                'ar': 'العربية', 'fr': 'Français', 'it': 'Italiano',
+                'ja': '日本語', 'ko': '한국어', 'tr': 'Türkçe',
+                'uk': 'Українська', 'pl': 'Polski', 'nl': 'Nederlands'
             };
             return names[lang] || lang.toUpperCase();
         }
@@ -239,18 +246,13 @@
             }, 3000);
         }
 
-        function autoTranslate() {
+        function autoTranslateAfterLoad() {
             const savedLang = localStorage.getItem('translateLang');
             if (savedLang && savedLang !== 'en') {
+                targetLang = savedLang;
                 setTimeout(function() {
-                    const select = document.querySelector('.goog-te-combo');
-                    if (select && select.value !== savedLang) {
-                        select.value = savedLang;
-                        select.dispatchEvent(new Event('change'));
-                    } else if (!select) {
-                        translatePage();
-                    }
-                }, 2500);
+                    translatePage();
+                }, 1000);
             }
         }
 
@@ -303,7 +305,8 @@
                 `;
             }
 
-            autoTranslate();
+            // ===== ПОСЛЕ ЗАГРУЗКИ СТАТЬИ - ПЕРЕВОДИМ =====
+            autoTranslateAfterLoad();
         }
 
         loadArticle();
