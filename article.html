@@ -88,44 +88,15 @@
             margin-bottom: 25px;
             background-color: #f0f0f0;
         }
-
-        .goog-te-banner-frame {
-            display: none !important;
-        }
-        body { top: 0 !important; }
-        .skiptranslate iframe { display: none !important; }
-        .skiptranslate { display: none !important; }
-
-        #toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1e293b;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 14px;
-            z-index: 99999;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            text-align: center;
-            max-width: 90%;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-        #toast.show { opacity: 1; }
     </style>
 </head>
 <body>
 
     <button class="close-btn" onclick="closeTab()">←</button>
 
-    <button class="globe" id="globeBtn" title="Translate to your language">
+    <a class="globe" id="globeLink" href="#" target="_blank" title="Translate to your language">
         <img src="assets/globe.png" alt="Translate">
-    </button>
-
-    <div id="toast">Loading...</div>
+    </a>
 
     <h1 id="article-title">Loading...</h1>
     <div id="article-date" class="date"></div>
@@ -136,108 +107,24 @@
     <script>
         function closeTab() { window.close(); }
 
-        const globeBtn = document.getElementById('globeBtn');
-        const toast = document.getElementById('toast');
+        const globeLink = document.getElementById('globeLink');
 
-        function showToast(msg) {
-            toast.textContent = msg;
-            toast.classList.add('show');
-            clearTimeout(toast._timer);
-            toast._timer = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
+        globeLink.addEventListener('click', function(e) {
+            e.preventDefault();
 
-        globeBtn.addEventListener('click', function() {
             const userLang = navigator.language || navigator.userLanguage;
             const langCode = userLang.split('-')[0];
 
             if (langCode === 'en') {
-                showToast('🌐 Your browser language is English.');
+                alert('🌐 Your browser language is English. No translation needed.');
                 return;
             }
 
-            localStorage.setItem('translateLang', langCode);
-            const url = new URL(window.location.href);
-            url.searchParams.set('lang', langCode);
-            window.location.href = url.toString();
+            const currentUrl = window.location.href;
+            const translateUrl = `https://translate.google.com/translate?sl=en&tl=${langCode}&u=${encodeURIComponent(currentUrl)}`;
+
+            window.open(translateUrl, '_blank');
         });
-
-        function getLangName(lang) {
-            const names = {
-                'en': 'English', 'ru': 'Русский', 'de': 'Deutsch',
-                'es': 'Español', 'pt': 'Português', 'zh': '中文',
-                'ar': 'العربية', 'fr': 'Français', 'it': 'Italiano',
-                'ja': '日本語', 'ko': '한국어', 'tr': 'Türkçe'
-            };
-            return names[lang] || lang;
-        }
-
-        function forceTranslate(lang) {
-            if (!lang || lang === 'en') return;
-
-            let attempts = 0;
-            const maxAttempts = 20;
-
-            const tryTranslate = setInterval(function() {
-                attempts++;
-                const select = document.querySelector('.goog-te-combo');
-                if (select) {
-                    select.value = lang;
-                    select.dispatchEvent(new Event('change'));
-                    showToast('✅ Translated to ' + getLangName(lang));
-                    clearInterval(tryTranslate);
-                } else if (attempts >= maxAttempts) {
-                    clearInterval(tryTranslate);
-                    loadGoogleTranslateAndRetry(lang);
-                }
-            }, 500);
-        }
-
-        function loadGoogleTranslateAndRetry(lang) {
-            if (typeof google === 'undefined' || !google.translate) {
-                const script = document.createElement('script');
-                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-                script.async = true;
-                document.head.appendChild(script);
-
-                window.googleTranslateElementInit = function() {
-                    new google.translate.TranslateElement({
-                        pageLanguage: 'en',
-                        includedLanguages: 'en,ru,de,es,pt,zh,ar,fr,it,ja,ko,tr',
-                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                        autoDisplay: false
-                    }, 'google_translate_element');
-
-                    setTimeout(function() {
-                        const select = document.querySelector('.goog-te-combo');
-                        if (select) {
-                            select.value = lang;
-                            select.dispatchEvent(new Event('change'));
-                            showToast('✅ Translated to ' + getLangName(lang));
-                        }
-                    }, 1000);
-                };
-
-                if (!document.getElementById('google_translate_element')) {
-                    const container = document.createElement('div');
-                    container.id = 'google_translate_element';
-                    container.style.display = 'none';
-                    document.body.appendChild(container);
-                }
-            }
-        }
-
-        function autoTranslateOnLoad() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const lang = urlParams.get('lang');
-
-            if (lang && lang !== 'en') {
-                setTimeout(function() {
-                    forceTranslate(lang);
-                }, 2000);
-            }
-        }
 
         const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co";
         const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
@@ -287,8 +174,6 @@
                     Original source: <a href="${article.source_url}" target="_blank" rel="noopener noreferrer">View Original Feed</a>
                 `;
             }
-
-            autoTranslateOnLoad();
         }
 
         loadArticle();
