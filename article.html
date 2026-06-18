@@ -7,7 +7,6 @@
     <meta id="meta-desc" name="description" content="">
     <meta id="meta-keys" name="keywords" content="">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -18,49 +17,25 @@
             color: #333;
         }
 
-        /* ===== ГЛОБУС ===== */
-        .globe {
-            position: fixed;
-            top: 15px;
-            right: 80px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 9999;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-            border: none;
-            text-decoration: none;
-            user-select: none;
-        }
-
-        .globe:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
-        }
-
-        .globe:active {
-            transform: scale(0.95);
-        }
-
-        /* ===== КНОПКА ЗАКРЫТИЯ ===== */
-        .close-btn {
+        /* ===== КНОПКИ В ПРАВОМ ВЕРХНЕМ УГЛУ ===== */
+        .top-buttons {
             position: fixed;
             top: 15px;
             right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 9999;
+        }
+
+        /* ===== КРАСНАЯ СТРЕЛКА ===== */
+        .close-btn {
             background: transparent;
             border: none;
             color: #d9534f;
             font-size: 52px;
             cursor: pointer;
-            z-index: 9999;
             transition: all 0.2s ease;
             padding: 0 8px;
             line-height: 1;
@@ -71,10 +46,43 @@
             transform: scale(1.1);
         }
 
+        /* ===== ГЛОБУС (КАРТИНКА ИЗ ASSETS) ===== */
+        .globe-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            border: none;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .globe-btn img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .globe-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        .globe-btn:active {
+            transform: scale(0.95);
+        }
+
         /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ЯЗЫКОВ ===== */
         #languageDropdown {
             position: fixed;
-            top: 70px;
+            top: 120px;
             right: 20px;
             background: #fff;
             border-radius: 16px;
@@ -147,20 +155,20 @@
         }
 
         @media (max-width: 600px) {
-            .globe {
-                top: 10px;
-                right: 60px;
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-            .close-btn {
+            .top-buttons {
                 top: 10px;
                 right: 10px;
+                gap: 5px;
+            }
+            .close-btn {
                 font-size: 40px;
             }
+            .globe-btn {
+                width: 40px;
+                height: 40px;
+            }
             #languageDropdown {
-                top: 60px;
+                top: 105px;
                 right: 10px;
                 min-width: 140px;
             }
@@ -173,9 +181,14 @@
 </head>
 <body>
 
-    <!-- ===== ГЛОБУС ===== -->
-    <div class="globe" id="globeBtn" title="Change language">
-        <i class="fas fa-globe"></i>
+    <!-- ===== КНОПКИ В ПРАВОМ ВЕРХНЕМ УГЛУ ===== -->
+    <div class="top-buttons">
+        <!-- КРАСНАЯ СТРЕЛКА (закрытие) -->
+        <button class="close-btn" onclick="closeTab()">←</button>
+        <!-- ГЛОБУС (картинка из assets) -->
+        <button class="globe-btn" id="globeBtn" title="Change language">
+            <img src="assets/globe.png" alt="Language">
+        </button>
     </div>
 
     <!-- ===== ВЫПАДАЮЩЕЕ МЕНЮ ЯЗЫКОВ ===== -->
@@ -188,9 +201,6 @@
         <button class="language-option" data-lang="zh">ZH <span>中文</span></button>
         <button class="language-option" data-lang="ar">AR <span>العربية</span></button>
     </div>
-
-    <!-- ===== КНОПКА ЗАКРЫТИЯ ===== -->
-    <button class="close-btn" onclick="closeTab()">←</button>
 
     <h1 id="article-title">Loading...</h1>
     <div id="article-date" class="date"></div>
@@ -230,41 +240,13 @@
 
         // ===== ПЕРЕВОДЫ ДЛЯ СТРАНИЦЫ СТАТЬИ =====
         const translations = {
-            en: {
-                loading: "Loading...",
-                not_found: "Article not found",
-                source: "Original source:"
-            },
-            ru: {
-                loading: "Загрузка...",
-                not_found: "Статья не найдена",
-                source: "Оригинальный источник:"
-            },
-            de: {
-                loading: "Laden...",
-                not_found: "Artikel nicht gefunden",
-                source: "Originalquelle:"
-            },
-            es: {
-                loading: "Cargando...",
-                not_found: "Artículo no encontrado",
-                source: "Fuente original:"
-            },
-            pt: {
-                loading: "Carregando...",
-                not_found: "Artigo não encontrado",
-                source: "Fonte original:"
-            },
-            zh: {
-                loading: "加载中...",
-                not_found: "未找到文章",
-                source: "原始来源:"
-            },
-            ar: {
-                loading: "جاري التحميل...",
-                not_found: "المقال غير موجود",
-                source: "المصدر الأصلي:"
-            }
+            en: { loading: "Loading...", not_found: "Article not found", source: "Original source:" },
+            ru: { loading: "Загрузка...", not_found: "Статья не найдена", source: "Оригинальный источник:" },
+            de: { loading: "Laden...", not_found: "Artikel nicht gefunden", source: "Originalquelle:" },
+            es: { loading: "Cargando...", not_found: "Artículo no encontrado", source: "Fuente original:" },
+            pt: { loading: "Carregando...", not_found: "Artigo não encontrado", source: "Fonte original:" },
+            zh: { loading: "加载中...", not_found: "未找到文章", source: "原始来源:" },
+            ar: { loading: "جاري التحميل...", not_found: "المقال غير موجود", source: "المصدر الأصلي:" }
         };
 
         let currentLang = localStorage.getItem('blogLang') || 'en';
