@@ -69,8 +69,8 @@
     </style>
 </head>
 <body>
-    <!-- Кнопка-стрелка влево (красная) -->
-    <button class="close-btn" onclick="goBack()">←</button>
+    <!-- Кнопка-стрелка влево (красная) - ЗАКРЫВАЕТ вкладку -->
+    <button class="close-btn" onclick="closeTab()">←</button>
 
     <h1>Global News for Expats & Nomads</h1>
     <hr>
@@ -78,17 +78,9 @@
     <div id="news-container">Loading latest insights...</div>
 
     <script>
-        // Функция для возврата на главную с переключением фокуса
-        function goBack() {
-            if (window.opener) {
-                // Переключаем фокус на родительскую вкладку (index.html)
-                window.opener.focus();
-                // Закрываем текущую вкладку
-                window.close();
-            } else {
-                // Если открыта в текущей вкладке - переходим на главную
-                window.location.href = "index.html";
-            }
+        // Функция: просто закрыть вкладку (без всяких переходов)
+        function closeTab() {
+            window.close();
         }
 
         // Конфигурация Supabase
