@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global News & Insights | Internationals.pro</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -15,10 +16,43 @@
             color: #333;
         }
 
+        /* ===== ГЛОБУС (как на index.html) ===== */
+        .globe {
+            position: fixed;
+            top: 15px;
+            right: 80px; /* Сдвигаем левее, чтобы не перекрывать стрелку */
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            border: none;
+            text-decoration: none;
+            user-select: none;
+        }
+
+        .globe:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        .globe:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== КНОПКА ЗАКРЫТИЯ (красная стрелка) ===== */
         .close-btn {
             position: fixed;
             top: 15px;
-            right: 20px;  /* ← СПРАВА */
+            right: 20px;
             background: transparent;
             border: none;
             color: #d9534f;
@@ -35,6 +69,59 @@
             transform: scale(1.1);
         }
 
+        /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ЯЗЫКОВ (как на index.html) ===== */
+        #languageDropdown {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.2);
+            padding: 8px 0;
+            min-width: 160px;
+            z-index: 10000;
+            display: none;
+            border: 1px solid #e5e7eb;
+        }
+
+        #languageDropdown.show {
+            display: block;
+        }
+
+        .language-option {
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            transition: background 0.15s;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            color: #333;
+        }
+
+        .language-option:hover {
+            background: #f3f4f6;
+        }
+
+        .language-option span {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .language-option.active {
+            background: #e0e7ff;
+            color: #1d4ed8;
+        }
+
+        .language-option.active span {
+            color: #1d4ed8;
+        }
+
+        /* ===== СТИЛИ НОВОСТЕЙ ===== */
         article {
             margin-bottom: 40px;
             border-bottom: 1px solid #eee;
@@ -68,16 +155,45 @@
         }
 
         @media (max-width: 600px) {
+            .globe {
+                top: 10px;
+                right: 60px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
             .close-btn {
-                font-size: 40px;
                 top: 10px;
                 right: 10px;
+                font-size: 40px;
+            }
+            #languageDropdown {
+                top: 60px;
+                right: 10px;
+                min-width: 140px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Кнопка-стрелка влево (красная) - СПРАВА -->
+
+    <!-- ===== ГЛОБУС ===== -->
+    <div class="globe" id="globeBtn" title="Change language">
+        <i class="fas fa-globe"></i>
+    </div>
+
+    <!-- ===== ВЫПАДАЮЩЕЕ МЕНЮ ЯЗЫКОВ ===== -->
+    <div id="languageDropdown">
+        <button class="language-option" data-lang="en">EN <span>English</span></button>
+        <button class="language-option" data-lang="ru">RU <span>Русский</span></button>
+        <button class="language-option" data-lang="de">DE <span>Deutsch</span></button>
+        <button class="language-option" data-lang="es">ES <span>Español</span></button>
+        <button class="language-option" data-lang="pt">PT <span>Português</span></button>
+        <button class="language-option" data-lang="zh">ZH <span>中文</span></button>
+        <button class="language-option" data-lang="ar">AR <span>العربية</span></button>
+    </div>
+
+    <!-- ===== КНОПКА ЗАКРЫТИЯ ===== -->
     <button class="close-btn" onclick="closeTab()">←</button>
 
     <h1>Global News for Expats & Nomads</h1>
@@ -86,12 +202,126 @@
     <div id="news-container">Loading latest insights...</div>
 
     <script>
-        // Функция: просто закрыть вкладку
+        // ===== ФУНКЦИЯ ЗАКРЫТИЯ ВКЛАДКИ =====
         function closeTab() {
             window.close();
         }
 
-        // Конфигурация Supabase
+        // ===== ГЛОБУС И ЯЗЫКИ =====
+        const globeBtn = document.getElementById('globeBtn');
+        const dropdown = document.getElementById('languageDropdown');
+
+        // Открыть/закрыть меню языков
+        globeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+        });
+
+        // Закрыть меню при клике вне него
+        document.addEventListener('click', function(e) {
+            if (!dropdown.contains(e.target) && e.target !== globeBtn) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Выбор языка
+        document.querySelectorAll('.language-option').forEach(opt => {
+            opt.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const lang = this.dataset.lang;
+                setLanguage(lang);
+                dropdown.classList.remove('show');
+            });
+        });
+
+        // ===== ПЕРЕВОДЫ ДЛЯ СТРАНИЦЫ НОВОСТЕЙ =====
+        const translations = {
+            en: {
+                title: "Global News for Expats & Nomads",
+                loading: "Loading latest insights...",
+                error: "Error loading news feed.",
+                no_news: "No news articles available at the moment.",
+                read_more: "Read more"
+            },
+            ru: {
+                title: "Глобальные новости для экспатов и номадов",
+                loading: "Загрузка последних новостей...",
+                error: "Ошибка загрузки новостей.",
+                no_news: "На данный момент новостей нет.",
+                read_more: "Читать далее"
+            },
+            de: {
+                title: "Globale Nachrichten für Expats und Nomaden",
+                loading: "Lade neueste Nachrichten...",
+                error: "Fehler beim Laden der Nachrichten.",
+                no_news: "Derzeit keine Nachrichten verfügbar.",
+                read_more: "Weiterlesen"
+            },
+            es: {
+                title: "Noticias globales para expatriados y nómadas",
+                loading: "Cargando últimas noticias...",
+                error: "Error al cargar las noticias.",
+                no_news: "No hay noticias disponibles en este momento.",
+                read_more: "Leer más"
+            },
+            pt: {
+                title: "Notícias globais para expatriados e nómadas",
+                loading: "Carregando últimas notícias...",
+                error: "Erro ao carregar notícias.",
+                no_news: "Nenhuma notícia disponível no momento.",
+                read_more: "Ler mais"
+            },
+            zh: {
+                title: "全球新闻 | 外籍人士和游民",
+                loading: "加载最新资讯...",
+                error: "加载新闻失败。",
+                no_news: "目前没有新闻。",
+                read_more: "阅读更多"
+            },
+            ar: {
+                title: "أخبار عالمية للمغتربين والبدو",
+                loading: "جاري تحميل آخر الأخبار...",
+                error: "خطأ في تحميل الأخبار.",
+                no_news: "لا توجد أخبار متاحة حالياً.",
+                read_more: "اقرأ المزيد"
+            }
+        };
+
+        let currentLang = localStorage.getItem('blogLang') || 'en';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('blogLang', lang);
+            
+            // Обновляем текст на странице
+            const t = translations[lang];
+            if (t) {
+                document.querySelector('h1').textContent = t.title;
+                const container = document.getElementById('news-container');
+                if (container) {
+                    // Если уже загружены новости, обновляем только заголовки
+                    updateNewsLanguage(lang);
+                }
+            }
+
+            // Обновляем активный язык в меню
+            document.querySelectorAll('.language-option').forEach(opt => {
+                opt.classList.toggle('active', opt.dataset.lang === lang);
+            });
+
+            // Меняем направление текста для арабского
+            document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+        }
+
+        function updateNewsLanguage(lang) {
+            // Обновляем текст для уже загруженных новостей
+            const readMoreText = translations[lang]?.read_more || 'Read more';
+            document.querySelectorAll('.read-more-link').forEach(el => {
+                el.textContent = readMoreText;
+            });
+        }
+
+        // ===== SUPABASE =====
         const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co";
         const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
 
@@ -104,17 +334,20 @@
                 .order('created_at', { ascending: false });
 
             const container = document.getElementById('news-container');
+            const t = translations[currentLang] || translations.en;
 
             if (error) {
-                container.innerHTML = "<p>Error loading news feed.</p>";
+                container.innerHTML = `<p>${t.error}</p>`;
                 console.error(error);
                 return;
             }
 
             if (!articles || articles.length === 0) {
-                container.innerHTML = "<p>No news articles available at the moment.</p>";
+                container.innerHTML = `<p>${t.no_news}</p>`;
                 return;
             }
+
+            const readMoreText = t.read_more || 'Read more';
 
             container.innerHTML = articles.map(art => `
                 <article>
@@ -130,7 +363,12 @@
                     </h3>
                     <p>${art.summary}</p>
                     <span class="date">
-                        ${new Date(art.created_at).toLocaleDateString('en-US', {
+                        ${new Date(art.created_at).toLocaleDateString(currentLang === 'ru' ? 'ru-RU' : 
+                            currentLang === 'de' ? 'de-DE' :
+                            currentLang === 'es' ? 'es-ES' :
+                            currentLang === 'pt' ? 'pt-PT' :
+                            currentLang === 'zh' ? 'zh-CN' :
+                            currentLang === 'ar' ? 'ar-SA' : 'en-US', {
                             day: 'numeric',
                             month: 'short',
                             year: 'numeric'
@@ -140,6 +378,20 @@
             `).join('');
         }
 
+        // ===== ЗАГРУЗКА =====
+        // Восстанавливаем язык
+        const savedLang = localStorage.getItem('blogLang');
+        if (savedLang && translations[savedLang]) {
+            currentLang = savedLang;
+        } else {
+            // Определяем язык браузера
+            const browserLang = navigator.language?.split('-')[0] || 'en';
+            if (translations[browserLang]) {
+                currentLang = browserLang;
+            }
+        }
+
+        setLanguage(currentLang);
         loadNews();
     </script>
 </body>
