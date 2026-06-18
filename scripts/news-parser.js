@@ -23,15 +23,20 @@ function slugify(text) {
 }
 
 async function adaptArticleWithAI(title, content) {
-  const url = 'https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent';
+  // Используем стабильный эндпоинт v1
+  const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`;
+  
   const prompt = `You are a professional marketer. Summarize this news article in English for expats. Return STRICTLY a raw JSON object: {"title": "headline", "summary": "3 sentences", "meta_description": "seo"}\n\nTitle: ${title}\nContent: ${content}`;
 
-  const response = await fetch(`${url}?key=${geminiApiKey}`, {
+  const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { responseMimeType: "application/json" }
+      generationConfig: { 
+        // Исправлено: Google API требует нижнее подчёркивание в v1
+        response_mime_type: "application/json" 
+      }
     })
   });
 
@@ -77,7 +82,6 @@ async function main() {
       if (aiResult) {
         console.log(`Inserting into Supabase: ${aiResult.title}`);
         
-        // Вставляем строго те поля, которые есть на твоем скриншоте базы данных
         const { error: insertError } = await supabase.from('articles').insert([{
           slug: slug,
           title: aiResult.title,
