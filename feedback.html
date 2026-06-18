@@ -98,16 +98,24 @@
       transition: bottom 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                   opacity 0.8s ease;
     }
-    .fixed-banner-left  { left: 8px; width: 300px; }
-    .fixed-banner-right { right: 8px; width: 300px; }
+    .fixed-banner-left  { left: 4px; width: 420px; }
+    .fixed-banner-right { right: 4px; width: 420px; }
 
+    @media(max-width:1900px){
+      .fixed-banner-left  { width: 360px; }
+      .fixed-banner-right { width: 360px; }
+    }
+    @media(max-width:1700px){
+      .fixed-banner-left  { width: 300px; }
+      .fixed-banner-right { width: 300px; }
+    }
     @media(max-width:1500px){
-      .fixed-banner-left  { width: 220px; }
-      .fixed-banner-right { width: 220px; }
+      .fixed-banner-left  { width: 240px; }
+      .fixed-banner-right { width: 240px; }
     }
     @media(max-width:1300px){
-      .fixed-banner-left  { width: 160px; }
-      .fixed-banner-right { width: 160px; }
+      .fixed-banner-left  { width: 180px; }
+      .fixed-banner-right { width: 180px; }
     }
 
     .fixed-banner-left.sliding,
