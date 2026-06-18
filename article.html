@@ -1,1 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Loading Article... | Internationals.pro</title>
+    <meta id="meta-desc" name="description" content="">
+    <meta id="meta-keys" name="keywords" content="">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #333; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #0066cc; text-decoration: none; }
+        .date { color: #666; font-size: 0.9em; margin: -10px 0 20px 0; }
+        .source { margin-top: 40px; font-size: 0.9em; border-top: 1px solid #eee; padding-top: 20px; }
+    </style>
+</head>
+<body>
+    <a class="back-link" href="blog.html">← Back to all news</a>
+    <h1 id="article-title">Loading...</h1>
+    <div id="article-date" class="date"></div>
+    <div id="article-body"></div>
+    <p id="article-source" class="source"></p>
 
+    <script>
+        const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co"; 
+        const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadArticle() {
+            // Извлекаем slug из адресной строки (например, ?slug=some-news-title)
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug');
+
+            if (!slug) {
+                document.getElementById('article-title').innerText = "Article not found";
+                return;
+            }
+
+            // Ищем в базе строку, где поле slug совпадает с тем, что в ссылке
+            const { data: article, error } = await _supabase
+                .from('articles')
+                .select('*')
+                .eq('slug', slug)
+                .single();
+
+            if (error || !article) {
+                document.getElementById('article-title').innerText = "Article not found";
+                return;
+            }
+
+            // Динамически прописываем SEO теги для поисковиков
+            document.title = `${article.title} | Internationals.pro`;
+            document.getElementById('meta-desc').setAttribute('content', article.meta_description || '');
+            document.getElementById('meta-keys').setAttribute('content', article.keywords || '');
+
+            // Выводим данные на страницу
+            document.getElementById('article-title').innerText = article.title;
+            document.getElementById('article-date').innerText = new Date(article.created_at).toLocaleDateString('en-US', {day: 'numeric', month: 'long', year: 'numeric'});
+            document.getElementById('article-body').innerText = article.summary;
+            
+            if (article.source_url) {
+                document.getElementById('article-source').innerHTML = `Original source: <a href="${article.source_url}" target="_blank" rel="noopener noreferrer">View Original Feed</a>`;
+            }
+        }
+
+        loadArticle();
+    </script>
+</body>
+</html>
