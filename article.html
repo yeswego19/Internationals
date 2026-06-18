@@ -7,7 +7,6 @@
     <meta id="meta-desc" name="description" content="">
     <meta id="meta-keys" name="keywords" content="">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -16,40 +15,6 @@
             margin: 40px auto;
             padding: 0 20px;
             color: #333;
-        }
-
-        /* ===== ТОЧНО ТАКОЙ ЖЕ ГЛОБУС КАК НА INDEX.HTML ===== */
-        .globe {
-            position: fixed;
-            top: 75px;
-            right: 20px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 9999;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-            border: none;
-            text-decoration: none;
-            user-select: none;
-            animation: spin 10s linear infinite;
-        }
-
-        .globe:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         /* ===== КРАСНАЯ СТРЕЛКА ===== */
@@ -73,10 +38,41 @@
             transform: scale(1.1);
         }
 
+        /* ===== ГЛОБУС КАК НА INDEX.HTML (БОЛЬШОЙ, БЕЗ СИНЕГО ФОНА) ===== */
+        .globe {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            width: 64px;
+            height: 64px;
+            cursor: pointer;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            padding: 0;
+            animation: spin 10s linear infinite;
+        }
+
+        .globe img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .globe:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ===== */
         #languageDropdown {
             position: fixed;
-            top: 130px;
+            top: 155px;
             right: 20px;
             background: #fff;
             border-radius: 16px;
@@ -149,20 +145,19 @@
         }
 
         @media (max-width: 600px) {
-            .globe {
-                top: 65px;
-                right: 10px;
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
             .close-btn {
                 top: 10px;
                 right: 10px;
                 font-size: 40px;
             }
+            .globe {
+                top: 65px;
+                right: 10px;
+                width: 50px;
+                height: 50px;
+            }
             #languageDropdown {
-                top: 115px;
+                top: 130px;
                 right: 10px;
                 min-width: 140px;
             }
@@ -175,11 +170,13 @@
 </head>
 <body>
 
-    <!-- ===== ГЛОБУС (ТОЧНО КАК НА INDEX.HTML - КРУТИТСЯ) ===== -->
-    <div class="globe" id="globeBtn" title="Change language">🌍</div>
-
     <!-- ===== КРАСНАЯ СТРЕЛКА ===== -->
     <button class="close-btn" onclick="closeTab()">←</button>
+
+    <!-- ===== ГЛОБУС (КАК НА INDEX.HTML - БОЛЬШОЙ, БЕЗ ФОНА) ===== -->
+    <button class="globe" id="globeBtn" title="Change language">
+        <img src="assets/globe.png" alt="Language">
+    </button>
 
     <!-- ===== ВЫПАДАЮЩЕЕ МЕНЮ ===== -->
     <div id="languageDropdown">
