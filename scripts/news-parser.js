@@ -2,15 +2,7 @@ const Parser = require('rss-parser');
 const { createClient } = require('@supabase/supabase-js');
 const fetch = require('node-fetch');
 
-const parser = new Parser({
-  customFields: {
-    item: [
-      ['media:content', 'mediaContent'],
-      ['enclosure', 'enclosure']
-    ]
-  }
-});
-
+const parser = new Parser();
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
 const geminiApiKey = process.env.GEMINI_API_KEY;
@@ -30,30 +22,18 @@ function slugify(text) {
   return text.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
 }
 
-function getImageUrl(item) {
-  if (item.mediaContent && item.mediaContent.$ && item.mediaContent.$.url) {
-    return item.mediaContent.$.url;
-  }
-  if (item.enclosure && item.enclosure.url) {
-    return item.enclosure.url;
-  }
-  if (item.content) {
-    const imgMatch = item.content.match(/<img[^>]+src="([^">]+)"/);
-    if (imgMatch) return imgMatch[1];
-  }
-  return 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800';
-}
-
 async function adaptArticleWithAI(title, content) {
   const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`;
   
+  // Просим ИИ подобрать ОДНО ключевое слово на английском для идеальной картинки
   const prompt = `You are a professional marketer. Summarize this news article in English for expats. 
 Your response MUST be a valid, parsable JSON object and NOTHING ELSE. Do not wrap it in \`\`\`json.
 JSON format:
 {
   "title": "headline",
   "summary": "3 sentences summarizing the content",
-  "meta_description": "seo description"
+  "meta_description": "seo description",
+  "image_keyword": "one clear specific english keyword for Unsplash image search that perfectly fits this article topic"
 }
 
 Title: ${title}
@@ -109,9 +89,6 @@ async function main() {
     for (const item of items) {
       const slug = slugify(item.title || '');
       if (!slug) continue;
-      
-      const imageUrl = getImageUrl(item);
-      console.log(`Found image URL: ${imageUrl}`);
 
       console.log(`Sending to Gemini: ${item.title}`);
       
@@ -119,12 +96,19 @@ async function main() {
       try {
         aiResult = await adaptArticleWithAI(item.title, item.contentSnippet || item.content || '');
       } catch (aiError) {
-        // Если Gemini перегружен, не падаем, а просто пропускаем статью
         console.warn(`⚠️ Skipping article due to Gemini error: ${aiError.message}`);
         continue;
       }
       
       if (aiResult) {
+        // Формируем красивую ссылку на картинку на основе ключевого слова от ИИ
+        const keyword = encodeURIComponent(aiResult.image_keyword || 'news');
+        const imageUrl = `https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800`; // Заглушка по умолчанию
+        
+        // Используем динамический источник картинок по ключевому слову
+        const dynamicImageUrl = `https://source.unsplash.com/featured/800x450/?${keyword}`;
+        
+        console.log(`Generated image topic: ${aiResult.image_keyword} -> URL: ${dynamicImageUrl}`);
         console.log(`Inserting into Supabase: ${aiResult.title}`);
         
         const { error: insertError } = await supabase.from('articles').insert([{
@@ -132,7 +116,7 @@ async function main() {
           title: aiResult.title,
           summary: aiResult.summary,
           meta_description: aiResult.meta_description,
-          image_url: imageUrl
+          image_url: dynamicImageUrl // Картинка теперь железно в тему!
         }]);
         
         if (insertError) {
