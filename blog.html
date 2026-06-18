@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global News & Insights | Internationals.pro</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -16,49 +15,25 @@
             color: #333;
         }
 
-        /* ===== ГЛОБУС (как на index.html) ===== */
-        .globe {
-            position: fixed;
-            top: 15px;
-            right: 80px; /* Сдвигаем левее, чтобы не перекрывать стрелку */
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 9999;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-            border: none;
-            text-decoration: none;
-            user-select: none;
-        }
-
-        .globe:hover {
-            transform: scale(1.1) rotate(10deg);
-            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
-        }
-
-        .globe:active {
-            transform: scale(0.95);
-        }
-
-        /* ===== КНОПКА ЗАКРЫТИЯ (красная стрелка) ===== */
-        .close-btn {
+        /* ===== КНОПКИ В ПРАВОМ ВЕРХНЕМ УГЛУ ===== */
+        .top-buttons {
             position: fixed;
             top: 15px;
             right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 9999;
+        }
+
+        /* ===== КРАСНАЯ СТРЕЛКА ===== */
+        .close-btn {
             background: transparent;
             border: none;
             color: #d9534f;
             font-size: 52px;
             cursor: pointer;
-            z-index: 9999;
             transition: all 0.2s ease;
             padding: 0 8px;
             line-height: 1;
@@ -69,10 +44,43 @@
             transform: scale(1.1);
         }
 
-        /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ЯЗЫКОВ (как на index.html) ===== */
+        /* ===== ГЛОБУС (КАРТИНКА ИЗ ASSETS) ===== */
+        .globe-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            border: none;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .globe-btn img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .globe-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        .globe-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== ВЫПАДАЮЩЕЕ МЕНЮ ЯЗЫКОВ ===== */
         #languageDropdown {
             position: fixed;
-            top: 70px;
+            top: 120px;
             right: 20px;
             background: #fff;
             border-radius: 16px;
@@ -155,20 +163,20 @@
         }
 
         @media (max-width: 600px) {
-            .globe {
-                top: 10px;
-                right: 60px;
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-            .close-btn {
+            .top-buttons {
                 top: 10px;
                 right: 10px;
+                gap: 5px;
+            }
+            .close-btn {
                 font-size: 40px;
             }
+            .globe-btn {
+                width: 40px;
+                height: 40px;
+            }
             #languageDropdown {
-                top: 60px;
+                top: 105px;
                 right: 10px;
                 min-width: 140px;
             }
@@ -177,9 +185,14 @@
 </head>
 <body>
 
-    <!-- ===== ГЛОБУС ===== -->
-    <div class="globe" id="globeBtn" title="Change language">
-        <i class="fas fa-globe"></i>
+    <!-- ===== КНОПКИ В ПРАВОМ ВЕРХНЕМ УГЛУ ===== -->
+    <div class="top-buttons">
+        <!-- КРАСНАЯ СТРЕЛКА (закрытие) -->
+        <button class="close-btn" onclick="closeTab()">←</button>
+        <!-- ГЛОБУС (картинка из assets) -->
+        <button class="globe-btn" id="globeBtn" title="Change language">
+            <img src="assets/globe.png" alt="Language">
+        </button>
     </div>
 
     <!-- ===== ВЫПАДАЮЩЕЕ МЕНЮ ЯЗЫКОВ ===== -->
@@ -192,9 +205,6 @@
         <button class="language-option" data-lang="zh">ZH <span>中文</span></button>
         <button class="language-option" data-lang="ar">AR <span>العربية</span></button>
     </div>
-
-    <!-- ===== КНОПКА ЗАКРЫТИЯ ===== -->
-    <button class="close-btn" onclick="closeTab()">←</button>
 
     <h1>Global News for Expats & Nomads</h1>
     <hr>
@@ -211,20 +221,17 @@
         const globeBtn = document.getElementById('globeBtn');
         const dropdown = document.getElementById('languageDropdown');
 
-        // Открыть/закрыть меню языков
         globeBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             dropdown.classList.toggle('show');
         });
 
-        // Закрыть меню при клике вне него
         document.addEventListener('click', function(e) {
             if (!dropdown.contains(e.target) && e.target !== globeBtn) {
                 dropdown.classList.remove('show');
             }
         });
 
-        // Выбор языка
         document.querySelectorAll('.language-option').forEach(opt => {
             opt.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -240,50 +247,43 @@
                 title: "Global News for Expats & Nomads",
                 loading: "Loading latest insights...",
                 error: "Error loading news feed.",
-                no_news: "No news articles available at the moment.",
-                read_more: "Read more"
+                no_news: "No news articles available at the moment."
             },
             ru: {
                 title: "Глобальные новости для экспатов и номадов",
                 loading: "Загрузка последних новостей...",
                 error: "Ошибка загрузки новостей.",
-                no_news: "На данный момент новостей нет.",
-                read_more: "Читать далее"
+                no_news: "На данный момент новостей нет."
             },
             de: {
                 title: "Globale Nachrichten für Expats und Nomaden",
                 loading: "Lade neueste Nachrichten...",
                 error: "Fehler beim Laden der Nachrichten.",
-                no_news: "Derzeit keine Nachrichten verfügbar.",
-                read_more: "Weiterlesen"
+                no_news: "Derzeit keine Nachrichten verfügbar."
             },
             es: {
                 title: "Noticias globales para expatriados y nómadas",
                 loading: "Cargando últimas noticias...",
                 error: "Error al cargar las noticias.",
-                no_news: "No hay noticias disponibles en este momento.",
-                read_more: "Leer más"
+                no_news: "No hay noticias disponibles en este momento."
             },
             pt: {
                 title: "Notícias globais para expatriados e nómadas",
                 loading: "Carregando últimas notícias...",
                 error: "Erro ao carregar notícias.",
-                no_news: "Nenhuma notícia disponível no momento.",
-                read_more: "Ler mais"
+                no_news: "Nenhuma notícia disponível no momento."
             },
             zh: {
                 title: "全球新闻 | 外籍人士和游民",
                 loading: "加载最新资讯...",
                 error: "加载新闻失败。",
-                no_news: "目前没有新闻。",
-                read_more: "阅读更多"
+                no_news: "目前没有新闻。"
             },
             ar: {
                 title: "أخبار عالمية للمغتربين والبدو",
                 loading: "جاري تحميل آخر الأخبار...",
                 error: "خطأ في تحميل الأخبار.",
-                no_news: "لا توجد أخبار متاحة حالياً.",
-                read_more: "اقرأ المزيد"
+                no_news: "لا توجد أخبار متاحة حالياً."
             }
         };
 
@@ -292,33 +292,17 @@
         function setLanguage(lang) {
             currentLang = lang;
             localStorage.setItem('blogLang', lang);
-            
-            // Обновляем текст на странице
+
             const t = translations[lang];
             if (t) {
                 document.querySelector('h1').textContent = t.title;
-                const container = document.getElementById('news-container');
-                if (container) {
-                    // Если уже загружены новости, обновляем только заголовки
-                    updateNewsLanguage(lang);
-                }
             }
 
-            // Обновляем активный язык в меню
             document.querySelectorAll('.language-option').forEach(opt => {
                 opt.classList.toggle('active', opt.dataset.lang === lang);
             });
 
-            // Меняем направление текста для арабского
             document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-        }
-
-        function updateNewsLanguage(lang) {
-            // Обновляем текст для уже загруженных новостей
-            const readMoreText = translations[lang]?.read_more || 'Read more';
-            document.querySelectorAll('.read-more-link').forEach(el => {
-                el.textContent = readMoreText;
-            });
         }
 
         // ===== SUPABASE =====
@@ -347,8 +331,6 @@
                 return;
             }
 
-            const readMoreText = t.read_more || 'Read more';
-
             container.innerHTML = articles.map(art => `
                 <article>
                     ${art.image_url ? 
@@ -363,7 +345,8 @@
                     </h3>
                     <p>${art.summary}</p>
                     <span class="date">
-                        ${new Date(art.created_at).toLocaleDateString(currentLang === 'ru' ? 'ru-RU' : 
+                        ${new Date(art.created_at).toLocaleDateString(
+                            currentLang === 'ru' ? 'ru-RU' : 
                             currentLang === 'de' ? 'de-DE' :
                             currentLang === 'es' ? 'es-ES' :
                             currentLang === 'pt' ? 'pt-PT' :
@@ -379,12 +362,10 @@
         }
 
         // ===== ЗАГРУЗКА =====
-        // Восстанавливаем язык
         const savedLang = localStorage.getItem('blogLang');
         if (savedLang && translations[savedLang]) {
             currentLang = savedLang;
         } else {
-            // Определяем язык браузера
             const browserLang = navigator.language?.split('-')[0] || 'en';
             if (translations[browserLang]) {
                 currentLang = browserLang;
