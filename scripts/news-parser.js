@@ -23,20 +23,26 @@ function slugify(text) {
 }
 
 async function adaptArticleWithAI(title, content) {
-  // Используем стабильный эндпоинт v1
   const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`;
   
-  const prompt = `You are a professional marketer. Summarize this news article in English for expats. Return STRICTLY a raw JSON object: {"title": "headline", "summary": "3 sentences", "meta_description": "seo"}\n\nTitle: ${title}\nContent: ${content}`;
+  // Жестко приказываем ИИ выдать только чистый JSON без markdown-кавычек
+  const prompt = `You are a professional marketer. Summarize this news article in English for expats. 
+Your response MUST be a valid, parsable JSON object and NOTHING ELSE. Do not wrap it in \`\`\`json.
+JSON format:
+{
+  "title": "headline",
+  "summary": "3 sentences summarizing the content",
+  "meta_description": "seo description"
+}
+
+Title: ${title}
+Content: ${content}`;
 
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { 
-        // Исправлено: Google API требует нижнее подчёркивание в v1
-        response_mime_type: "application/json" 
-      }
+      contents: [{ parts: [{ text: prompt }] }]
     })
   });
 
@@ -46,7 +52,14 @@ async function adaptArticleWithAI(title, content) {
   }
 
   const data = await response.json();
-  return JSON.parse(data.candidates[0].content.parts[0].text);
+  let jsonText = data.candidates[0].content.parts[0].text.trim();
+  
+  // На случай, если ИИ всё-таки засунет ответ в ```json ... ```
+  if (jsonText.startsWith('```')) {
+    jsonText = jsonText.replace(/^```json\s*/i, '').replace(/```$/, '').trim();
+  }
+
+  return JSON.parse(jsonText);
 }
 
 async function main() {
