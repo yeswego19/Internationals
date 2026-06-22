@@ -18,3 +18,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 4f2daa6d0f1874e97abfcf6870d09537
           workingDirectory: cloudflare-worker
+          command: deploy --verbose
