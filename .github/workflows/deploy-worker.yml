@@ -13,8 +13,7 @@ jobs:
         run: npm install -g wrangler
 
       - name: Deploy
-        run: wrangler deploy
-        working-directory: cloudflare-worker
+        run: cd cloudflare-worker && wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: 4f2daa6d0f1874e97abfcf6870d09537
