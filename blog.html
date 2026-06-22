@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global News & Insights | Internationals.pro</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -14,7 +13,6 @@
             padding: 0 20px;
             color: #333;
         }
-
         .close-btn {
             position: fixed;
             top: 15px;
@@ -29,12 +27,7 @@
             padding: 0 8px;
             line-height: 1;
         }
-
-        .close-btn:hover {
-            color: #ff0000;
-            transform: scale(1.1);
-        }
-
+        .close-btn:hover { color: #ff0000; transform: scale(1.1); }
         .globe {
             position: fixed;
             top: 80px;
@@ -43,64 +36,25 @@
             height: 68px;
             cursor: pointer;
             z-index: 9999;
-            transition: all 0.3s ease;
             border: none;
             background: transparent;
             padding: 0;
             animation: spin 10s linear infinite;
         }
-
-        .globe img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .globe:hover {
-            transform: scale(1.1);
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        article {
-            margin-bottom: 40px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 30px;
-        }
-
-        h3 a {
-            color: #0066cc;
-            text-decoration: none;
-            font-size: 1.4em;
-        }
-
-        h3 a:hover {
-            text-decoration: underline;
-        }
-
-        .date {
-            color: #666;
-            font-size: 0.85em;
-            display: block;
-            margin-top: 10px;
-        }
-
-        .news-img {
-            width: 100%;
-            max-height: 350px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            background-color: #f0f0f0;
-        }
+        .globe img { width: 100%; height: 100%; object-fit: contain; }
+        .globe:hover { transform: scale(1.1); }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        article { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 30px; }
+        h3 a { color: #0066cc; text-decoration: none; font-size: 1.4em; }
+        h3 a:hover { text-decoration: underline; }
+        .date { color: #666; font-size: 0.85em; display: block; margin-top: 10px; }
+        .news-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background-color: #f0f0f0; }
+        .loading { text-align: center; padding: 40px; color: #666; }
     </style>
 </head>
 <body>
 
-    <button class="close-btn" onclick="closeTab()">←</button>
+    <button class="close-btn" onclick="window.close()">←</button>
 
     <a class="globe" id="globeLink" href="#" target="_blank" title="Translate to your language">
         <img src="assets/globe.png" alt="Translate">
@@ -109,80 +63,62 @@
     <h1>Global News for Expats & Nomads</h1>
     <hr>
 
-    <div id="news-container">Loading latest insights...</div>
+    <div id="news-container"><div class="loading">Loading latest insights...</div></div>
 
     <script>
-        function closeTab() { window.close(); }
+        // Cloudflare Worker — работает без VPN из России
+        const WORKER_URL = 'https://my-vpn-proxy.yeswego19.workers.dev';
 
-        // ===== ГЛОБУС - ОТКРЫВАЕТ GOOGLE TRANSLATE =====
-        const globeLink = document.getElementById('globeLink');
-
-        globeLink.addEventListener('click', function(e) {
+        document.getElementById('globeLink').addEventListener('click', function(e) {
             e.preventDefault();
-
-            const userLang = navigator.language || navigator.userLanguage;
-            const langCode = userLang.split('-')[0];
-
-            if (langCode === 'en') {
-                alert('🌐 Your browser language is English. No translation needed.');
-                return;
-            }
-
-            // Ссылка на Google Translate
-            const currentUrl = window.location.href;
-            const translateUrl = `https://translate.google.com/translate?sl=en&tl=${langCode}&u=${encodeURIComponent(currentUrl)}`;
-
-            // Открываем в новой вкладке
-            window.open(translateUrl, '_blank');
+            const lang = (navigator.language || 'en').split('-')[0];
+            if (lang === 'en') { alert('Your browser language is English.'); return; }
+            window.open(`https://translate.google.com/translate?sl=en&tl=${lang}&u=${encodeURIComponent(location.href)}`, '_blank');
         });
 
-        // ===== SUPABASE =====
-        const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
-
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
         async function loadNews() {
-            const { data: articles, error } = await _supabase
-                .from('articles')
-                .select('title, summary, slug, created_at, image_url')
-                .order('created_at', { ascending: false });
-
             const container = document.getElementById('news-container');
+            try {
+                // Сначала пробуем Worker (работает без VPN)
+                let articles = null;
+                try {
+                    const res = await fetch(`${WORKER_URL}/articles`);
+                    if (res.ok) articles = await res.json();
+                } catch(e) {}
 
-            if (error) {
-                container.innerHTML = `<p>Error loading news feed.</p>`;
-                console.error(error);
-                return;
+                // Если Worker не ответил — пробуем RSS резерв
+                if (!articles || articles.error || articles.length === 0) {
+                    const res = await fetch(`${WORKER_URL}/rss`);
+                    if (res.ok) articles = await res.json();
+                }
+
+                if (!articles || articles.length === 0) {
+                    container.innerHTML = '<p>No news available at the moment.</p>';
+                    return;
+                }
+
+                container.innerHTML = articles.map(art => `
+                    <article>
+                        ${art.image_url ? `<a href="article.html?slug=${art.seo_slug || ''}" target="_blank">
+                            <img src="${art.image_url}" class="news-img" alt="${art.title}" onerror="this.style.display='none'">
+                        </a>` : ''}
+                        <h3>
+                            <a href="${art.seo_slug ? `article.html?slug=${art.seo_slug}` : (art.source_url || '#')}" target="_blank">
+                                ${art.title}
+                            </a>
+                        </h3>
+                        <p>${art.summary || ''}</p>
+                        <span class="date">
+                            ${new Date(art.created_at).toLocaleDateString('en-US', { day:'numeric', month:'short', year:'numeric' })}
+                            ${art.source_name ? ` · ${art.source_name}` : ''}
+                        </span>
+                    </article>
+                `).join('');
+
+            } catch(e) {
+                container.innerHTML = '<p>Error loading news. Please try again later.</p>';
+                console.error(e);
             }
-
-            if (!articles || articles.length === 0) {
-                container.innerHTML = `<p>No news articles available at the moment.</p>`;
-                return;
-            }
-
-            container.innerHTML = articles.map(art => `
-                <article>
-                    ${art.image_url ? 
-                        `<a href="article.html?slug=${art.slug}" target="_blank">
-                            <img src="${art.image_url}" class="news-img" alt="${art.title}">
-                        </a>` : ''
-                    }
-                    <h3>
-                        <a href="article.html?slug=${art.slug}" target="_blank">
-                            ${art.title}
-                        </a>
-                    </h3>
-                    <p>${art.summary}</p>
-                    <span class="date">
-                        ${new Date(art.created_at).toLocaleDateString('en-US', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric'
-                        })}
-                    </span>
-                </article>
-            `).join('');
         }
 
         loadNews();
