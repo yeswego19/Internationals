@@ -7,10 +7,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
-        .close-btn { position: fixed; top: 15px; right: 20px; background: transparent; border: none; color: #d9534f; font-size: 52px; cursor: pointer; z-index: 9999; padding: 0 8px; line-height: 1; }
+        .close-btn { position: fixed; top: 15px; right: 20px; background: transparent; border: none; color: #d9534f; font-size: 52px; cursor: pointer; z-index: 9999; transition: all 0.2s ease; padding: 0 8px; line-height: 1; }
         .close-btn:hover { color: #ff0000; transform: scale(1.1); }
-        .globe { position: fixed; top: 80px; right: 20px; width: 68px; height: 68px; cursor: pointer; z-index: 9999; border: none; background: transparent; padding: 0; animation: spin 10s linear infinite; }
+        .globe { position: fixed; top: 80px; right: 20px; width: 68px; height: 68px; cursor: pointer; z-index: 9999; transition: all 0.3s ease; border: none; background: transparent; padding: 0; animation: spin 10s linear infinite; }
         .globe img { width: 100%; height: 100%; object-fit: contain; }
+        .globe:hover { transform: scale(1.1); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         article { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 30px; }
         h3 a { color: #0066cc; text-decoration: none; font-size: 1.4em; }
@@ -21,7 +22,9 @@
 </head>
 <body>
     <button class="close-btn" onclick="window.close()">←</button>
-    <a class="globe" id="globeLink" href="#" target="_blank"><img src="assets/globe.png" alt="Translate"></a>
+    <a class="globe" id="globeLink" href="#" target="_blank" title="Translate to your language">
+        <img src="assets/globe.png" alt="Translate">
+    </a>
     <h1>Global News for Expats & Nomads</h1>
     <hr>
     <div id="news-container">Loading latest insights...</div>
@@ -38,39 +41,44 @@
             window.open('https://translate.google.com/translate?sl=en&tl=' + lang + '&u=' + encodeURIComponent(location.href), '_blank');
         });
 
-        function renderArticles(articles) {
+        function render(articles) {
             const container = document.getElementById('news-container');
             if (!articles || articles.length === 0) { container.innerHTML = '<p>No news articles available at the moment.</p>'; return; }
-            container.innerHTML = articles.map(function(art) {
+            container.innerHTML = articles.map(art => {
                 const slug = art.slug || art.seo_slug || '';
-                const link = slug ? ('article.html?slug=' + slug) : (art.source_url || '#');
+                const link = slug ? 'article.html?slug=' + slug : (art.source_url || '#');
                 return '<article>' +
                     (art.image_url ? '<a href="' + link + '" target="_blank"><img src="' + art.image_url + '" class="news-img" alt="' + art.title + '" onerror="this.style.display=\'none\'"></a>' : '') +
                     '<h3><a href="' + link + '" target="_blank">' + art.title + '</a></h3>' +
                     '<p>' + (art.summary || '') + '</p>' +
-                    '<span class="date">' + new Date(art.created_at).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) + (art.source_name ? ' · ' + art.source_name : '') + '</span>' +
+                    '<span class="date">' + new Date(art.created_at).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) + '</span>' +
                     '</article>';
             }).join('');
         }
 
         async function loadNews() {
-            const container = document.getElementById('news-container');
-            // 1. Supabase напрямую (с VPN)
+            // Шаг 1: Supabase напрямую (работает с VPN)
             try {
-                const r = await _supabase.from('articles').select('title,summary,slug,seo_slug,created_at,image_url,source_url,source_name').order('created_at', {ascending: false});
-                if (!r.error && r.data && r.data.length > 0) { renderArticles(r.data); return; }
+                const r = await Promise.race([
+                    _supabase.from('articles').select('title,summary,slug,created_at,image_url,source_url').order('created_at', {ascending:false}),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+                ]);
+                if (!r.error && r.data && r.data.length > 0) { render(r.data); return; }
             } catch(e) {}
-            // 2. Worker (без VPN)
+
+            // Шаг 2: Worker (работает без VPN из России)
             try {
                 const r = await fetch(WORKER_URL + '/articles');
-                if (r.ok) { const d = await r.json(); if (d && !d.error && d.length > 0) { renderArticles(d); return; } }
+                if (r.ok) { const d = await r.json(); if (d && !d.error && d.length > 0) { render(d); return; } }
             } catch(e) {}
-            // 3. RSS через Worker
+
+            // Шаг 3: RSS через Worker
             try {
                 const r = await fetch(WORKER_URL + '/rss');
-                if (r.ok) { const d = await r.json(); if (d && d.length > 0) { renderArticles(d); return; } }
+                if (r.ok) { const d = await r.json(); if (d && d.length > 0) { render(d); return; } }
             } catch(e) {}
-            container.innerHTML = '<p>No news available at the moment. Please try again later.</p>';
+
+            document.getElementById('news-container').innerHTML = '<p>No news available at the moment. Please try again later.</p>';
         }
 
         loadNews();
