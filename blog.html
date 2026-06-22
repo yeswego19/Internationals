@@ -4,121 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global News & Insights | Internationals.pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-            color: #333;
-        }
-        .close-btn {
-            position: fixed;
-            top: 15px;
-            right: 20px;
-            background: transparent;
-            border: none;
-            color: #d9534f;
-            font-size: 52px;
-            cursor: pointer;
-            z-index: 9999;
-            transition: all 0.2s ease;
-            padding: 0 8px;
-            line-height: 1;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
+        .close-btn { position: fixed; top: 15px; right: 20px; background: transparent; border: none; color: #d9534f; font-size: 52px; cursor: pointer; z-index: 9999; padding: 0 8px; line-height: 1; }
         .close-btn:hover { color: #ff0000; transform: scale(1.1); }
-        .globe {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            width: 68px;
-            height: 68px;
-            cursor: pointer;
-            z-index: 9999;
-            border: none;
-            background: transparent;
-            padding: 0;
-            animation: spin 10s linear infinite;
-        }
+        .globe { position: fixed; top: 80px; right: 20px; width: 68px; height: 68px; cursor: pointer; z-index: 9999; border: none; background: transparent; padding: 0; animation: spin 10s linear infinite; }
         .globe img { width: 100%; height: 100%; object-fit: contain; }
-        .globe:hover { transform: scale(1.1); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         article { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 30px; }
         h3 a { color: #0066cc; text-decoration: none; font-size: 1.4em; }
         h3 a:hover { text-decoration: underline; }
         .date { color: #666; font-size: 0.85em; display: block; margin-top: 10px; }
         .news-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background-color: #f0f0f0; }
-        .loading { text-align: center; padding: 40px; color: #666; }
     </style>
 </head>
 <body>
-
     <button class="close-btn" onclick="window.close()">←</button>
-
-    <a class="globe" id="globeLink" href="#" target="_blank" title="Translate to your language">
-        <img src="assets/globe.png" alt="Translate">
-    </a>
-
+    <a class="globe" id="globeLink" href="#" target="_blank"><img src="assets/globe.png" alt="Translate"></a>
     <h1>Global News for Expats & Nomads</h1>
     <hr>
-
-    <div id="news-container"><div class="loading">Loading latest insights...</div></div>
-
+    <div id="news-container">Loading latest insights...</div>
     <script>
-        // Cloudflare Worker — работает без VPN из России
-        const WORKER_URL = 'https://my-vpn-proxy.yeswego19.workers.dev';
+        const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
+        const WORKER_URL = "https://my-vpn-proxy.yeswego19.workers.dev";
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         document.getElementById('globeLink').addEventListener('click', function(e) {
             e.preventDefault();
             const lang = (navigator.language || 'en').split('-')[0];
-            if (lang === 'en') { alert('Your browser language is English.'); return; }
-            window.open(`https://translate.google.com/translate?sl=en&tl=${lang}&u=${encodeURIComponent(location.href)}`, '_blank');
+            if (lang === 'en') { alert('Your browser language is English. No translation needed.'); return; }
+            window.open('https://translate.google.com/translate?sl=en&tl=' + lang + '&u=' + encodeURIComponent(location.href), '_blank');
         });
+
+        function renderArticles(articles) {
+            const container = document.getElementById('news-container');
+            if (!articles || articles.length === 0) { container.innerHTML = '<p>No news articles available at the moment.</p>'; return; }
+            container.innerHTML = articles.map(function(art) {
+                const slug = art.slug || art.seo_slug || '';
+                const link = slug ? ('article.html?slug=' + slug) : (art.source_url || '#');
+                return '<article>' +
+                    (art.image_url ? '<a href="' + link + '" target="_blank"><img src="' + art.image_url + '" class="news-img" alt="' + art.title + '" onerror="this.style.display=\'none\'"></a>' : '') +
+                    '<h3><a href="' + link + '" target="_blank">' + art.title + '</a></h3>' +
+                    '<p>' + (art.summary || '') + '</p>' +
+                    '<span class="date">' + new Date(art.created_at).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) + (art.source_name ? ' · ' + art.source_name : '') + '</span>' +
+                    '</article>';
+            }).join('');
+        }
 
         async function loadNews() {
             const container = document.getElementById('news-container');
+            // 1. Supabase напрямую (с VPN)
             try {
-                // Сначала пробуем Worker (работает без VPN)
-                let articles = null;
-                try {
-                    const res = await fetch(`${WORKER_URL}/articles`);
-                    if (res.ok) articles = await res.json();
-                } catch(e) {}
-
-                // Если Worker не ответил — пробуем RSS резерв
-                if (!articles || articles.error || articles.length === 0) {
-                    const res = await fetch(`${WORKER_URL}/rss`);
-                    if (res.ok) articles = await res.json();
-                }
-
-                if (!articles || articles.length === 0) {
-                    container.innerHTML = '<p>No news available at the moment.</p>';
-                    return;
-                }
-
-                container.innerHTML = articles.map(art => `
-                    <article>
-                        ${art.image_url ? `<a href="article.html?slug=${art.seo_slug || ''}" target="_blank">
-                            <img src="${art.image_url}" class="news-img" alt="${art.title}" onerror="this.style.display='none'">
-                        </a>` : ''}
-                        <h3>
-                            <a href="${art.seo_slug ? `article.html?slug=${art.seo_slug}` : (art.source_url || '#')}" target="_blank">
-                                ${art.title}
-                            </a>
-                        </h3>
-                        <p>${art.summary || ''}</p>
-                        <span class="date">
-                            ${new Date(art.created_at).toLocaleDateString('en-US', { day:'numeric', month:'short', year:'numeric' })}
-                            ${art.source_name ? ` · ${art.source_name}` : ''}
-                        </span>
-                    </article>
-                `).join('');
-
-            } catch(e) {
-                container.innerHTML = '<p>Error loading news. Please try again later.</p>';
-                console.error(e);
-            }
+                const r = await _supabase.from('articles').select('title,summary,slug,seo_slug,created_at,image_url,source_url,source_name').order('created_at', {ascending: false});
+                if (!r.error && r.data && r.data.length > 0) { renderArticles(r.data); return; }
+            } catch(e) {}
+            // 2. Worker (без VPN)
+            try {
+                const r = await fetch(WORKER_URL + '/articles');
+                if (r.ok) { const d = await r.json(); if (d && !d.error && d.length > 0) { renderArticles(d); return; } }
+            } catch(e) {}
+            // 3. RSS через Worker
+            try {
+                const r = await fetch(WORKER_URL + '/rss');
+                if (r.ok) { const d = await r.json(); if (d && d.length > 0) { renderArticles(d); return; } }
+            } catch(e) {}
+            container.innerHTML = '<p>No news available at the moment. Please try again later.</p>';
         }
 
         loadNews();
