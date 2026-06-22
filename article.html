@@ -6,7 +6,6 @@
     <title id="page-title">Loading Article... | Internationals.pro</title>
     <meta id="meta-desc" name="description" content="">
     <meta id="meta-keys" name="keywords" content="">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -16,7 +15,6 @@
             padding: 0 20px;
             color: #333;
         }
-
         .close-btn {
             position: fixed;
             top: 15px;
@@ -27,16 +25,10 @@
             font-size: 52px;
             cursor: pointer;
             z-index: 9999;
-            transition: all 0.2s ease;
             padding: 0 8px;
             line-height: 1;
         }
-
-        .close-btn:hover {
-            color: #ff0000;
-            transform: scale(1.1);
-        }
-
+        .close-btn:hover { color: #ff0000; transform: scale(1.1); }
         .globe {
             position: fixed;
             top: 80px;
@@ -45,56 +37,24 @@
             height: 68px;
             cursor: pointer;
             z-index: 9999;
-            transition: all 0.3s ease;
             border: none;
             background: transparent;
             padding: 0;
             animation: spin 10s linear infinite;
         }
-
-        .globe img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .globe:hover {
-            transform: scale(1.1);
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .date {
-            color: #666;
-            font-size: 0.9em;
-            margin: -10px 0 20px 0;
-        }
-
-        .source {
-            margin-top: 40px;
-            font-size: 0.9em;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-
-        .main-img {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            background-color: #f0f0f0;
-        }
+        .globe img { width: 100%; height: 100%; object-fit: contain; }
+        .globe:hover { transform: scale(1.1); }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .date { color: #666; font-size: 0.9em; margin: -10px 0 20px 0; }
+        .source { margin-top: 40px; font-size: 0.9em; border-top: 1px solid #eee; padding-top: 20px; }
+        .main-img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; margin-bottom: 25px; }
     </style>
 </head>
 <body>
 
-    <button class="close-btn" onclick="closeTab()">←</button>
+    <button class="close-btn" onclick="window.close()">←</button>
 
-    <a class="globe" id="globeLink" href="#" target="_blank" title="Translate to your language">
+    <a class="globe" id="globeLink" href="#" target="_blank">
         <img src="assets/globe.png" alt="Translate">
     </a>
 
@@ -105,74 +65,53 @@
     <p id="article-source" class="source"></p>
 
     <script>
-        function closeTab() { window.close(); }
+        const WORKER_URL = 'https://my-vpn-proxy.yeswego19.workers.dev';
 
-        const globeLink = document.getElementById('globeLink');
-
-        globeLink.addEventListener('click', function(e) {
+        document.getElementById('globeLink').addEventListener('click', function(e) {
             e.preventDefault();
-
-            const userLang = navigator.language || navigator.userLanguage;
-            const langCode = userLang.split('-')[0];
-
-            if (langCode === 'en') {
-                alert('🌐 Your browser language is English. No translation needed.');
-                return;
-            }
-
-            const currentUrl = window.location.href;
-            const translateUrl = `https://translate.google.com/translate?sl=en&tl=${langCode}&u=${encodeURIComponent(currentUrl)}`;
-
-            window.open(translateUrl, '_blank');
+            const lang = (navigator.language || 'en').split('-')[0];
+            if (lang === 'en') { alert('Your browser language is English.'); return; }
+            window.open(`https://translate.google.com/translate?sl=en&tl=${lang}&u=${encodeURIComponent(location.href)}`, '_blank');
         });
 
-        const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
         async function loadArticle() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const slug = urlParams.get('slug');
-
+            const slug = new URLSearchParams(location.search).get('slug');
             if (!slug) {
-                document.getElementById('article-title').innerText = "Article not found";
+                document.getElementById('article-title').innerText = 'Article not found';
                 return;
             }
 
-            const { data: article, error } = await _supabase
-                .from('articles')
-                .select('*')
-                .eq('slug', slug)
-                .single();
+            try {
+                const res = await fetch(`${WORKER_URL}/article?slug=${encodeURIComponent(slug)}`);
+                const article = await res.json();
 
-            if (error || !article) {
-                document.getElementById('article-title').innerText = "Article not found";
-                return;
-            }
+                if (!article || article.error) {
+                    document.getElementById('article-title').innerText = 'Article not found';
+                    return;
+                }
 
-            document.title = `${article.title} | Internationals.pro`;
-            document.getElementById('meta-desc').setAttribute('content', article.meta_description || '');
-            document.getElementById('meta-keys').setAttribute('content', article.keywords || '');
+                document.title = `${article.title} | Internationals.pro`;
+                document.getElementById('meta-desc').content = article.meta_description || '';
+                document.getElementById('meta-keys').content = article.keywords || '';
+                document.getElementById('article-title').innerText = article.title;
+                document.getElementById('article-date').innerText = new Date(article.created_at).toLocaleDateString('en-US', {
+                    day: 'numeric', month: 'long', year: 'numeric'
+                });
 
-            document.getElementById('article-title').innerText = article.title;
-            document.getElementById('article-date').innerText = new Date(article.created_at).toLocaleDateString('en-US', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
+                if (article.image_url) {
+                    document.getElementById('article-image-wrapper').innerHTML =
+                        `<img src="${article.image_url}" class="main-img" alt="${article.title}" onerror="this.style.display='none'">`;
+                }
 
-            if (article.image_url) {
-                document.getElementById('article-image-wrapper').innerHTML = `
-                    <img src="${article.image_url}" class="main-img" alt="${article.title}">
-                `;
-            }
+                document.getElementById('article-body').innerText = article.summary || '';
 
-            document.getElementById('article-body').innerText = article.summary;
+                if (article.source_url) {
+                    document.getElementById('article-source').innerHTML =
+                        `Original source: <a href="${article.source_url}" target="_blank" rel="noopener">View Original</a>`;
+                }
 
-            if (article.source_url) {
-                document.getElementById('article-source').innerHTML = `
-                    Original source: <a href="${article.source_url}" target="_blank" rel="noopener noreferrer">View Original Feed</a>
-                `;
+            } catch(e) {
+                document.getElementById('article-title').innerText = 'Error loading article';
             }
         }
 
