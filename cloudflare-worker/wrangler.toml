@@ -1,0 +1,7 @@
+name = "my-vpn-proxy"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[vars]
+SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co"
+SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee"
