@@ -1,10 +1,6 @@
 name: Deploy Cloudflare Worker
 
 on:
-  push:
-    paths:
-      - 'cloudflare-worker/worker.js'
-      - 'cloudflare-worker/wrangler.toml'
   workflow_dispatch:
 
 jobs:
@@ -12,10 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy Worker
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 4f2daa6d0f1874e97abfcf6870d09537
-          workingDirectory: cloudflare-worker
-          command: deploy --verbose
+      
+      - name: Install wrangler
+        run: npm install -g wrangler
+
+      - name: Deploy
+        run: wrangler deploy
+        working-directory: cloudflare-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 4f2daa6d0f1874e97abfcf6870d09537
