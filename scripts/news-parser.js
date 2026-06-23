@@ -3,185 +3,134 @@ const { createClient } = require('@supabase/supabase-js');
 const fetch = require('node-fetch');
 
 const parser = new Parser({
-  customFields: {
-    item: [['media:content', 'mediaContent'], ['media:thumbnail', 'mediaThumbnail'], ['enclosure', 'enclosure']]
-  }
+  customFields: { item: [['media:content','mediaContent'],['media:thumbnail','mediaThumbnail']] }
 });
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
-const geminiApiKey = process.env.GEMINI_API_KEY;
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+const GEMINI_KEY = process.env.GEMINI_API_KEY;
 
-if (!supabaseUrl || !supabaseServiceKey || !geminiApiKey) {
-  throw new Error("CRITICAL: Missing environment variables!");
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY || !GEMINI_KEY) {
+  throw new Error("Missing environment variables!");
 }
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
+// Источники: путешествия, технологии, мировые новости, языки, бизнес
 const RSS_FEEDS = [
-  'https://techcrunch.com/feed/',
-  'https://feeds.bbci.co.uk/news/world/rss.xml',
-  'https://slator.com/feed/',
-  'https://www.aljazeera.com/xml/rss/all.xml',
-  'https://feeds.npr.org/1001/rss.xml'
+  { url: 'https://www.nomadicmatt.com/feed/', name: 'Nomadic Matt' },
+  { url: 'https://www.lonelyplanet.com/news/feed', name: 'Lonely Planet' },
+  { url: 'https://techcrunch.com/feed/', name: 'TechCrunch' },
+  { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World' },
+  { url: 'https://slator.com/feed/', name: 'Slator' },
+  { url: 'https://www.theguardian.com/world/rss', name: 'The Guardian' },
+  { url: 'https://feeds.npr.org/1001/rss.xml', name: 'NPR' }
 ];
 
 function slugify(text) {
   return text.toString().toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '')
-    .slice(0, 80);
+    .replace(/\s+/g, '-').replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-').replace(/^-+/, '').replace(/-+$/, '').slice(0, 80);
 }
 
-// Извлекаем картинку из RSS-элемента
-function extractImageFromItem(item) {
-  // 1. media:content
-  if (item.mediaContent && item.mediaContent.$ && item.mediaContent.$.url) {
-    return item.mediaContent.$.url;
-  }
-  // 2. media:thumbnail
-  if (item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) {
-    return item.mediaThumbnail.$.url;
-  }
-  // 3. enclosure (для подкастов и новостей)
-  if (item.enclosure && item.enclosure.url && item.enclosure.type && item.enclosure.type.startsWith('image')) {
-    return item.enclosure.url;
-  }
-  // 4. Ищем img тег в content
-  const content = item['content:encoded'] || item.content || item.summary || '';
-  const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
-  if (imgMatch) return imgMatch[1];
-
-  return null;
+function extractImage(item) {
+  if (item.mediaContent && item.mediaContent.$ && item.mediaContent.$.url) return item.mediaContent.$.url;
+  if (item.mediaThumbnail && item.mediaThumbnail.$ && item.mediaThumbnail.$.url) return item.mediaThumbnail.$.url;
+  if (item.enclosure && item.enclosure.url) return item.enclosure.url;
+  const html = item['content:encoded'] || item.content || item.description || '';
+  const m = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+  return m ? m[1] : null;
 }
 
-// Генерируем картинку через Pollinations.ai по заголовку (бесплатно, без ключа)
-function generateImageUrl(title) {
-  const prompt = encodeURIComponent(title.slice(0, 100) + ', news photo, realistic, high quality');
-  return `https://image.pollinations.ai/prompt/${prompt}?width=800&height=450&nologo=true`;
+function generateImage(title) {
+  return 'https://image.pollinations.ai/prompt/' + encodeURIComponent(title.slice(0, 80) + ', travel photo, realistic') + '?width=800&height=450&nologo=true';
 }
 
-async function adaptArticleWithAI(title, content) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiApiKey}`;
+async function callGemini(title, content) {
+  const prompt = `You are Alex — a witty, smart 30-year-old world traveler writing for expats and nomads.
+Rewrite this news in your voice. Return ONLY valid JSON, no markdown:
+{"title":"engaging headline for expats max 90 chars","summary":"exactly 5 sentences: what happened, why it matters for people living abroad or traveling, one practical insight, and a witty closing observation","meta_description":"SEO description max 155 chars"}
 
-  // Тип 30-летнего путешественника — умного и весёлого
-  const prompt = `You are Alex, a witty 30-year-old world traveler and expat who writes engaging news summaries. 
-Write a summary of this news for expats, digital nomads, and international travelers.
-Your response MUST be a single valid JSON object. No markdown, no backticks, nothing else.
-JSON structure:
-{
-  "title": "catchy headline rewritten for expats (max 90 chars)",
-  "summary": "5 sentences: explain what happened, why it matters for people living abroad or traveling, and end with a practical tip or observation. Keep it smart but human and slightly witty.",
-  "meta_description": "SEO description max 155 chars"
-}`;
+Title: ${title}
+Content: ${content.slice(0, 1200)}`;
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: `${prompt}\n\nTitle: ${title}\nContent: ${content.slice(0, 1500)}` }] }],
-      generationConfig: { temperature: 0.7, responseMimeType: 'application/json' }
-    })
-  });
+  const res = await fetch(
+    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + GEMINI_KEY,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.7, responseMimeType: 'application/json' }
+      })
+    }
+  );
 
-  if (!response.ok) {
-    if (response.status === 429) return { isQuotaError: true };
-    const errText = await response.text();
-    throw new Error(`Gemini API Error ${response.status}: ${errText.slice(0, 200)}`);
-  }
+  if (res.status === 429) return { quotaError: true };
+  if (!res.ok) throw new Error('Gemini ' + res.status);
 
-  const data = await response.json();
-  let jsonText = data.candidates[0].content.parts[0].text.trim();
-  jsonText = jsonText.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```$/, '').trim();
-  return JSON.parse(jsonText);
+  const data = await res.json();
+  const text = data.candidates[0].content.parts[0].text.trim()
+    .replace(/^```json\s*/i, '').replace(/^```/, '').replace(/```$/, '').trim();
+  return JSON.parse(text);
 }
 
 async function main() {
-  console.log("=== STARTING NEWS PARSER ===");
+  console.log('=== NEWS PARSER START ===');
 
-  // Удаляем старые статьи
-  const { error: deleteError } = await supabase.from('articles').delete().neq('id', 0);
-  if (deleteError) throw new Error(`Failed to clean database: ${deleteError.message}`);
-  console.log("Database cleaned!");
+  // Очищаем старые статьи
+  await supabase.from('articles').delete().neq('id', 0);
+  console.log('DB cleaned');
 
-  for (const feedUrl of RSS_FEEDS) {
-    console.log(`\nParsing: ${feedUrl}`);
-    let feed;
-    try {
-      feed = await parser.parseURL(feedUrl);
-    } catch (e) {
-      console.warn(`⚠️ Failed to parse ${feedUrl}: ${e.message}`);
-      continue;
-    }
+  for (const feed of RSS_FEEDS) {
+    console.log('\nFeed:', feed.name);
+    let feedData;
+    try { feedData = await parser.parseURL(feed.url); }
+    catch(e) { console.warn('Skip:', feed.name, e.message); continue; }
 
-    const items = feed.items.slice(0, 5); // 5 статей с каждого источника
-
+    const items = feedData.items.slice(0, 5);
     for (const item of items) {
       const slug = slugify(item.title || '');
       if (!slug) continue;
 
       // Проверяем дубликат
-      const { data: existing } = await supabase.from('articles').select('id').eq('slug', slug).maybeSingle();
-      if (existing) { console.log(`Skip duplicate: ${slug}`); continue; }
+      const { data: ex } = await supabase.from('articles').select('id').eq('slug', slug).maybeSingle();
+      if (ex) continue;
 
-      console.log(`Processing: ${item.title}`);
+      const rawContent = (item.contentSnippet || item.content || item.description || '').replace(/<[^>]*>/g, '');
+      let title = item.title || '';
+      let summary = rawContent.slice(0, 500);
+      let meta = title;
 
-      let finalTitle = item.title || 'Untitled';
-      let finalSummary = (item.contentSnippet || item.content || item.summary || 'No description.').replace(/<[^>]*>/g, '').slice(0, 500);
-      let finalMeta = finalTitle;
-
-      // Картинка: сначала из RSS, потом Pollinations
-      let finalImageUrl = extractImageFromItem(item);
-      if (!finalImageUrl) {
-        finalImageUrl = generateImageUrl(finalTitle);
-        console.log(`  → No image in RSS, generating via Pollinations`);
-      } else {
-        console.log(`  → Image from RSS: ${finalImageUrl.slice(0, 60)}...`);
-      }
+      // Картинка из RSS или Pollinations
+      let image = extractImage(item);
+      if (!image) image = generateImage(title);
 
       // AI обработка
       try {
-        const aiResult = await adaptArticleWithAI(finalTitle, finalSummary);
-        if (aiResult && aiResult.isQuotaError) {
-          console.warn("⚠️ Gemini quota exceeded, using raw RSS data");
-        } else if (aiResult && aiResult.title) {
-          finalTitle = aiResult.title;
-          finalSummary = aiResult.summary;
-          finalMeta = aiResult.meta_description || finalMeta;
+        const ai = await callGemini(title, rawContent);
+        if (ai && !ai.quotaError) {
+          title = ai.title || title;
+          summary = ai.summary || summary;
+          meta = ai.meta_description || meta;
+        } else if (ai && ai.quotaError) {
+          console.warn('Quota exceeded, using raw RSS');
         }
-      } catch (aiError) {
-        console.warn(`⚠️ AI error: ${aiError.message}, using raw RSS`);
-      }
+      } catch(e) { console.warn('AI error:', e.message); }
 
-      if (finalSummary.length > 600) finalSummary = finalSummary.slice(0, 597) + '...';
-
-      const { error: insertError } = await supabase.from('articles').insert([{
-        slug,
-        title: finalTitle,
-        summary: finalSummary,
-        meta_description: finalMeta,
-        image_url: finalImageUrl,
+      const { error } = await supabase.from('articles').insert([{
+        slug, title, summary,
+        meta_description: meta,
+        image_url: image,
         source_url: item.link || '',
-        source_name: feed.title || feedUrl,
+        source_name: feed.name,
         created_at: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString()
       }]);
 
-      if (insertError) {
-        console.error(`Insert error: ${insertError.message}`);
-      } else {
-        console.log(`✅ Inserted: ${finalTitle.slice(0, 60)}`);
-      }
+      if (error) console.error('Insert error:', error.message);
+      else console.log('✅', title.slice(0, 60));
 
-      await new Promise(res => setTimeout(res, 2500));
+      await new Promise(r => setTimeout(r, 2500));
     }
   }
-  console.log("\n=== PARSING FINISHED ===");
+  console.log('\n=== DONE ===');
 }
 
-main().catch(err => {
-  console.error("❌ FAILED:", err.message);
-  process.exit(1);
-});
+main().catch(e => { console.error('FAILED:', e.message); process.exit(1); });
