@@ -17,7 +17,7 @@
         h3 a { color: #0066cc; text-decoration: none; font-size: 1.4em; }
         h3 a:hover { text-decoration: underline; }
         .date { color: #666; font-size: 0.85em; display: block; margin-top: 10px; }
-        .news-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background-color: #f0f0f0; }
+        .news-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
         #status { text-align: center; padding: 10px; color: #888; font-size: 13px; }
     </style>
 </head>
@@ -38,69 +38,82 @@
 
         document.getElementById('globeLink').addEventListener('click', function(e) {
             e.preventDefault();
-            const lang = (navigator.language || 'en').split('-')[0];
+            var lang = (navigator.language || 'en').split('-')[0];
             if (lang === 'en') { alert('Your browser language is English.'); return; }
             window.open('https://translate.google.com/translate?sl=en&tl=' + lang + '&u=' + encodeURIComponent(location.href), '_blank');
         });
 
         function render(articles, source) {
             document.getElementById('status').textContent = articles.length + ' articles · ' + source;
-            const container = document.getElementById('news-container');
+            var container = document.getElementById('news-container');
             if (!articles.length) { container.innerHTML = '<p>No news at the moment.</p>'; return; }
             container.innerHTML = articles.map(function(art) {
-                const slug = art.slug || art.seo_slug || '';
-                const link = slug ? 'article.html?slug=' + slug : (art.link || art.source_url || '#');
-                const img = art.image_url || art.thumbnail || '';
-                const title = art.title || '';
-                const summary = art.summary || art.description || art.contentSnippet || '';
-                const date = art.created_at || art.pubDate || '';
+                var slug = art.slug || art.seo_slug || '';
+                var link = slug ? 'article.html?slug=' + slug : (art.link || art.url || art.source_url || '#');
+                var img = art.image_url || art.thumbnail || art.enclosure || '';
+                var title = art.title || '';
+                var summary = (art.summary || art.description || art.contentSnippet || '').replace(/<[^>]*>/g, '').slice(0, 400);
+                var date = art.created_at || art.pubDate || art.published || '';
+                var src = art.source_name || art.feed_title || '';
                 return '<article>' +
                     (img ? '<a href="' + link + '" target="_blank"><img src="' + img + '" class="news-img" onerror="this.style.display=\'none\'"></a>' : '') +
                     '<h3><a href="' + link + '" target="_blank">' + title + '</a></h3>' +
-                    '<p>' + summary.slice(0, 400) + '</p>' +
-                    '<span class="date">' + (date ? new Date(date).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) : '') + (art.source_name || art.feed_title ? ' · ' + (art.source_name || art.feed_title) : '') + '</span>' +
+                    '<p>' + summary + '</p>' +
+                    '<span class="date">' + (date ? new Date(date).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) : '') + (src ? ' · ' + src : '') + '</span>' +
                     '</article>';
             }).join('');
         }
 
         async function loadFromRSS() {
-            // Используем rss2json.com — бесплатный, не заблокирован в России
-            const feeds = [
-                'https://feeds.bbci.co.uk/news/world/rss.xml',
-                'https://techcrunch.com/feed/',
-                'https://slator.com/feed/'
+            // Используем corsproxy.io как CORS прокси для прямого чтения RSS
+            var feeds = [
+                { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World' },
+                { url: 'https://techcrunch.com/feed/', name: 'TechCrunch' },
+                { url: 'https://slator.com/feed/', name: 'Slator' }
             ];
-            let all = [];
-            for (const feed of feeds) {
+            var all = [];
+            for (var i = 0; i < feeds.length; i++) {
                 try {
-                    const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed) + '&count=7');
+                    var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(feeds[i].url);
+                    var r = await fetch(proxyUrl);
                     if (!r.ok) continue;
-                    const d = await r.json();
-                    if (d.items) {
-                        all = all.concat(d.items.map(function(item) {
-                            return {
-                                title: item.title,
-                                summary: (item.description || item.content || '').replace(/<[^>]*>/g, '').slice(0, 400),
-                                link: item.link,
-                                image_url: item.thumbnail || '',
-                                pubDate: item.pubDate,
-                                source_name: d.feed && d.feed.title ? d.feed.title : ''
-                            };
-                        }));
-                    }
-                } catch(e) {}
+                    var text = await r.text();
+                    var parser = new DOMParser();
+                    var xml = parser.parseFromString(text, 'text/xml');
+                    var items = xml.querySelectorAll('item');
+                    var feedName = feeds[i].name;
+                    items.forEach(function(item, idx) {
+                        if (idx >= 7) return;
+                        var title = item.querySelector('title') ? item.querySelector('title').textContent : '';
+                        var link = item.querySelector('link') ? item.querySelector('link').textContent : '';
+                        var desc = item.querySelector('description') ? item.querySelector('description').textContent : '';
+                        var pubDate = item.querySelector('pubDate') ? item.querySelector('pubDate').textContent : '';
+                        var img = '';
+                        var mediaContent = item.querySelector('content');
+                        if (mediaContent) img = mediaContent.getAttribute('url') || '';
+                        if (!img) {
+                            var enclosure = item.querySelector('enclosure');
+                            if (enclosure) img = enclosure.getAttribute('url') || '';
+                        }
+                        if (!img) {
+                            var imgMatch = desc.match(/<img[^>]+src=["']([^"']+)["']/i);
+                            if (imgMatch) img = imgMatch[1];
+                        }
+                        all.push({ title: title, link: link, summary: desc.replace(/<[^>]*>/g,'').slice(0,400), image_url: img, pubDate: pubDate, source_name: feedName });
+                    });
+                } catch(e) { console.warn('RSS error:', feeds[i].name, e.message); }
             }
             all.sort(function(a,b){ return new Date(b.pubDate) - new Date(a.pubDate); });
             return all.slice(0, 20);
         }
 
         async function loadNews() {
-            const status = document.getElementById('status');
+            var status = document.getElementById('status');
 
-            // Шаг 1: Пробуем Supabase с таймаутом 4 секунды
+            // Шаг 1: Supabase (с VPN — работает, без VPN — таймаут 4 сек)
             try {
-                status.textContent = 'Loading from database...';
-                const result = await Promise.race([
+                status.textContent = 'Loading...';
+                var result = await Promise.race([
                     _supabase.from('articles').select('title,summary,slug,created_at,image_url,source_url,source_name').order('created_at', {ascending: false}),
                     new Promise(function(_, reject) { setTimeout(function(){ reject(new Error('timeout')); }, 4000); })
                 ]);
@@ -108,22 +121,20 @@
                     render(result.data, 'Latest articles');
                     return;
                 }
-            } catch(e) {
-                console.log('Supabase unavailable, switching to RSS:', e.message);
-            }
+            } catch(e) {}
 
-            // Шаг 2: RSS напрямую (работает везде без VPN)
-            status.textContent = 'Loading from RSS feeds...';
+            // Шаг 2: RSS напрямую через corsproxy.io (без VPN)
             try {
-                const rssData = await loadFromRSS();
+                status.textContent = 'Loading news...';
+                var rssData = await loadFromRSS();
                 if (rssData.length > 0) {
-                    render(rssData, 'Live RSS feeds');
+                    render(rssData, 'Live news');
                     return;
                 }
             } catch(e) {}
 
             status.textContent = '';
-            document.getElementById('news-container').innerHTML = '<p>No news available at the moment. Please try again later.</p>';
+            document.getElementById('news-container').innerHTML = '<p>No news available. Please try again later.</p>';
         }
 
         loadNews();
