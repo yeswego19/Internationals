@@ -7,9 +7,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
-        .close-btn { position: fixed; top: 15px; right: 20px; background: transparent; border: none; color: #d9534f; font-size: 52px; cursor: pointer; z-index: 9999; transition: all 0.2s ease; padding: 0 8px; line-height: 1; }
+        .close-btn { position: fixed; top: 15px; right: 20px; background: transparent; border: none; color: #d9534f; font-size: 52px; cursor: pointer; z-index: 9999; padding: 0 8px; line-height: 1; }
         .close-btn:hover { color: #ff0000; transform: scale(1.1); }
-        .globe { position: fixed; top: 80px; right: 20px; width: 68px; height: 68px; cursor: pointer; z-index: 9999; transition: all 0.3s ease; border: none; background: transparent; padding: 0; animation: spin 10s linear infinite; }
+        .globe { position: fixed; top: 80px; right: 20px; width: 68px; height: 68px; cursor: pointer; z-index: 9999; border: none; background: transparent; padding: 0; animation: spin 10s linear infinite; }
         .globe img { width: 100%; height: 100%; object-fit: contain; }
         .globe:hover { transform: scale(1.1); }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -18,66 +18,111 @@
         h3 a:hover { text-decoration: underline; }
         .date { color: #666; font-size: 0.85em; display: block; margin-top: 10px; }
         .news-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background-color: #f0f0f0; }
+        #status { text-align: center; padding: 10px; color: #888; font-size: 13px; }
     </style>
 </head>
 <body>
     <button class="close-btn" onclick="window.close()">←</button>
-    <a class="globe" id="globeLink" href="#" target="_blank" title="Translate to your language">
+    <a class="globe" id="globeLink" href="#" target="_blank">
         <img src="assets/globe.png" alt="Translate">
     </a>
     <h1>Global News for Expats & Nomads</h1>
+    <div id="status">Loading...</div>
     <hr>
-    <div id="news-container">Loading latest insights...</div>
+    <div id="news-container"></div>
+
     <script>
         const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co";
         const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
-        const WORKER_URL = "https://my-vpn-proxy.yeswego19.workers.dev";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         document.getElementById('globeLink').addEventListener('click', function(e) {
             e.preventDefault();
             const lang = (navigator.language || 'en').split('-')[0];
-            if (lang === 'en') { alert('Your browser language is English. No translation needed.'); return; }
+            if (lang === 'en') { alert('Your browser language is English.'); return; }
             window.open('https://translate.google.com/translate?sl=en&tl=' + lang + '&u=' + encodeURIComponent(location.href), '_blank');
         });
 
-        function render(articles) {
+        function render(articles, source) {
+            document.getElementById('status').textContent = articles.length + ' articles · ' + source;
             const container = document.getElementById('news-container');
-            if (!articles || articles.length === 0) { container.innerHTML = '<p>No news articles available at the moment.</p>'; return; }
-            container.innerHTML = articles.map(art => {
+            if (!articles.length) { container.innerHTML = '<p>No news at the moment.</p>'; return; }
+            container.innerHTML = articles.map(function(art) {
                 const slug = art.slug || art.seo_slug || '';
-                const link = slug ? 'article.html?slug=' + slug : (art.source_url || '#');
+                const link = slug ? 'article.html?slug=' + slug : (art.link || art.source_url || '#');
+                const img = art.image_url || art.thumbnail || '';
+                const title = art.title || '';
+                const summary = art.summary || art.description || art.contentSnippet || '';
+                const date = art.created_at || art.pubDate || '';
                 return '<article>' +
-                    (art.image_url ? '<a href="' + link + '" target="_blank"><img src="' + art.image_url + '" class="news-img" alt="' + art.title + '" onerror="this.style.display=\'none\'"></a>' : '') +
-                    '<h3><a href="' + link + '" target="_blank">' + art.title + '</a></h3>' +
-                    '<p>' + (art.summary || '') + '</p>' +
-                    '<span class="date">' + new Date(art.created_at).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) + '</span>' +
+                    (img ? '<a href="' + link + '" target="_blank"><img src="' + img + '" class="news-img" onerror="this.style.display=\'none\'"></a>' : '') +
+                    '<h3><a href="' + link + '" target="_blank">' + title + '</a></h3>' +
+                    '<p>' + summary.slice(0, 400) + '</p>' +
+                    '<span class="date">' + (date ? new Date(date).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) : '') + (art.source_name || art.feed_title ? ' · ' + (art.source_name || art.feed_title) : '') + '</span>' +
                     '</article>';
             }).join('');
         }
 
+        async function loadFromRSS() {
+            // Используем rss2json.com — бесплатный, не заблокирован в России
+            const feeds = [
+                'https://feeds.bbci.co.uk/news/world/rss.xml',
+                'https://techcrunch.com/feed/',
+                'https://slator.com/feed/'
+            ];
+            let all = [];
+            for (const feed of feeds) {
+                try {
+                    const r = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed) + '&count=7');
+                    if (!r.ok) continue;
+                    const d = await r.json();
+                    if (d.items) {
+                        all = all.concat(d.items.map(function(item) {
+                            return {
+                                title: item.title,
+                                summary: (item.description || item.content || '').replace(/<[^>]*>/g, '').slice(0, 400),
+                                link: item.link,
+                                image_url: item.thumbnail || '',
+                                pubDate: item.pubDate,
+                                source_name: d.feed && d.feed.title ? d.feed.title : ''
+                            };
+                        }));
+                    }
+                } catch(e) {}
+            }
+            all.sort(function(a,b){ return new Date(b.pubDate) - new Date(a.pubDate); });
+            return all.slice(0, 20);
+        }
+
         async function loadNews() {
-            // Шаг 1: Supabase напрямую (работает с VPN)
+            const status = document.getElementById('status');
+
+            // Шаг 1: Пробуем Supabase с таймаутом 4 секунды
             try {
-                const r = await Promise.race([
-                    _supabase.from('articles').select('title,summary,slug,created_at,image_url,source_url').order('created_at', {ascending:false}),
-                    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+                status.textContent = 'Loading from database...';
+                const result = await Promise.race([
+                    _supabase.from('articles').select('title,summary,slug,created_at,image_url,source_url,source_name').order('created_at', {ascending: false}),
+                    new Promise(function(_, reject) { setTimeout(function(){ reject(new Error('timeout')); }, 4000); })
                 ]);
-                if (!r.error && r.data && r.data.length > 0) { render(r.data); return; }
-            } catch(e) {}
+                if (!result.error && result.data && result.data.length > 0) {
+                    render(result.data, 'Latest articles');
+                    return;
+                }
+            } catch(e) {
+                console.log('Supabase unavailable, switching to RSS:', e.message);
+            }
 
-            // Шаг 2: Worker (работает без VPN из России)
+            // Шаг 2: RSS напрямую (работает везде без VPN)
+            status.textContent = 'Loading from RSS feeds...';
             try {
-                const r = await fetch(WORKER_URL + '/articles');
-                if (r.ok) { const d = await r.json(); if (d && !d.error && d.length > 0) { render(d); return; } }
+                const rssData = await loadFromRSS();
+                if (rssData.length > 0) {
+                    render(rssData, 'Live RSS feeds');
+                    return;
+                }
             } catch(e) {}
 
-            // Шаг 3: RSS через Worker
-            try {
-                const r = await fetch(WORKER_URL + '/rss');
-                if (r.ok) { const d = await r.json(); if (d && d.length > 0) { render(d); return; } }
-            } catch(e) {}
-
+            status.textContent = '';
             document.getElementById('news-container').innerHTML = '<p>No news available at the moment. Please try again later.</p>';
         }
 
