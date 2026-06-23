@@ -17,8 +17,7 @@
         h3 a { color: #0066cc; text-decoration: none; font-size: 1.4em; }
         h3 a:hover { text-decoration: underline; }
         .date { color: #666; font-size: 0.85em; display: block; margin-top: 10px; }
-        .news-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; }
-        #status { text-align: center; padding: 10px; color: #888; font-size: 13px; }
+        .news-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background-color: #f0f0f0; }
     </style>
 </head>
 <body>
@@ -27,15 +26,9 @@
         <img src="assets/globe.png" alt="Translate">
     </a>
     <h1>Global News for Expats & Nomads</h1>
-    <div id="status">Loading...</div>
     <hr>
-    <div id="news-container"></div>
-
+    <div id="news-container">Loading latest insights...</div>
     <script>
-        const SUPABASE_URL = "https://mcgcijdnzduzyqbbjtkm.supabase.co";
-        const SUPABASE_KEY = "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee";
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
         document.getElementById('globeLink').addEventListener('click', function(e) {
             e.preventDefault();
             var lang = (navigator.language || 'en').split('-')[0];
@@ -43,101 +36,29 @@
             window.open('https://translate.google.com/translate?sl=en&tl=' + lang + '&u=' + encodeURIComponent(location.href), '_blank');
         });
 
-        function render(articles, source) {
-            document.getElementById('status').textContent = articles.length + ' articles · ' + source;
-            var container = document.getElementById('news-container');
-            if (!articles.length) { container.innerHTML = '<p>No news at the moment.</p>'; return; }
-            container.innerHTML = articles.map(function(art) {
-                var slug = art.slug || art.seo_slug || '';
-                var link = slug ? 'article.html?slug=' + slug : (art.link || art.url || art.source_url || '#');
-                var img = art.image_url || art.thumbnail || art.enclosure || '';
-                var title = art.title || '';
-                var summary = (art.summary || art.description || art.contentSnippet || '').replace(/<[^>]*>/g, '').slice(0, 400);
-                var date = art.created_at || art.pubDate || art.published || '';
-                var src = art.source_name || art.feed_title || '';
-                return '<article>' +
-                    (img ? '<a href="' + link + '" target="_blank"><img src="' + img + '" class="news-img" onerror="this.style.display=\'none\'"></a>' : '') +
-                    '<h3><a href="' + link + '" target="_blank">' + title + '</a></h3>' +
-                    '<p>' + summary + '</p>' +
-                    '<span class="date">' + (date ? new Date(date).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) : '') + (src ? ' · ' + src : '') + '</span>' +
-                    '</article>';
-            }).join('');
-        }
+        var _supabase = supabase.createClient(
+            "https://mcgcijdnzduzyqbbjtkm.supabase.co",
+            "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee"
+        );
 
-        async function loadFromRSS() {
-            // Используем corsproxy.io как CORS прокси для прямого чтения RSS
-            var feeds = [
-                { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World' },
-                { url: 'https://techcrunch.com/feed/', name: 'TechCrunch' },
-                { url: 'https://slator.com/feed/', name: 'Slator' }
-            ];
-            var all = [];
-            for (var i = 0; i < feeds.length; i++) {
-                try {
-                    var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(feeds[i].url);
-                    var r = await fetch(proxyUrl);
-                    if (!r.ok) continue;
-                    var text = await r.text();
-                    var parser = new DOMParser();
-                    var xml = parser.parseFromString(text, 'text/xml');
-                    var items = xml.querySelectorAll('item');
-                    var feedName = feeds[i].name;
-                    items.forEach(function(item, idx) {
-                        if (idx >= 7) return;
-                        var title = item.querySelector('title') ? item.querySelector('title').textContent : '';
-                        var link = item.querySelector('link') ? item.querySelector('link').textContent : '';
-                        var desc = item.querySelector('description') ? item.querySelector('description').textContent : '';
-                        var pubDate = item.querySelector('pubDate') ? item.querySelector('pubDate').textContent : '';
-                        var img = '';
-                        var mediaContent = item.querySelector('content');
-                        if (mediaContent) img = mediaContent.getAttribute('url') || '';
-                        if (!img) {
-                            var enclosure = item.querySelector('enclosure');
-                            if (enclosure) img = enclosure.getAttribute('url') || '';
-                        }
-                        if (!img) {
-                            var imgMatch = desc.match(/<img[^>]+src=["']([^"']+)["']/i);
-                            if (imgMatch) img = imgMatch[1];
-                        }
-                        all.push({ title: title, link: link, summary: desc.replace(/<[^>]*>/g,'').slice(0,400), image_url: img, pubDate: pubDate, source_name: feedName });
-                    });
-                } catch(e) { console.warn('RSS error:', feeds[i].name, e.message); }
-            }
-            all.sort(function(a,b){ return new Date(b.pubDate) - new Date(a.pubDate); });
-            return all.slice(0, 20);
-        }
-
-        async function loadNews() {
-            var status = document.getElementById('status');
-
-            // Шаг 1: Supabase (с VPN — работает, без VPN — таймаут 4 сек)
-            try {
-                status.textContent = 'Loading...';
-                var result = await Promise.race([
-                    _supabase.from('articles').select('title,summary,slug,created_at,image_url,source_url,source_name').order('created_at', {ascending: false}),
-                    new Promise(function(_, reject) { setTimeout(function(){ reject(new Error('timeout')); }, 4000); })
-                ]);
-                if (!result.error && result.data && result.data.length > 0) {
-                    render(result.data, 'Latest articles');
+        _supabase.from('articles')
+            .select('title, summary, slug, created_at, image_url, source_name')
+            .order('created_at', { ascending: false })
+            .then(function(result) {
+                var container = document.getElementById('news-container');
+                if (result.error || !result.data || !result.data.length) {
+                    container.innerHTML = '<p>No news articles available at the moment.</p>';
                     return;
                 }
-            } catch(e) {}
-
-            // Шаг 2: RSS напрямую через corsproxy.io (без VPN)
-            try {
-                status.textContent = 'Loading news...';
-                var rssData = await loadFromRSS();
-                if (rssData.length > 0) {
-                    render(rssData, 'Live news');
-                    return;
-                }
-            } catch(e) {}
-
-            status.textContent = '';
-            document.getElementById('news-container').innerHTML = '<p>No news available. Please try again later.</p>';
-        }
-
-        loadNews();
+                container.innerHTML = result.data.map(function(art) {
+                    return '<article>' +
+                        (art.image_url ? '<a href="article.html?slug=' + art.slug + '" target="_blank"><img src="' + art.image_url + '" class="news-img" onerror="this.style.display=\'none\'"></a>' : '') +
+                        '<h3><a href="article.html?slug=' + art.slug + '" target="_blank">' + art.title + '</a></h3>' +
+                        '<p>' + art.summary + '</p>' +
+                        '<span class="date">' + new Date(art.created_at).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) + (art.source_name ? ' · ' + art.source_name : '') + '</span>' +
+                        '</article>';
+                }).join('');
+            });
     </script>
 </body>
 </html>
