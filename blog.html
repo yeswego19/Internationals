@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global News & Insights | Internationals.pro</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
         .close-btn { position: fixed; top: 15px; right: 20px; background: transparent; border: none; color: #d9534f; font-size: 52px; cursor: pointer; z-index: 9999; padding: 0 8px; line-height: 1; }
@@ -18,6 +17,7 @@
         h3 a:hover { text-decoration: underline; }
         .date { color: #666; font-size: 0.85em; display: block; margin-top: 10px; }
         .news-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background-color: #f0f0f0; }
+        .loading { text-align: center; padding: 40px; color: #666; }
     </style>
 </head>
 <body>
@@ -27,7 +27,7 @@
     </a>
     <h1>Global News for Expats & Nomads</h1>
     <hr>
-    <div id="news-container">Loading latest insights...</div>
+    <div id="news-container"><div class="loading">Loading latest insights...</div></div>
     <script>
         document.getElementById('globeLink').addEventListener('click', function(e) {
             e.preventDefault();
@@ -36,28 +36,23 @@
             window.open('https://translate.google.com/translate?sl=en&tl=' + lang + '&u=' + encodeURIComponent(location.href), '_blank');
         });
 
-        var _supabase = supabase.createClient(
-            "https://mcgcijdnzduzyqbbjtkm.supabase.co",
-            "sb_publishable_CCc78qZY25XBUDqdYsX9_w_YyKTihee"
-        );
-
-        _supabase.from('articles')
-            .select('title, summary, slug, created_at, image_url, source_name')
-            .order('created_at', { ascending: false })
-            .then(function(result) {
+        fetch('news.json?v=' + Date.now())
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
                 var container = document.getElementById('news-container');
-                if (result.error || !result.data || !result.data.length) {
-                    container.innerHTML = '<p>No news articles available at the moment.</p>';
-                    return;
-                }
-                container.innerHTML = result.data.map(function(art) {
+                var articles = data.articles || [];
+                if (!articles.length) { container.innerHTML = '<p>No news at the moment.</p>'; return; }
+                container.innerHTML = articles.map(function(art) {
                     return '<article>' +
-                        (art.image_url ? '<a href="article.html?slug=' + art.slug + '" target="_blank"><img src="' + art.image_url + '" class="news-img" onerror="this.style.display=\'none\'"></a>' : '') +
-                        '<h3><a href="article.html?slug=' + art.slug + '" target="_blank">' + art.title + '</a></h3>' +
+                        (art.image_url ? '<img src="' + art.image_url + '" class="news-img" onerror="this.style.display=\'none\'">' : '') +
+                        '<h3><a href="' + (art.source_url || '#') + '" target="_blank">' + art.title + '</a></h3>' +
                         '<p>' + art.summary + '</p>' +
-                        '<span class="date">' + new Date(art.created_at).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) + (art.source_name ? ' · ' + art.source_name : '') + '</span>' +
+                        '<span class="date">' + new Date(art.created_at).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) + ' · ' + (art.source_name || '') + '</span>' +
                         '</article>';
                 }).join('');
+            })
+            .catch(function() {
+                document.getElementById('news-container').innerHTML = '<p>No news available at the moment.</p>';
             });
     </script>
 </body>
