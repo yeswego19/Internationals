@@ -1,25 +1,35 @@
 {
-  "updated": "2026-06-25T07:06:42.079Z",
+  "updated": "2026-06-25T11:43:51.225Z",
   "articles": [
     {
-      "slug": "i-thought-building-would-fall-on-top-of-me-venezuelans-describe-earthquake-panic",
-      "title": "'I thought building would fall on top of me' - Venezuelans describe earthquake panic",
-      "summary": "Two quakes hit the capital seconds apart, the first at a magnitude of 7.2 and the second at 7.5.",
-      "meta_description": "'I thought building would fall on top of me' - Venezuelans describe earthquake panic",
+      "slug": "i-thought-i-was-going-to-die-venezuelans-describe-earthquake-panic",
+      "title": "'I thought I was going to die' - Venezuelans describe earthquake panic",
+      "summary": "Buildings were flattened in the capital Caracas, where voices have been heard calling from the rubble.",
+      "meta_description": "'I thought I was going to die' - Venezuelans describe earthquake panic",
       "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/5a3b/live/534f7160-703c-11f1-b1db-af71d47507d6.jpg",
       "source_url": "https://www.bbc.co.uk/news/articles/czj8vjvmz38o?at_medium=RSS&at_campaign=rss",
       "source_name": "BBC World",
-      "created_at": "2026-06-25T02:27:27.000Z"
+      "created_at": "2026-06-25T10:48:09.000Z"
     },
     {
-      "slug": "europe-is-pushing-back-on-washingtons-chip-war",
-      "title": "Europe is pushing back on Washington’s chip war",
-      "summary": "As ASML CEO Christophe Fouquet told TechCrunch in May, what China can currently buy are older-generation deep ultraviolet tools — gear first shipped about a decade ago — the same machines the MATCH Act would now put off-limits.",
-      "meta_description": "Europe is pushing back on Washington’s chip war",
-      "image_url": "https://image.pollinations.ai/prompt/Europe%20is%20pushing%20back%20on%20Washington%E2%80%99s%20chip%20war%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=39758",
-      "source_url": "https://techcrunch.com/2026/06/24/europe-is-pushing-back-on-washingtons-chip-war/",
+      "slug": "cellebrite-said-it-cut-off-russia-but-russia-used-is-tools-anyway",
+      "title": "Cellebrite said it cut off Russia, but Russia used is tools anyway",
+      "summary": "Security researchers found evidence that Russian authorities hacked the iPhone of a political opponent using a phone-unlocking device made by Cellebrite, even after the company said it would stop selling to Putin’s government.",
+      "meta_description": "Cellebrite said it cut off Russia, but Russia used is tools anyway",
+      "image_url": "https://image.pollinations.ai/prompt/Cellebrite%20said%20it%20cut%20off%20Russia%2C%20but%20Russia%20used%20is%20tools%20anyway%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=16098",
+      "source_url": "https://techcrunch.com/2026/06/25/cellebrite-said-it-cut-off-russia-but-russia-used-is-tools-anyway/",
       "source_name": "TechCrunch",
-      "created_at": "2026-06-25T00:08:36.000Z"
+      "created_at": "2026-06-25T10:00:00.000Z"
+    },
+    {
+      "slug": "openai-anthropic-model-tester-gray-swan-snags-usd-40m",
+      "title": "OpenAI, Anthropic Model Tester Gray Swan Snags USD 40M ",
+      "summary": "Gray Swan, an AI security startup that helps frontier labs “red-team” their latest models, raises USD 40m Series A round of funding.\nThe post OpenAI, Anthropic Model Tester Gray Swan Snags USD 40M  appeared first on Slator.",
+      "meta_description": "OpenAI, Anthropic Model Tester Gray Swan Snags USD 40M ",
+      "image_url": "https://image.pollinations.ai/prompt/OpenAI%2C%20Anthropic%20Model%20Tester%20Gray%20Swan%20Snags%20USD%2040M%C2%A0%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=45314",
+      "source_url": "https://slator.com/openai-anthropic-model-tester-gray-swan-snags-usd-40m/",
+      "source_name": "Slator",
+      "created_at": "2026-06-25T09:25:00.000Z"
     },
     {
       "slug": "france-confirms-first-ebola-case-in-doctor-who-had-worked-in-drc",
@@ -32,24 +42,14 @@
       "created_at": "2026-06-24T12:11:21.000Z"
     },
     {
-      "slug": "what-does-british-pms-resignation-mean-for-european-security",
-      "title": "What does British PM's resignation mean for European security?",
-      "summary": "British Prime Minister Keir Starmer was widely known for his support of Ukraine and his efforts towards a new EU–UK defense partnership. What will happen to those policies now that Starmer has announced his resignation?",
-      "meta_description": "What does British PM's resignation mean for European security?",
-      "image_url": "https://image.pollinations.ai/prompt/What%20does%20British%20PM's%20resignation%20mean%20for%20European%20security%3F%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=16427",
-      "source_url": "https://www.dw.com/en/what-does-british-pm-s-resignation-mean-for-european-security/a-77698281?maca=en-rss-en-world-4025-rdf",
+      "slug": "fact-check-no-zelenskyy-wasnt-killed-in-a-russian-airstrike",
+      "title": "Fact check: No, Zelenskyy wasn't killed in a Russian airstrike",
+      "summary": "Amid a flare-up in violence between Russia and Ukraine, viral posts claim Ukrainian President Volodymyr Zelenskyy has died. DW Fact check takes a closer look.",
+      "meta_description": "Fact check: No, Zelenskyy wasn't killed in a Russian airstrike",
+      "image_url": "https://image.pollinations.ai/prompt/Fact%20check%3A%20No%2C%20Zelenskyy%20wasn't%20killed%20in%20a%20Russian%20airstrike%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=55806",
+      "source_url": "https://www.dw.com/en/fact-check-no-zelenskyy-wasn-t-killed-in-a-russian-airstrike/a-77704409?maca=en-rss-en-world-4025-rdf",
       "source_name": "DW World",
-      "created_at": "2026-06-25T07:06:40.342Z"
-    },
-    {
-      "slug": "with-a-round-of-32-spot-already-clinched-the-us-takes-on-turkey-in-the-world-cup",
-      "title": "With a Round of 32 spot already clinched, the U.S. takes on Turkey in the World Cup",
-      "summary": "Two U.S. wins and two Turkey losses already on the books mean the Americans have won this World Cup group no matter the outcome of Thursday's game. Still, the Americans say they're playing to win.",
-      "meta_description": "With a Round of 32 spot already clinched, the U.S. takes on Turkey in the World Cup",
-      "image_url": "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3467x2311+0+0/resize/3467x2311!/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F9a%2Ff9%2F7a08e8964064b089d37cef5a126f%2Fgettyimages-2281310842.jpg",
-      "source_url": "https://www.npr.org/2026/06/25/nx-s1-5869807/2026-world-cup-fifa-usmnt-turkey",
-      "source_name": "NPR",
-      "created_at": "2026-06-25T04:00:00.000Z"
+      "created_at": "2026-06-25T11:43:50.724Z"
     }
   ]
 }
