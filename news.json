@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-24T18:56:09.724Z",
+  "updated": "2026-06-25T05:10:26.780Z",
   "articles": [
     {
       "slug": "nomad-citizen-a-new-social-safety-net-for-entrepreneurs",
@@ -52,64 +52,84 @@
       "created_at": "2026-04-24T07:38:58.000Z"
     },
     {
-      "slug": "facebook-rolls-out-an-ai-companion-app-for-creators",
-      "title": "Facebook rolls out an AI companion app for creators",
-      "summary": "The new app, which is currently being tested with select creators, will have Facebook's recently launched AI creator assistant built into it.",
-      "meta_description": "Facebook rolls out an AI companion app for creators",
-      "image_url": "https://image.pollinations.ai/prompt/Facebook%20rolls%20out%20an%20AI%20companion%20app%20for%20creators%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=5598",
-      "source_url": "https://techcrunch.com/2026/06/24/facebook-rolls-out-an-ai-companion-app-for-creators/",
+      "slug": "europe-is-pushing-back-on-washingtons-chip-war",
+      "title": "Europe is pushing back on Washington’s chip war",
+      "summary": "As ASML CEO Christophe Fouquet told TechCrunch in May, what China can currently buy are older-generation deep ultraviolet tools — gear first shipped about a decade ago — the same machines the MATCH Act would now put off-limits.",
+      "meta_description": "Europe is pushing back on Washington’s chip war",
+      "image_url": "https://image.pollinations.ai/prompt/Europe%20is%20pushing%20back%20on%20Washington%E2%80%99s%20chip%20war%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=4414",
+      "source_url": "https://techcrunch.com/2026/06/24/europe-is-pushing-back-on-washingtons-chip-war/",
       "source_name": "TechCrunch",
-      "created_at": "2026-06-24T17:16:24.000Z"
+      "created_at": "2026-06-25T00:08:36.000Z"
     },
     {
-      "slug": "deezer-says-its-new-feature-lets-fans-remix-songs-with-artist-consent",
-      "title": "Deezer says its new feature lets fans remix songs with artist consent",
-      "summary": "Global music streaming service Deezer is taking a contrarian approach to AI, even as it adds a feature that lets fans remix songs.",
-      "meta_description": "Deezer says its new feature lets fans remix songs with artist consent",
-      "image_url": "https://image.pollinations.ai/prompt/Deezer%20says%20its%20new%20feature%20lets%20fans%20remix%20songs%20with%20artist%20consent%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=9608",
-      "source_url": "https://techcrunch.com/2026/06/24/deezer-says-its-new-feature-lets-fans-remix-songs-with-artist-consent/",
+      "slug": "former-infosys-chief-has-a-new-startup-that-wants-to-challenge-the-it-services-w",
+      "title": "Former Infosys chief has a new startup that wants to challenge the IT services world",
+      "summary": "Backed by Mayfield and Aramco Ventures, Vishal Sikka’s new venture brings together veterans from SAP, Infosys, and VianAI.",
+      "meta_description": "Former Infosys chief has a new startup that wants to challenge the IT services world",
+      "image_url": "https://image.pollinations.ai/prompt/Former%20Infosys%20chief%20has%20a%20new%20startup%20that%20wants%20to%20challenge%20the%20IT%20services%20w%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=5741",
+      "source_url": "https://techcrunch.com/2026/06/24/former-infosys-chief-has-a-new-startup-that-wants-to-challenge-the-it-services-world/",
       "source_name": "TechCrunch",
-      "created_at": "2026-06-24T17:14:33.000Z"
+      "created_at": "2026-06-24T23:26:52.000Z"
     },
     {
-      "slug": "agility-robotics-plans-to-go-public-via-spac-in-a-25b-deal",
-      "title": "Agility Robotics plans to go public via SPAC in a $2.5B deal",
-      "summary": "Agility Robotics, the humanoid robotics startup that spun out of Oregon State University in 2015, expects to generate $620 million in proceeds.",
-      "meta_description": "Agility Robotics plans to go public via SPAC in a $2.5B deal",
-      "image_url": "https://image.pollinations.ai/prompt/Agility%20Robotics%20plans%20to%20go%20public%20via%20SPAC%20in%20a%20%242.5B%20deal%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=5575",
-      "source_url": "https://techcrunch.com/2026/06/24/agility-robotics-plans-to-go-public-via-spac-in-a-2-5b-deal/",
+      "slug": "elon-suffers-another-day-short-of-trillionaire-status",
+      "title": "Elon suffers another day short of trillionaire status",
+      "summary": "Right now he's merely a several-hundred-billionaire, according to Bloomberg's Billionaires Index.",
+      "meta_description": "Elon suffers another day short of trillionaire status",
+      "image_url": "https://image.pollinations.ai/prompt/Elon%20suffers%20another%20day%20short%20of%20trillionaire%20status%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=4876",
+      "source_url": "https://techcrunch.com/2026/06/24/elon-suffers-another-day-short-of-trillionaire-status/",
       "source_name": "TechCrunch",
-      "created_at": "2026-06-24T16:48:43.000Z"
+      "created_at": "2026-06-24T23:09:39.000Z"
     },
     {
-      "slug": "ntsb-launches-probe-into-fatal-texas-tesla-crash",
-      "title": "NTSB launches probe into fatal Texas Tesla crash",
-      "summary": "The safety board, known for its thorough investigations, is probing the crash alongside the National Highway Traffic Safety Administration.",
-      "meta_description": "NTSB launches probe into fatal Texas Tesla crash",
-      "image_url": "https://image.pollinations.ai/prompt/NTSB%20launches%20probe%20into%20fatal%20Texas%20Tesla%20crash%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=9448",
-      "source_url": "https://techcrunch.com/2026/06/24/ntsb-launches-probe-into-fatal-texas-tesla-crash/",
+      "slug": "cerebras-stock-plunges-after-earnings-as-ceo-says-margin-outlook-was-misundersto",
+      "title": "Cerebras stock plunges after earnings as CEO says margin outlook was misunderstood",
+      "summary": "In its first earnings report since going public, the AI chipmaker forecast a narrower gross margin in its core business, scaring investors.",
+      "meta_description": "Cerebras stock plunges after earnings as CEO says margin outlook was misunderstood",
+      "image_url": "https://image.pollinations.ai/prompt/Cerebras%20stock%20plunges%20after%20earnings%20as%20CEO%20says%20margin%20outlook%20was%20misundersto%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=555",
+      "source_url": "https://techcrunch.com/2026/06/24/cerebras-stock-plunges-after-earnings-as-ceo-says-margin-outlook-was-misunderstood/",
       "source_name": "TechCrunch",
-      "created_at": "2026-06-24T16:39:08.000Z"
+      "created_at": "2026-06-24T22:41:41.000Z"
     },
     {
-      "slug": "figma-adds-code-layers-support-for-animations-more-ai-features-in-new-update",
-      "title": "Figma adds code layers, support for animations, more AI features in new update",
-      "summary": "Figma's update adds a new code layer, support for motion and shaders, and the ability to create custom plug-ins for various tasks using AI.",
-      "meta_description": "Figma adds code layers, support for animations, more AI features in new update",
-      "image_url": "https://image.pollinations.ai/prompt/Figma%20adds%20code%20layers%2C%20support%20for%20animations%2C%20more%20AI%20features%20in%20new%20update%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=3249",
-      "source_url": "https://techcrunch.com/2026/06/24/figma-adds-code-layers-support-for-animations-more-ai-features-in-new-update/",
+      "slug": "ai-was-supposed-to-kill-engineering-jobs-but-new-data-suggests-theyre-the-most-r",
+      "title": "AI was supposed to kill engineering jobs, but new data suggests they’re the most resilient",
+      "summary": "While AI dominates the layoff narrative, engineers are actually making up a larger share of new hires, according to SignalFire data.",
+      "meta_description": "AI was supposed to kill engineering jobs, but new data suggests they’re the most resilient",
+      "image_url": "https://image.pollinations.ai/prompt/AI%20was%20supposed%20to%20kill%20engineering%20jobs%2C%20but%20new%20data%20suggests%20they%E2%80%99re%20the%20most%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=8856",
+      "source_url": "https://techcrunch.com/2026/06/24/ai-was-supposed-to-kill-engineering-jobs-but-new-data-suggests-theyre-the-most-resilient/",
       "source_name": "TechCrunch",
-      "created_at": "2026-06-24T16:15:00.000Z"
+      "created_at": "2026-06-24T21:56:41.000Z"
     },
     {
-      "slug": "power-outages-hit-france-as-it-records-hottest-day-since-measurements-began",
-      "title": "Power outages hit France as it records hottest day since measurements began",
-      "summary": "France has recorded it hottest day since records began in 1947, its national weather agency says, breaking a record set on Tuesday.",
-      "meta_description": "Power outages hit France as it records hottest day since measurements began",
+      "slug": "strongest-quake-ive-ever-felt-venezuelans-describe-panic",
+      "title": "'Strongest quake I've ever felt' - Venezuelans describe panic",
+      "summary": "Two quakes hit the capital seconds apart, the first at a magnitude of 7.2 and the second at 7.5.",
+      "meta_description": "'Strongest quake I've ever felt' - Venezuelans describe panic",
+      "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/5a3b/live/534f7160-703c-11f1-b1db-af71d47507d6.jpg",
+      "source_url": "https://www.bbc.co.uk/news/articles/czj8vjvmz38o?at_medium=RSS&at_campaign=rss",
+      "source_name": "BBC World",
+      "created_at": "2026-06-25T02:27:27.000Z"
+    },
+    {
+      "slug": "france-uk-and-spain-see-record-temperatures-as-heatwave-grips-western-europe",
+      "title": "France, UK and Spain see record temperatures as heatwave grips western Europe",
+      "summary": "Tens of millions of people are grappling with punishing temperatures, which have led to red heat alerts across the continent.",
+      "meta_description": "France, UK and Spain see record temperatures as heatwave grips western Europe",
       "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/1e66/live/9b1b95b0-6feb-11f1-a9c4-37da5d161ee0.jpg",
       "source_url": "https://www.bbc.co.uk/news/articles/c78y4102n1zo?at_medium=RSS&at_campaign=rss",
       "source_name": "BBC World",
-      "created_at": "2026-06-24T17:29:55.000Z"
+      "created_at": "2026-06-24T21:39:18.000Z"
+    },
+    {
+      "slug": "trump-asks-congress-for-87bn-mostly-for-urgent-iran-war-costs",
+      "title": "Trump asks Congress for $87bn, mostly for 'urgent' Iran war costs",
+      "summary": "But the budget faces an uphill battle, coming a day after lawmakers rebuked Trump's military action.",
+      "meta_description": "Trump asks Congress for $87bn, mostly for 'urgent' Iran war costs",
+      "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/6509/live/094ddba0-702e-11f1-86a5-c78e0086fe7e.jpg",
+      "source_url": "https://www.bbc.co.uk/news/articles/c1eydwldzdjo?at_medium=RSS&at_campaign=rss",
+      "source_name": "BBC World",
+      "created_at": "2026-06-25T00:51:28.000Z"
     },
     {
       "slug": "air-conditioning-creates-political-divide-after-france-records-hottest-day",
@@ -122,41 +142,21 @@
       "created_at": "2026-06-24T13:51:24.000Z"
     },
     {
-      "slug": "un-nuclear-chief-says-inspectors-will-visit-iran-sites-as-part-of-war-deal",
-      "title": "UN nuclear chief says inspectors will visit Iran sites as part of war deal",
-      "summary": "Rafael Grossi says the IAEA is \"working on modalities\" but an Iranian  minister says such access would only be part of a final deal with the US.",
-      "meta_description": "UN nuclear chief says inspectors will visit Iran sites as part of war deal",
-      "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/fcc8/live/65f531e0-6ff3-11f1-8e1d-bbbb1017d210.jpg",
-      "source_url": "https://www.bbc.co.uk/news/articles/cpd395zv81vo?at_medium=RSS&at_campaign=rss",
+      "slug": "philippines-bans-video-game-played-by-alleged-high-school-shooter",
+      "title": "Philippines bans video game played by alleged high school shooter",
+      "summary": "The rare school shooting that left three students killed and 20 others injured has shocked the country.",
+      "meta_description": "Philippines bans video game played by alleged high school shooter",
+      "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/345a/live/13fccc50-7038-11f1-85ab-7f21c1486b5b.jpg",
+      "source_url": "https://www.bbc.co.uk/news/articles/c14y7738nm8o?at_medium=RSS&at_campaign=rss",
       "source_name": "BBC World",
-      "created_at": "2026-06-24T17:31:48.000Z"
-    },
-    {
-      "slug": "clean-sweep-for-mamdani-backed-candidates-in-new-yorks-democratic-primary",
-      "title": "Clean sweep for Mamdani-backed candidates in New York's Democratic primary ",
-      "summary": "Brad Lander unseats Dan Goldman in a race that laid bare the city's divisions over the Israel-Gaza war.",
-      "meta_description": "Clean sweep for Mamdani-backed candidates in New York's Democratic primary ",
-      "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/bde8/live/87a1ba60-6f86-11f1-8546-8f19e4fe30f4.jpg",
-      "source_url": "https://www.bbc.co.uk/news/articles/clye652m41po?at_medium=RSS&at_campaign=rss",
-      "source_name": "BBC World",
-      "created_at": "2026-06-24T13:03:35.000Z"
-    },
-    {
-      "slug": "biggest-city-in-crimea-without-power-after-ukraine-strikes",
-      "title": "Biggest city in Crimea without power after Ukraine strikes",
-      "summary": "Sevastopol's Moscow-installed governor warns there will be no electricity in some areas until the evening.",
-      "meta_description": "Biggest city in Crimea without power after Ukraine strikes",
-      "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/e1c3/live/249bb360-6fba-11f1-8546-8f19e4fe30f4.jpg",
-      "source_url": "https://www.bbc.co.uk/news/articles/c3ryv72pjqno?at_medium=RSS&at_campaign=rss",
-      "source_name": "BBC World",
-      "created_at": "2026-06-24T09:48:24.000Z"
+      "created_at": "2026-06-24T22:14:12.000Z"
     },
     {
       "slug": "2026-slator-language-ai-50-under-50",
       "title": "2026 Slator Language AI 50 Under 50",
       "summary": "The Slator Language AI 50 Under 50 puts the spotlight on fifty startups in the language AI and technology landscape, from AI dubbing to real-time speech translation.\nThe post 2026 Slator Language AI 50 Under 50 appeared first on Slator.",
       "meta_description": "2026 Slator Language AI 50 Under 50",
-      "image_url": "https://image.pollinations.ai/prompt/2026%20Slator%20Language%20AI%2050%20Under%2050%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=7305",
+      "image_url": "https://image.pollinations.ai/prompt/2026%20Slator%20Language%20AI%2050%20Under%2050%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=3072",
       "source_url": "https://slator.com/2026-slator-language-ai-50-under-50/",
       "source_name": "Slator",
       "created_at": "2026-06-24T15:30:00.000Z"
@@ -166,7 +166,7 @@
       "title": "World Bank, ECB Hiring Translators",
       "summary": "The World Bank and European Central Bank are recruiting translators for in-house language teams, with openings in Uzbekistan and Germany.\nThe post World Bank, ECB Hiring Translators appeared first on Slator.",
       "meta_description": "World Bank, ECB Hiring Translators",
-      "image_url": "https://image.pollinations.ai/prompt/World%20Bank%2C%20ECB%20Hiring%20Translators%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=4732",
+      "image_url": "https://image.pollinations.ai/prompt/World%20Bank%2C%20ECB%20Hiring%20Translators%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=9927",
       "source_url": "https://slator.com/world-bank-ecb-hiring-translators/",
       "source_name": "Slator",
       "created_at": "2026-06-24T12:10:13.000Z"
@@ -176,7 +176,7 @@
       "title": "Global Interpreting Network Secures TIPS and BuyBoard Cooperative Purchasing Contracts",
       "summary": "Global Interpreting Network Inc. has secured cooperative purchasing contract pathways through TIPS and Texas BuyBoard.\nThe post Global Interpreting Network Secures TIPS and BuyBoard Cooperative Purchasing Contracts appeared first on Slator.",
       "meta_description": "Global Interpreting Network Secures TIPS and BuyBoard Cooperative Purchasing Contracts",
-      "image_url": "https://image.pollinations.ai/prompt/Global%20Interpreting%20Network%20Secures%20TIPS%20and%20BuyBoard%20Cooperative%20Purchasing%20Con%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=3455",
+      "image_url": "https://image.pollinations.ai/prompt/Global%20Interpreting%20Network%20Secures%20TIPS%20and%20BuyBoard%20Cooperative%20Purchasing%20Con%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=365",
       "source_url": "https://slator.com/global-interpreting-network-secures-cooperative-purchasing-contracts/",
       "source_name": "Slator",
       "created_at": "2026-06-23T14:00:00.000Z"
@@ -186,7 +186,7 @@
       "title": "Dell Technologies Capital Leads USD 50M Investment in Full-Stack Voice AI Startup",
       "summary": "San Francisco-based voice AI startup Bland raises USD 50m from Dell Technology Capital and other investors to develop voice AI agents for complex enterprise phone conversations.\nThe post Dell Technologies Capital Leads USD 50M Investment in Full-Stack Voice AI Startup appeared first on Slator.",
       "meta_description": "Dell Technologies Capital Leads USD 50M Investment in Full-Stack Voice AI Startup",
-      "image_url": "https://image.pollinations.ai/prompt/Dell%20Technologies%20Capital%20Leads%20USD%2050M%20Investment%20in%20Full-Stack%20Voice%20AI%20Startu%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=536",
+      "image_url": "https://image.pollinations.ai/prompt/Dell%20Technologies%20Capital%20Leads%20USD%2050M%20Investment%20in%20Full-Stack%20Voice%20AI%20Startu%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=8779",
       "source_url": "https://slator.com/dell-technologies-capital-leads-investment-voice-ai-startup/",
       "source_name": "Slator",
       "created_at": "2026-06-23T08:50:00.000Z"
@@ -242,6 +242,26 @@
       "created_at": "2026-06-21T08:00:24.000Z"
     },
     {
+      "slug": "with-a-round-of-32-spot-already-clinched-the-us-takes-on-turkey-in-the-world-cup",
+      "title": "With a Round of 32 spot already clinched, the U.S. takes on Turkey in the World Cup",
+      "summary": "Two U.S. wins and two Turkey losses already on the books mean the Americans have won this World Cup group no matter the outcome of Thursday's game. Still, the Americans say they're playing to win.",
+      "meta_description": "With a Round of 32 spot already clinched, the U.S. takes on Turkey in the World Cup",
+      "image_url": "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/3467x2311+0+0/resize/3467x2311!/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F9a%2Ff9%2F7a08e8964064b089d37cef5a126f%2Fgettyimages-2281310842.jpg",
+      "source_url": "https://www.npr.org/2026/06/25/nx-s1-5869807/2026-world-cup-fifa-usmnt-turkey",
+      "source_name": "NPR",
+      "created_at": "2026-06-25T04:00:00.000Z"
+    },
+    {
+      "slug": "2-major-earthquakes-strike-northern-venezuela-near-caracas",
+      "title": "2 major earthquakes strike northern Venezuela, near Caracas",
+      "summary": "A 7.2-magnitude earthquake and a 7.5-magnitude were less than a minute apart, said the U.S. Geological Survey. The second earthquake was the largest to hit the country since 1900.",
+      "meta_description": "2 major earthquakes strike northern Venezuela, near Caracas",
+      "image_url": "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/6192x4128+0+0/resize/6192x4128!/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F71%2F8d%2F7906be5a4eea98509c77644c562b%2Fgettyimages-2282641657.jpg",
+      "source_url": "https://www.npr.org/2026/06/24/nx-s1-5869817/2-major-earthquakes-strike-northern-venezuela-near-caracas",
+      "source_name": "NPR",
+      "created_at": "2026-06-25T03:11:54.000Z"
+    },
+    {
       "slug": "meta-plans-to-release-ai-powered-prediction-market-app-documents-show",
       "title": "Meta plans to release AI-powered prediction market app, documents show",
       "summary": "The company is building an app separate from Facebook and Instagram where people can wager on the outcome of real-world events, using \"play money.\"",
@@ -272,74 +292,54 @@
       "created_at": "2026-06-24T16:19:44.000Z"
     },
     {
-      "slug": "will-texas-new-top-voting-official-be-a-disruptor-locals-are-preparing-for-it",
-      "title": "Will Texas' new top voting official be a 'disruptor'? Locals are preparing for it",
-      "summary": "Just ahead of closely contested midterms, Texas is about to get a new top voting official. Many locals there fear the frontrunner is a state lawmaker and pastor with no election experience.",
-      "meta_description": "Will Texas' new top voting official be a 'disruptor'? Locals are preparing for it",
-      "image_url": "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/2096x1397+0+0/resize/2096x1397!/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fbd%2F42%2F3ce0f41d4aec98b059e6ad573fc9%2Fap25060022580069.jpg",
-      "source_url": "https://www.npr.org/2026/06/24/nx-s1-5866554/texas-secretary-of-state-schatzline",
-      "source_name": "NPR",
-      "created_at": "2026-06-24T15:32:06.000Z"
-    },
-    {
-      "slug": "understanding-masculinism-a-movement-to-restore-the-primacy-of-men",
-      "title": "Understanding 'masculinism,' a movement to restore the primacy of men",
-      "summary": "Masculinism is a belief that feminism emasculates men, and men should be in control while women stay at home raising children. The Atlantic writer Helen Lewis says the movement is becoming mainstream.",
-      "meta_description": "Understanding 'masculinism,' a movement to restore the primacy of men",
-      "image_url": "https://media.npr.org/include/images/tracking/npr-rss-pixel.png?story=nx-s1-5868665",
-      "source_url": "https://www.npr.org/2026/06/24/nx-s1-5868665/understanding-masculinism-a-movement-to-restore-the-primacy-of-men",
-      "source_name": "NPR",
-      "created_at": "2026-06-24T14:54:04.000Z"
+      "slug": "what-does-british-pms-resignation-mean-for-european-security",
+      "title": "What does British PM's resignation mean for European security?",
+      "summary": "British Prime Minister Keir Starmer was widely known for his support of Ukraine and his efforts towards a new EU–UK defense partnership. What will happen to those policies now that Starmer has announced his resignation?",
+      "meta_description": "What does British PM's resignation mean for European security?",
+      "image_url": "https://image.pollinations.ai/prompt/What%20does%20British%20PM's%20resignation%20mean%20for%20European%20security%3F%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=1677",
+      "source_url": "https://www.dw.com/en/what-does-british-pm-s-resignation-mean-for-european-security/a-77698281?maca=en-rss-en-world-4025-rdf",
+      "source_name": "DW World",
+      "created_at": "2026-06-25T05:10:16.761Z"
     },
     {
       "slug": "iran-after-the-war-fragile-peace-shattered-economy",
       "title": "Iran after the war — fragile peace, shattered economy",
       "summary": "The US has temporarily allowed Iran to export oil and indicated it will provide billions to relieve the crisis triggered by the war. With ordinary Iranians at their limit, however, Tehran already fears new protests.",
       "meta_description": "Iran after the war — fragile peace, shattered economy",
-      "image_url": "https://image.pollinations.ai/prompt/Iran%20after%20the%20war%20%E2%80%94%20fragile%20peace%2C%20shattered%20economy%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=4282",
+      "image_url": "https://image.pollinations.ai/prompt/Iran%20after%20the%20war%20%E2%80%94%20fragile%20peace%2C%20shattered%20economy%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=1152",
       "source_url": "https://www.dw.com/en/iran-after-the-war-fragile-peace-shattered-economy/a-77690083?maca=en-rss-en-world-4025-rdf",
       "source_name": "DW World",
-      "created_at": "2026-06-24T18:55:59.768Z"
+      "created_at": "2026-06-25T05:10:18.884Z"
     },
     {
       "slug": "is-xenophobia-in-south-africa-risking-investment",
       "title": "Is xenophobia in South Africa risking investment?",
       "summary": "Vigilante groups and right-wing populist forces are stoking anti-immigrant sentiment and demanding that they leave the country by June 30. Experts fear serious economic implications for the country and the region.",
       "meta_description": "Is xenophobia in South Africa risking investment?",
-      "image_url": "https://image.pollinations.ai/prompt/Is%20xenophobia%20in%20South%20Africa%20risking%20investment%3F%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=265",
+      "image_url": "https://image.pollinations.ai/prompt/Is%20xenophobia%20in%20South%20Africa%20risking%20investment%3F%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=3646",
       "source_url": "https://www.dw.com/en/is-xenophobia-in-south-africa-risking-investment/a-77687020?maca=en-rss-en-world-4025-rdf",
       "source_name": "DW World",
-      "created_at": "2026-06-24T18:56:01.877Z"
+      "created_at": "2026-06-25T05:10:21.009Z"
     },
     {
       "slug": "southeast-asia-boost-defense-ties-but-avoids-firm-alliances",
       "title": "Southeast Asia boost defense ties but avoids firm alliances",
       "summary": "Countries across the region are expanding defense cooperation in ways that change the South China Sea equation but fall short of a new anti-China bloc.",
       "meta_description": "Southeast Asia boost defense ties but avoids firm alliances",
-      "image_url": "https://image.pollinations.ai/prompt/Southeast%20Asia%20boost%20defense%20ties%20but%20avoids%20firm%20alliances%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=1735",
+      "image_url": "https://image.pollinations.ai/prompt/Southeast%20Asia%20boost%20defense%20ties%20but%20avoids%20firm%20alliances%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=878",
       "source_url": "https://www.dw.com/en/southeast-asia-boost-defense-ties-but-avoids-firm-alliances/a-77689233?maca=en-rss-en-world-4025-rdf",
       "source_name": "DW World",
-      "created_at": "2026-06-24T18:56:03.994Z"
+      "created_at": "2026-06-25T05:10:23.146Z"
     },
     {
       "slug": "trump-offers-iran-an-economic-lifeline-with-strings",
       "title": "Trump offers Iran an economic lifeline — with strings",
       "summary": "Iran has seen a speedy rebound in oil exports after the US-Iran deal granted immediate waivers on US sanctions. Relief on frozen assets and a $300 billion reconstruction fund now hinge on Tehran meeting key conditions.",
       "meta_description": "Trump offers Iran an economic lifeline — with strings",
-      "image_url": "https://image.pollinations.ai/prompt/Trump%20offers%20Iran%20an%20economic%20lifeline%20%E2%80%94%20with%20strings%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=8293",
+      "image_url": "https://image.pollinations.ai/prompt/Trump%20offers%20Iran%20an%20economic%20lifeline%20%E2%80%94%20with%20strings%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=5780",
       "source_url": "https://www.dw.com/en/trump-offers-iran-an-economic-lifeline-with-strings/a-77621800?maca=en-rss-en-world-4025-rdf",
       "source_name": "DW World",
-      "created_at": "2026-06-24T18:56:06.111Z"
-    },
-    {
-      "slug": "north-korean-soldier-crosses-border-to-south",
-      "title": "North Korean soldier crosses border to South",
-      "summary": "South Korea's military says it is investigating the soldier's reasons for crossing the inner-Korean border. While dozens of North Koreans flee each year, usually via China, crossing directly south is very rare.",
-      "meta_description": "North Korean soldier crosses border to South",
-      "image_url": "https://image.pollinations.ai/prompt/North%20Korean%20soldier%20crosses%20border%20to%20South%2C%20travel%20news%20photo%2C%20realistic%2C%20high%20quality?width=800&height=450&nologo=true&seed=3425",
-      "source_url": "https://www.dw.com/en/north-korean-soldier-crosses-border-to-south/a-77687834?maca=en-rss-en-world-4025-rdf",
-      "source_name": "DW World",
-      "created_at": "2026-06-24T18:56:08.224Z"
+      "created_at": "2026-06-25T05:10:25.279Z"
     }
   ]
 }
