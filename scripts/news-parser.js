@@ -9,15 +9,18 @@ const parser = new Parser({
   customFields: { item: [['media:content','mediaContent'],['media:thumbnail','mediaThumbnail']] }
 });
 
-// Берём из разных источников чтобы 5 статей были разнообразными
-const RSS_FEEDS = [
+// 4 западных + 1 азиатский обязательно
+const RSS_FEEDS_WEST = [
   { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World' },
   { url: 'https://techcrunch.com/feed/', name: 'TechCrunch' },
   { url: 'https://slator.com/feed/', name: 'Slator' },
-  { url: 'https://www.theguardian.com/world/rss', name: 'The Guardian' },
-  { url: 'https://rss.dw.com/rdf/rss-en-world', name: 'DW World' },
-  { url: 'https://feeds.npr.org/1001/rss.xml', name: 'NPR' },
-  { url: 'https://www.nomadicmatt.com/feed/', name: 'Nomadic Matt' }
+  { url: 'https://rss.dw.com/rdf/rss-en-world', name: 'DW World' }
+];
+
+const RSS_FEEDS_ASIA = [
+  { url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416', name: 'CNA Singapore' },
+  { url: 'https://thediplomat.com/feed/', name: 'The Diplomat' },
+  { url: 'https://china.org.cn/rss/1201719.xml', name: 'China.org.cn' }
 ];
 
 function slugify(text) {
@@ -36,45 +39,87 @@ function extractImage(item) {
 }
 
 function generateImage(title) {
-  return 'https://image.pollinations.ai/prompt/' + 
-    encodeURIComponent(title.slice(0, 80) + ', travel news photo, cinematic, realistic') + 
+  return 'https://image.pollinations.ai/prompt/' +
+    encodeURIComponent(title.slice(0, 80) + ', travel news photo, cinematic, realistic') +
     '?width=800&height=450&nologo=true&seed=' + Math.floor(Math.random() * 99999);
 }
 
 async function callDeepSeek(title, content) {
   const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json', 
-      'Authorization': 'Bearer ' + DEEPSEEK_KEY 
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + DEEPSEEK_KEY
     },
     body: JSON.stringify({
       model: 'deepseek-chat',
       messages: [{
         role: 'user',
-        content: `You are a sharp, witty 30-year-old journalist who has lived in 15 countries. You write for expats, digital nomads, and international travelers. Your style: punchy opener that hooks instantly, clear facts, real-world impact for people living abroad, one insider tip, memorable closer.
+        content: `Ты — Алекс, 30-летний русскоязычный путешественник, переводчик и блогер. Живёшь то в Берлине, то в Стамбуле, то в Бангкоке. Пишешь умно, разговорно, с иронией — как образованный друг который всё повидал.
 
-Rewrite this news. Return ONLY valid JSON, nothing else:
+Перепиши эту новость в своём стиле. Верни ТОЛЬКО валидный JSON, ничего лишнего:
 {
-  "title": "Punchy headline with a hook, max 85 chars",
-  "summary": "Exactly 5 sentences. Sentence 1: Bold hook that grabs attention. Sentence 2: Core facts of what happened. Sentence 3: Why this matters specifically for expats or travelers. Sentence 4: One practical tip or action they can take. Sentence 5: Witty or thought-provoking closer.",
-  "meta_description": "SEO description max 155 chars"
+  "title": "Цепляющий заголовок на русском, максимум 85 символов",
+  "preview": "Одно предложение-крючок для списка новостей на русском",
+  "full_text": "Полноценная статья на русском языке. 8-10 предложений. Структура: 1) яркая завязка которая цепляет; 2) суть что произошло — факты; 3) контекст и предыстория; 4) почему это важно для тех кто живёт или путешествует за рубежом; 5) личный взгляд или неожиданный угол; 6) практический совет или вывод; 7) запоминающаяся концовка с лёгкой иронией или мыслью.",
+  "meta_description": "SEO описание на русском, максимум 155 символов"
 }
 
-Title: ${title}
-Content: ${content.slice(0, 800)}`
+Заголовок оригинала: ${title}
+Содержание: ${content.slice(0, 1000)}`
       }],
       temperature: 0.85,
-      max_tokens: 400,
+      max_tokens: 800,
       response_format: { type: 'json_object' }
     })
   });
 
   if (res.status === 429) return { quotaError: true };
   if (!res.ok) throw new Error('DeepSeek HTTP ' + res.status);
-
   const data = await res.json();
   return JSON.parse(data.choices[0].message.content.trim());
+}
+
+async function fetchArticle(feed) {
+  let feedData;
+  try { feedData = await parser.parseURL(feed.url); }
+  catch(e) { console.warn('Skip:', feed.name, e.message); return null; }
+
+  for (const item of feedData.items.slice(0, 5)) {
+    const rawContent = (item.contentSnippet || item.content || item.description || '')
+      .replace(/<[^>]*>/g, '').trim();
+    if (rawContent.length < 50) continue;
+
+    const slug = slugify(item.title || '');
+    if (!slug) continue;
+
+    let title = item.title || '';
+    let preview = rawContent.slice(0, 200);
+    let full_text = rawContent;
+    let meta = title;
+    let image = extractImage(item) || generateImage(title);
+
+    try {
+      console.log('  AI:', title.slice(0, 50));
+      const ai = await callDeepSeek(title, rawContent);
+      if (ai && !ai.quotaError) {
+        title = ai.title || title;
+        preview = ai.preview || preview;
+        full_text = ai.full_text || full_text;
+        meta = ai.meta_description || meta;
+        console.log('  ✅', title.slice(0, 50));
+      }
+    } catch(e) { console.warn('  AI error:', e.message); }
+
+    return {
+      slug, title, preview, full_text, meta_description: meta,
+      image_url: image,
+      source_url: item.link || '',
+      source_name: feed.name,
+      created_at: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString()
+    };
+  }
+  return null;
 }
 
 async function main() {
@@ -82,71 +127,34 @@ async function main() {
   const articles = [];
   const seen = new Set();
 
-  // Берём по 1-2 статьи с каждого источника для разнообразия
-  for (const feed of RSS_FEEDS) {
-    if (articles.length >= 5) break; // Нужно ровно 5 статей
-    
+  // Берём 4 статьи из западных источников
+  for (const feed of RSS_FEEDS_WEST) {
+    if (articles.length >= 4) break;
     console.log('Feed:', feed.name);
-    let feedData;
-    try { feedData = await parser.parseURL(feed.url); }
-    catch(e) { console.warn('Skip:', feed.name, e.message); continue; }
-
-    // Берём только 1 лучшую статью с каждого источника
-    for (const item of feedData.items.slice(0, 3)) {
-      if (articles.length >= 5) break;
-      
-      const slug = slugify(item.title || '');
-      if (!slug || seen.has(slug)) continue;
-      seen.add(slug);
-
-      const rawContent = (item.contentSnippet || item.content || item.description || '')
-        .replace(/<[^>]*>/g, '').trim();
-      
-      if (rawContent.length < 50) continue; // Пропускаем пустые
-
-      let title = item.title || '';
-      let summary = rawContent.slice(0, 400);
-      let meta = title;
-      let image = extractImage(item) || generateImage(title);
-
-      try {
-        console.log('  AI processing:', title.slice(0, 50));
-        const ai = await callDeepSeek(title, rawContent);
-        if (ai && !ai.quotaError) {
-          title = ai.title || title;
-          summary = ai.summary || summary;
-          meta = ai.meta_description || meta;
-          console.log('  ✅ Done:', title.slice(0, 50));
-        } else if (ai && ai.quotaError) {
-          console.warn('  ⚠️ Quota exceeded');
-        }
-      } catch(e) { 
-        console.warn('  AI error:', e.message); 
-      }
-
-      articles.push({
-        slug, title, summary, meta_description: meta,
-        image_url: image,
-        source_url: item.link || '',
-        source_name: feed.name,
-        created_at: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString()
-      });
-
-      await new Promise(r => setTimeout(r, 500));
-      break; // Только 1 статья с каждого источника
+    const art = await fetchArticle(feed);
+    if (art && !seen.has(art.slug)) {
+      seen.add(art.slug);
+      articles.push(art);
     }
+    await new Promise(r => setTimeout(r, 500));
   }
 
-  fs.writeFileSync('news.json', JSON.stringify({ 
-    updated: new Date().toISOString(), 
-    articles 
-  }, null, 2));
-  
+  // Обязательно 1 статья из азиатского источника
+  console.log('--- Asian source ---');
+  for (const feed of RSS_FEEDS_ASIA) {
+    console.log('Feed:', feed.name);
+    const art = await fetchArticle(feed);
+    if (art && !seen.has(art.slug)) {
+      seen.add(art.slug);
+      articles.push(art);
+      break;
+    }
+    await new Promise(r => setTimeout(r, 500));
+  }
+
+  fs.writeFileSync('news.json', JSON.stringify({ updated: new Date().toISOString(), articles }, null, 2));
   console.log('Saved', articles.length, 'articles to news.json');
   console.log('=== DONE ===');
 }
 
-main().catch(e => { 
-  console.error('FAILED:', e.message); 
-  process.exit(1); 
-});
+main().catch(e => { console.error('FAILED:', e.message); process.exit(1); });
