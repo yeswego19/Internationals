@@ -1,16 +1,16 @@
 {
-  "updated": "2026-06-27T04:56:58.981Z",
+  "updated": "2026-06-27T11:00:24.021Z",
   "articles": [
     {
-      "slug": "us-conducts-strikes-on-iran-after-attack-on-cargo-ship",
-      "title": "US conducts strikes on Iran after attack on cargo ship",
-      "preview": "US Central Command says it has struck missile and drone storage facilities and coastal radar positions.",
-      "full_text": "US Central Command says it has struck missile and drone storage facilities and coastal radar positions.",
-      "meta_description": "US conducts strikes on Iran after attack on cargo ship",
-      "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/731d/live/eebb89d0-71a0-11f1-b1db-af71d47507d6.jpg",
+      "slug": "us-strikes-iran-after-attack-on-cargo-ship",
+      "title": "US strikes Iran after attack on cargo ship",
+      "preview": "Iran accuses the US of violating their deal and says it struck targets linked to American forces in response.",
+      "full_text": "Iran accuses the US of violating their deal and says it struck targets linked to American forces in response.",
+      "meta_description": "US strikes Iran after attack on cargo ship",
+      "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/3c18/live/00d7c990-7209-11f1-aede-9f478c3ece44.jpg",
       "source_url": "https://www.bbc.co.uk/news/articles/ckg590wqxwpo?at_medium=RSS&at_campaign=rss",
       "source_name": "BBC World",
-      "created_at": "2026-06-27T02:48:12.000Z"
+      "created_at": "2026-06-27T10:40:38.000Z"
     },
     {
       "slug": "trump-admin-releases-anthropic-mythos-to-be-used-by-more-than-100-us-companies-a",
@@ -18,43 +18,32 @@
       "preview": "Over 100 companies and government agencies are reportedly authorized to use Mythos 5, including their non-American employees.",
       "full_text": "Over 100 companies and government agencies are reportedly authorized to use Mythos 5, including their non-American employees.",
       "meta_description": "Trump Admin releases Anthropic  Mythos to be used by more than 100 US companies, agencies",
-      "image_url": "https://image.pollinations.ai/prompt/Trump%20Admin%20releases%20Anthropic%20%20Mythos%20to%20be%20used%20by%20more%20than%20100%20US%20companies%2C%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=85633",
+      "image_url": "https://image.pollinations.ai/prompt/Trump%20Admin%20releases%20Anthropic%20%20Mythos%20to%20be%20used%20by%20more%20than%20100%20US%20companies%2C%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=45384",
       "source_url": "https://techcrunch.com/2026/06/26/trump-admin-releases-anthropic-mythos-to-be-used-by-more-than-100-us-companies-agencies/",
       "source_name": "TechCrunch",
       "created_at": "2026-06-27T01:01:37.000Z"
     },
     {
-      "slug": "the-language-ai-startups-to-watch-in-2026",
-      "title": "The Language AI Startups to Watch in 2026",
-      "preview": "The 50 hottest Language AI startups of 2026, Big Tech AI translation updates, and the investors and acquirers betting on the future of multilingual AI.\nThe post The Language AI Startups to Watch in 20",
-      "full_text": "The 50 hottest Language AI startups of 2026, Big Tech AI translation updates, and the investors and acquirers betting on the future of multilingual AI.\nThe post The Language AI Startups to Watch in 2026 appeared first on Slator.",
-      "meta_description": "The Language AI Startups to Watch in 2026",
-      "image_url": "https://image.pollinations.ai/prompt/The%20Language%20AI%20Startups%20to%20Watch%20in%202026%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=50955",
-      "source_url": "https://slator.com/language-ai-startups-to-watch-2026/",
-      "source_name": "Slator",
-      "created_at": "2026-06-26T09:10:42.000Z"
-    },
-    {
-      "slug": "fact-check-throwing-cold-water-on-heat-wave-disinformation",
-      "title": "Fact check: throwing cold water on heat wave disinformation",
-      "preview": "An outdated air-conditioning law, a viral health myth about sleeping with the fan on and the age-old climate change hoax allegation: DW checked what's spreading in Europe's heat wave.",
-      "full_text": "An outdated air-conditioning law, a viral health myth about sleeping with the fan on and the age-old climate change hoax allegation: DW checked what's spreading in Europe's heat wave.",
-      "meta_description": "Fact check: throwing cold water on heat wave disinformation",
-      "image_url": "https://image.pollinations.ai/prompt/Fact%20check%3A%20throwing%20cold%20water%20on%20heat%20wave%20disinformation%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=88603",
-      "source_url": "https://www.dw.com/en/fact-check-throwing-cold-water-on-heat-wave-disinformation/a-77726297?maca=en-rss-en-world-4025-rdf",
+      "slug": "military-age-ukrainian-men-could-lose-eu-protection",
+      "title": "Military-age Ukrainian men could lose EU protection",
+      "preview": "The European Commission has suggested withdrawing protection status for military-age Ukrainian males. A number of EU countries support the move — and so does Kyiv.",
+      "full_text": "The European Commission has suggested withdrawing protection status for military-age Ukrainian males. A number of EU countries support the move — and so does Kyiv.",
+      "meta_description": "Military-age Ukrainian men could lose EU protection",
+      "image_url": "https://image.pollinations.ai/prompt/Military-age%20Ukrainian%20men%20could%20lose%20EU%20protection%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=17473",
+      "source_url": "https://www.dw.com/en/military-age-ukrainian-men-could-lose-eu-protection/a-77729285?maca=en-rss-en-world-4025-rdf",
       "source_name": "DW World",
-      "created_at": "2026-06-27T04:56:57.595Z"
+      "created_at": "2026-06-27T11:00:22.537Z"
     },
     {
-      "slug": "cardiff-citys-perry-ng-spends-summer-in-singapore-says-desire-to-play-for-lions-",
-      "title": "Cardiff City's Perry Ng spends summer in Singapore, says desire to play for Lions 'stronger than ever'",
-      "preview": "Perry Ng is spending his off-season break in Singapore, reconnecting with his roots and contributing to the country he hopes to one day wear the national jersey for.",
-      "full_text": "Perry Ng is spending his off-season break in Singapore, reconnecting with his roots and contributing to the country he hopes to one day wear the national jersey for.",
-      "meta_description": "Cardiff City's Perry Ng spends summer in Singapore, says desire to play for Lions 'stronger than ever'",
-      "image_url": "https://dam.mediacorp.sg/image/upload/s--aavHliPf--/fl_relative,g_south_east,l_mediacorp:cna:watermark:2021-08:cna,w_0.1/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/mediacorp/cna/image/2026/06/26/perry_ng_in_singapore_youth_sports_clinic.jpg?itok=c_f7fs2v",
-      "source_url": "https://www.channelnewsasia.com/singapore/perry-ng-cardiff-city-naturalisation-lions-football-6213056",
+      "slug": "more-than-110-active-mobility-devices-seized-in-nine-day-operation-between-lta-a",
+      "title": "More than 110 active mobility devices seized in nine-day operation between LTA and police",
+      "preview": "Common offences detected included the keeping of non-compliant e-bikes or using improper, obscured or tampered number plates.",
+      "full_text": "Common offences detected included the keeping of non-compliant e-bikes or using improper, obscured or tampered number plates.",
+      "meta_description": "More than 110 active mobility devices seized in nine-day operation between LTA and police",
+      "image_url": "https://dam.mediacorp.sg/image/upload/s--AaSSQSa_--/fl_relative,g_south_east,l_mediacorp:cna:watermark:2021-08:cna,w_0.1/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/mediacorp/cna/image/2026/06/27/20260626-jk-lta-1.jpg?itok=I8nC1UP_",
+      "source_url": "https://www.channelnewsasia.com/singapore/lta-police-pmds-confiscated-mobility-devices-6213481",
       "source_name": "CNA Singapore",
-      "created_at": "2026-06-27T02:53:51.000Z"
+      "created_at": "2026-06-27T09:00:00.000Z"
     }
   ]
 }
