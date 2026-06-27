@@ -1,49 +1,49 @@
 {
-  "updated": "2026-06-27T11:00:24.021Z",
+  "updated": "2026-06-27T18:09:11.278Z",
   "articles": [
     {
-      "slug": "us-strikes-iran-after-attack-on-cargo-ship",
-      "title": "US strikes Iran after attack on cargo ship",
-      "preview": "Iran accuses the US of violating their deal and says it struck targets linked to American forces in response.",
-      "full_text": "Iran accuses the US of violating their deal and says it struck targets linked to American forces in response.",
-      "meta_description": "US strikes Iran after attack on cargo ship",
-      "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/3c18/live/00d7c990-7209-11f1-aede-9f478c3ece44.jpg",
-      "source_url": "https://www.bbc.co.uk/news/articles/ckg590wqxwpo?at_medium=RSS&at_campaign=rss",
+      "slug": "venezuela-earthquakes-kill-920-people-as-international-rescue-teams-arrive",
+      "title": "Venezuela earthquakes kill 920 people as international rescue teams arrive",
+      "preview": "Hundreds are still feared trapped under the rubble, as families desperate for news.",
+      "full_text": "Hundreds are still feared trapped under the rubble, as families desperate for news.",
+      "meta_description": "Venezuela earthquakes kill 920 people as international rescue teams arrive",
+      "image_url": "https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/798c/live/7e611570-719a-11f1-ac61-7d0e237a354c.jpg",
+      "source_url": "https://www.bbc.co.uk/news/articles/c39y79g7gzko?at_medium=RSS&at_campaign=rss",
       "source_name": "BBC World",
-      "created_at": "2026-06-27T10:40:38.000Z"
+      "created_at": "2026-06-27T08:56:30.000Z"
     },
     {
-      "slug": "trump-admin-releases-anthropic-mythos-to-be-used-by-more-than-100-us-companies-a",
-      "title": "Trump Admin releases Anthropic  Mythos to be used by more than 100 US companies, agencies",
-      "preview": "Over 100 companies and government agencies are reportedly authorized to use Mythos 5, including their non-American employees.",
-      "full_text": "Over 100 companies and government agencies are reportedly authorized to use Mythos 5, including their non-American employees.",
-      "meta_description": "Trump Admin releases Anthropic  Mythos to be used by more than 100 US companies, agencies",
-      "image_url": "https://image.pollinations.ai/prompt/Trump%20Admin%20releases%20Anthropic%20%20Mythos%20to%20be%20used%20by%20more%20than%20100%20US%20companies%2C%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=45384",
-      "source_url": "https://techcrunch.com/2026/06/26/trump-admin-releases-anthropic-mythos-to-be-used-by-more-than-100-us-companies-agencies/",
+      "slug": "apple-vision-pro-exec-is-reportedly-leaving-for-openai",
+      "title": "Apple Vision Pro exec is reportedly leaving for OpenAI",
+      "preview": "Paul Meade, the Apple vice president in charge of the Vision Pro headset, is reportedly leaving the company to join OpenAI’s hardware team.",
+      "full_text": "Paul Meade, the Apple vice president in charge of the Vision Pro headset, is reportedly leaving the company to join OpenAI’s hardware team.",
+      "meta_description": "Apple Vision Pro exec is reportedly leaving for OpenAI",
+      "image_url": "https://image.pollinations.ai/prompt/Apple%20Vision%20Pro%20exec%20is%20reportedly%20leaving%20for%20OpenAI%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=69704",
+      "source_url": "https://techcrunch.com/2026/06/27/apple-vision-pro-exec-is-reportedly-leaving-for-openai/",
       "source_name": "TechCrunch",
-      "created_at": "2026-06-27T01:01:37.000Z"
+      "created_at": "2026-06-27T16:45:09.000Z"
     },
     {
-      "slug": "military-age-ukrainian-men-could-lose-eu-protection",
-      "title": "Military-age Ukrainian men could lose EU protection",
-      "preview": "The European Commission has suggested withdrawing protection status for military-age Ukrainian males. A number of EU countries support the move — and so does Kyiv.",
-      "full_text": "The European Commission has suggested withdrawing protection status for military-age Ukrainian males. A number of EU countries support the move — and so does Kyiv.",
-      "meta_description": "Military-age Ukrainian men could lose EU protection",
-      "image_url": "https://image.pollinations.ai/prompt/Military-age%20Ukrainian%20men%20could%20lose%20EU%20protection%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=17473",
-      "source_url": "https://www.dw.com/en/military-age-ukrainian-men-could-lose-eu-protection/a-77729285?maca=en-rss-en-world-4025-rdf",
+      "slug": "ukraine-strikes-russian-weapons-plant-moscow-fuel-hub",
+      "title": "Ukraine strikes Russian weapons plant, Moscow fuel hub",
+      "preview": "The two attacks, in Volgograd and Vladimir regions, are part of President Zelenskyy's strategy to bring the war to the Russian people and force Putin into peace negotiations.",
+      "full_text": "The two attacks, in Volgograd and Vladimir regions, are part of President Zelenskyy's strategy to bring the war to the Russian people and force Putin into peace negotiations.",
+      "meta_description": "Ukraine strikes Russian weapons plant, Moscow fuel hub",
+      "image_url": "https://image.pollinations.ai/prompt/Ukraine%20strikes%20Russian%20weapons%20plant%2C%20Moscow%20fuel%20hub%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=4813",
+      "source_url": "https://www.dw.com/en/ukraine-strikes-russian-weapons-plant-moscow-fuel-hub/a-77735059?maca=en-rss-en-world-4025-rdf",
       "source_name": "DW World",
-      "created_at": "2026-06-27T11:00:22.537Z"
+      "created_at": "2026-06-27T18:09:09.993Z"
     },
     {
-      "slug": "more-than-110-active-mobility-devices-seized-in-nine-day-operation-between-lta-a",
-      "title": "More than 110 active mobility devices seized in nine-day operation between LTA and police",
-      "preview": "Common offences detected included the keeping of non-compliant e-bikes or using improper, obscured or tampered number plates.",
-      "full_text": "Common offences detected included the keeping of non-compliant e-bikes or using improper, obscured or tampered number plates.",
-      "meta_description": "More than 110 active mobility devices seized in nine-day operation between LTA and police",
-      "image_url": "https://dam.mediacorp.sg/image/upload/s--AaSSQSa_--/fl_relative,g_south_east,l_mediacorp:cna:watermark:2021-08:cna,w_0.1/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/mediacorp/cna/image/2026/06/27/20260626-jk-lta-1.jpg?itok=I8nC1UP_",
-      "source_url": "https://www.channelnewsasia.com/singapore/lta-police-pmds-confiscated-mobility-devices-6213481",
+      "slug": "thousands-show-up-at-hong-lim-park-for-18th-pink-dot-rally",
+      "title": "Thousands show up at Hong Lim Park for 18th Pink Dot rally",
+      "preview": "This is the fourth year of Pink Dot since the repeal of Section 377A, a decades-old law criminalising gay sex.",
+      "full_text": "This is the fourth year of Pink Dot since the repeal of Section 377A, a decades-old law criminalising gay sex.",
+      "meta_description": "Thousands show up at Hong Lim Park for 18th Pink Dot rally",
+      "image_url": "https://dam.mediacorp.sg/image/upload/s--4IWdgfSX--/c_crop,h_899,w_1599,x_1,y_17/fl_relative,g_south_east,l_mediacorp:cna:watermark:2021-08:cna,w_0.1/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/mediacorp/cna/image/2026/06/27/jia_5163.jpg?itok=fvnjVc9V",
+      "source_url": "https://www.channelnewsasia.com/singapore/pink-dot-rally-lgbtq-community-hong-lim-park-6210706",
       "source_name": "CNA Singapore",
-      "created_at": "2026-06-27T09:00:00.000Z"
+      "created_at": "2026-06-27T13:14:00.000Z"
     }
   ]
 }
