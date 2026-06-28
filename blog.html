@@ -3,51 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global News & Insights | Internationals.pro</title>
+    <title>Global News for Expats & Nomads | Internationals.pro</title>
+    <meta name="description" content="Fresh news for expats, digital nomads and travelers. Translation services worldwide.">
+    <link rel="canonical" href="https://internationals.pro/blog.html">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
-        .close-btn { position: fixed; top: 15px; right: 20px; background: transparent; border: none; color: #d9534f; font-size: 52px; cursor: pointer; z-index: 9999; padding: 0 8px; line-height: 1; }
-        .close-btn:hover { color: #ff0000; transform: scale(1.1); }
-        .globe { position: fixed; top: 80px; right: 20px; width: 68px; height: 68px; cursor: pointer; z-index: 9999; border: none; background: transparent; padding: 0; animation: spin 10s linear infinite; }
-        .globe img { width: 100%; height: 100%; object-fit: contain; }
-        .globe:hover { transform: scale(1.1); }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        article { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 30px; }
-        h3 a { color: #0066cc; text-decoration: none; font-size: 1.4em; }
-        h3 a:hover { text-decoration: underline; }
-        .date { color: #666; font-size: 0.85em; display: block; margin-top: 10px; }
-        .news-img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; background-color: #f0f0f0; }
-        .loading { text-align: center; padding: 40px; color: #666; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #222; }
+        .top-nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; margin-bottom: 28px; }
+        .top-nav a { color: #0066cc; text-decoration: none; font-size: 15px; font-weight: 500; }
+        .top-nav a:hover { text-decoration: underline; }
+        .close-btn { background: transparent; border: none; color: #d9534f; font-size: 42px; cursor: pointer; padding: 0; line-height: 1; }
+        .close-btn:hover { color: #ff0000; }
+        h1 { font-size: 1.7em; margin-bottom: 4px; }
+        .subtitle { color: #888; font-size: 14px; margin-bottom: 24px; }
+        article { margin-bottom: 36px; border-bottom: 1px solid #eee; padding-bottom: 28px; }
+        h3 { margin: 0 0 8px 0; }
+        h3 a { color: #111; text-decoration: none; font-size: 1.2em; line-height: 1.35; }
+        h3 a:hover { color: #0066cc; }
+        .preview { color: #444; margin: 0 0 10px 0; }
+        .meta { color: #999; font-size: 13px; }
+        .news-img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; }
+        .footer-link { margin-top: 40px; padding: 18px; background: #f8f9fa; border-radius: 8px; text-align: center; font-size: 15px; }
+        .footer-link a { color: #0066cc; font-weight: 600; text-decoration: none; }
+        .footer-link a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <button class="close-btn" onclick="window.close()">←</button>
-    <a class="globe" id="globeLink" href="#" target="_blank">
-        <img src="assets/globe.png" alt="Translate">
-    </a>
+    <nav class="top-nav">
+        <a href="index.html">← Internationals.pro</a>
+        <button class="close-btn" onclick="window.close()" title="Close">×</button>
+    </nav>
+
     <h1>Global News for Expats & Nomads</h1>
-    <hr>
-    <div id="news-container"><div class="loading">Loading latest insights...</div></div>
+    <p class="subtitle" id="updated"></p>
+
+    <div id="news-container">Loading...</div>
+
+    <div class="footer-link">
+        Need document translation, visa support or website localization?<br>
+        <a href="index.html#contact">Contact Internationals.pro →</a>
+    </div>
+
     <script>
-        document.getElementById('globeLink').addEventListener('click', function(e) {
-            e.preventDefault();
-            var lang = (navigator.language || 'en').split('-')[0];
-            if (lang === 'en') { alert('Your browser language is English.'); return; }
-            window.open('https://translate.google.com/translate?sl=en&tl=' + lang + '&u=' + encodeURIComponent(location.href), '_blank');
-        });
+        var lang = (navigator.language || 'en').split('-')[0];
+        var useRu = (lang === 'ru');
 
         fetch('news.json?v=' + Date.now())
             .then(function(r) { return r.json(); })
             .then(function(data) {
-                var container = document.getElementById('news-container');
+                var updated = data.updated ? new Date(data.updated).toLocaleDateString(useRu ? 'ru-RU' : 'en-US', {day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+                document.getElementById('updated').textContent = (useRu ? 'Обновлено: ' : 'Updated: ') + updated;
+
                 var articles = data.articles || [];
-                if (!articles.length) { container.innerHTML = '<p>No news at the moment.</p>'; return; }
-                container.innerHTML = articles.map(function(art) {
+                if (!articles.length) {
+                    document.getElementById('news-container').innerHTML = '<p>' + (useRu ? 'Новости загружаются...' : 'No news at the moment.') + '</p>';
+                    return;
+                }
+
+                document.getElementById('news-container').innerHTML = articles.map(function(art) {
+                    var title = useRu ? (art.title_ru || art.title_en || '') : (art.title_en || art.title_ru || '');
+                    var preview = useRu ? (art.preview_ru || art.preview_en || '') : (art.preview_en || art.preview_ru || '');
+                    var date = art.created_at ? new Date(art.created_at).toLocaleDateString(useRu ? 'ru-RU' : 'en-US', {day:'numeric',month:'short',year:'numeric'}) : '';
                     return '<article>' +
                         (art.image_url ? '<img src="' + art.image_url + '" class="news-img" onerror="this.style.display=\'none\'">' : '') +
-                        '<h3><a href="' + (art.source_url || '#') + '" target="_blank">' + art.title + '</a></h3>' +
-                        '<p>' + art.summary + '</p>' +
-                        '<span class="date">' + new Date(art.created_at).toLocaleDateString('en-US', {day:'numeric',month:'short',year:'numeric'}) + ' · ' + (art.source_name || '') + '</span>' +
+                        '<h3><a href="article.html?slug=' + art.slug + '">' + title + '</a></h3>' +
+                        '<p class="preview">' + preview + '</p>' +
+                        '<div class="meta">' + date + (art.source_name ? ' · ' + art.source_name : '') + '</div>' +
                         '</article>';
                 }).join('');
             })
