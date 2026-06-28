@@ -9,7 +9,6 @@ const parser = new Parser({
   customFields: { item: [['media:content','mediaContent'],['media:thumbnail','mediaThumbnail']] }
 });
 
-// 4 западных + 1 азиатский обязательно
 const RSS_FEEDS_WEST = [
   { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World' },
   { url: 'https://techcrunch.com/feed/', name: 'TechCrunch' },
@@ -18,8 +17,8 @@ const RSS_FEEDS_WEST = [
 ];
 
 const RSS_FEEDS_ASIA = [
-  { url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416', name: 'CNA Singapore' },
   { url: 'https://thediplomat.com/feed/', name: 'The Diplomat' },
+  { url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416', name: 'CNA Singapore' },
   { url: 'https://china.org.cn/rss/1201719.xml', name: 'China.org.cn' }
 ];
 
@@ -47,29 +46,30 @@ function generateImage(title) {
 async function callDeepSeek(title, content) {
   const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + DEEPSEEK_KEY
-    },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + DEEPSEEK_KEY },
     body: JSON.stringify({
       model: 'deepseek-chat',
       messages: [{
         role: 'user',
-        content: `Ты — Алекс, 30-летний русскоязычный путешественник, переводчик и блогер. Живёшь то в Берлине, то в Стамбуле, то в Бангкоке. Пишешь умно, разговорно, с иронией — как образованный друг который всё повидал.
+        content: `You are Alex — a sharp, witty 30-year-old translator and travel blogger who has lived in Berlin, Istanbul and Bangkok. You write smart, conversational prose with a touch of irony, like an educated friend who has seen it all.
 
-Перепиши эту новость в своём стиле. Верни ТОЛЬКО валидный JSON, ничего лишнего:
+Rewrite this news article in TWO languages. Return ONLY valid JSON, nothing else:
 {
-  "title": "Цепляющий заголовок на русском, максимум 85 символов",
-  "preview": "Одно предложение-крючок для списка новостей на русском",
-  "full_text": "Полноценная статья на русском языке. 8-10 предложений. Структура: 1) яркая завязка которая цепляет; 2) суть что произошло — факты; 3) контекст и предыстория; 4) почему это важно для тех кто живёт или путешествует за рубежом; 5) личный взгляд или неожиданный угол; 6) практический совет или вывод; 7) запоминающаяся концовка с лёгкой иронией или мыслью.",
-  "meta_description": "SEO описание на русском, максимум 155 символов"
+  "title_en": "Punchy English headline with a hook, max 85 chars",
+  "title_ru": "Цепляющий заголовок на русском, максимум 85 символов",
+  "preview_en": "One-sentence hook for the news list in English",
+  "preview_ru": "Одно предложение-крючок для списка новостей на русском",
+  "full_en": "Full article in English, 8-10 sentences. Structure: 1) bold hook; 2) core facts; 3) context; 4) why it matters for expats/travelers; 5) personal angle; 6) practical tip; 7) witty closing.",
+  "full_ru": "Полная статья на русском, 8-10 предложений. Структура: 1) яркая завязка; 2) суть и факты; 3) контекст; 4) почему важно для тех кто живёт или ездит за рубеж; 5) личный взгляд; 6) практический совет; 7) запоминающаяся концовка с иронией.",
+  "meta_en": "SEO description in English, max 155 chars",
+  "meta_ru": "SEO описание на русском, максимум 155 символов"
 }
 
-Заголовок оригинала: ${title}
-Содержание: ${content.slice(0, 1000)}`
+Original title: ${title}
+Content: ${content.slice(0, 1000)}`
       }],
       temperature: 0.85,
-      max_tokens: 800,
+      max_tokens: 1200,
       response_format: { type: 'json_object' }
     })
   });
@@ -93,31 +93,40 @@ async function fetchArticle(feed) {
     const slug = slugify(item.title || '');
     if (!slug) continue;
 
-    let title = item.title || '';
-    let preview = rawContent.slice(0, 200);
-    let full_text = rawContent;
-    let meta = title;
-    let image = extractImage(item) || generateImage(title);
-
-    try {
-      console.log('  AI:', title.slice(0, 50));
-      const ai = await callDeepSeek(title, rawContent);
-      if (ai && !ai.quotaError) {
-        title = ai.title || title;
-        preview = ai.preview || preview;
-        full_text = ai.full_text || full_text;
-        meta = ai.meta_description || meta;
-        console.log('  ✅', title.slice(0, 50));
-      }
-    } catch(e) { console.warn('  AI error:', e.message); }
-
-    return {
-      slug, title, preview, full_text, meta_description: meta,
+    let image = extractImage(item) || generateImage(item.title || '');
+    let result = {
+      slug,
+      title_en: item.title || '',
+      title_ru: item.title || '',
+      preview_en: rawContent.slice(0, 200),
+      preview_ru: rawContent.slice(0, 200),
+      full_en: rawContent,
+      full_ru: rawContent,
+      meta_en: item.title || '',
+      meta_ru: item.title || '',
       image_url: image,
       source_url: item.link || '',
       source_name: feed.name,
       created_at: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString()
     };
+
+    try {
+      console.log('  AI:', (item.title || '').slice(0, 50));
+      const ai = await callDeepSeek(item.title || '', rawContent);
+      if (ai && !ai.quotaError) {
+        result.title_en = ai.title_en || result.title_en;
+        result.title_ru = ai.title_ru || result.title_ru;
+        result.preview_en = ai.preview_en || result.preview_en;
+        result.preview_ru = ai.preview_ru || result.preview_ru;
+        result.full_en = ai.full_en || result.full_en;
+        result.full_ru = ai.full_ru || result.full_ru;
+        result.meta_en = ai.meta_en || result.meta_en;
+        result.meta_ru = ai.meta_ru || result.meta_ru;
+        console.log('  ✅', result.title_en.slice(0, 50));
+      }
+    } catch(e) { console.warn('  AI error:', e.message); }
+
+    return result;
   }
   return null;
 }
@@ -127,28 +136,19 @@ async function main() {
   const articles = [];
   const seen = new Set();
 
-  // Берём 4 статьи из западных источников
   for (const feed of RSS_FEEDS_WEST) {
     if (articles.length >= 4) break;
     console.log('Feed:', feed.name);
     const art = await fetchArticle(feed);
-    if (art && !seen.has(art.slug)) {
-      seen.add(art.slug);
-      articles.push(art);
-    }
+    if (art && !seen.has(art.slug)) { seen.add(art.slug); articles.push(art); }
     await new Promise(r => setTimeout(r, 500));
   }
 
-  // Обязательно 1 статья из азиатского источника
   console.log('--- Asian source ---');
   for (const feed of RSS_FEEDS_ASIA) {
     console.log('Feed:', feed.name);
     const art = await fetchArticle(feed);
-    if (art && !seen.has(art.slug)) {
-      seen.add(art.slug);
-      articles.push(art);
-      break;
-    }
+    if (art && !seen.has(art.slug)) { seen.add(art.slug); articles.push(art); break; }
     await new Promise(r => setTimeout(r, 500));
   }
 
