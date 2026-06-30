@@ -4,27 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global News for Expats & Nomads | Internationals.pro</title>
-    <meta name="description" content="Fresh news for expats, digital nomads and travelers. Translation services worldwide.">
+    <meta name="description" content="Fresh news for expats, digital nomads and travelers. Professional translation services worldwide — Internationals.pro">
     <link rel="canonical" href="https://internationals.pro/blog.html">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #222; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.7; max-width: 800px; margin: 0 auto; padding: 20px; color: #222; }
         .top-nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; margin-bottom: 28px; }
         .top-nav a { color: #0066cc; text-decoration: none; font-size: 15px; font-weight: 500; }
         .top-nav a:hover { text-decoration: underline; }
         .close-btn { background: transparent; border: none; color: #d9534f; font-size: 42px; cursor: pointer; padding: 0; line-height: 1; }
-        .close-btn:hover { color: #ff0000; }
         h1 { font-size: 1.7em; margin-bottom: 4px; }
-        .subtitle { color: #888; font-size: 14px; margin-bottom: 24px; }
-        article { margin-bottom: 36px; border-bottom: 1px solid #eee; padding-bottom: 28px; }
-        h3 { margin: 0 0 8px 0; }
-        h3 a { color: #111; text-decoration: none; font-size: 1.2em; line-height: 1.35; }
-        h3 a:hover { color: #0066cc; }
-        .preview { color: #444; margin: 0 0 10px 0; }
+        .subtitle { color: #888; font-size: 14px; margin-bottom: 28px; }
+        article { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 32px; }
+        .news-img { width: 100%; max-height: 320px; object-fit: cover; border-radius: 8px; margin-bottom: 14px; cursor: pointer; }
+        h2 { font-size: 1.25em; margin: 0 0 10px 0; line-height: 1.35; }
+        h2 a { color: #111; text-decoration: none; cursor: pointer; }
+        h2 a:hover { color: #0066cc; }
+        .preview { color: #444; margin: 0 0 10px 0; font-size: 1em; }
+        .full-text { display: none; color: #333; font-size: 1em; margin: 12px 0; border-left: 3px solid #0066cc; padding-left: 16px; }
+        .full-text.open { display: block; }
+        .read-more { background: none; border: none; color: #0066cc; cursor: pointer; font-size: 14px; padding: 0; margin-bottom: 10px; }
+        .read-more:hover { text-decoration: underline; }
         .meta { color: #999; font-size: 13px; }
-        .news-img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; }
-        .footer-link { margin-top: 40px; padding: 18px; background: #f8f9fa; border-radius: 8px; text-align: center; font-size: 15px; }
-        .footer-link a { color: #0066cc; font-weight: 600; text-decoration: none; }
-        .footer-link a:hover { text-decoration: underline; }
+        .source-link { color: #999; font-size: 13px; text-decoration: none; margin-left: 10px; }
+        .source-link:hover { color: #666; }
+        .footer-cta { margin-top: 40px; padding: 20px 24px; background: #f0f7ff; border-radius: 10px; border-left: 4px solid #0066cc; font-size: 15px; }
+        .footer-cta a { color: #0066cc; font-weight: 600; text-decoration: none; }
+        .footer-cta a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -33,42 +38,66 @@
         <button class="close-btn" onclick="window.close()" title="Close">×</button>
     </nav>
 
-    <h1>Global News for Expats & Nomads</h1>
+    <h1 id="page-h1">Global News for Expats & Nomads</h1>
     <p class="subtitle" id="updated"></p>
 
     <div id="news-container">Loading...</div>
 
-    <div class="footer-link">
-        Need document translation, visa support or website localization?<br>
-        <a href="index.html#contact">Contact Internationals.pro →</a>
+    <div class="footer-cta" id="footer-cta">
+        <span id="cta-text">Need document translation, visa support or website localization?</span>
+        <br><a href="index.html" id="cta-link">Contact Internationals.pro →</a>
     </div>
 
     <script>
         var lang = (navigator.language || 'en').split('-')[0];
-        var useRu = (lang === 'ru');
+        var ru = (lang === 'ru');
+
+        if (ru) {
+            document.getElementById('page-h1').textContent = 'Мировые новости для экспатов и путешественников';
+            document.getElementById('cta-text').textContent = 'Нужен перевод документов, виза или сопровождение за рубежом?';
+            document.getElementById('cta-link').textContent = 'Связаться с Internationals.pro →';
+        }
+
+        function toggleFull(btn, id) {
+            var el = document.getElementById(id);
+            if (el.classList.contains('open')) {
+                el.classList.remove('open');
+                btn.textContent = ru ? 'Читать полностью ↓' : 'Read more ↓';
+            } else {
+                el.classList.add('open');
+                btn.textContent = ru ? 'Свернуть ↑' : 'Collapse ↑';
+            }
+        }
 
         fetch('news.json?v=' + Date.now())
             .then(function(r) { return r.json(); })
             .then(function(data) {
-                var updated = data.updated ? new Date(data.updated).toLocaleDateString(useRu ? 'ru-RU' : 'en-US', {day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
-                document.getElementById('updated').textContent = (useRu ? 'Обновлено: ' : 'Updated: ') + updated;
+                var updated = data.updated ? new Date(data.updated).toLocaleDateString(ru ? 'ru-RU' : 'en-US', {day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+                document.getElementById('updated').textContent = (ru ? 'Обновлено: ' : 'Updated: ') + updated;
 
                 var articles = data.articles || [];
                 if (!articles.length) {
-                    document.getElementById('news-container').innerHTML = '<p>' + (useRu ? 'Новости загружаются...' : 'No news at the moment.') + '</p>';
+                    document.getElementById('news-container').innerHTML = '<p>' + (ru ? 'Новости загружаются...' : 'No news at the moment.') + '</p>';
                     return;
                 }
 
-                document.getElementById('news-container').innerHTML = articles.map(function(art) {
-                    var title = useRu ? (art.title_ru || art.title_en || '') : (art.title_en || art.title_ru || '');
-                    var preview = useRu ? (art.preview_ru || art.preview_en || '') : (art.preview_en || art.preview_ru || '');
-                    var date = art.created_at ? new Date(art.created_at).toLocaleDateString(useRu ? 'ru-RU' : 'en-US', {day:'numeric',month:'short',year:'numeric'}) : '';
+                document.getElementById('news-container').innerHTML = articles.map(function(art, i) {
+                    var title = ru ? (art.title_ru || art.title_en || '') : (art.title_en || art.title_ru || '');
+                    var preview = ru ? (art.preview_ru || art.preview_en || '') : (art.preview_en || art.preview_ru || '');
+                    var full = ru ? (art.full_ru || art.full_en || '') : (art.full_en || art.full_ru || '');
+                    var date = art.created_at ? new Date(art.created_at).toLocaleDateString(ru ? 'ru-RU' : 'en-US', {day:'numeric',month:'short',year:'numeric'}) : '';
+                    var readMore = ru ? 'Читать полностью ↓' : 'Read more ↓';
+                    var fid = 'full-' + i;
+
                     return '<article>' +
-                        (art.image_url ? '<img src="' + art.image_url + '" class="news-img" onerror="this.style.display=\'none\'">' : '') +
-                        '<h3><a href="article.html?slug=' + art.slug + '">' + title + '</a></h3>' +
+                        (art.image_url ? '<img src="' + art.image_url + '" class="news-img" onerror="this.style.display=\'none\'" onclick="toggleFull(document.getElementById(\'btn-' + i + '\'), \'' + fid + '\')">' : '') +
+                        '<h2><a onclick="toggleFull(document.getElementById(\'btn-' + i + '\'), \'' + fid + '\')">' + title + '</a></h2>' +
                         '<p class="preview">' + preview + '</p>' +
-                        '<div class="meta">' + date + (art.source_name ? ' · ' + art.source_name : '') + '</div>' +
-                        '</article>';
+                        (full ? '<button class="read-more" id="btn-' + i + '" onclick="toggleFull(this, \'' + fid + '\')">' + readMore + '</button>' +
+                        '<div class="full-text" id="' + fid + '">' + full + '</div>' : '') +
+                        '<div class="meta">' + date + (art.source_name ? ' · ' + art.source_name : '') +
+                        (art.source_url ? ' <a href="' + art.source_url + '" target="_blank" rel="noopener" class="source-link">' + (ru ? 'оригинал →' : 'source →') + '</a>' : '') +
+                        '</div></article>';
                 }).join('');
             })
             .catch(function() {
