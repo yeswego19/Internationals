@@ -38,9 +38,10 @@ function extractImage(item) {
 }
 
 function generateImage(title) {
+  // Фиксированное соотношение сторон 16:9, чтобы не искажалось при object-fit:cover
   return 'https://image.pollinations.ai/prompt/' +
-    encodeURIComponent(title.slice(0, 80) + ', travel news photo, cinematic, realistic') +
-    '?width=800&height=450&nologo=true&seed=' + Math.floor(Math.random() * 99999);
+    encodeURIComponent(title.slice(0, 80) + ', travel news photo, cinematic wide shot, realistic, 16:9') +
+    '?width=1024&height=576&nologo=true&seed=' + Math.floor(Math.random() * 99999);
 }
 
 async function callDeepSeek(title, content) {
@@ -51,25 +52,27 @@ async function callDeepSeek(title, content) {
       model: 'deepseek-chat',
       messages: [{
         role: 'user',
-        content: `You are Alex — a sharp, witty 30-year-old translator and travel blogger who has lived in Berlin, Istanbul and Bangkok. You write smart, conversational prose with a touch of irony, like an educated friend who has seen it all.
+        content: `You are Alex — a sharp, witty 30-year-old translator, linguist and travel journalist who has lived in Berlin, Istanbul and Bangkok. You write smart, conversational prose with a touch of irony.
 
-Rewrite this news article in TWO languages. Return ONLY valid JSON, nothing else:
+Rewrite this news article in TWO languages. The "full" version must be a completely rewritten, original article — NOT a copy of the source text. It must be exactly 7 sentences, fully self-contained (a reader should understand everything without needing to click anywhere else). Do NOT just repeat the preview sentence — the full version must add real depth, context, and detail beyond it.
+
+Return ONLY valid JSON, nothing else:
 {
   "title_en": "Punchy English headline with a hook, max 85 chars",
   "title_ru": "Цепляющий заголовок на русском, максимум 85 символов",
-  "preview_en": "One-sentence hook for the news list in English",
-  "preview_ru": "Одно предложение-крючок для списка новостей на русском",
-  "full_en": "Full article in English, 8-10 sentences. Structure: 1) bold hook; 2) core facts; 3) context; 4) why it matters for expats/travelers; 5) personal angle; 6) practical tip; 7) witty closing.",
-  "full_ru": "Полная статья на русском, 8-10 предложений. Структура: 1) яркая завязка; 2) суть и факты; 3) контекст; 4) почему важно для тех кто живёт или ездит за рубеж; 5) личный взгляд; 6) практический совет; 7) запоминающаяся концовка с иронией.",
+  "preview_en": "One single-sentence hook for the news list, different wording than the full text opening",
+  "preview_ru": "Одно предложение-крючок для списка новостей на русском, формулировка отличается от начала полной статьи",
+  "full_en": "Exactly 7 sentences in English: 1) hook; 2) what happened — facts; 3) background/context; 4) why it matters for expats/travelers; 5) a personal angle or analysis; 6) practical takeaway; 7) witty closing thought.",
+  "full_ru": "Ровно 7 предложений на русском: 1) яркая завязка; 2) суть и факты; 3) контекст и предыстория; 4) почему важно для тех кто живёт или ездит за рубеж; 5) личный взгляд или анализ; 6) практический вывод; 7) запоминающаяся концовка с лёгкой иронией.",
   "meta_en": "SEO description in English, max 155 chars",
   "meta_ru": "SEO описание на русском, максимум 155 символов"
 }
 
 Original title: ${title}
-Content: ${content.slice(0, 1000)}`
+Source content: ${content.slice(0, 1000)}`
       }],
       temperature: 0.85,
-      max_tokens: 1200,
+      max_tokens: 1400,
       response_format: { type: 'json_object' }
     })
   });
@@ -94,39 +97,49 @@ async function fetchArticle(feed) {
     if (!slug) continue;
 
     let image = extractImage(item) || generateImage(item.title || '');
-    let result = {
-      slug,
-      title_en: item.title || '',
-      title_ru: item.title || '',
-      preview_en: rawContent.slice(0, 200),
-      preview_ru: rawContent.slice(0, 200),
-      full_en: rawContent,
-      full_ru: rawContent,
-      meta_en: item.title || '',
-      meta_ru: item.title || '',
-      image_url: image,
-      source_url: item.link || '',
-      source_name: feed.name,
-      created_at: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString()
-    };
 
-    try {
-      console.log('  AI:', (item.title || '').slice(0, 50));
-      const ai = await callDeepSeek(item.title || '', rawContent);
-      if (ai && !ai.quotaError) {
-        result.title_en = ai.title_en || result.title_en;
-        result.title_ru = ai.title_ru || result.title_ru;
-        result.preview_en = ai.preview_en || result.preview_en;
-        result.preview_ru = ai.preview_ru || result.preview_ru;
-        result.full_en = ai.full_en || result.full_en;
-        result.full_ru = ai.full_ru || result.full_ru;
-        result.meta_en = ai.meta_en || result.meta_en;
-        result.meta_ru = ai.meta_ru || result.meta_ru;
-        console.log('  ✅', result.title_en.slice(0, 50));
+    // Пробуем AI до 2 раз; если оба раза не получилось — пропускаем статью целиком,
+    // чтобы не публиковать "сырой" RSS-текст вместо нормальной статьи
+    let ai = null;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        console.log('  AI attempt', attempt + 1, ':', (item.title || '').slice(0, 50));
+        const result = await callDeepSeek(item.title || '', rawContent);
+        if (result && !result.quotaError && result.full_en && result.full_ru) {
+          ai = result;
+          break;
+        }
+        if (result && result.quotaError) {
+          console.warn('  ⚠️ Quota exceeded');
+          await new Promise(r => setTimeout(r, 3000));
+        }
+      } catch(e) {
+        console.warn('  AI error:', e.message);
+        await new Promise(r => setTimeout(r, 2000));
       }
-    } catch(e) { console.warn('  AI error:', e.message); }
+    }
 
-    return result;
+    if (!ai) {
+      console.warn('  ❌ Skipping article (AI failed):', (item.title || '').slice(0, 50));
+      continue;
+    }
+
+    console.log('  ✅', ai.title_en.slice(0, 50));
+
+    return {
+      slug,
+      title_en: ai.title_en,
+      title_ru: ai.title_ru,
+      preview_en: ai.preview_en,
+      preview_ru: ai.preview_ru,
+      full_en: ai.full_en,
+      full_ru: ai.full_ru,
+      meta_en: ai.meta_en,
+      meta_ru: ai.meta_ru,
+      image_url: image,
+      source_name: feed.name,
+      created_at: new Date().toISOString() // всегда сегодняшняя дата публикации
+    };
   }
   return null;
 }
