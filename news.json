@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-30T04:58:28.267Z",
+  "updated": "2026-06-30T05:09:36.207Z",
   "articles": [
     {
       "slug": "aftershock-frays-nerves-as-many-venezuelans-left-to-fend-for-themselves",
@@ -26,10 +26,25 @@
       "full_ru": "A new report finds \"high-intensity AI adopters” saw headcount increase 10.2%. Among those companies, entry-level headcount rose by 12%, countering the rhetoric that AI kills junior jobs.",
       "meta_en": "The AI jobs debate just got messier",
       "meta_ru": "The AI jobs debate just got messier",
-      "image_url": "https://image.pollinations.ai/prompt/The%20AI%20jobs%20debate%20just%20got%20messier%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=76458",
+      "image_url": "https://image.pollinations.ai/prompt/The%20AI%20jobs%20debate%20just%20got%20messier%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=73326",
       "source_url": "https://techcrunch.com/2026/06/29/the-ai-jobs-debate-just-got-messier/",
       "source_name": "TechCrunch",
       "created_at": "2026-06-30T04:01:00.000Z"
+    },
+    {
+      "slug": "eu-tries-to-clarify-how-ai-translation-fits-under-the-ai-act",
+      "title_en": "EU Tries to Clarify How AI Translation Fits Under the AI Act",
+      "title_ru": "EU Tries to Clarify How AI Translation Fits Under the AI Act",
+      "preview_en": "The European Commission provides an update on how AI translation fits within the EU AI Act’s transparency rules — from AI translations and tools to human review and translation cycles.\nThe post EU Tri",
+      "preview_ru": "The European Commission provides an update on how AI translation fits within the EU AI Act’s transparency rules — from AI translations and tools to human review and translation cycles.\nThe post EU Tri",
+      "full_en": "The European Commission provides an update on how AI translation fits within the EU AI Act’s transparency rules — from AI translations and tools to human review and translation cycles.\nThe post EU Tries to Clarify How AI Translation Fits Under the AI Act appeared first on Slator.",
+      "full_ru": "The European Commission provides an update on how AI translation fits within the EU AI Act’s transparency rules — from AI translations and tools to human review and translation cycles.\nThe post EU Tries to Clarify How AI Translation Fits Under the AI Act appeared first on Slator.",
+      "meta_en": "EU Tries to Clarify How AI Translation Fits Under the AI Act",
+      "meta_ru": "EU Tries to Clarify How AI Translation Fits Under the AI Act",
+      "image_url": "https://image.pollinations.ai/prompt/EU%20Tries%20to%20Clarify%20How%20AI%20Translation%20Fits%20Under%20the%20AI%20Act%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=84223",
+      "source_url": "https://slator.com/eu-ai-translation-ai-act/",
+      "source_name": "Slator",
+      "created_at": "2026-06-29T17:15:00.000Z"
     },
     {
       "slug": "alarm-over-alleged-abuse-in-french-schools-and-nurseries",
@@ -41,10 +56,10 @@
       "full_ru": "Hundreds of alleged cases of physical and sexual assault against children in French nurseries and elementary schools have revealed flaws in the system, experts say. They argue that reforms are urgently needed.",
       "meta_en": "Alarm over alleged abuse in French schools and nurseries",
       "meta_ru": "Alarm over alleged abuse in French schools and nurseries",
-      "image_url": "https://image.pollinations.ai/prompt/Alarm%20over%20alleged%20abuse%20in%20French%20schools%20and%20nurseries%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=35637",
+      "image_url": "https://image.pollinations.ai/prompt/Alarm%20over%20alleged%20abuse%20in%20French%20schools%20and%20nurseries%2C%20travel%20news%20photo%2C%20cinematic%2C%20realistic?width=800&height=450&nologo=true&seed=74412",
       "source_url": "https://www.dw.com/en/alarm-over-alleged-abuse-in-french-schools-and-nurseries/a-77729372?maca=en-rss-en-world-4025-rdf",
       "source_name": "DW World",
-      "created_at": "2026-06-30T04:58:26.422Z"
+      "created_at": "2026-06-30T05:09:34.479Z"
     },
     {
       "slug": "what-if-russia-asks-kazakhstan-for-fuel",
