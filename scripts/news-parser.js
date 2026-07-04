@@ -2,13 +2,9 @@ const Parser = require('rss-parser');
 const fs = require('fs');
 const fetch = require('node-fetch');
 
-// КЛЮЧ БЕРЕМ ИЗ ПЕРЕМЕННОЙ ОКРУЖЕНИЯ
 const GROK_KEY = process.env.GROK_API_KEY;
 const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY;
 const GEMINI_KEY = process.env.GEMINI_API_KEY;
-
-console.log('🔑 Checking keys...');
-console.log('GROK_KEY:', GROK_KEY ? '✅ SET' : '❌ NOT SET');
 
 const parser = new Parser({
   customFields: { item: [['media:content','mediaContent'],['media:thumbnail','mediaThumbnail']] }
@@ -22,20 +18,10 @@ const RSS_FEEDS_WEST = [
 ];
 
 const RSS_FEEDS_ASIA = [
-  { url: 'https://thediplomat.com/feed/', name: 'The Diplomat' },
-  { url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416', name: 'CNA Singapore' }
+  { url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416', name: 'CNA Singapore' },
+  { url: 'https://www.scmp.com/rss/91/feed', name: 'South China Morning Post' },
+  { url: 'https://thediplomat.com/feed/', name: 'The Diplomat' }
 ];
-
-const FETCH_TIMEOUT = 30000;
-
-function fetchWithTimeout(url, options = {}, timeout = FETCH_TIMEOUT) {
-  return Promise.race([
-    fetch(url, options),
-    new Promise((_, reject) => 
-      setTimeout(() => reject(new Error(`Request timeout after ${timeout}ms`)), timeout)
-    )
-  ]);
-}
 
 function slugify(text) {
   return text.toString().toLowerCase()
@@ -58,63 +44,24 @@ function generateImage(title) {
     '?width=1024&height=576&nologo=true&seed=' + Math.floor(Math.random() * 99999);
 }
 
-function safeJSONParse(str) {
-  if (!str) throw new Error('Empty response');
-  
-  str = str.replace(/```json\s*/g, '').replace(/```\s*/g, '');
-  
-  const start = str.indexOf('{');
-  const end = str.lastIndexOf('}');
-  
-  if (start >= 0 && end > start) {
-    str = str.slice(start, end + 1);
-  }
-  
-  try {
-    return JSON.parse(str);
-  } catch(e) {
-    throw new Error('Invalid JSON: ' + str.slice(0, 100));
-  }
+// Таймаут 10 секунд на каждый AI запрос
+function withTimeout(promise, ms) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
+  ]);
 }
 
-function createGoodContent(item, rawContent, title) {
-  let sentences = rawContent.split(/[.!?]+/).filter(s => s.trim().length > 20);
-  
-  if (sentences.length < 3) {
-    sentences = [];
-    
-    if (title) {
-      sentences.push(title);
-    }
-    
-    const rawParts = rawContent.split(/[.!?]+/).filter(s => s.trim().length > 10);
-    sentences.push(...rawParts);
-    
-    while (sentences.length < 5) {
-      const words = title.split(' ').slice(0, 5).join(' ');
-      sentences.push(`This story about ${words} is developing and has significant implications.`);
-      sentences.push(`Authorities are expected to provide more details about ${words} shortly.`);
-      sentences.push(`The situation regarding ${words} continues to evolve.`);
-    }
-  }
-  
-  const fullText = sentences.slice(0, 7).map(s => s.trim() + '.').join(' ');
-  const preview = sentences[0] ? sentences[0].trim() + '.' : rawContent.slice(0, 180) + '...';
-  
-  return { fullText, preview };
-}
+const PROMPT = (title, content) => `You are Alex — a sharp, witty 30-year-old translator, linguist and travel journalist who has lived in Berlin, Istanbul and Bangkok. Write smart, conversational prose with a touch of irony.
 
-const PROMPT = (title, content) => `You are Alex — a sharp, witty 30-year-old translator, linguist and travel journalist who has lived in Berlin, Istanbul and Bangkok. You write smart, conversational prose with a touch of irony.
-
-Rewrite this news in TWO languages. Return ONLY valid JSON (no markdown, no code blocks, no explanations):
-
+Rewrite this news in TWO languages. Return ONLY valid JSON, nothing else:
 {
   "title_en": "Punchy English headline, max 85 chars",
   "title_ru": "Цепляющий заголовок на русском, максимум 85 символов",
-  "preview_en": "One-sentence hook in English, different wording from full text",
-  "preview_ru": "Одно предложение-крючок на русском, отличается от начала полной статьи",
-  "full_en": "Exactly 7 complete sentences in English. Make it interesting and well-written. Minimum 150 characters.",
-  "full_ru": "Ровно 7 полных предложений на русском. Сделайте интересно и хорошо написанным. Минимум 150 символов.",
+  "preview_en": "One-sentence hook in English",
+  "preview_ru": "Одно предложение-крючок на русском",
+  "full_en": "Exactly 7 sentences in English: 1) bold hook; 2) core facts; 3) context/background; 4) why it matters for expats or travelers; 5) personal angle or analysis; 6) practical tip; 7) witty closing.",
+  "full_ru": "Ровно 7 предложений на русском: 1) яркая завязка; 2) суть и факты; 3) контекст; 4) важность для экспатов и путешественников; 5) личный взгляд; 6) практический совет; 7) ироничная концовка.",
   "meta_en": "SEO description in English, max 155 chars",
   "meta_ru": "SEO описание на русском, максимум 155 символов"
 }
@@ -123,111 +70,71 @@ Title: ${title}
 Content: ${content.slice(0, 1000)}`;
 
 async function callGrok(title, content) {
-  if (!GROK_KEY) {
-    throw new Error('No Grok API key');
-  }
-  
-  console.log(`  📤 Sending to Grok: ${title.slice(0, 40)}...`);
-  
-  const res = await fetchWithTimeout('https://api.x.ai/v1/chat/completions', {
+  if (!GROK_KEY) throw new Error('No GROK_API_KEY');
+  const res = await fetch('https://api.x.ai/v1/chat/completions', {
     method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json', 
-      'Authorization': 'Bearer ' + GROK_KEY 
-    },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROK_KEY },
     body: JSON.stringify({
-      model: 'grok-beta',
+      model: 'grok-3-mini',
       messages: [{ role: 'user', content: PROMPT(title, content) }],
       temperature: 0.85,
-      max_tokens: 2000
+      max_tokens: 1400,
+      response_format: { type: 'json_object' }
     })
   });
-  
-  console.log(`  📥 Grok status: ${res.status}`);
-  
-  if (!res.ok) {
-    const err = await res.text();
-    console.error(`  ❌ Grok error: ${err.slice(0, 200)}`);
-    throw new Error(`Grok HTTP ${res.status}: ${err}`);
-  }
-  
+  if (!res.ok) throw new Error('Grok HTTP ' + res.status);
   const data = await res.json();
-  console.log(`  ✅ Grok success`);
-  return safeJSONParse(data.choices[0].message.content);
+  return JSON.parse(data.choices[0].message.content.trim());
 }
 
 async function callDeepSeek(title, content) {
-  if (!DEEPSEEK_KEY) {
-    throw new Error('No DeepSeek API key');
-  }
-  
-  console.log(`  📤 Sending to DeepSeek: ${title.slice(0, 40)}...`);
-  
-  const res = await fetchWithTimeout('https://api.deepseek.com/chat/completions', {
+  if (!DEEPSEEK_KEY) throw new Error('No DEEPSEEK_API_KEY');
+  const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json', 
-      'Authorization': 'Bearer ' + DEEPSEEK_KEY 
-    },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + DEEPSEEK_KEY },
     body: JSON.stringify({
       model: 'deepseek-chat',
       messages: [{ role: 'user', content: PROMPT(title, content) }],
       temperature: 0.85,
-      max_tokens: 2000,
+      max_tokens: 1400,
       response_format: { type: 'json_object' }
     })
   });
-  
-  console.log(`  📥 DeepSeek status: ${res.status}`);
-  
-  if (!res.ok) {
-    const err = await res.text();
-    console.error(`  ❌ DeepSeek error: ${err.slice(0, 200)}`);
-    throw new Error(`DeepSeek HTTP ${res.status}: ${err}`);
-  }
-  
+  if (!res.ok) throw new Error('DeepSeek HTTP ' + res.status);
   const data = await res.json();
-  console.log(`  ✅ DeepSeek success`);
-  return safeJSONParse(data.choices[0].message.content);
+  return JSON.parse(data.choices[0].message.content.trim());
 }
 
 async function callGemini(title, content) {
-  if (!GEMINI_KEY) {
-    throw new Error('No Gemini API key');
-  }
-  
-  console.log(`  📤 Sending to Gemini: ${title.slice(0, 40)}...`);
-  
-  const res = await fetchWithTimeout(
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
-    {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json', 
-        'x-goog-api-key': GEMINI_KEY 
-      },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: PROMPT(title, content) }] }],
-        generationConfig: { 
-          temperature: 0.85,
-          maxOutputTokens: 2000,
-          responseMimeType: 'application/json'
-        }
-      })
-    }
-  );
-  
-  console.log(`  📥 Gemini status: ${res.status}`);
-  
-  if (!res.ok) {
-    const err = await res.text();
-    console.error(`  ❌ Gemini error: ${err.slice(0, 200)}`);
-    throw new Error(`Gemini HTTP ${res.status}: ${err}`);
-  }
-  
+  if (!GEMINI_KEY) throw new Error('No GEMINI_API_KEY');
+  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_KEY },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: PROMPT(title, content) }] }],
+      generationConfig: { temperature: 0.85, responseMimeType: 'application/json' }
+    })
+  });
+  if (!res.ok) throw new Error('Gemini HTTP ' + res.status);
   const data = await res.json();
-  console.log(`  ✅ Gemini success`);
-  return safeJSONParse(data.candidates[0].content.parts[0].text);
+  return JSON.parse(data.candidates[0].content.parts[0].text.trim());
+}
+
+// Простой RSS fallback — перефразируем без AI
+function rssToArticle(title, content, feedName) {
+  const sentences = content.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 20);
+  const full_en = sentences.slice(0, 7).join('. ') + (sentences.length > 0 ? '.' : '');
+  const full_ru = '(Без перевода — AI недоступен) ' + full_en;
+  return {
+    title_en: title.slice(0, 85),
+    title_ru: title.slice(0, 85),
+    preview_en: sentences[0] ? sentences[0] + '.' : title,
+    preview_ru: sentences[0] ? sentences[0] + '.' : title,
+    full_en: full_en || title,
+    full_ru: full_ru || title,
+    meta_en: title.slice(0, 155),
+    meta_ru: title.slice(0, 155)
+  };
 }
 
 async function callAI(title, content) {
@@ -236,169 +143,106 @@ async function callAI(title, content) {
     { name: 'DeepSeek', fn: callDeepSeek },
     { name: 'Gemini', fn: callGemini }
   ];
-  
+
   for (const p of providers) {
     try {
-      console.log(`  🔄 Trying ${p.name}...`);
-      const result = await p.fn(title, content);
-      
-      const required = ['title_en', 'title_ru', 'preview_en', 'preview_ru', 'full_en', 'full_ru', 'meta_en', 'meta_ru'];
-      const valid = required.every(field => result[field] && result[field].length > 0);
-      
-      if (!valid) {
-        console.warn(`  ❌ ${p.name} returned invalid structure`);
-        continue;
+      console.log('    trying', p.name, '...');
+      const result = await withTimeout(p.fn(title, content), 10000);
+      if (result && result.full_en && result.full_ru &&
+          result.full_en.length > 100 && result.full_ru.length > 100) {
+        console.log('    ✅', p.name, 'OK');
+        return { ...result, aiProvider: p.name };
       }
-      
-      console.log(`  ✅ ${p.name} returned valid article`);
-      return result;
-      
+      console.warn('    ⚠️', p.name, 'returned empty/short result');
     } catch(e) {
-      console.warn(`  ❌ ${p.name} failed: ${e.message}`);
+      console.warn('    ❌', p.name, e.message);
     }
-    await new Promise(r => setTimeout(r, 1000));
   }
-  return null;
+  return null; // все AI упали
 }
 
 async function fetchArticle(feed) {
   let feedData;
-  try { 
-    feedData = await parser.parseURL(feed.url); 
-  } catch(e) { 
-    console.warn('Skip:', feed.name, e.message); 
-    return null; 
-  }
-
-  if (!feedData.items || feedData.items.length === 0) {
-    console.warn('No items in feed:', feed.name);
-    return null;
-  }
+  try { feedData = await parser.parseURL(feed.url); }
+  catch(e) { console.warn('Skip feed:', feed.name, e.message); return null; }
 
   for (const item of feedData.items.slice(0, 5)) {
     const rawContent = (item.contentSnippet || item.content || item.description || '')
       .replace(/<[^>]*>/g, '').trim();
-    
-    if (rawContent.length < 50) {
-      console.log('  Skipping: too short content');
-      continue;
-    }
+    if (rawContent.length < 50) continue;
 
     const slug = slugify(item.title || '');
-    if (!slug) {
-      console.log('  Skipping: no title');
-      continue;
+    if (!slug) continue;
+
+    console.log('  Article:', (item.title || '').slice(0, 65));
+
+    let aiResult = await callAI(item.title || '', rawContent);
+    let usedRSS = false;
+
+    if (!aiResult) {
+      console.warn('  ⚠️ All AI failed — using RSS fallback');
+      aiResult = rssToArticle(item.title || '', rawContent, feed.name);
+      usedRSS = true;
     }
 
-    console.log(`\n  📰 Processing: ${(item.title || '').slice(0, 60)}`);
-    
-    const ai = await callAI(item.title || '', rawContent);
-
-    if (!ai) {
-      console.warn('  ❌ All AI providers failed, using RSS fallback');
-      
-      const enContent = createGoodContent(item, rawContent, item.title);
-      const ruContent = createGoodContent(item, rawContent, item.title);
-      
-      return {
-        slug,
-        title_en: item.title || 'Untitled',
-        title_ru: item.title || 'Untitled',
-        preview_en: enContent.preview,
-        preview_ru: ruContent.preview,
-        full_en: enContent.fullText,
-        full_ru: ruContent.fullText,
-        meta_en: (item.title || '').slice(0, 155),
-        meta_ru: (item.title || '').slice(0, 155),
-        image_url: extractImage(item) || generateImage(item.title || ''),
-        source_name: feed.name,
-        created_at: new Date().toISOString(),
-        original_title: item.title || '',
-        original_link: item.link || '',
-        is_fallback: true
-      };
-    }
+    const image = extractImage(item) || generateImage(item.title || '');
 
     return {
       slug,
-      title_en: ai.title_en,
-      title_ru: ai.title_ru,
-      preview_en: ai.preview_en,
-      preview_ru: ai.preview_ru,
-      full_en: ai.full_en,
-      full_ru: ai.full_ru,
-      meta_en: ai.meta_en,
-      meta_ru: ai.meta_ru,
-      image_url: extractImage(item) || generateImage(item.title || ''),
+      title_en: aiResult.title_en,
+      title_ru: aiResult.title_ru,
+      preview_en: aiResult.preview_en,
+      preview_ru: aiResult.preview_ru,
+      full_en: aiResult.full_en,
+      full_ru: aiResult.full_ru,
+      meta_en: aiResult.meta_en,
+      meta_ru: aiResult.meta_ru,
+      image_url: image,
       source_name: feed.name,
-      created_at: new Date().toISOString(),
-      original_title: item.title || '',
-      original_link: item.link || '',
-      is_fallback: false
+      used_rss_fallback: usedRSS,
+      created_at: new Date().toISOString()
     };
   }
   return null;
 }
 
 async function main() {
-  console.log('\n=== NEWS PARSER START ===');
-  
+  console.log('=== NEWS PARSER START ===');
+  console.log('Grok:', GROK_KEY ? '✅ key set' : '❌ missing');
+  console.log('DeepSeek:', DEEPSEEK_KEY ? '✅ key set' : '❌ missing');
+  console.log('Gemini:', GEMINI_KEY ? '✅ key set' : '❌ missing');
+
   const articles = [];
   const seen = new Set();
 
   for (const feed of RSS_FEEDS_WEST) {
     if (articles.length >= 4) break;
-    console.log(`\n📡 Feed: ${feed.name}`);
+    console.log('\nFeed:', feed.name);
     const art = await fetchArticle(feed);
-    if (art) {
-      const uniqueKey = art.original_link || art.slug;
-      if (!seen.has(uniqueKey)) { 
-        seen.add(uniqueKey);
-        seen.add(art.slug);
-        articles.push(art);
-        console.log(`  ✅ Added: ${art.title_en} ${art.is_fallback ? '(RSS)' : '(AI)'}`);
-      }
+    if (art && !seen.has(art.slug)) {
+      seen.add(art.slug);
+      articles.push(art);
     }
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 300));
   }
 
-  console.log('\n📡 Asian source ---');
+  console.log('\n--- Asian source ---');
   for (const feed of RSS_FEEDS_ASIA) {
     if (articles.length >= 5) break;
-    console.log(`\n📡 Feed: ${feed.name}`);
+    console.log('Feed:', feed.name);
     const art = await fetchArticle(feed);
-    if (art) {
-      const uniqueKey = art.original_link || art.slug;
-      if (!seen.has(uniqueKey)) { 
-        seen.add(uniqueKey);
-        seen.add(art.slug);
-        articles.push(art);
-        console.log(`  ✅ Added: ${art.title_en} ${art.is_fallback ? '(RSS)' : '(AI)'}`);
-        break;
-      }
+    if (art && !seen.has(art.slug)) {
+      seen.add(art.slug);
+      articles.push(art);
+      break;
     }
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 300));
   }
 
-  if (articles.length === 0) {
-    console.warn('⚠️ No articles were fetched!');
-    fs.writeFileSync('news.json', JSON.stringify({ 
-      updated: new Date().toISOString(), 
-      articles: [],
-      error: 'No articles fetched'
-    }, null, 2));
-  } else {
-    fs.writeFileSync('news.json', JSON.stringify({ 
-      updated: new Date().toISOString(), 
-      articles
-    }, null, 2));
-    console.log(`\n✅ Saved ${articles.length} articles to news.json`);
-  }
-  
-  console.log('=== DONE ===\n');
+  fs.writeFileSync('news.json', JSON.stringify({ updated: new Date().toISOString(), articles }, null, 2));
+  console.log('\nSaved', articles.length, 'articles to news.json');
+  console.log('AI stats:', articles.map(a => a.source_name + (a.used_rss_fallback ? '(RSS)' : '(AI)')).join(', '));
+  console.log('=== DONE ===');
 }
 
-main().catch(e => { 
-  console.error('❌ FAILED:', e.message); 
-  process.exit(1); 
-});
+main().catch(e => { console.error('FAILED:', e.message); process.exit(1); });
