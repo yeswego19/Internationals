@@ -22,7 +22,9 @@ jobs:
 
       - name: Run parser
         env:
+          GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/news-parser.js
 
       - name: Commit news.json
@@ -32,4 +34,3 @@ jobs:
           git add news.json
           git diff --staged --quiet || git commit -m "Update news.json"
           git push
-          
