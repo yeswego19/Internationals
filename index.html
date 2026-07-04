@@ -176,7 +176,7 @@
         <div class="feature-card" data-service="1" style="cursor:crosshair;user-select:none;">
           <div class="feature-icon"><i class="fas fa-bolt"></i></div>
           <h3 data-translate="service_1_title">Instant translation</h3>
-          <p data-translate="service_1_desc">Verbal interpretation via video call or on-site, written translation of any texts</p>
+          <p data-translate="service_1_desc">Interpretation via video call or on-site, written translation of any texts</p>
         </div>
         <div class="feature-card" data-service="2" style="cursor:crosshair;user-select:none;">
           <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
@@ -201,7 +201,7 @@
         <div class="feature-card" data-service="6" style="cursor:crosshair;user-select:none;">
           <div class="feature-icon"><i class="fas fa-truck"></i></div>
           <h3 data-translate="service_7_title">Document delivery</h3>
-          <p data-translate="service_7_desc">Delivery of translated documents by email or to your chosen address</p>
+          <p data-translate="service_7_desc">Translated documents delivered by email or to the address you choose</p>
         </div>
       </div>
     </div>
@@ -341,9 +341,11 @@
   <section id="contact" class="contact">
     <div class="contact-overlay" id="contactOverlay">
       <div class="cookie-banner-contact">
-        <button class="cookie-close" id="declineCookies" title="Отклонить">&times;</button>
-        <p data-translate="cookie_text">If you accidentally landed on this site — do not accept analytical cookies.</p>
-        <button class="cookie-accept" id="acceptCookies" data-translate="cookie_accept">Accept</button>
+        <p data-translate="cookie_text">If you accidentally landed on this site — do not accept analytics cookies.</p>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:10px;">
+          <button class="cookie-accept" id="acceptCookies" data-translate="cookie_accept">Accept</button>
+          <button class="cookie-accept" id="declineCookies" data-translate="cookie_decline" style="background:#6b7280;">Decline</button>
+        </div>
       </div>
     </div>
     <div class="container">
@@ -379,7 +381,6 @@
                 <h4 data-translate="contact_videocall">Video call</h4>
                 <p>
                   <a href="https://meet.jit.si/InternationalsRoom883721" target="_blank" rel="noopener" class="jitsi-link">
-                    <span class="jitsi-icon-camera"><i class="fas fa-video"></i></span>
                     <span class="jitsi-icon-phone"><i class="fas fa-phone"></i></span>
                     <span data-translate="contact_videocall_label" style="font-weight:600;color:inherit;">Join video room</span>
                   </a>
@@ -532,28 +533,28 @@
         footer_slogan_1:"Точность уровня машины.",footer_slogan_2:" Смысл уровня человека.",
         footer_desc:"Профессиональные услуги перевода.",
         feedback_btn:"Отзывы",travel_btn:"Путешествия",cookie_text:"Если вы случайно зашли на этот сайт — не принимайте аналитические куки.",
-        cookie_accept:"Принять",footer_privacy:"Политика конфиденциальности"
+        cookie_accept:"Принять",cookie_decline:"Отклонить",footer_privacy:"Политика конфиденциальности"
       },
       en: {
         nav_home:"For Partners",nav_services:"Services",nav_news:"News",
         hero_title_1:"Professional",hero_title_2:"online translator",
         hero_subtitle:"Fast and accurate translations of documents, video and web pages.",
         services_title:"Why choose us",services_subtitle:"Advanced technologies and international team of experts",
-        service_1_title:"Instant translation",service_1_desc:"Verbal interpretation via video call or on-site, written translation of any texts",
+        service_1_title:"Instant translation",service_1_desc:"Interpretation via video call or on-site, written translation of any texts",
         service_2_title:"Security",service_2_desc:"Your data is protected with modern encryption protocols",
         service_4_title:"Document translation",service_4_desc:"We work with any file format",
         service_5_title:"Website and video localization",service_5_desc:"Website creation and content adaptation",
         service_6_title:"Personal manager",service_6_desc:"Describe your task — we will find the solution",
-        service_7_title:"Document delivery",service_7_desc:"Delivery of translated documents by email or to your chosen address",
+        service_7_title:"Document delivery",service_7_desc:"Translated documents delivered by email or to the address you choose",
         contact_title:"Contact us",contact_subtitle:"Have questions? Our team is ready to help with any translation request.",
-        contact_email:"Email",contact_whatsapp:"WhatsApp and phone number",
+        contact_email:"Email",contact_whatsapp:"WhatsApp and phone",
         contact_videocall:"Video call",contact_videocall_label:"Join video conference room",
         contact_hours:"Working hours",contact_hours_text:"Online 24/7",
         form_email:"Email",form_subject:"Subject",form_message:"Your message",form_submit:"Send message",
         footer_slogan_1:"Machine-level accuracy.",footer_slogan_2:" Human-level meaning.",
         footer_desc:"Professional translation services.",
-        feedback_btn:"Feedback",travel_btn:"Travel",cookie_text:"If you accidentally landed on this site — do not accept analytical cookies.",
-        cookie_accept:"Accept",footer_privacy:"Privacy Policy"
+        feedback_btn:"Reviews",travel_btn:"Travel",cookie_text:"If you accidentally landed on this site — do not accept analytics cookies.",
+        cookie_accept:"Accept",cookie_decline:"Decline",footer_privacy:"Privacy Policy"
       },
       de: {
         nav_home:"Für Partner",nav_services:"Dienstleistungen",nav_news:"Nachrichten",
@@ -573,8 +574,8 @@
         form_email:"E-Mail",form_subject:"Betreff",form_message:"Ihre Nachricht",form_submit:"Nachricht senden",
         footer_slogan_1:"Maschinengenaue Präzision.",footer_slogan_2:" Menschliche Bedeutung.",
         footer_desc:"Professionelle Übersetzungsdienste.",
-        feedback_btn:"Rückmeldung",travel_btn:"Reisen",cookie_text:"Falls Sie versehentlich auf diese Website gelangt sind — akzeptieren Sie keine analytischen Cookies.",
-        cookie_accept:"Akzeptieren",footer_privacy:"Datenschutzrichtlinie"
+        feedback_btn:"Bewertungen",travel_btn:"Reisen",cookie_text:"Falls Sie versehentlich auf diese Website gelangt sind — akzeptieren Sie keine Analyse-Cookies.",
+        cookie_accept:"Akzeptieren",cookie_decline:"Ablehnen",footer_privacy:"Datenschutzrichtlinie"
       },
       es: {
         nav_home:"Para socios",nav_services:"Servicios",nav_news:"Noticias",
@@ -586,16 +587,16 @@
         service_4_title:"Traducción de documentos",service_4_desc:"Trabajamos con cualquier formato de archivo",
         service_5_title:"Localización de sitios web y videos",service_5_desc:"Creación de sitios web y adaptación de contenido",
         service_6_title:"Gerente personal",service_6_desc:"Describa su tarea — encontraremos la solución",
-        service_7_title:"Entrega de documentos",service_7_desc:"Entrega de documentos traducidos por correo electrónico o a la dirección que elija",
+        service_7_title:"Entrega de documentos",service_7_desc:"Documentos traducidos enviados por correo electrónico o a la dirección que usted elija",
         contact_title:"Contáctenos",contact_subtitle:"¿Tiene preguntas? Nuestro equipo está listo para ayudar con cualquier solicitud de traducción.",
         contact_email:"Correo electrónico",contact_whatsapp:"WhatsApp y teléfono",
         contact_videocall:"Videollamada",contact_videocall_label:"Unirse a la sala de videoconferencia",
-        contact_hours:"Horario laboral",contact_hours_text:"Online 24/7",
+        contact_hours:"Horario de atención",contact_hours_text:"En línea 24/7",
         form_email:"Correo electrónico",form_subject:"Asunto",form_message:"Su mensaje",form_submit:"Enviar mensaje",
-        footer_slogan_1:"Precisión a nivel de máquina.",footer_slogan_2:" Significado a nivel humano.",
+        footer_slogan_1:"Precisión de nivel máquina.",footer_slogan_2:" Significado de nivel humano.",
         footer_desc:"Servicios profesionales de traducción.",
-        feedback_btn:"Reseñas",travel_btn:"Viajes",cookie_text:"Si has llegado a este sitio por accidente — no aceptes las cookies analíticas.",
-        cookie_accept:"Aceptar",footer_privacy:"Política de privacidad"
+        feedback_btn:"Reseñas",travel_btn:"Viajes",cookie_text:"Si llegó a este sitio por error — no acepte las cookies de análisis.",
+        cookie_accept:"Aceptar",cookie_decline:"Rechazar",footer_privacy:"Política de privacidad"
       },
       pt: {
         nav_home:"Para parceiros",nav_services:"Serviços",nav_news:"Notícias",
@@ -607,16 +608,16 @@
         service_4_title:"Tradução de documentos",service_4_desc:"Trabalhamos com qualquer formato de arquivo",
         service_5_title:"Localização de sites e vídeos",service_5_desc:"Criação de sites e adaptação de conteúdo",
         service_6_title:"Gerente pessoal",service_6_desc:"Descreva sua tarefa — encontraremos a solução",
-        service_7_title:"Entrega de documentos",service_7_desc:"Entrega de documentos traduzidos por e-mail ou no endereço escolhido por você",
-        contact_title:"Contate-nos",contact_subtitle:"Tem perguntas? Nossa equipe está pronta para ajudar em qualquer solicitação de tradução.",
-        contact_email:"Email",contact_whatsapp:"WhatsApp e telefone",
+        service_7_title:"Entrega de documentos",service_7_desc:"Documentos traduzidos enviados por e-mail ou para o endereço de sua escolha",
+        contact_title:"Fale conosco",contact_subtitle:"Tem dúvidas? Nossa equipe está pronta para ajudar com qualquer solicitação de tradução.",
+        contact_email:"E-mail",contact_whatsapp:"WhatsApp e telefone",
         contact_videocall:"Videochamada",contact_videocall_label:"Entrar na sala de videoconferência",
-        contact_hours:"Horário de funcionamento",contact_hours_text:"Online 24/7",
-        form_email:"Email",form_subject:"Assunto",form_message:"Sua mensagem",form_submit:"Enviar mensagem",
-        footer_slogan_1:"Precisão ao nível de máquina.",footer_slogan_2:" Significado ao nível humano.",
+        contact_hours:"Horário de atendimento",contact_hours_text:"Online 24/7",
+        form_email:"E-mail",form_subject:"Assunto",form_message:"Sua mensagem",form_submit:"Enviar mensagem",
+        footer_slogan_1:"Precisão em nível de máquina.",footer_slogan_2:" Significado em nível humano.",
         footer_desc:"Serviços profissionais de tradução.",
-        feedback_btn:"Avaliações",travel_btn:"Viagens",cookie_text:"Se você chegou a este site por engano — não aceite os cookies analíticos.",
-        cookie_accept:"Aceitar",footer_privacy:"Política de privacidade"
+        feedback_btn:"Avaliações",travel_btn:"Viagens",cookie_text:"Se você chegou a este site por engano — não aceite os cookies de análise.",
+        cookie_accept:"Aceitar",cookie_decline:"Recusar",footer_privacy:"Política de privacidade"
       },
       zh: {
         nav_home:"合作伙伴",nav_services:"服务",nav_news:"新闻",
@@ -636,8 +637,8 @@
         form_email:"电子邮件",form_subject:"主题",form_message:"您的信息",form_submit:"发送信息",
         footer_slogan_1:"机器级精度。",footer_slogan_2:" 人类级理解。",
         footer_desc:"专业翻译服务。",
-        feedback_btn:"反馈",travel_btn:"旅行",cookie_text:"如果您是无意中进入本网站——请不要接受分析性 Cookie",
-        cookie_accept:"接受",footer_privacy:"隐私政策"
+        feedback_btn:"评价",travel_btn:"旅行",cookie_text:"如果您是无意中进入本网站，请不要接受分析性 Cookie。",
+        cookie_accept:"接受",cookie_decline:"拒绝",footer_privacy:"隐私政策"
       },
       ar: {
         nav_home:"للشركاء",nav_services:"الخدمات",nav_news:"الأخبار",
@@ -657,8 +658,8 @@
         form_email:"البريد الإلكتروني",form_subject:"الموضوع",form_message:"رسالتك",form_submit:"إرسال الرسالة",
         footer_slogan_1:"دقة بمستوى الآلة.",footer_slogan_2:" معنى بمستوى الإنسان.",
         footer_desc:"خدمات ترجمة احترافية.",
-        feedback_btn:"المراجعات",travel_btn:"السفر",cookie_text:"إذا وصلت إلى هذا الموقع بالصدفة — لا تقبل ملفات تعريف الارتباط التحليلية.",
-        cookie_accept:"قبول",footer_privacy:"سياسة الخصوصية"
+        feedback_btn:"التقييمات",travel_btn:"السفر",cookie_text:"إذا وصلت إلى هذا الموقع بالصدفة، فلا تقبل ملفات تعريف الارتباط التحليلية.",
+        cookie_accept:"قبول",cookie_decline:"رفض",footer_privacy:"سياسة الخصوصية"
       }
     };
 
