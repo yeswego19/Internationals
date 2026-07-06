@@ -1,1 +1,35 @@
+name: Sync Reviews
 
+on:
+  schedule:
+    - cron: '0 6,18 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Sync reviews
+        env:
+          SUPABASE_URL: https://mcgcijdnzduzyqbbjtkm.supabase.co
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: node scripts/sync-reviews.js
+
+      - name: Commit reviews.json
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add reviews.json
+          git diff --staged --quiet || git commit -m "Sync reviews.json"
+          git push
