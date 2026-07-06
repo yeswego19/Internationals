@@ -384,6 +384,38 @@
 
       var CACHE_KEY='cachedFeedbackV1';
 
+      // Плашка для России (показывается если Supabase недоступен)
+      function showRussiaFallback() {
+        var el = document.getElementById('feedbackList');
+        if (!el) return;
+
+        // Пробуем загрузить статический reviews.json
+        fetch('reviews.json?v=' + Date.now())
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            if (data && data.reviews && data.reviews.length > 0) {
+              renderFeedback(data.reviews);
+              // Показываем плашку Google сверху
+              var notice = document.createElement('div');
+              notice.style.cssText = 'background:rgba(255,255,255,0.15);padding:12px;border-radius:8px;margin-bottom:12px;text-align:center;color:#fff;font-size:14px;';
+              notice.innerHTML = '⭐ <strong>Leave a review on Google</strong><br><a href="https://g.page/r/CQwStbpHlV3gEAI/review" target="_blank" rel="nofollow" style="color:#fff;font-weight:600;">Rate us →</a>';
+              el.insertBefore(notice, el.firstChild);
+            } else {
+              showGoogleOnly(el);
+            }
+          })
+          .catch(function() { showGoogleOnly(el); });
+      }
+
+      function showGoogleOnly(el) {
+        el.innerHTML = '<div style="text-align:center;padding:20px;">'
+          + '<p style="color:#fff;margin-bottom:12px;">Reviews are temporarily unavailable.</p>'
+          + '<a href="https://g.page/r/CQwStbpHlV3gEAI/review" target="_blank" rel="nofollow" '
+          + 'style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#2f5597,#1f3f83);'
+          + 'color:#fff;border-radius:8px;text-decoration:none;font-weight:600;">⭐ Leave a review on Google</a>'
+          + '</div>';
+      }
+
       function renderFeedback(rows){
         var lang=getPreferredLang();
         if(!rows || rows.length===0){
@@ -413,14 +445,21 @@
 
       async function loadFeedback(){
         try{
-          var res=await sb.from('feedback').select('*').order('created_at',{ascending:false}).limit(50);
+          var res = await Promise.race([
+            sb.from('feedback').select('*').order('created_at',{ascending:false}).limit(50),
+            new Promise(function(_, reject){ setTimeout(function(){ reject(new Error('timeout')); }, 4000); })
+          ]);
           if(res.error) throw res.error;
           renderFeedback(res.data);
           try{ localStorage.setItem(CACHE_KEY, JSON.stringify(res.data)); }catch(e){}
         }catch(err){
-          console.error(err);
-          if(!localStorage.getItem(CACHE_KEY)){
-            feedbackList.innerHTML='<p class="error">Failed to load feedback</p>';
+          console.warn('Supabase unavailable:', err.message);
+          var cached = null;
+          try { cached = localStorage.getItem(CACHE_KEY); } catch(e){}
+          if(cached) {
+            renderFeedback(JSON.parse(cached));
+          } else {
+            showRussiaFallback();
           }
         }
       }
