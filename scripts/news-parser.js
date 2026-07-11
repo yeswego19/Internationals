@@ -38,7 +38,7 @@ function extractImage(item) {
 function generateImage(title) {
   return 'https://image.pollinations.ai/prompt/' +
     encodeURIComponent(title.slice(0, 80) + ', travel news photo, cinematic, realistic') +
-    '?width=1024&height=576&nologo=true&seed=' + Math.floor(Math.random() * 99999);
+    '?width=768&height=768&nologo=true&seed=' + Math.floor(Math.random() * 99999);
 }
 
 function withTimeout(promise, ms) {
