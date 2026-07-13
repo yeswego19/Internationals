@@ -90,7 +90,7 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 .volume-fill{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,#0066ff,#4a9eff);border-radius:2px;transition:height 0.1s;pointer-events:none}
 .volume-icon{font-size:18px;color:rgba(255,255,255,0.9)}
 
-#languageDropdown{position:fixed;top:80px;right:15px;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:12px 0;min-width:210px;display:none;z-index:9999}
+#languageDropdown{position:fixed;top:80px;right:15px;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:12px 0;min-width:210px;display:none;z-index:9999;max-height:calc(100vh - 100px);overflow-y:auto;overscroll-behavior:contain}
 #languageDropdown.show{display:block;animation:slideDown .3s ease}
 .language-option{padding:12px 24px;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:16px;transition:.2s;font-weight:500}
 
@@ -178,7 +178,7 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
   .volume-slider{width:120px!important;margin-left:-60px!important}
 
   /* Языки под глобусом */
-  #languageDropdown{top:80px!important;right:10px!important}
+  #languageDropdown{top:80px!important;right:10px!important;max-height:calc(100vh - 100px)!important}
 
   /* Герой — вдвое короче */
   .hero{min-height:50vh!important;padding:60px 0 30px!important}
