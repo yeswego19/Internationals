@@ -20,6 +20,32 @@ const RSS_FEEDS_ASIA = [
   { url: 'https://thediplomat.com/feed/', name: 'The Diplomat' }
 ];
 
+const RSS_FEEDS_SPORTS = [
+  { url: 'https://rss.dw.com/rdf/rss-en-sports', name: 'DW Sports' }
+];
+
+const RSS_FEEDS_CULTURE = [
+  { url: 'https://rss.dw.com/rdf/rss-en-cul', name: 'DW Culture' }
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function loadPreviousSlugs() {
+  try {
+    const prev = JSON.parse(fs.readFileSync('news.json', 'utf-8'));
+    return new Set((prev.articles || []).map(a => a.slug));
+  } catch (e) {
+    return new Set();
+  }
+}
+
 function slugify(text) {
   return text.toString().toLowerCase()
     .replace(/\s+/g, '-').replace(/[^\w\-]+/g, '')
@@ -103,18 +129,21 @@ function rssFallback(title, content) {
   };
 }
 
-async function fetchArticle(feed) {
+async function fetchArticle(feed, excludeSlugs) {
   let feedData;
   try { feedData = await parser.parseURL(feed.url); }
   catch(e) { console.warn('Skip feed:', feed.name, e.message); return null; }
 
-  for (const item of feedData.items.slice(0, 5)) {
+  const pool = shuffle(feedData.items.slice(0, 8));
+
+  for (const item of pool) {
     const rawContent = (item.contentSnippet || item.content || item.description || '')
       .replace(/<[^>]*>/g, '').trim();
     if (rawContent.length < 50) continue;
 
     const slug = slugify(item.title || '');
     if (!slug) continue;
+    if (excludeSlugs && excludeSlugs.has(slug)) continue;
 
     const image = extractImage(item) || generateImage(item.title || '');
     let result = null;
@@ -157,20 +186,38 @@ async function main() {
 
   const articles = [];
   const seen = new Set();
+  const prevSlugs = loadPreviousSlugs(); // не повторяем темы из прошлого запуска
 
-  for (const feed of RSS_FEEDS_WEST) {
+  console.log('\n--- World sources ---');
+  for (const feed of shuffle(RSS_FEEDS_WEST)) {
     if (articles.length >= 4) break;
-    console.log('\nFeed:', feed.name);
-    const art = await fetchArticle(feed);
+    console.log('Feed:', feed.name);
+    const art = await fetchArticle(feed, new Set([...seen, ...prevSlugs]));
     if (art && !seen.has(art.slug)) { seen.add(art.slug); articles.push(art); }
     await new Promise(r => setTimeout(r, 2000)); // пауза между запросами к Groq
   }
 
   console.log('\n--- Asian source ---');
-  for (const feed of RSS_FEEDS_ASIA) {
+  for (const feed of shuffle(RSS_FEEDS_ASIA)) {
     if (articles.length >= 5) break;
     console.log('Feed:', feed.name);
-    const art = await fetchArticle(feed);
+    const art = await fetchArticle(feed, new Set([...seen, ...prevSlugs]));
+    if (art && !seen.has(art.slug)) { seen.add(art.slug); articles.push(art); break; }
+    await new Promise(r => setTimeout(r, 2000));
+  }
+
+  console.log('\n--- Sports ---');
+  for (const feed of RSS_FEEDS_SPORTS) {
+    console.log('Feed:', feed.name);
+    const art = await fetchArticle(feed, new Set([...seen, ...prevSlugs]));
+    if (art && !seen.has(art.slug)) { seen.add(art.slug); articles.push(art); break; }
+    await new Promise(r => setTimeout(r, 2000));
+  }
+
+  console.log('\n--- Culture ---');
+  for (const feed of RSS_FEEDS_CULTURE) {
+    console.log('Feed:', feed.name);
+    const art = await fetchArticle(feed, new Set([...seen, ...prevSlugs]));
     if (art && !seen.has(art.slug)) { seen.add(art.slug); articles.push(art); break; }
     await new Promise(r => setTimeout(r, 2000));
   }
