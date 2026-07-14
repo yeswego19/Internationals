@@ -82,8 +82,8 @@ Rewrite this news in TWO languages. Return ONLY valid JSON:
   "title_ru": "Цепляющий заголовок на русском, максимум 85 символов",
   "preview_en": "One-sentence hook in English",
   "preview_ru": "Одно предложение-крючок на русском",
-  "full_en": "Exactly 7 sentences in English, third person throughout: 1) bold hook; 2) core facts; 3) context; 4) why it matters for expats/travelers; 5) a wry observation or wider implication; 6) practical tip; 7) witty closing.",
-  "full_ru": "Ровно 7 предложений на русском, строго от третьего лица: 1) завязка; 2) факты; 3) контекст; 4) важно для экспатов; 5) ироничное наблюдение или более широкий взгляд на ситуацию; 6) практический совет; 7) остроумная концовка.",
+  "full_en": "Exactly 7 sentences in English, third person throughout: 1) bold hook; 2) core facts; 3) context; 4) broader significance; 5) a wry observation or wider implication; 6) practical tip; 7) witty closing. Do not use the words 'expat', 'expats', or 'traveler(s)' anywhere in the text.",
+  "full_ru": "Ровно 7 предложений на русском, строго от третьего лица: 1) завязка; 2) факты; 3) контекст; 4) более широкая значимость; 5) ироничное наблюдение или более широкий взгляд на ситуацию; 6) практический совет; 7) остроумная концовка. Не используй слова «экспат», «экспаты» или «путешественник(и)» нигде в тексте.",
   "meta_en": "SEO description in English, max 155 chars",
   "meta_ru": "SEO описание на русском, максимум 155 символов"
 }
