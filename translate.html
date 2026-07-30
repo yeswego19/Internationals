@@ -3,76 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Перевод документов — Internationals</title>
+<title>Перевод документов</title>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
 body{font-family:system-ui;background:#0a0e1a;color:#e8eef7;margin:0;padding:2rem;max-width:700px;margin-inline:auto}
 h1{color:#67b8ff}
-.upload{border:2px dashed #4a90e2;padding:2rem;text-align:center;border-radius:12px;cursor:pointer}
-#preview{max-width:100%;margin:1rem 0;display:none}
-#result{background:#111827;padding:1rem;border-radius:8px;white-space:pre-wrap;min-height:100px}
-button{background:#4a90e2;color:#fff;border:0;padding:.8rem 1.5rem;border-radius:8px;cursor:pointer;font-size:1rem}
-.pay{margin-top:1.5rem}
+.upload{border:2px dashed #4a90e2;padding:2rem;text-align:center;border-radius:12px;cursor:pointer;margin-bottom:1rem}
+select,button{padding:.6rem 1rem;margin:.3rem;border-radius:6px;border:0}
+button{background:#4a90e2;color:#fff;cursor:pointer}
+#result{background:#111827;padding:1rem;border-radius:8px;white-space:pre-wrap;min-height:120px;margin-top:1rem}
 </style>
 </head>
 <body>
 <h1>Перевод документов</h1>
-<p>Загрузите фото или скан документа. После оплаты получите перевод.</p>
 
 <div class="upload" onclick="fileInput.click()">
-  <input type="file" id="fileInput" accept="image/*,.pdf" hidden>
-  Выберите файл (JPG, PNG, PDF)
+  <input type="file" id="fileInput" accept="image/*" multiple hidden>
+  Выберите фото документов (можно несколько)
 </div>
-<img id="preview">
+
+<label>Язык документа:
+<select id="srcLang">
+  <option value="eng">English</option>
+  <option value="rus">Русский</option>
+  <option value="chi_sim">中文</option>
+  <option value="deu">Deutsch</option>
+  <option value="fra">Français</option>
+  <option value="spa">Español</option>
+  <option value="ara">العربية</option>
+</select>
+</label>
+
+<label>Перевести на:
+<select id="tgtLang">
+  <option value="ru">Русский</option>
+  <option value="en">English</option>
+  <option value="zh">中文</option>
+  <option value="de">Deutsch</option>
+</select>
+</label>
+
+<button onclick="process()">Распознать и перевести</button>
 <div id="status"></div>
 <div id="result"></div>
 
-<div class="pay">
+<div style="margin-top:1.5rem">
   <button class="cc-payment-button"></button>
 </div>
 
 <script defer src="https://cdn.trybit.com/widget/v1/widget.js"></script>
 <script>
 const fileInput = document.getElementById('fileInput');
-const preview = document.getElementById('preview');
 const status = document.getElementById('status');
 const result = document.getElementById('result');
 
-fileInput.onchange = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  status.textContent = 'Обработка...';
+async function process() {
+  const files = fileInput.files;
+  if (!files.length) { status.textContent = 'Выберите файлы'; return; }
+
+  status.textContent = 'Распознаю...';
   result.textContent = '';
+  let allText = '';
 
-  const reader = new FileReader();
-  reader.onload = async () => {
-    preview.src = reader.result;
-    preview.style.display = 'block';
+  for (const file of files) {
+    const { data: { text } } = await Tesseract.recognize(file, document.getElementById('srcLang').value, {
+      logger: m => status.textContent = m.status + ' ' + Math.round((m.progress||0)*100) + '%'
+    });
+    allText += text + '\n\n';
+  }
 
-    try {
-      // Pollinations OCR + перевод (без ключа)
-      const res = await fetch('https://text.pollinations.ai/', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          messages: [{
-            role: 'user',
-            content: [
-              {type: 'text', text: 'Extract all text from this document image using OCR, then translate it to Russian. Return only the translated text.'},
-              {type: 'image_url', image_url: {url: reader.result}}
-            ]
-          }],
-          model: 'openai'
-        })
-      });
-      const text = await res.text();
-      result.textContent = text || 'Не удалось распознать';
-      status.textContent = 'Готово. Оплатите для получения.';
-    } catch (err) {
-      status.textContent = 'Ошибка: ' + err.message;
-    }
-  };
-  reader.readAsDataURL(file);
-};
+  status.textContent = 'Перевожу...';
+  // Простой перевод через Google (без ключа, лимиты есть)
+  const tgt = document.getElementById('tgtLang').value;
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${tgt}&dt=t&q=${encodeURIComponent(allText)}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  const translated = data[0].map(x => x[0]).join('');
+  result.textContent = translated;
+  status.textContent = 'Готово';
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   if (window.TryBitWidget) {
