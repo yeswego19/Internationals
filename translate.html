@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Перевод документов — Internationals</title>
+<style>
+body{font-family:system-ui;background:#0a0e1a;color:#e8eef7;margin:0;padding:2rem;max-width:700px;margin-inline:auto}
+h1{color:#67b8ff}
+.upload{border:2px dashed #4a90e2;padding:2rem;text-align:center;border-radius:12px;cursor:pointer}
+#preview{max-width:100%;margin:1rem 0;display:none}
+#result{background:#111827;padding:1rem;border-radius:8px;white-space:pre-wrap;min-height:100px}
+button{background:#4a90e2;color:#fff;border:0;padding:.8rem 1.5rem;border-radius:8px;cursor:pointer;font-size:1rem}
+.pay{margin-top:1.5rem}
+</style>
+</head>
+<body>
+<h1>Перевод документов</h1>
+<p>Загрузите фото или скан документа. После оплаты получите перевод.</p>
+
+<div class="upload" onclick="fileInput.click()">
+  <input type="file" id="fileInput" accept="image/*,.pdf" hidden>
+  Выберите файл (JPG, PNG, PDF)
+</div>
+<img id="preview">
+<div id="status"></div>
+<div id="result"></div>
+
+<div class="pay">
+  <button class="cc-payment-button"></button>
+</div>
+
+<script defer src="https://cdn.trybit.com/widget/v1/widget.js"></script>
+<script>
+const fileInput = document.getElementById('fileInput');
+const preview = document.getElementById('preview');
+const status = document.getElementById('status');
+const result = document.getElementById('result');
+
+fileInput.onchange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  status.textContent = 'Обработка...';
+  result.textContent = '';
+
+  const reader = new FileReader();
+  reader.onload = async () => {
+    preview.src = reader.result;
+    preview.style.display = 'block';
+
+    try {
+      // Pollinations OCR + перевод (без ключа)
+      const res = await fetch('https://text.pollinations.ai/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          messages: [{
+            role: 'user',
+            content: [
+              {type: 'text', text: 'Extract all text from this document image using OCR, then translate it to Russian. Return only the translated text.'},
+              {type: 'image_url', image_url: {url: reader.result}}
+            ]
+          }],
+          model: 'openai'
+        })
+      });
+      const text = await res.text();
+      result.textContent = text || 'Не удалось распознать';
+      status.textContent = 'Готово. Оплатите для получения.';
+    } catch (err) {
+      status.textContent = 'Ошибка: ' + err.message;
+    }
+  };
+  reader.readAsDataURL(file);
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.TryBitWidget) {
+    window.TryBitWidget.CreateInvoiceButton({
+      size: 'standard',
+      template: 'variant1:white',
+      text: 'Pay with crypto',
+      amount: 8,
+      currency: 'USD',
+      shop_id: 'O4BDppG9by6PFohd',
+      locale: 'ru'
+    }).mount('.cc-payment-button');
+  }
+});
+</script>
+</body>
+</html>
