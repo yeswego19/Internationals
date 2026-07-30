@@ -4,98 +4,72 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Перевод документов</title>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
 body{font-family:system-ui;background:#0a0e1a;color:#e8eef7;margin:0;padding:2rem;max-width:700px;margin-inline:auto}
 h1{color:#67b8ff}
-.upload{border:2px dashed #4a90e2;padding:2rem;text-align:center;border-radius:12px;cursor:pointer;margin-bottom:1rem}
-select,button{padding:.6rem 1rem;margin:.3rem;border-radius:6px;border:0}
-button{background:#4a90e2;color:#fff;cursor:pointer}
+.upload{border:2px dashed #4a90e2;padding:2rem;text-align:center;border-radius:12px;cursor:pointer;margin:1rem 0}
+button{background:#4a90e2;color:#fff;border:0;padding:.8rem 1.5rem;border-radius:8px;cursor:pointer;font-size:1rem}
 #result{background:#111827;padding:1rem;border-radius:8px;white-space:pre-wrap;min-height:120px;margin-top:1rem}
+select{padding:.5rem;margin:.5rem 0}
 </style>
 </head>
 <body>
 <h1>Перевод документов</h1>
 
 <div class="upload" onclick="fileInput.click()">
-  <input type="file" id="fileInput" accept="image/*" multiple hidden>
-  Выберите фото документов (можно несколько)
+  <input type="file" id="fileInput" accept="image/*" hidden>
+  Выберите фото документа
 </div>
 
-<label>Язык документа:
-<select id="srcLang">
-  <option value="eng">English</option>
-  <option value="rus">Русский</option>
-  <option value="chi_sim">中文</option>
-  <option value="deu">Deutsch</option>
-  <option value="fra">Français</option>
-  <option value="spa">Español</option>
-  <option value="ara">العربية</option>
-</select>
-</label>
-
 <label>Перевести на:
-<select id="tgtLang">
-  <option value="ru">Русский</option>
-  <option value="en">English</option>
-  <option value="zh">中文</option>
-  <option value="de">Deutsch</option>
-</select>
+  <select id="lang">
+    <option value="Russian">Русский</option>
+    <option value="English">English</option>
+    <option value="Chinese">中文</option>
+  </select>
 </label>
 
 <button onclick="process()">Распознать и перевести</button>
 <div id="status"></div>
 <div id="result"></div>
 
-<div style="margin-top:1.5rem">
-  <button class="cc-payment-button"></button>
-</div>
-
-<script defer src="https://cdn.trybit.com/widget/v1/widget.js"></script>
 <script>
-const fileInput = document.getElementById('fileInput');
-const status = document.getElementById('status');
-const result = document.getElementById('result');
+const API = 'https://express-js-on-vercel-one-psi-71.vercel.app/api/ocr'; // ← замени на свой адрес если другой
 
 async function process() {
-  const files = fileInput.files;
-  if (!files.length) { status.textContent = 'Выберите файлы'; return; }
+  const file = document.getElementById('fileInput').files[0];
+  const lang = document.getElementById('lang').value;
+  if (!file) return alert('Выберите файл');
 
-  status.textContent = 'Распознаю...';
-  result.textContent = '';
-  let allText = '';
+  const status = document.getElementById('status');
+  const result = document.getElementById('result');
+  status.textContent = 'Читаю файл...';
 
-  for (const file of files) {
-    const { data: { text } } = await Tesseract.recognize(file, document.getElementById('srcLang').value, {
-      logger: m => status.textContent = m.status + ' ' + Math.round((m.progress||0)*100) + '%'
-    });
-    allText += text + '\n\n';
-  }
-
-  status.textContent = 'Перевожу...';
-  // Простой перевод через Google (без ключа, лимиты есть)
-  const tgt = document.getElementById('tgtLang').value;
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${tgt}&dt=t&q=${encodeURIComponent(allText)}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  const translated = data[0].map(x => x[0]).join('');
-  result.textContent = translated;
-  status.textContent = 'Готово';
+  const reader = new FileReader();
+  reader.onload = async () => {
+    status.textContent = 'Отправляю в Qwen...';
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          image: reader.result,
+          lang: lang
+        })
+      });
+      const data = await res.json();
+      if (data.error) {
+        status.textContent = 'Ошибка: ' + data.error;
+        return;
+      }
+      result.textContent = data.text;
+      status.textContent = 'Готово';
+    } catch (e) {
+      status.textContent = 'Ошибка: ' + e.message;
+    }
+  };
+  reader.readAsDataURL(file);
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  if (window.TryBitWidget) {
-    window.TryBitWidget.CreateInvoiceButton({
-      size: 'standard',
-      template: 'variant1:white',
-      text: 'Pay with crypto',
-      amount: 8,
-      currency: 'USD',
-      shop_id: 'O4BDppG9by6PFohd',
-      locale: 'ru'
-    }).mount('.cc-payment-button');
-  }
-});
 </script>
 </body>
 </html>
