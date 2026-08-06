@@ -8,16 +8,12 @@ const parser = new Parser({
   customFields: { item: [['media:content','mediaContent'],['media:thumbnail','mediaThumbnail']] }
 });
 
-const RSS_FEEDS_WEST = [
-  { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World' },
-  { url: 'https://techcrunch.com/feed/', name: 'TechCrunch' },
-  { url: 'https://rss.dw.com/rdf/rss-en-world', name: 'DW World' },
-  { url: 'https://feeds.npr.org/1001/rss.xml', name: 'NPR' }
-];
-
-const RSS_FEEDS_ASIA = [
-  { url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416', name: 'CNA Singapore' },
-  { url: 'https://thediplomat.com/feed/', name: 'The Diplomat' }
+const RSS_FEEDS = [
+  { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC World', category: 'world' },
+  { url: 'https://feeds.bbci.co.uk/sport/rss.xml', name: 'BBC Sport', category: 'sport' },
+  { url: 'https://www.theguardian.com/artanddesign/rss', name: 'The Guardian Arts', category: 'arts' },
+  { url: 'https://techcrunch.com/feed/', name: 'TechCrunch', category: 'tech' },
+  { url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416', name: 'CNA Singapore', category: 'asia' }
 ];
 
 function slugify(text) {
@@ -37,7 +33,7 @@ function extractImage(item) {
 
 function generateImage(title) {
   return 'https://image.pollinations.ai/prompt/' +
-    encodeURIComponent(title.slice(0, 80) + ', travel news photo, cinematic, realistic') +
+    encodeURIComponent(title.slice(0, 80) + ', news photo, cinematic, realistic') +
     '?width=1024&height=576&nologo=true&seed=' + Math.floor(Math.random() * 99999);
 }
 
@@ -48,56 +44,68 @@ function withTimeout(promise, ms) {
   ]);
 }
 
-// Очищаем текст от markdown, иероглифов и случайной латиницы в русском тексте
+// Очистка текста — убираем markdown, иероглифы, латиницу из русского
 function cleanText(text, lang) {
   if (!text) return '';
   let result = text
-    .replace(/\*\*/g, '')
-    .replace(/\*/g, '')
-    .replace(/#{1,6}\s/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
+    .replace(/\*\*/g, '').replace(/\*/g, '').replace(/#{1,6}\s/g, '')
+    .replace(/\s+/g, ' ').trim();
   if (lang === 'ru') {
-    // Убираем всё что не кириллица, цифры, базовая пунктуация
-    result = result.replace(/[^\u0400-\u04FF0-9\s.,!?:;()\-–—"'«»%№\n]/g, '');
+    result = result.replace(/[^\u0400-\u04FF0-9\s.,!?:;()\-–—"'«»%№\n]/g, '').trim();
   }
-  return result.trim();
+  // Гарантируем заглавную букву в начале
+  if (result.length > 0) {
+    result = result.charAt(0).toUpperCase() + result.slice(1);
+  }
+  return result;
 }
 
-const PROMPT = (title, content) => `You are a sharp, witty journalist. Write smart, conversational prose.
+const PROMPT = (title, content, category) => {
+  const categoryHint = {
+    sport: 'This is a SPORTS news story. Focus on the athletic achievement, competition, or sports development.',
+    arts: 'This is an ARTS & CULTURE news story. Focus on the artistic, cultural, or creative aspects.',
+    tech: 'This is a TECHNOLOGY news story. Focus on the innovation, impact, or technical development.',
+    asia: 'This is a news story from ASIA. Focus on regional significance and global implications.',
+    world: 'This is a WORLD news story. Focus on global significance and international impact.'
+  }[category] || '';
+
+  return `You are a sharp, professional news journalist. ${categoryHint}
 
 CRITICAL RULES:
-- Use THIRD PERSON ONLY throughout. Never use "I", "my", "me", "we", "our" in any language.
-- Russian text: ONLY Cyrillic characters, digits, and standard punctuation. NO Latin letters, NO Chinese/Japanese/Korean characters, NO markdown like ** or *.
-- English text: ONLY Latin characters and standard punctuation. NO markdown.
-- Do NOT use the words "expat", "expats", "traveler", "travelers" anywhere.
-- Do NOT mention "I can confirm", "as someone who", or any first-person perspective.
+- Use THIRD PERSON ONLY. Never use "I", "my", "me", "we", "our".
+- EVERY sentence must have an explicit subject (who/what is doing the action). Never start a sentence with a verb without naming who performs it.
+- Every field MUST start with a capital letter and be a complete, grammatically correct sentence.
+- Russian text: ONLY Cyrillic characters, digits, standard punctuation. NO Latin letters, NO Chinese characters, NO markdown (* or **).
+- English text: ONLY Latin characters. NO markdown.
+- preview_en and preview_ru must each be ONE complete sentence starting with a capital letter that clearly states WHO did WHAT.
+- full_en and full_ru must each contain exactly 7 complete sentences, each starting with a capital letter and each having a clear subject.
 
 Rewrite this news. Return ONLY valid JSON:
 {
-  "title_en": "Punchy English headline, max 85 chars, no markdown",
-  "title_ru": "Заголовок ТОЛЬКО на русском языке, без латиницы, максимум 85 символов",
-  "preview_en": "One sentence hook in English only, third person",
-  "preview_ru": "Одно предложение только на русском языке без латинских букв, от третьего лица",
-  "full_en": "Exactly 7 sentences in English, third person throughout: 1) bold hook; 2) core facts; 3) context; 4) broader significance; 5) a wry observation or wider implication; 6) practical tip; 7) witty closing. Do not use the words expat, expats, or traveler(s) anywhere.",
-  "full_ru": "Ровно 7 предложений ТОЛЬКО на русском языке, строго от третьего лица, без латинских букв и иероглифов: 1) завязка; 2) факты; 3) контекст; 4) более широкая значимость; 5) ироничное наблюдение; 6) практический совет; 7) остроумная концовка. Не используй слова экспат, экспаты, путешественник(и) нигде в тексте.",
+  "title_en": "Complete headline starting with capital letter, max 85 chars",
+  "title_ru": "Полный заголовок с заглавной буквы, максимум 85 символов",
+  "preview_en": "One complete sentence starting with capital letter, summarizing the story",
+  "preview_ru": "Одно полное предложение с заглавной буквы, кратко описывающее суть новости",
+  "full_en": "Exactly 7 complete sentences. Sentence 1 starts with capital letter and hooks the reader. Sentence 2: core facts. Sentence 3: context. Sentence 4: significance. Sentence 5: broader implication. Sentence 6: practical angle. Sentence 7: memorable closing.",
+  "full_ru": "Ровно 7 полных предложений на русском. Первое начинается с заглавной буквы и захватывает внимание. Второе: суть и факты. Третье: контекст. Четвёртое: значимость. Пятое: более широкий взгляд. Шестое: практический аспект. Седьмое: запоминающаяся концовка.",
   "meta_en": "SEO description in English, max 155 chars",
-  "meta_ru": "SEO описание только на русском без латиницы, максимум 155 символов"
+  "meta_ru": "SEO описание на русском без латиницы, максимум 155 символов"
 }
 
 Title: ${title}
 Content: ${content.slice(0, 800)}`;
+};
 
-async function callGroq(title, content) {
+async function callGroq(title, content, category) {
   if (!GROQ_KEY) throw new Error('No GROQ_API_KEY');
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
     body: JSON.stringify({
       model: 'llama-3.3-70b-versatile',
-      messages: [{ role: 'user', content: PROMPT(title, content) }],
+      messages: [{ role: 'user', content: PROMPT(title, content, category) }],
       temperature: 0.7,
-      max_tokens: 1200,
+      max_tokens: 1400,
       response_format: { type: 'json_object' }
     })
   });
@@ -123,13 +131,14 @@ function rssFallback(title, content) {
   const sentences = content.replace(/\s+/g, ' ').split(/(?<=[.!?])\s+/).filter(s => s.length > 20);
   const full = sentences.slice(0, 7).join(' ');
   const preview = sentences[0] || title;
+  const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
   return {
-    title_en: title.slice(0, 85),
-    title_ru: title.slice(0, 85),
-    preview_en: preview.slice(0, 200),
-    preview_ru: preview.slice(0, 200),
-    full_en: full || title,
-    full_ru: full || title,
+    title_en: cap(title.slice(0, 85)),
+    title_ru: cap(title.slice(0, 85)),
+    preview_en: cap(preview.slice(0, 200)),
+    preview_ru: cap(preview.slice(0, 200)),
+    full_en: cap(full || title),
+    full_ru: cap(full || title),
     meta_en: title.slice(0, 155),
     meta_ru: title.slice(0, 155)
   };
@@ -153,10 +162,10 @@ async function fetchArticle(feed) {
     let usedRSS = false;
 
     try {
-      console.log('  AI:', (item.title || '').slice(0, 60));
-      result = await withTimeout(callGroq(item.title || '', rawContent), 15000);
+      console.log('  AI [' + feed.category + ']:', (item.title || '').slice(0, 60));
+      result = await withTimeout(callGroq(item.title || '', rawContent, feed.category), 15000);
       if (!result || !result.full_en || result.full_en.length < 50) throw new Error('Empty result');
-      console.log('  ✅ Groq OK');
+      console.log('  ✅ OK');
     } catch(e) {
       console.warn('  ❌ Groq:', e.message, '→ RSS fallback');
       result = rssFallback(item.title || '', rawContent);
@@ -168,6 +177,7 @@ async function fetchArticle(feed) {
       ...result,
       image_url: image,
       source_name: feed.name,
+      category: feed.category,
       used_rss: usedRSS,
       created_at: new Date().toISOString()
     };
@@ -177,30 +187,25 @@ async function fetchArticle(feed) {
 
 async function main() {
   console.log('=== NEWS PARSER START ===');
-  console.log('Groq:', GROQ_KEY ? '✅ key set' : '❌ missing');
+  console.log('Groq:', GROQ_KEY ? '✅' : '❌ missing');
 
   const articles = [];
   const seen = new Set();
 
-  for (const feed of RSS_FEEDS_WEST) {
-    if (articles.length >= 4) break;
-    console.log('\nFeed:', feed.name);
-    const art = await fetchArticle(feed);
-    if (art && !seen.has(art.slug)) { seen.add(art.slug); articles.push(art); }
-    await new Promise(r => setTimeout(r, 2000));
-  }
-
-  console.log('\n--- Asian source ---');
-  for (const feed of RSS_FEEDS_ASIA) {
+  for (const feed of RSS_FEEDS) {
     if (articles.length >= 5) break;
-    console.log('Feed:', feed.name);
+    console.log('\nFeed:', feed.name, '(' + feed.category + ')');
     const art = await fetchArticle(feed);
-    if (art && !seen.has(art.slug)) { seen.add(art.slug); articles.push(art); break; }
+    if (art && !seen.has(art.slug)) {
+      seen.add(art.slug);
+      articles.push(art);
+    }
     await new Promise(r => setTimeout(r, 2000));
   }
 
-  const summary = articles.map(a => (a.used_rss ? '(RSS)' : '(AI)') + ' ' + a.source_name).join(', ');
-  console.log('\nResult:', articles.length, 'articles:', summary);
+  const summary = articles.map(a => '[' + a.category + '] ' + (a.used_rss ? '(RSS)' : '(AI)') + ' ' + a.source_name).join(', ');
+  console.log('\nResult:', articles.length, 'articles');
+  console.log(summary);
   fs.writeFileSync('news.json', JSON.stringify({ updated: new Date().toISOString(), articles }, null, 2));
   console.log('=== DONE ===');
 }
