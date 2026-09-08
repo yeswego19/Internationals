@@ -13,7 +13,8 @@ const RSS_FEEDS = [
   { url: 'https://feeds.bbci.co.uk/sport/rss.xml', name: 'BBC Sport', category: 'sport' },
   { url: 'https://www.theguardian.com/artanddesign/rss', name: 'The Guardian Arts', category: 'arts' },
   { url: 'https://techcrunch.com/feed/', name: 'TechCrunch', category: 'tech' },
-  { url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416', name: 'CNA Singapore', category: 'asia' }
+  { url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416', name: 'CNA Singapore', category: 'asia' },
+  { url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml', name: 'BBC Africa', category: 'africa' }
 ];
 
 function slugify(text) {
@@ -66,7 +67,8 @@ const PROMPT = (title, content, category) => {
     arts: 'This is an ARTS & CULTURE news story. Focus on the artistic, cultural, or creative aspects.',
     tech: 'This is a TECHNOLOGY news story. Focus on the innovation, impact, or technical development.',
     asia: 'This is a news story from ASIA. Focus on regional significance and global implications.',
-    world: 'This is a WORLD news story. Focus on global significance and international impact.'
+    world: 'This is a WORLD news story. Focus on global significance and international impact.',
+    africa: 'This is a news story from AFRICA. Focus on regional significance and global implications.'
   }[category] || '';
 
   return `You are a sharp, professional news journalist. ${categoryHint}
@@ -96,13 +98,15 @@ Title: ${title}
 Content: ${content.slice(0, 800)}`;
 };
 
-async function callGroq(title, content, category) {
-  if (!GROQ_KEY) throw new Error('No GROQ_API_KEY');
+// Цепочка моделей: если первая недоступна (снята с поддержки, лимит, ошибка) — пробуем следующую
+const GROQ_MODELS = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b'];
+
+async function callGroqWithModel(model, title, content, category) {
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
     body: JSON.stringify({
-      model: 'llama-3.3-70b-versatile',
+      model,
       messages: [{ role: 'user', content: PROMPT(title, content, category) }],
       temperature: 0.7,
       max_tokens: 1400,
@@ -111,7 +115,7 @@ async function callGroq(title, content, category) {
   });
   if (!res.ok) {
     const err = await res.text();
-    throw new Error('Groq HTTP ' + res.status + ': ' + err.slice(0, 200));
+    throw new Error('Groq HTTP ' + res.status + ' (' + model + '): ' + err.slice(0, 200));
   }
   const data = await res.json();
   const parsed = JSON.parse(data.choices[0].message.content.trim());
@@ -125,6 +129,20 @@ async function callGroq(title, content, category) {
     meta_en: cleanText(parsed.meta_en || '', 'en'),
     meta_ru: cleanText(parsed.meta_ru || '', 'ru')
   };
+}
+
+async function callGroq(title, content, category) {
+  if (!GROQ_KEY) throw new Error('No GROQ_API_KEY');
+  let lastErr;
+  for (const model of GROQ_MODELS) {
+    try {
+      return await callGroqWithModel(model, title, content, category);
+    } catch (e) {
+      console.warn('  ⚠️ Model failed:', model, '-', e.message);
+      lastErr = e;
+    }
+  }
+  throw lastErr;
 }
 
 function rssFallback(title, content) {
@@ -193,7 +211,7 @@ async function main() {
   const seen = new Set();
 
   for (const feed of RSS_FEEDS) {
-    if (articles.length >= 5) break;
+    if (articles.length >= 6) break;
     console.log('\nFeed:', feed.name, '(' + feed.category + ')');
     const art = await fetchArticle(feed);
     if (art && !seen.has(art.slug)) {
