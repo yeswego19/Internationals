@@ -14,7 +14,8 @@ const RSS_FEEDS = [
   { url: 'https://www.theguardian.com/artanddesign/rss', name: 'The Guardian Arts', category: 'arts' },
   { url: 'https://techcrunch.com/feed/', name: 'TechCrunch', category: 'tech' },
   { url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml&category=10416', name: 'CNA Singapore', category: 'asia' },
-  { url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml', name: 'BBC Africa', category: 'africa' }
+  { url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml', name: 'BBC Africa', category: 'africa' },
+  { url: 'https://gcaptain.com/feed/', name: 'gCaptain', category: 'maritime' }
 ];
 
 function slugify(text) {
@@ -68,7 +69,8 @@ const PROMPT = (title, content, category) => {
     tech: 'This is a TECHNOLOGY news story. Focus on the innovation, impact, or technical development.',
     asia: 'This is a news story from ASIA. Focus on regional significance and global implications.',
     world: 'This is a WORLD news story. Focus on global significance and international impact.',
-    africa: 'This is a news story from AFRICA. Focus on regional significance and global implications.'
+    africa: 'This is a news story from AFRICA. Focus on regional significance and global implications.',
+    maritime: 'This is a MARITIME/SHIPPING news story. Focus on the industry, logistics, or nautical significance.'
   }[category] || '';
 
   return `You are a sharp, professional news journalist. ${categoryHint}
@@ -211,7 +213,7 @@ async function main() {
   const seen = new Set();
 
   for (const feed of RSS_FEEDS) {
-    if (articles.length >= 6) break;
+    if (articles.length >= 7) break;
     console.log('\nFeed:', feed.name, '(' + feed.category + ')');
     const art = await fetchArticle(feed);
     if (art && !seen.has(art.slug)) {
