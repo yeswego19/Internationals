@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-10T20:12:00.565Z",
+  "updated": "2026-09-10T20:29:02.384Z",
   "articles": [
     {
       "slug": "yemens-houthis-reportedly-seize-strategic-red-sea-port-of-mokha",
@@ -15,7 +15,7 @@
       "source_name": "BBC World",
       "category": "world",
       "used_rss": true,
-      "created_at": "2026-09-10T20:11:14.965Z"
+      "created_at": "2026-09-10T20:28:03.846Z"
     },
     {
       "slug": "englands-push-for-two-day-win-halted-by-weather",
@@ -31,7 +31,7 @@
       "source_name": "BBC Sport",
       "category": "sport",
       "used_rss": true,
-      "created_at": "2026-09-10T20:11:22.148Z"
+      "created_at": "2026-09-10T20:28:13.678Z"
     },
     {
       "slug": "tschabalala-selfs-lady-in-blue-review-this-striding-scupture-fills-the-fourth-pl",
@@ -47,7 +47,7 @@
       "source_name": "The Guardian Arts",
       "category": "arts",
       "used_rss": true,
-      "created_at": "2026-09-10T20:11:29.659Z"
+      "created_at": "2026-09-10T20:28:23.182Z"
     },
     {
       "slug": "metas-ai-agent-muse-is-now-the-no-2-app-in-the-us",
@@ -59,27 +59,27 @@
       "full_ru": "Meta's newest app Muse is off to a slower start than the company's other apps, like Meta AI or Threads.",
       "meta_en": "Meta’s AI agent Muse is now the No. 2 app in the US",
       "meta_ru": "Meta’s AI agent Muse is now the No. 2 app in the US",
-      "image_url": "https://image.pollinations.ai/prompt/Meta%E2%80%99s%20AI%20agent%20Muse%20is%20now%20the%20No.%202%20app%20in%20the%20US%2C%20news%20photo%2C%20cinematic%2C%20realistic?width=1024&height=576&nologo=true&seed=91711",
+      "image_url": "https://image.pollinations.ai/prompt/Meta%E2%80%99s%20AI%20agent%20Muse%20is%20now%20the%20No.%202%20app%20in%20the%20US%2C%20news%20photo%2C%20cinematic%2C%20realistic?width=1024&height=576&nologo=true&seed=18754",
       "source_name": "TechCrunch",
       "category": "tech",
       "used_rss": true,
-      "created_at": "2026-09-10T20:11:36.835Z"
+      "created_at": "2026-09-10T20:28:32.937Z"
     },
     {
       "slug": "air-quality-returns-to-moderate-range-in-central-singapore",
-      "title_en": "Air quality returns to moderate range in central Singapore",
-      "title_ru": "Air quality returns to moderate range in central Singapore",
-      "preview_en": "The 24-hour PSI reading in central Singapore was 99 as of 11pm on Thursday.",
-      "preview_ru": "The 24-hour PSI reading in central Singapore was 99 as of 11pm on Thursday.",
-      "full_en": "The 24-hour PSI reading in central Singapore was 99 as of 11pm on Thursday.",
-      "full_ru": "The 24-hour PSI reading in central Singapore was 99 as of 11pm on Thursday.",
-      "meta_en": "Air quality returns to moderate range in central Singapore",
-      "meta_ru": "Air quality returns to moderate range in central Singapore",
+      "title_en": "Air Quality Returns to Moderate Range in Central Singapore",
+      "title_ru": "Качество воздуха в центральном Сингапуре вновь умеренное",
+      "preview_en": "The National Environment Agency announced that the 24‑hour PSI in central Singapore fell to 99, placing air quality back in the moderate range.",
+      "preview_ru": "Национальное агентство окружающей среды Сингапура объявило, что 24часовой ПСИ в центральном Сингапуре упал до 99, вернув качество воздуха в умеренную категорию.",
+      "full_en": "The National Environment Agency highlighted a sharp decline in pollution levels as the 24‑hour PSI reading in central Singapore dropped to 99 on Thursday night. The agency reported that the reading of 99 places the air quality in the moderate range, below the previously recorded high of 150 earlier this week. The city’s dense traffic and seasonal haze from regional forest fires had driven the PSI to unhealthy levels just days before. Experts say the improvement reflects temporary calm in wind patterns and reduced emissions from construction sites. Analysts warn that sustained moderate levels are crucial for regional health and could influence neighboring countries’ air‑quality policies. Residents are advised to continue monitoring forecasts and limit outdoor activities during any future spikes. The agency’s swift communication underscores Singapore’s commitment to transparency and public wellbeing in the face of trans‑border pollution challenges.",
+      "full_ru": "Национальное агентство окружающей среды Сингапура отметило резкое снижение уровня загрязнения, когда 24часовой показатель ПСИ в центральном Сингапуре упал до 99 в четверг вечером. Агентство сообщило, что значение 99 относится к умеренной категории, что ниже ранее зафиксированного пика в 150 на этой неделе. Густой городской трафик и сезонный дым от лесных пожаров в регионе ранее поднимали ПСИ до опасных уровней. Эксперты считают, что улучшение связано с временным успокоением ветров и сокращением выбросов со строительных площадок. Аналитики предупреждают, что поддержание умеренного уровня критически важно для здоровья региона и может повлиять на политику соседних стран в области качества воздуха. Жителям рекомендуется продолжать следить за прогнозами и ограничивать пребывание на открытом воздухе при возможных будущих всплесках загрязнения. Быстрая коммуникация агентства подчеркивает приверженность Сингапура прозрачности и благополучию населения в условиях трансграничного загрязнения.",
+      "meta_en": "Singapore's air quality fell to a moderate PSI of 99, showing rapid improvement after recent haze, with implications for regional health policies.",
+      "meta_ru": "Качество воздуха в Сингапуре снизилось до умеренного уровня ПСИ 99, демонстрируя быстрое улучшение после недавнего дыма и влияя на региональное здоровье.",
       "image_url": "https://dam.mediacorp.sg/image/upload/s--jqe7sVZ6--/c_crop,h_1124,w_1998,x_0,y_182/fl_relative,g_south_east,l_mediacorp:cna:watermark:2021-08:cna,w_0.1/f_auto,q_auto/c_fill,g_auto,h_468,w_830/v1/mediacorp/cna/image/2026/09/04/img_9325.jpg?itok=Pxij-KR4",
       "source_name": "CNA Singapore",
       "category": "asia",
-      "used_rss": true,
-      "created_at": "2026-09-10T20:11:43.923Z"
+      "used_rss": false,
+      "created_at": "2026-09-10T20:28:39.626Z"
     },
     {
       "slug": "royal-family-rift-after-popular-tv-news-presenter-chosen-to-succeed-ugandan-king",
@@ -95,7 +95,7 @@
       "source_name": "BBC Africa",
       "category": "africa",
       "used_rss": true,
-      "created_at": "2026-09-10T20:11:51.488Z"
+      "created_at": "2026-09-10T20:28:49.518Z"
     },
     {
       "slug": "shipyard-fire-kills-25-aboard-bulk-carrier-in-china",
@@ -107,11 +107,11 @@
       "full_ru": "Twenty-five people died in a fire aboard a foreign cargo vessel undergoing repairs at a state-owned shipyard in the eastern Chinese city of Qingdao on Thursday, state media reported.",
       "meta_en": "Shipyard Fire Kills 25 Aboard Bulk Carrier in China",
       "meta_ru": "Shipyard Fire Kills 25 Aboard Bulk Carrier in China",
-      "image_url": "https://image.pollinations.ai/prompt/Shipyard%20Fire%20Kills%2025%20Aboard%20Bulk%20Carrier%20in%20China%2C%20news%20photo%2C%20cinematic%2C%20realistic?width=1024&height=576&nologo=true&seed=59871",
+      "image_url": "https://image.pollinations.ai/prompt/Shipyard%20Fire%20Kills%2025%20Aboard%20Bulk%20Carrier%20in%20China%2C%20news%20photo%2C%20cinematic%2C%20realistic?width=1024&height=576&nologo=true&seed=42030",
       "source_name": "gCaptain",
       "category": "maritime",
       "used_rss": true,
-      "created_at": "2026-09-10T20:11:58.561Z"
+      "created_at": "2026-09-10T20:29:00.383Z"
     }
   ]
 }
