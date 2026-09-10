@@ -111,7 +111,7 @@ async function callGroqWithModel(model, title, content, category) {
       model,
       messages: [{ role: 'user', content: PROMPT(title, content, category) }],
       temperature: 0.7,
-      max_tokens: 1400,
+      max_tokens: 2200,
       response_format: { type: 'json_object' }
     })
   });
