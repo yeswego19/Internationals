@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-10T20:01:56.121Z",
+  "updated": "2026-09-10T20:12:00.565Z",
   "articles": [
     {
       "slug": "yemens-houthis-reportedly-seize-strategic-red-sea-port-of-mokha",
@@ -15,7 +15,7 @@
       "source_name": "BBC World",
       "category": "world",
       "used_rss": true,
-      "created_at": "2026-09-10T20:01:10.160Z"
+      "created_at": "2026-09-10T20:11:14.965Z"
     },
     {
       "slug": "englands-push-for-two-day-win-halted-by-weather",
@@ -31,7 +31,7 @@
       "source_name": "BBC Sport",
       "category": "sport",
       "used_rss": true,
-      "created_at": "2026-09-10T20:01:17.558Z"
+      "created_at": "2026-09-10T20:11:22.148Z"
     },
     {
       "slug": "tschabalala-selfs-lady-in-blue-review-this-striding-scupture-fills-the-fourth-pl",
@@ -47,7 +47,7 @@
       "source_name": "The Guardian Arts",
       "category": "arts",
       "used_rss": true,
-      "created_at": "2026-09-10T20:01:24.952Z"
+      "created_at": "2026-09-10T20:11:29.659Z"
     },
     {
       "slug": "metas-ai-agent-muse-is-now-the-no-2-app-in-the-us",
@@ -59,11 +59,11 @@
       "full_ru": "Meta's newest app Muse is off to a slower start than the company's other apps, like Meta AI or Threads.",
       "meta_en": "Meta’s AI agent Muse is now the No. 2 app in the US",
       "meta_ru": "Meta’s AI agent Muse is now the No. 2 app in the US",
-      "image_url": "https://image.pollinations.ai/prompt/Meta%E2%80%99s%20AI%20agent%20Muse%20is%20now%20the%20No.%202%20app%20in%20the%20US%2C%20news%20photo%2C%20cinematic%2C%20realistic?width=1024&height=576&nologo=true&seed=40860",
+      "image_url": "https://image.pollinations.ai/prompt/Meta%E2%80%99s%20AI%20agent%20Muse%20is%20now%20the%20No.%202%20app%20in%20the%20US%2C%20news%20photo%2C%20cinematic%2C%20realistic?width=1024&height=576&nologo=true&seed=91711",
       "source_name": "TechCrunch",
       "category": "tech",
       "used_rss": true,
-      "created_at": "2026-09-10T20:01:32.182Z"
+      "created_at": "2026-09-10T20:11:36.835Z"
     },
     {
       "slug": "air-quality-returns-to-moderate-range-in-central-singapore",
@@ -79,7 +79,7 @@
       "source_name": "CNA Singapore",
       "category": "asia",
       "used_rss": true,
-      "created_at": "2026-09-10T20:01:39.696Z"
+      "created_at": "2026-09-10T20:11:43.923Z"
     },
     {
       "slug": "royal-family-rift-after-popular-tv-news-presenter-chosen-to-succeed-ugandan-king",
@@ -95,7 +95,7 @@
       "source_name": "BBC Africa",
       "category": "africa",
       "used_rss": true,
-      "created_at": "2026-09-10T20:01:47.129Z"
+      "created_at": "2026-09-10T20:11:51.488Z"
     },
     {
       "slug": "shipyard-fire-kills-25-aboard-bulk-carrier-in-china",
@@ -107,11 +107,11 @@
       "full_ru": "Twenty-five people died in a fire aboard a foreign cargo vessel undergoing repairs at a state-owned shipyard in the eastern Chinese city of Qingdao on Thursday, state media reported.",
       "meta_en": "Shipyard Fire Kills 25 Aboard Bulk Carrier in China",
       "meta_ru": "Shipyard Fire Kills 25 Aboard Bulk Carrier in China",
-      "image_url": "https://image.pollinations.ai/prompt/Shipyard%20Fire%20Kills%2025%20Aboard%20Bulk%20Carrier%20in%20China%2C%20news%20photo%2C%20cinematic%2C%20realistic?width=1024&height=576&nologo=true&seed=98263",
+      "image_url": "https://image.pollinations.ai/prompt/Shipyard%20Fire%20Kills%2025%20Aboard%20Bulk%20Carrier%20in%20China%2C%20news%20photo%2C%20cinematic%2C%20realistic?width=1024&height=576&nologo=true&seed=59871",
       "source_name": "gCaptain",
       "category": "maritime",
       "used_rss": true,
-      "created_at": "2026-09-10T20:01:54.119Z"
+      "created_at": "2026-09-10T20:11:58.561Z"
     }
   ]
 }
