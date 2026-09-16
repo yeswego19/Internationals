@@ -226,3 +226,18 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
   .contact-item div{width:100%}
   .contact-item p,.contact-item a{font-size:.85rem}
 }
+
+/* === Таблица контактов переводчиков === */
+.contacts-table{border-collapse:collapse;margin-left:1.5rem;width:calc(100% - 1.5rem)}
+.contacts-table td{padding:.5rem .75rem;border-bottom:1px solid var(--border);font-size:.92rem;vertical-align:middle}
+.contacts-table tr:last-child td{border-bottom:none}
+.contacts-table td:first-child{white-space:nowrap;font-weight:600}
+.contacts-table a{color:var(--primary);text-decoration:none}
+.contacts-table a:hover{text-decoration:underline}
+@media(max-width:768px){
+  .contacts-table{margin-left:0;width:100%;display:block}
+  .contacts-table tbody{display:block}
+  .contacts-table tr{display:flex;flex-direction:column;gap:.15rem;padding:.6rem 0;border-bottom:1px solid var(--border)}
+  .contacts-table tr:last-child{border-bottom:none}
+  .contacts-table td{border-bottom:none;padding:0;white-space:normal}
+}
