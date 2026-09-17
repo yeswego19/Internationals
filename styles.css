@@ -96,7 +96,7 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 
 /* Контакты */
 .contact{padding:80px 0;background:var(--bg-sec);width:100%;position:relative;overflow:hidden}
-.contact-content{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;max-width:100%}
+.contact-content{display:grid;grid-template-columns:1fr;gap:4rem;align-items:start;max-width:100%}
 .contact-details{display:flex;flex-direction:column;gap:1.5rem;width:100%}
 .contact-item{display:flex;align-items:flex-start;gap:1rem;max-width:100%;width:100%}
 .contact-item i{width:50px;height:50px;min-width:50px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
@@ -228,17 +228,17 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 }
 
 /* === Таблица контактов переводчиков === */
-.contacts-table{border-collapse:collapse;margin-left:1.5rem;width:calc(100% - 1.5rem);font-size:.8rem}
-.contacts-table td{padding:.3rem .5rem;border-bottom:1px solid var(--border);font-size:.8rem;line-height:1.3;vertical-align:middle}
+.contacts-table-wrap{overflow-x:auto;max-width:100%}
+.contacts-table{border-collapse:collapse;width:100%;font-size:.95rem}
+.contacts-table td{padding:.6rem .8rem;border-bottom:1px solid var(--border);vertical-align:middle;word-break:break-word}
 .contacts-table tr:last-child td{border-bottom:none}
-.contacts-table td:first-child{white-space:nowrap;font-weight:600;font-size:.78rem}
+.contacts-table td:first-child{white-space:nowrap;font-weight:600}
 .contacts-table a{color:var(--primary);text-decoration:none}
 .contacts-table a:hover{text-decoration:underline}
 @media(max-width:768px){
-  .contacts-table{margin-left:0;width:100%;display:block;font-size:.78rem}
+  .contacts-table{display:block;font-size:.85rem}
   .contacts-table tbody{display:block}
-  .contacts-table tr{display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem;padding:.4rem 0;border-bottom:1px solid var(--border)}
+  .contacts-table tr{display:flex;flex-wrap:wrap;align-items:baseline;gap:.4rem;padding:.5rem 0;border-bottom:1px solid var(--border)}
   .contacts-table tr:last-child{border-bottom:none}
-  .contacts-table td{border-bottom:none;padding:0;white-space:normal;font-size:.78rem}
-  .contacts-table td:first-child{font-size:.78rem}
+  .contacts-table td{border-bottom:none;padding:0;white-space:normal}
 }
