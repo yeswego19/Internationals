@@ -38,8 +38,8 @@
     }
     .feedback-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
     .feedback-header h2{ margin:0; color:#fff; font-size:22px; line-height:1; }
-    .close-btn{ background:transparent; border:0; color:#fff; font-size:46px; cursor:pointer; line-height:1; padding:0 4px; transition:color .2s,transform .2s; }
-    .close-btn:hover{ color:#ff4444; transform:translateX(-4px); }
+    .close-btn{ background:transparent; border:0; color:#ff0000; font-weight:700; font-size:1.05rem; cursor:pointer; line-height:1; padding:0 4px; transition:color .2s; text-decoration:none; }
+    .close-btn:hover{ color:#ff6666; }
     .feedback-form{ margin-top:8px; }
     .feedback-form input,.feedback-form textarea{
       width:100%; padding:12px; margin:8px 0; border-radius:8px;
@@ -199,7 +199,7 @@
   <main class="feedback-container">
     <div class="feedback-header">
       <h2 class="translate" data-key="feedback">Feedback</h2>
-      <button class="close-btn" onclick="if(history.length>1){history.back();}else{window.close();}">&#8592;</button>
+      <a href="index.html" class="close-btn" onclick="window.close();setTimeout(function(){window.location.href='index.html';},300);return false;">&larr; Internationals</a>
     </div>
     <div id="errorMessage"></div>
     <div class="feedback-form">

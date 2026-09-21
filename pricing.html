@@ -68,10 +68,10 @@
         @media(max-width:768px){#gameCanvas{cursor:auto!important;width:100%;}}
         .game-score{font-size:1.5rem;color:#67b8ff;margin-bottom:1rem;background:rgba(10,14,26,0.8);backdrop-filter:blur(10px);padding:1rem;border-radius:15px;display:inline-block;}
         .score-good{color:#4ade80;}.score-bad{color:#ef4444;}
-        .back-button{position:fixed;top:20px;right:20px;z-index:100;text-decoration:none;cursor:pointer;transition:transform .3s ease,text-shadow .3s ease;font-size:3rem;font-weight:bold;color:#ef4444;background:transparent;display:flex;align-items:center;justify-content:center;}
-        .back-button:hover{transform:scale(1.2);text-shadow:0 0 15px rgba(239,68,68,0.8);color:#ff6666;}
-        .back-button::before{content:"\2190";}
-        @media(max-width:768px){.back-button{top:15px;right:15px;font-size:2.5rem;}.pricing-content{padding:2rem 1.5rem;}}
+        .back-button{position:fixed;top:20px;right:20px;z-index:100;text-decoration:none;cursor:pointer;transition:color .3s ease;font-size:1.3rem;font-weight:700;color:#ff0000;background:transparent;display:flex;align-items:center;justify-content:center;gap:.4rem;}
+        .back-button:hover{color:#ff6666;}
+        .back-button::before{content:"\2190";font-size:1.6rem;}
+        @media(max-width:768px){.back-button{top:15px;right:15px;font-size:1.1rem;}.pricing-content{padding:2rem 1.5rem;}}
     </style>
 </head>
 <body>
@@ -138,7 +138,7 @@
             <canvas id="gameCanvas" width="800" height="600"></canvas>
         </div>
     </div>
-    <a href="/" class="back-button" onclick="window.close();setTimeout(function(){window.location.href='/';},300);return false;"></a>
+    <a href="index.html" class="back-button" onclick="window.close();setTimeout(function(){window.location.href='index.html';},300);return false;">Internationals</a>
     <script>
         const translations = {
         "ru": {
