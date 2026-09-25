@@ -153,6 +153,7 @@
       <input type="range" min="0" max="100" value="30" class="volume-slider" id="volumeSlider">
     </div>
     <i class="fas fa-volume-down volume-icon"></i>
+    <button type="button" id="muteToggle" class="mute-toggle-btn" title="Выключить музыку" aria-label="Выключить музыку"><i class="fas fa-volume-mute" id="muteIcon"></i></button>
   </div>
 
   <div id="languageDropdown">
@@ -482,7 +483,7 @@
         <a href="https://travel.internationals.click" target="travel_tab" class="btn btn-primary btn-feedback" title="Travel"><i class="fas fa-plane"></i></a>
         <a href="taxi.html" target="_blank" class="btn btn-primary btn-feedback" title="Taxi"><i class="fas fa-car"></i></a>
         <a href="ships.html" target="_blank" class="btn btn-primary btn-feedback" title="Ships"><i class="fas fa-ship"></i></a>
-        <a href="radio.html" target="_blank" class="btn btn-primary btn-feedback" title="Radio"><i class="fas fa-globe"></i></a>
+        <a href="radio.html" target="_blank" class="btn btn-primary btn-feedback" title="Radio"><i class="fas fa-radio"></i></a>
         <div class="social-links">
           <a href="https://youtube.com/@internationalspro" target="_blank" rel="noopener" title="YouTube"><img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube"></a>
           <a href="https://www.linkedin.com/company/internationalspro/" target="_blank" rel="noopener" title="LinkedIn"><img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn"></a>
@@ -557,9 +558,40 @@
       localStorage.setItem('musicVolume', percent / 100);
     });
 
+    let musicMuted = localStorage.getItem('musicMuted') === 'true';
+    const muteBtn = document.getElementById('muteToggle');
+    const muteIcon = document.getElementById('muteIcon');
+    function updateMuteIcon() {
+      muteIcon.className = musicMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+      muteBtn.title = musicMuted ? 'Включить музыку' : 'Выключить музыку';
+    }
+    updateMuteIcon();
+    muteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      musicMuted = !musicMuted;
+      localStorage.setItem('musicMuted', musicMuted ? 'true' : 'false');
+      if (musicMuted) {
+        audio.pause();
+      } else {
+        canPlay = true;
+        if (!audio.src) audio.src = 'Calli.mp3';
+        audio.volume = volumeSlider.value / 100;
+        audio.play().catch(() => {});
+      }
+      updateMuteIcon();
+    });
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'musicMuted') {
+        musicMuted = e.newValue === 'true';
+        if (musicMuted) { audio.pause(); } else { audio.play().catch(() => {}); }
+        updateMuteIcon();
+      }
+    });
+
     document.body.addEventListener('click', () => {
       if (canPlay) return;
       canPlay = true;
+      if (musicMuted) return;
       audio.src = 'Calli.mp3';
       audio.volume = volumeSlider.value / 100;
       audio.play().catch(() => {});

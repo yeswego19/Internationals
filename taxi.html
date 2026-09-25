@@ -65,9 +65,32 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
             min-height: 600px;
         }
+        .volume-control{position:fixed;right:8px;top:50%;transform:translateY(-50%);z-index:9998;display:flex;flex-direction:column;align-items:center;gap:8px}
+        .volume-slider-container{position:relative;width:4px;height:150px;background:rgba(0,0,0,0.15);border-radius:2px;backdrop-filter:blur(10px)}
+        .volume-slider{-webkit-appearance:none;appearance:none;width:150px;height:4px;background:transparent;transform:rotate(-90deg);position:absolute;top:50%;left:50%;margin-left:-75px;cursor:pointer}
+        .volume-fill{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,#0066ff,#4a9eff);border-radius:2px;transition:height 0.1s;pointer-events:none}
+        .volume-icon{font-size:18px;color:rgba(0,0,0,0.55)}
+        .mute-toggle-btn{background:rgba(0,0,0,0.08);border:none;color:#1f2937;cursor:pointer;font-size:15px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s ease,transform .2s ease}
+        .mute-toggle-btn:hover{background:rgba(0,0,0,0.16);transform:scale(1.08)}
+        @media (max-width:768px){
+          .volume-control{right:4px;top:60%;transform:translateY(-50%)}
+          .volume-slider-container{height:120px}
+          .volume-slider{width:120px;margin-left:-60px}
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <audio id="bgMusic" preload="metadata" loop></audio>
+    <div class="volume-control">
+        <i class="fas fa-volume-up volume-icon"></i>
+        <div class="volume-slider-container">
+            <div class="volume-fill" id="volumeFill"></div>
+            <input type="range" min="0" max="100" value="30" class="volume-slider" id="volumeSlider">
+        </div>
+        <i class="fas fa-volume-down volume-icon"></i>
+        <button type="button" id="muteToggle" class="mute-toggle-btn" title="Выключить музыку" aria-label="Выключить музыку"><i class="fas fa-volume-mute" id="muteIcon"></i></button>
+    </div>
     <header class="header">
         <div class="logo">
             <a href="index.html" onclick="window.close();setTimeout(function(){window.location.href='index.html';},300);return false;">
@@ -83,5 +106,93 @@
             <script async src="https://tpemb.com/content?trs=527087&shmarker=726649.taxi&powered_by=true&locale=en&curr=EUR&color=blue&pbi=0&ag=18&ap=34&rid=481&campaign_id=22&promo_id=3507" charset="utf-8"></script>
         </div>
     </div>
+<script>
+(function(){
+  var audio = document.getElementById('bgMusic');
+  var volumeSlider = document.getElementById('volumeSlider');
+  var volumeFill = document.getElementById('volumeFill');
+  var muteBtn = document.getElementById('muteToggle');
+  var muteIcon = document.getElementById('muteIcon');
+  var canPlay = false;
+  var musicMuted = localStorage.getItem('musicMuted') === 'true';
+
+  volumeSlider.addEventListener('input', function() {
+    var volume = this.value / 100;
+    audio.volume = volume;
+    volumeFill.style.height = this.value + '%';
+    localStorage.setItem('musicVolume', volume);
+  });
+
+  var savedVolume = localStorage.getItem('musicVolume');
+  if (savedVolume !== null) {
+    var volumePercent = Math.round(savedVolume * 100);
+    volumeSlider.value = volumePercent;
+    volumeFill.style.height = volumePercent + '%';
+    audio.volume = savedVolume;
+  } else {
+    volumeFill.style.height = '30%';
+  }
+
+  var volumeContainer = document.querySelector('.volume-slider-container');
+  volumeContainer.addEventListener('click', function(e) {
+    var rect = this.getBoundingClientRect();
+    var y = e.clientY - rect.top;
+    var percent = Math.max(0, Math.min(100, 100 - (y / rect.height * 100)));
+    volumeSlider.value = percent;
+    audio.volume = percent / 100;
+    volumeFill.style.height = percent + '%';
+    localStorage.setItem('musicVolume', percent / 100);
+  });
+  volumeContainer.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    var rect = this.getBoundingClientRect();
+    var touch = e.touches[0];
+    var y = touch.clientY - rect.top;
+    var percent = Math.max(0, Math.min(100, 100 - (y / rect.height * 100)));
+    volumeSlider.value = percent;
+    audio.volume = percent / 100;
+    volumeFill.style.height = percent + '%';
+    localStorage.setItem('musicVolume', percent / 100);
+  });
+
+  function updateMuteIcon() {
+    muteIcon.className = musicMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+    muteBtn.title = musicMuted ? 'Включить музыку' : 'Выключить музыку';
+  }
+  updateMuteIcon();
+
+  muteBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    musicMuted = !musicMuted;
+    localStorage.setItem('musicMuted', musicMuted ? 'true' : 'false');
+    if (musicMuted) {
+      audio.pause();
+    } else {
+      canPlay = true;
+      if (!audio.src) audio.src = 'Calli.mp3';
+      audio.volume = volumeSlider.value / 100;
+      audio.play().catch(function(){});
+    }
+    updateMuteIcon();
+  });
+
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'musicMuted') {
+      musicMuted = e.newValue === 'true';
+      if (musicMuted) { audio.pause(); } else { audio.play().catch(function(){}); }
+      updateMuteIcon();
+    }
+  });
+
+  document.body.addEventListener('click', function() {
+    if (canPlay) return;
+    canPlay = true;
+    if (musicMuted) return;
+    audio.src = 'Calli.mp3';
+    audio.volume = volumeSlider.value / 100;
+    audio.play().catch(function(){});
+  }, { once: true });
+})();
+</script>
 </body>
 </html>

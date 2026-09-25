@@ -114,6 +114,25 @@
             font-size: 0.85rem;
             color: #9ca3af;
         }
+        .close-btn {
+            margin-top: 14px;
+            background: transparent;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .close-btn:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
     </style>
 </head>
 <body>
@@ -130,13 +149,14 @@
         </div>
         <div class="widget-container">
             <div class="radio-card">
-                <div class="radio-icon"><i class="fas fa-globe"></i></div>
+                <div class="radio-icon"><i class="fas fa-radio"></i></div>
                 <h1>World Radio</h1>
                 <p>Крутите глобус и слушайте живое радио из любой точки мира на Radio Garden — тысячи станций, выбор по городам.</p>
                 <a class="radio-btn" href="https://radio.garden" target="_blank" rel="noopener">
                     <i class="fas fa-broadcast-tower"></i> Открыть Radio Garden
                 </a>
                 <div class="radio-note">Откроется в новой вкладке · сервис не связан с Internationals</div>
+                <button type="button" class="close-btn" onclick="window.close();">Закрыть страницу</button>
             </div>
         </div>
     </div>

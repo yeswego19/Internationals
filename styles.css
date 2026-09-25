@@ -88,7 +88,7 @@ p{margin-bottom:1rem;color:var(--text-sec);word-wrap:break-word}
 .volume-slider-container{position:relative;width:4px;height:150px;background:rgba(255,255,255,0.2);border-radius:2px;backdrop-filter:blur(10px)}
 .volume-slider{-webkit-appearance:none;appearance:none;width:150px;height:4px;background:transparent;transform:rotate(-90deg);position:absolute;top:50%;left:50%;margin-left:-75px;cursor:pointer}
 .volume-fill{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,#0066ff,#4a9eff);border-radius:2px;transition:height 0.1s;pointer-events:none}
-.volume-icon{font-size:18px;color:rgba(255,255,255,0.9)}
+.volume-icon{font-size:18px;color:rgba(255,255,255,0.9)}.mute-toggle-btn{background:rgba(255,255,255,0.12);border:none;color:#fff;cursor:pointer;font-size:15px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s ease,transform .2s ease}.mute-toggle-btn:hover{background:rgba(255,255,255,0.28);transform:scale(1.08)}
 
 #languageDropdown{position:fixed;top:80px;right:15px;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:12px 0;min-width:210px;display:none;z-index:9999;max-height:calc(100vh - 100px);overflow-y:auto;overscroll-behavior:contain}
 #languageDropdown.show{display:block;animation:slideDown .3s ease}
