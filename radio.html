@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <link rel="canonical" href="https://internationals.click/radio.html">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Radio | Internationals Pro</title>
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/site.webmanifest">
+    <meta name="theme-color" content="#0B2D60">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1f4ba5;
+            --hover-color: #ff0000;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: #f4f7f9;
+        }
+        .header {
+            padding: 40px 40px 10px 40px;
+            display: flex;
+            align-items: center;
+            background: transparent;
+        }
+        .logo img {
+            width: 280px;
+            height: auto;
+            display: block;
+        }
+        .wrapper {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 50px 20px;
+            box-sizing: border-box;
+        }
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: -10px;
+        }
+        .back-link {
+            text-decoration: none;
+            color: #ff0000;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        .back-link:hover {
+            color: #ff6666;
+        }
+        .widget-container {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .radio-card {
+            text-align: center;
+            max-width: 560px;
+            padding: 60px 30px;
+        }
+        .radio-icon {
+            font-size: 4.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        .radio-card h1 {
+            font-size: 1.8rem;
+            color: #1f2937;
+            margin: 0 0 12px 0;
+        }
+        .radio-card p {
+            color: #6b7280;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin: 0 0 32px 0;
+        }
+        .radio-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--primary-color);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 16px 36px;
+            border-radius: 50px;
+            box-shadow: 0 8px 20px rgba(31,75,165,0.35);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+        .radio-btn:hover {
+            background: #173b85;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(31,75,165,0.45);
+        }
+        .radio-note {
+            margin-top: 22px;
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="index.html" onclick="window.close();setTimeout(function(){window.location.href='index.html';},300);return false;">
+                <img src="assets/logo.png" alt="Internationals" class="site-logo">
+            </a>
+        </div>
+    </header>
+    <div class="wrapper">
+        <div class="action-bar">
+            <a href="index.html" onclick="window.close();setTimeout(function(){window.location.href='index.html';},300);return false;" class="back-link">&larr; Internationals</a>
+        </div>
+        <div class="widget-container">
+            <div class="radio-card">
+                <div class="radio-icon"><i class="fas fa-globe"></i></div>
+                <h1>World Radio</h1>
+                <p>Крутите глобус и слушайте живое радио из любой точки мира на Radio Garden — тысячи станций, выбор по городам.</p>
+                <a class="radio-btn" href="https://radio.garden" target="_blank" rel="noopener">
+                    <i class="fas fa-broadcast-tower"></i> Открыть Radio Garden
+                </a>
+                <div class="radio-note">Откроется в новой вкладке · сервис не связан с Internationals</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
