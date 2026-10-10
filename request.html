@@ -42,9 +42,16 @@
         .request-card h1 { margin-top: 0; color: var(--text); }
         .request-card p.subtitle { color: var(--text-sec); margin-bottom: 1.5rem; }
         .logo img.site-logo { height: auto; width: 220px; margin-left: 0; }
-        .back-link { display: inline-block; padding: 8px 6px; }
-        .back-link:hover { text-decoration: underline; }
+        .back-link { display: inline-block; padding: 8px 6px; user-select: none; -webkit-user-select: none; transition: transform .2s ease, color .2s ease; }
+        .back-link:hover { transform: translateY(-3px) scale(1.06); color: #ff6666; }
+        .back-link:active { transform: translateY(0) scale(.98); }
+        .logo a { display: inline-block; user-select: none; -webkit-user-select: none; transition: transform .2s ease; }
+        .logo a:hover { transform: translateY(-3px) scale(1.04); }
+        .logo img { -webkit-user-drag: none; user-drag: none; }
         .request-card h1 { font-size: 2rem; line-height: 1.2; }
+        .header { pointer-events: none; }
+        .header .logo a { pointer-events: auto; }
+        .action-bar { position: relative; z-index: 5; }
     </style>
 </head>
 <body>
