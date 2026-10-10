@@ -46,14 +46,14 @@
 <body>
     <header class="header">
         <div class="logo">
-            <a href="index.html" onclick="window.close();setTimeout(function(){window.location.href='index.html';},300);return false;">
+            <a href="index.html" onclick="if(window.opener&&!window.opener.closed){window.close();return false;}">
                 <img src="assets/logo.png" alt="Internationals" class="site-logo">
             </a>
         </div>
     </header>
     <div class="wrapper">
         <div class="action-bar">
-            <a href="index.html" onclick="window.close();setTimeout(function(){window.location.href='index.html';},300);return false;" class="back-link">&larr; Internationals</a>
+            <a href="index.html" onclick="if(window.opener&&!window.opener.closed){window.close();return false;}" class="back-link">&larr; Internationals</a>
         </div>
         <div class="request-card">
             <h1 data-translate="request_title">Request a Translation</h1>
