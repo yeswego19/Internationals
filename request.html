@@ -41,19 +41,23 @@
         }
         .request-card h1 { margin-top: 0; color: var(--text); }
         .request-card p.subtitle { color: var(--text-sec); margin-bottom: 1.5rem; }
+        .logo img.site-logo { height: auto; width: 220px; margin-left: 0; }
+        .back-link { display: inline-block; padding: 8px 6px; }
+        .back-link:hover { text-decoration: underline; }
+        .request-card h1 { font-size: 2rem; line-height: 1.2; }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="logo">
-            <a href="index.html" onclick="if(window.opener&&!window.opener.closed){window.close();return false;}">
+            <a href="index.html">
                 <img src="assets/logo.png" alt="Internationals" class="site-logo">
             </a>
         </div>
     </header>
     <div class="wrapper">
         <div class="action-bar">
-            <a href="index.html" onclick="if(window.opener&&!window.opener.closed){window.close();return false;}" class="back-link">&larr; Internationals</a>
+            <a href="index.html" class="back-link">&larr; Internationals</a>
         </div>
         <div class="request-card">
             <h1 data-translate="request_title">Request a Translation</h1>
