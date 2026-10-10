@@ -104,21 +104,59 @@
   (function () {
     var ru = (document.documentElement.lang || 'en').slice(0, 2) === 'ru';
     var form = document.getElementById('contactForm');
+    var btn = form.querySelector('button[type="submit"]');
     var box = document.createElement('div');
     box.style.cssText = 'margin-top:.8rem;font-size:.95rem;line-height:1.5;';
     form.appendChild(box);
-    if (/[?&]sent=1/.test(location.search)) {
-      box.style.color = '#15803d';
-      box.textContent = ru ? 'Сообщение отправлено. Мы скоро свяжемся с вами.' : 'Message sent. We will contact you shortly.';
+    function say(text, ok) { box.textContent = text; box.style.color = ok ? '#15803d' : '#b91c1c'; }
+
+    // Back links: close this tab (returns to the first tab); if it cannot be closed, go to the main page.
+    function goBack(e) {
+      e.preventDefault();
+      if (window.opener && !window.opener.closed) {
+        window.close();
+        setTimeout(function () { location.href = 'index.html'; }, 250);
+      } else {
+        location.href = 'index.html';
+      }
     }
+    Array.prototype.forEach.call(document.querySelectorAll('a[href="index.html"]'), function (a) {
+      a.addEventListener('click', goBack);
+    });
+
+    // Submit into a hidden frame so that this page stays where it is.
+    var frame = document.createElement('iframe');
+    frame.name = 'fs_frame';
+    frame.style.cssText = 'display:none;width:0;height:0;border:0;';
+    document.body.appendChild(frame);
+    form.target = 'fs_frame';
+    var sending = false;
+
+    frame.addEventListener('load', function () {
+      if (!sending) return;
+      sending = false;
+      btn.disabled = false;
+      var ok = false;
+      try { ok = /[?&]sent=1/.test(frame.contentWindow.location.search); } catch (err) { ok = false; }
+      if (ok) {
+        say(ru ? 'Сообщение отправлено. Мы скоро свяжемся с вами. Эту вкладку можно закрыть.' : 'Message sent. We will contact you shortly. You can close this tab.', true);
+        form.reset();
+      } else {
+        say(ru ? 'Не удалось подтвердить отправку. Напишите нам на mailtomorrow@yandex.com' : 'Could not confirm sending. Please email us at mailtomorrow@yandex.com', false);
+      }
+    });
+
     form.addEventListener('submit', function (e) {
       var f = document.getElementById('attachment').files, total = 0;
       for (var i = 0; i < f.length; i++) total += f[i].size;
       if (total > 9.5 * 1024 * 1024) {
         e.preventDefault();
-        box.style.color = '#b91c1c';
-        box.textContent = ru ? 'Файлы слишком большие (до 9,5 МБ в сумме).' : 'Files are too large (9.5 MB total max).';
+        say(ru ? 'Файлы слишком большие (до 9,5 МБ в сумме).' : 'Files are too large (9.5 MB total max).', false);
+        return;
       }
+      sending = true;
+      btn.disabled = true;
+      say(ru ? 'Отправляем...' : 'Sending...', true);
     });
   })();
   </script>
