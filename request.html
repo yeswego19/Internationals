@@ -58,11 +58,16 @@
         <div class="request-card">
             <h1 data-translate="request_title">Request a Translation</h1>
             <p class="subtitle" data-translate="request_subtitle">Tell us what you need — we'll get back to you shortly.</p>
-            <form id="contactForm" enctype="multipart/form-data">
-                <div class="form-group"><input type="email" id="email" data-translate-placeholder="form_email" placeholder="Email" required></div>
-                <div class="form-group"><input type="text" id="subject" data-translate-placeholder="form_subject" placeholder="Subject" required></div>
-                <div class="form-group"><textarea id="message" data-translate-placeholder="form_message" placeholder="Your message" rows="5" required></textarea></div>
-                <div class="form-group"><input type="file" id="attachment" multiple></div>
+            <form id="contactForm" action="https://formsubmit.co/mailtomorrow@yandex.com" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="_subject" value="Request from internationals.click">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_next" value="https://internationals.click/request.html?sent=1">
+                <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+                <div class="form-group"><input type="email" id="email" name="email" data-translate-placeholder="form_email" placeholder="Email" required></div>
+                <div class="form-group"><input type="text" id="subject" name="subject" data-translate-placeholder="form_subject" placeholder="Subject" required></div>
+                <div class="form-group"><textarea id="message" name="message" data-translate-placeholder="form_message" placeholder="Your message" rows="5" required></textarea></div>
+                <div class="form-group"><input type="file" id="attachment" name="attachment" multiple></div>
                 <button type="submit" class="btn btn-primary btn-full" data-translate="form_submit">Send message</button>
             </form>
         </div>
@@ -83,6 +88,28 @@
       const key = el.dataset.translatePlaceholder;
       if (translations[lang] && translations[lang][key]) el.placeholder = translations[lang][key];
     });
+  </script>
+  <script>
+  (function () {
+    var ru = (document.documentElement.lang || 'en').slice(0, 2) === 'ru';
+    var form = document.getElementById('contactForm');
+    var box = document.createElement('div');
+    box.style.cssText = 'margin-top:.8rem;font-size:.95rem;line-height:1.5;';
+    form.appendChild(box);
+    if (/[?&]sent=1/.test(location.search)) {
+      box.style.color = '#15803d';
+      box.textContent = ru ? 'Сообщение отправлено. Мы скоро свяжемся с вами.' : 'Message sent. We will contact you shortly.';
+    }
+    form.addEventListener('submit', function (e) {
+      var f = document.getElementById('attachment').files, total = 0;
+      for (var i = 0; i < f.length; i++) total += f[i].size;
+      if (total > 9.5 * 1024 * 1024) {
+        e.preventDefault();
+        box.style.color = '#b91c1c';
+        box.textContent = ru ? 'Файлы слишком большие (до 9,5 МБ в сумме).' : 'Files are too large (9.5 MB total max).';
+      }
+    });
+  })();
   </script>
 </body>
 </html>
