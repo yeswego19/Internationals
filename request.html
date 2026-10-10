@@ -113,12 +113,8 @@
     // Back links: close this tab (returns to the first tab); if it cannot be closed, go to the main page.
     function goBack(e) {
       e.preventDefault();
-      if (window.opener && !window.opener.closed) {
-        window.close();
-        setTimeout(function () { location.href = 'index.html'; }, 250);
-      } else {
-        location.href = 'index.html';
-      }
+      window.close();
+      setTimeout(function () { location.href = 'index.html'; }, 250);
     }
     Array.prototype.forEach.call(document.querySelectorAll('a[href="index.html"]'), function (a) {
       a.addEventListener('click', goBack);
